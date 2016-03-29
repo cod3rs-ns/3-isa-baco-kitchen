@@ -1,3 +1,4 @@
+<html ng-app="isa-mrs-project">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,13 +14,32 @@
     <script src="/webjars/angularjs/1.4.9/angular-route.js"></script>
 </head>
 <body>
-    <h2>Baćova kuhinja</h2>
+    <header>
+        <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/">Baćova kuhinja</a>
+            </div>
 
-    <div ng-view>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/">Početna</a></li>
+                <li><a href="#profile-guest">Profil</a></li>
+                <li><a href="#login">Prijavi se</a></li>
+                <li><a href="#register">Registruj se</a></li>
+            </ul>
+        </div>
+        </nav>
+    </header>
+    
 
-    </div>
+    <div ng-view></div>
 
-    <script src="/js/app.js"></script>
-
+    <!-- AngularJS App Init -->
+    <script src="/js/app.module.js"></script>
+    <script src="/js/app.route.js"></script>
+    <!-- Controllers -->
+    <script src="/js/controllers/login.controller.js"></script>
+    <script src="/js/controllers/register.controller.js"></script>
+    <script src="/js/controllers/profile-guest.controller.js"></script>
 </body>
 </html>
