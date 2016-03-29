@@ -1,0 +1,51 @@
+#login {
+    background-image: url('../images/background.jpg');
+    background-size: 100% auto;
+    height: 100%;
+    padding-top: 80px;
+}
+
+.box-no-radius {
+    background: #eee;
+    border-radius: 0px;
+    padding: 16pt;
+}
+
+.no-border-radius {
+    border-radius: 0px;
+}
+
+.larger-text {
+    font-size: 150%;
+}
+
+.color-white {
+    color: #fff;
+}
+
+.form-header {
+    background-color: #fff;
+    color: #666;
+    padding: 8pt 16pt;
+}
+
+.friend {
+    margin-top: 5px;
+    text-align: center;
+}
+
+.margin-top-24 {
+    margin-top: 24px;
+}
+
+.user-header {
+    background-color: #fff;
+    border-bottom: 2px solid #ddd;
+    padding: 12px 0px;
+}
+
+.friends-list {
+    margin-top: 12px;
+    background-color: #fff;
+    padding: 4px 8px;
+}
