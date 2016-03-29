@@ -14,6 +14,6 @@ function LoginController(/*$location, $routeParams, common, dataservice*/) {
     
     // Implement functions later
     function foo() {
-        
+        alert('Hello, friend!');
     }
 }
