@@ -18,9 +18,9 @@ git clone git@github.com:dmarjanovic94/isa-mrs-project.git
 ### Uputstvo za pokretanje
 
 IDE projekta je **IntelliJ IDEA Ulitmate**. 
-**Napomena:** IntellJ Community ne podržava Spring.
+**NAPOMENA:** IntelliJ Community ne podržava Spring.
 
-Nisam dodavao **.idea** fajl, tako da ćete vjerovatno morati napraviti novi **Maven** projekat i samo importovati ovo sa repozitorijuma.
+Nisam dodavao **.idea** fajl, importujte **Maven** projekat i odaberite klonirani repozitorijum.
 
 Nakon dodavanja projekta, idite na **View -> Tool Windows -> Maven Projects**.
 Dalje, u **Maven konzoli** kucajte ```mvn clean install```, pa zatim ```mvn spring-boot:run```.
