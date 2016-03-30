@@ -1,6 +1,21 @@
 # Predmetni projekat ISA i MRS
 Predmetni projekat iz Internet softverskih arhitektura i Metodologije razvoja softvera.
 
+### Članovi tima:
+* **SW3/2013**   Stefan Ristanović
+* **SW9/2013**   Bojan Blagojević
+* **SWF/2013**   Dragutin Marjanović
+
+
+### AngularJS smjernice
+* Jedna komponenta po jednom fajlu (manje do 400 linija)
+* Funkcije treba da imaju manje od 75 linija koda.
+* Koristiti ContorllerAs umjesto Controllrer.
+* **vm** varijable nazivajte relativno kratko, ali opisno. :)
+* Sve promjenljive na vrh *kontrolera*, a onda poslije idu definicije funkcija.
+* Svi **AngularJS factory** su **singleton**.
+* Što se tiče pisanja kontrolera, pogledajte **LoginController**
+
 Dio vezan za MRS se nalazi na BaseCamp-u. **BaseCamp projekat** možete posjetiti klikom [ovdje](https://3.basecamp.com/3300796/projects/596139).
 
 U projektu će se koristiti sljedeće tehnologije:
