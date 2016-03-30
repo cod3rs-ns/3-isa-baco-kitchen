@@ -14,7 +14,41 @@ Predmetni projekat iz Internet softverskih arhitektura i Metodologije razvoja so
 * **vm** varijable nazivajte relativno kratko, ali opisno. :)
 * Sve promjenljive na vrh *kontrolera*, a onda poslije idu definicije funkcija.
 * Svi **AngularJS factory** su **singleton**.
+* Sve što ima veze sa komunikacijom sa serverom izdvajamo u **service** i **factory**.
+* Koliko sam ja shvatio, **factory** i **service** je gotovo isti, ali se preporučuje da se koriste **factory**. Ispod je primjer koda koji predstavlja jedan *Factory* i čuva se kao *factoryname.service.js*
+    ```
+    angular
+        .module('app.core')
+        .factory('dataservice', dataservice);
+
+    dataservice.$inject = ['$http', 'logger'];
+
+    function dataservice($http, logger) {
+        var someValue = '';
+        var service = {
+            save: save,
+            someValue: someValue,
+            validate: validate
+        };
+        return service;
+
+        function save() {
+            /* */
+        };
+
+        function validate() {
+            /* */
+        };
+    }
+    ```
+* Kada kupimo podatke, ne radimo to direktno u kontroleru, nego napravimo funkciju ```activate()```, pozovemo je poslije navođenja *bindable* elemenata, a implementiramo je poslije u kontroleru. (objasniću vam usmeno bolje :) )
+* **Inject** radite kao što sam ostavio zakomentarisano u **LoginController**-u.
+* Konvencije za ime:
+  * __Imena fajlova:__ ```feature.type.js```, recimo ```main.controller.js``` ili ```products.service.js```
+  * __Imena kontrolera:__ ```MainController``` *prvo slovo veliko*
+  * __Imena servisa/factory-a:__ ```someService``` *prvo slovo malo*
 * Što se tiče pisanja kontrolera, pogledajte **LoginController**
+* Za samu strukuru projekta, to ćemo malo narušiti, jer oni predlažu da za svaki **view** pravimo folder u kome čuvamo sve vezano za taj **view**, ali meni se više sviđa ovo sa **controllers**, **views**, itd. :)
 
 Dio vezan za MRS se nalazi na BaseCamp-u. **BaseCamp projekat** možete posjetiti klikom [ovdje](https://3.basecamp.com/3300796/projects/596139).
 
