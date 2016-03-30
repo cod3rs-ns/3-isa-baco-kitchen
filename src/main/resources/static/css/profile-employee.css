@@ -91,3 +91,14 @@ hr{
 	text-align: right;
 	margin-right: 5px;
 }
+
+
+.order-img{
+	height: 100px;
+}
+
+.desk-num-rest{
+	position:absolute;
+	bottom: 0px;
+	right: 10px;
+}

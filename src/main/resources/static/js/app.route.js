@@ -45,5 +45,11 @@ function config($routeProvider) {
             templateUrl: 'views/profile-waiter.html',
             controller: 'WaiterProfileController',
             controllerAs: 'waiterProfileVm'
+        })
+		// Route for system manager profile page
+        .when('/profile-system-manager', {
+            templateUrl: 'views/profile-system-manager.html',
+            controller: 'SystemManagerProfileController',
+            controllerAs: 'systemManagerProfileVm'
         });
 }
