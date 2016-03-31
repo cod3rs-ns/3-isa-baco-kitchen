@@ -1,7 +1,7 @@
 angular
-    .module('isa-mrs-project', ['ngRoute'])
+    .module('isa-mrs-project', ['ngRoute', 'ngMaterial'])
     .config(config);
-    
+
 function config($routeProvider) {
     $routeProvider
         // Route for homepage (login.html)
@@ -45,6 +45,12 @@ function config($routeProvider) {
             templateUrl: 'views/profile-waiter.html',
             controller: 'WaiterProfileController',
             controllerAs: 'waiterProfileVm'
+        })
+        // Route for waiter profile page
+        .when('/profile-provider', {
+            templateUrl: 'views/profile-provider.html',
+            controller: 'ProviderProfileController',
+            controllerAs: 'providerProfileVm'
         })
 		// Route for system manager profile page
         .when('/profile-system-manager', {

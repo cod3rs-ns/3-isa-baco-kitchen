@@ -1,3 +1,2 @@
 angular
-    .module('isa-mrs-project', ['ngRoute']);
-
+    .module('isa-mrs-project', ['ngRoute', 'ngMaterial']);
