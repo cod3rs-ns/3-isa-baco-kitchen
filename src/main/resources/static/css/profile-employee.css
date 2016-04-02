@@ -92,13 +92,23 @@ hr{
 	margin-right: 5px;
 }
 
-
-.order-img{
-	height: 100px;
-}
-
 .desk-num-rest{
 	position:absolute;
 	bottom: 0px;
 	right: 10px;
+}
+
+.order-btns{
+	position:absolute;
+	bottom: 0px;
+}
+
+.order-img{
+	height: 120px;
+}
+
+.order-item{
+	width: 200px;
+	position:relative;
+	background-color:#E8EAF6;
 }

@@ -6,19 +6,26 @@
 			</div>
 			<div class="col-md-9">
 				<div class="pull-right">
-					<span class="label label-primary">Nešto ovdje</span>
-					<span class="label label-danger">Nešto ovdje</span>
+                    <md-button class="md-icon-button" aria-label="Kalendarski prikaz">
+						<md-icon aria-label="Kalendarski prikaz" class="material-icons">date_range</md-icon>
+					</md-button>
+					<md-button class="md-icon-button" aria-label="Kalendarski prikaz">
+						<md-icon aria-label="Kalendarski prikaz" class="material-icons">dashboard</md-icon>
+					</md-button>
 				</div>
 				<div>
 					<h2>Sergio Ramos</h2>
-					<h4 style="color: #666">KONOBAR</h4>
+					<h4 style="color: #666">Konobar</h4>
 					<h3 style="color: #444">sergioramos@realmadrid.com</h3>
 					<blockquote class="blockquote-reverse">
 						I'm not in danger, I'm the danger.
 						<footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
 					</blockquote>
 					<div>
-						<button class="btn btn-success">Dodaj kao prijatelja</button>
+                        <md-content class="md-padding">
+                            <md-button class="md-raised md-accent">Izmijeni podatke</md-button>
+                            <md-button class="md-raised md-accent">Promijeni lozinku</md-button>
+                        </md-content>
 					</div>
 				</div>
 			</div>
@@ -26,60 +33,51 @@
 	</div>
 </div>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-9">
-			<div class="notification-list">
-				<h4> Notifikacije </h4>
-				
-				<div class="row">
-				
-					<ul class="equal-height-thumbnail">
-						<li class="order">
-							<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-							<div class="caption-waiter">
-								<h4>Kolač od višanja</h4>
-								<p class="desk-num"><i class="material-icons md-16">restaurant_menu</i>broj stola : 4 <br/> </p>
-								<input type="button" class="invisible">
-							</div>
+<div ng-cloak>
+	<md-content>
+		<md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+			<md-tab label="Završene porudžbine">
+				<md-content class="md-padding">
+					<div layout="row" layout-wrap>
+						<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
+
+							<md-card class="order-item">
+								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								
+								<md-card-content>
+									<h4>{{meal.name}}</h4>
+									<md-button style="visibility: hidden;"></md-button>
+								</md-card-content>
+								
+								<md-card-actions class="order-btns" layout="row" layout-align="center end">
+									<md-button> <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
+									<md-button class="md-raised md-primary">Prihvati</md-button>
+								</md-card-actions>
+							</md-card>
 							
-							<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-						</li>
-					</ul>	
-				</div>
-			</div>
-		</div>
-		<div class="col-md-3">
-			<div class="options-list">
-				<hr class="first-hr">
-					<div class="option">
-						<h4> Raspored rada
-							<i class="material-icons md-48">date_range</i>
-							<h6 class="icon-text">
-								Pregled rasporeda rada za zadati mjesec sa prikazom smjena po danu.
-							</h6>
-						</h4>
+						</div>			
 					</div>
-				<hr>
-					<div class="option">
-						<h4> Raspored stolova
-							<i class="material-icons md-48">dashboard</i>
-							<h6 class="icon-text">
-								Grafički prikaz rasporeda stolova u restoranu sa označenim reonima za rad.
-							</h6>
-						</h4>
-					</div>
-				<hr>
-					<div class="option">
-						<h4> Ažuriranje profila
-							<i class="material-icons md-48">mode_edit</i>
-							<h6 class="icon-text">
-								Izmjeni svoje postojeće podatke ili izmijeni šifru kako bi ažurirao svoj profil.
-							</h6>
-						</h4>
-					</div>
-				<hr>
-			</div>
-		</div>
-	</div>
+				</md-content>
+			</md-tab>
+			<md-tab label="Izdati računi">
+				
+				<md-content class="md-padding">
+					<md-list flex>
+						<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills" ng-click="null">
+							<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar"/>
+							<div class="md-list-item-text" layout="column">
+								<h3>{{ bill.code }}</h3>
+								<h4>{{ bill.total }} RSD</h4>
+								<p>{{ bill.date }}</p>
+							</div >
+							<div class="md-secondary">
+								<md-button class="md-raised">Više...</md-button>
+							</div>
+						</md-list-item>
+					</md-list>
+				</md-content>
+			
+			</md-tab>
+		</md-tabs>
+	</md-content>
 </div>

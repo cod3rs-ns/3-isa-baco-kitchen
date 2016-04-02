@@ -6,19 +6,23 @@
 			</div>
 			<div class="col-md-9">
 				<div class="pull-right">
-					<span class="label label-primary">Nešto ovdje</span>
-					<span class="label label-danger">Nešto ovdje</span>
+                    <md-button class="md-icon-button" aria-label="Kalendarski prikaz">
+						<md-icon aria-label="Kalendarski prikaz" class="material-icons">date_range</md-icon>
+					</md-button>
 				</div>
 				<div>
 					<h2>Sergio Ramos</h2>
-					<h4 style="color: #666">KUVAR</h4>
+					<h4 style="color: #666">Kuvar</h4>
 					<h3 style="color: #444">sergioramos@realmadrid.com</h3>
 					<blockquote class="blockquote-reverse">
 						I'm not in danger, I'm the danger.
 						<footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
 					</blockquote>
 					<div>
-						<button class="btn btn-success">Dodaj kao prijatelja</button>
+                        <md-content class="md-padding">
+                            <md-button class="md-raised md-accent">Izmijeni podatke</md-button>
+                            <md-button class="md-raised md-accent">Promijeni lozinku</md-button>
+                        </md-content>
 					</div>
 				</div>
 			</div>
@@ -26,95 +30,56 @@
 	</div>
 </div>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-9">
-						
-			<ul class="nav nav-pills">
-				<li class="active"><a href="#">Lista jela za prihvatanje</a></li>
-				<li><a href="#">Lista jela u izradi</a></li>
-			</ul>
-			
-			<div class="tab-content" style="margin-top:7px;">
-				<ul class="equal-height-thumbnail">
-					<li class="order">
-						<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-						<div class="caption">
-							<p class="waiter-name"><span class="glyphicon glyphicon-user"></span> Bojan Blagojevic </p>
+<div ng-cloak>
+	<md-content>
+		<md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+			<md-tab label="Pristigla jela">
+				<md-content class="md-padding">
+					<div layout="row" layout-wrap>
+						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals" layout-wrap>
 
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aliquam erat volutpat. Curabitur, Lorem ipsum dolor sit amet, 		consectetur adipiscing elit. Pellentesque eget enim et augue mattit felis. Aliquam erat volutpat. Curabitur </p>
-							<input type="button" class="invisible">
-						</div>
-						
-						<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-					</li>
-					
-					<li class="order">
-						<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aliquam erat volutpat. Curabitur, Lorem ipsum dolor sit amet. </p>
-							<input type="button" class="invisible">
-						</div>
-						
-						<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-					</li>
-
-					<li class="order">
-						<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aliquam erat volutpat. Curabitur, Lorem ipsum dolor sit amet, 	consectetur adipiscing elit. Pellentesque eget enim et augue mattit felis.</p>
-							<input type="button" class="invisible">
-						</div>
-						
-						<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-					</li>
-
-					<li class="order">
-						<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. </p>
-							<input type="button" class="invisible">
-						</div>
-						
-						<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-					</li>
-
-					<li class="order">
-						<figure><img src="http://riverbluffsliving.com/wp-content/uploads/2015/12/wilmington-best-places-for-dessert-near-river-bluffs.jpg" alt="Equal height of thumbnail"></figure>
-						<div class="caption">
-							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.  Aliquam erat volutpat. Curabitur, Lorem ipsum dolor sit </p>	<input type="button" class="invisible">
-						</div>
-						
-						<a href="#" class="btn btn-success btn-sm" role="button">Prihvati</a>
-					</li>
-					
-				</ul>
-				  
-			</div>
-		</div>
-		
-		<div class="col-md-3">
-			<div class="options-list">
-				<hr classs="first-hr">
-					<div class="option">
-						<h4> Raspored rada 
-							<i class="material-icons md-48">date_range</i> 
-							<h6 class="icon-text"> 
-								Pregled rasporeda rada za zadati mjesec sa prikazom smjena po danu.
-							</h6>
-						</h4>
+							<md-card class="order-item">
+								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								
+								<md-card-content>
+									<h4>{{meal.name}}</h4>
+									<md-button style="visibility: hidden;"></md-button>
+								</md-card-content>
+								
+								<md-card-actions class="order-btns" layout="row" layout-align="center end">
+									<md-button class="md-raised">Detalji</md-button>
+									<md-button class="md-raised md-primary">Prihvati</md-button>
+								</md-card-actions>
+							</md-card>
+							
+						</div>			
 					</div>
-				<hr>	
-					<div class="option">
-						<h4> Ažuriranje profila 
-							<i class="material-icons md-48">mode_edit</i> 
-							<h6 class="icon-text">
-								Izmjeni svoje postojeće podatke ili izmijeni šifru kako bi ažurirao svoj profil.
-							</h6>
-						</h4>
+				</md-content>
+			</md-tab>
+			<md-tab label="Jela u izradi">
+				<md-content class="md-padding">
+					<div layout="row" layout-wrap>
+						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
+
+							<md-card class="order-item">
+								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								
+								<md-card-content>
+									<h4>{{meal.name}}</h4>
+									<md-button style="visibility: hidden;"></md-button>
+								</md-card-content>
+								
+								<md-card-actions class="order-btns" layout="row" layout-align="center end">
+									<md-button class="md-raised">Detalji</md-button>
+									<md-button class="md-raised md-primary">Notifikuj</md-button>
+								</md-card-actions>
+							</md-card>
+							
+						</div>			
 					</div>
-				<hr>
-			</div>
-		</div>
-	</div>
+
+				</md-content>
+			</md-tab>
+		</md-tabs>
+	</md-content>
 </div>
