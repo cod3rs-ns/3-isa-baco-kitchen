@@ -2,8 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
+RestaurantProfileController.$inject = ["$mdDialog"];
 
-function RestaurantProfileController(){
+function RestaurantProfileController($mdDialog, SingleDrinkController){
     var restaurantVm = this;
 
     restaurantVm.name = 'Caffe Macchiato';
@@ -64,4 +65,18 @@ function RestaurantProfileController(){
             info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
         }
     ];
+
+    restaurantVm.createDrink = createDrink;
+
+    function createDrink(){
+        $mdDialog.show({
+            controller: 'SingleDrinkController',
+            controllerAs: 'drinkVm',
+            templateUrl: '/views/dialogs/drink-form-tmpl.html',
+            parent: angular.element(document.body),
+            //targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: false,
+        });
+    };
 }
