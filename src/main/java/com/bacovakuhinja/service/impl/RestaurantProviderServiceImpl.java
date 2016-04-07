@@ -22,4 +22,9 @@ public class RestaurantProviderServiceImpl implements RestaurantProviderService 
     public Collection<RestaurantProvider> findAll() {
         return providerRepository.findAll();
     }
+
+    @Override
+    public RestaurantProvider create(RestaurantProvider provider) {
+        return providerRepository.save(provider);
+    }
 }

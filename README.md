@@ -74,6 +74,15 @@ Nisam dodavao **.idea** fajl, importujte **Maven** projekat i odaberite kloniran
 Nakon dodavanja projekta, idite na **View -> Tool Windows -> Maven Projects**.
 Dalje, u **Maven konzoli** kucajte ```mvn clean install```, pa zatim ```mvn spring-boot:run```.
 
-U fajlu **application.properties** se nalaze podešavanja vezana za aplikaciju. Trenutno, jedino podešavanje je **server.port = 8091** što znači da će se server startovati na tom portu.
+U fajlu **application.properties** se nalaze podešavanja vezana za aplikaciju. Trenutno, podešeno je:
+ * **server.port = 8091** što znači da će se server startovati na tom portu
+ * Hibernate
+ * Kredencijali za pristup bazi podataka
+
+Da bi se aplikacija pravilno pokrenula potrebno je prethodno kreirati **MySQL Bazu podataka** izvršavanjem skripte
+```isamrs_db_schema.sql```, zatim je popuniti proizvoljnim podacima ili unapred ponuđenim test podacima koji se
+nalaze u skripti ```isamrs_test_data.sql```. Kada je baza kreirana neophodno je omogućiti samoj aplikaciji pristup,
+popunjavanjem ```url```, ```username```, ```password``` adekvatnim podacima ili kreirati novog korisnika baze sa već
+ponudjenim default-nim podacima (jdbc:mysql://localhost:3306/isa_mrs_project, isamrs_user, isamrs).
 
 Nakon svih koraka bi trebalo [ovdje](http://localhost:8091/index.html) da vidite *index.html* stranu.
