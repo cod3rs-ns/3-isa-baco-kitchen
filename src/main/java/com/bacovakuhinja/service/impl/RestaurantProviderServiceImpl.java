@@ -8,10 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-/**
- * Created by St_Keky on 7.4.2016..
- */
-
 @Service
 public class RestaurantProviderServiceImpl implements RestaurantProviderService {
 
