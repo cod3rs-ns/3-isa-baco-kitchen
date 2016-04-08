@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/profile-employee.css">
 
-    <link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css"-->
+	  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/webjars/angular-material/1.0.6/angular-material.css">
     <link rel="stylesheet" href="/webjars/angular-bootstrap-calendar/0.15.5/dist/css/angular-bootstrap-calendar.css">
 
@@ -34,28 +34,31 @@
 
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-default">
-            <div class="container">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#/">Baćova kuhinja</a>
-                </div>
-
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#/">Početna</a></li>
-                    <li><a href="#profile-guest">Profil</a></li>
-					<li><a href="#profile-waiter">Profil šankera</a></li>
-                    <li><a href="#profile-provider">Profil ponuđača</a></li>
-                    <li><a href="#login">Prijavi se</a></li>
-                    <li><a href="#register">Registruj se</a></li>
-                </ul>
-            </div>
-        </nav>
-
-    </header>
-
-
-    <div style="background-color: #eee;" ng-view></div>
+    <md-content>
+        <md-toolbar class="md-hue-2">
+          <div class="md-toolbar-tools">
+            <md-button class="md-icon-button" aria-label="Menu" ng-disabled="true">
+              <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
+            </md-button>
+            <h2>
+              <span>Baćova kuhinja</span>
+            </h2>
+            <span flex></span>
+            <md-button aria-label="User profile" ng-href="#/profile-guest">
+              Profil
+            </md-button>
+            <md-button aria-label="Login" ng-href="#/login">
+              Prijavi se
+            </md-button>
+            <md-button aria-label="Sign up" ng-href="#/register">
+              Registruj se
+            </md-button>
+          </div>
+        </md-toolbar>
+      
+        <div ng-view></div>
+        
+    </md-content>
 
     <!-- AngularJS App Init -->
     <script src="/js/app.module.js"></script>
@@ -64,11 +67,13 @@
     <script src="/js/controllers/login.controller.js"></script>
     <script src="/js/controllers/register.controller.js"></script>
     <script src="/js/controllers/profile-guest.controller.js"></script>
-	<script src="/js/controllers/profile-waiter.controller.js"></script>
-	<script src="/js/controllers/profile-cook.controller.js"></script>
-	<script src="/js/controllers/profile-barman.controller.js"></script>
-	<script src="/js/controllers/profile-system-manager.controller.js"></script>
+  	<script src="/js/controllers/profile-waiter.controller.js"></script>
+  	<script src="/js/controllers/profile-cook.controller.js"></script>
+  	<script src="/js/controllers/profile-barman.controller.js"></script>
+  	<script src="/js/controllers/profile-system-manager.controller.js"></script>
     <script src="/js/controllers/profile-provider.controller.js"></script>
     <script src="/js/controllers/offer-request.controller.js"></script>
+    <!-- Directives -->
+    <script src="/js/directives/rating.directive.js"></script>
 </body>
 </html>

@@ -1,70 +1,85 @@
-<div id="login">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 text-center">
-                <h2 class="color-white">ISA MRS Projekat <b>TeamOne</b></h2>
-                <p class="larger-text color-white">
-                    Šoferskih gostiona,
-                    Hormona do plafona.
-                    Muškaraca tona
-                    Turbo je sezona!
+<div layout="row" layout-xs="column" class="image-background">
+  <div flex-gt-sm="70" class="title-content">
+    <h2>ISA MRS Projekat <b>TeamOne</b></h2>
+    <p class="large-text">
+        Šoferskih gostiona,
+        Hormona do plafona.
+        Muškaraca tona
+        Turbo je sezona!
 
-                    Ej, što volim miris od benzina
-                    Ej, magistrala Dalmatina.
-                    Hop, hop, malo, malo pa krivina.
-                    Ljulja se kabina,
-                    Turbo je mašina!
+        Ej, što volim miris od benzina
+        Ej, magistrala Dalmatina.
+        Hop, hop, malo, malo pa krivina.
+        Ljulja se kabina,
+        Turbo je mašina!
 
-                    Mali, mali, meni toga fali.
-                    Latinice, atmosferice.
-                    Mali, mali, meni toga fali.
-                    Gas do daske, bebice!
+        Mali, mali, meni toga fali.
+        Latinice, atmosferice.
+        Mali, mali, meni toga fali.
+        Gas do daske, bebice!
 
-                    Gas, gas...
-                    Gas, gas...
-                </p>
-            </div>
-            <div class="col-md-4">
-                <div class="form-header">
-                    <h4>Registruj se</h4>
-                    <p>Popunite formu ispod da biste dobili pristup aplikaciji...</p>
-                </div>
-                <form class="form-horizontal box-no-radius">
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <input type="text" class="form-control no-border-radius" id="name" placeholder="Vaše ime">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <input type="text" class="form-control no-border-radius" id="lastname" placeholder="Vaše prezime">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <input type="email" class="form-control no-border-radius" id="email" placeholder="Vaša imejl adresa">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <input type="password" class="form-control no-border-radius" id="password" placeholder="Vaša lozinka">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <input type="password" class="form-control no-border-radius" id="repeat-password" placeholder="Ponovite lozinku">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-1 col-sm-10">
-                            <button type="submit" class="btn btn-success pull-right">Registruj se</button>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        Već imaš nalog? <a href="#login">Prijavi se</a>
-                    </div>
-                </form>
-            </div>
-        </div>
+        Gas, gas...
+        Gas, gas...
+    </p>
+  </div>
+  
+  <div flex-gt-sm="30" class="form-content">
+    <div class="form-header">
+      <h4>Registruj se</h4>
+      <p>Popunite formu da biste napravili korisnički nalog.</p>
     </div>
+    <form name="registerForm" class="form-body" ng-submit="registerVm.foo()">
+      <md-input-container class="md-block">
+          <label>Vaše ime</label>
+          <md-icon aria-label="Email" class="material-icons">person</md-icon>
+          <input md-maxlength="10" required name="name" ng-model="user.name" />
+          <!--div class="hint">Tell us what we should call you!</div-->
+          <div ng-messages="registerForm.name.$error">
+            <div ng-message="required">Ime je obavezno.</div>
+            <div ng-message="md-maxlength">Ime ne može biti duže od 10 karaktera.</div>
+          </div>
+        </md-input-container>
+        
+        <md-input-container class="md-block">
+            <label>Vaše prezime</label>
+            <md-icon aria-label="Email" class="material-icons">person</md-icon>
+            <input md-maxlength="20" required name="lastname" ng-model="user.lastname" />
+            <!--div class="hint">Tell us what we should call you!</div-->
+            <div ng-messages="registerForm.lastname.$error" role="alert">
+              <div ng-message="required">Prezime je obavezno.</div>
+              <div ng-message="md-maxlength">Prezime ne može biti duže od 20 karaktera.</div>
+            </div>
+          </md-input-container>
+          
+          <md-input-container class="md-block">
+            <label>Vaša e-mail adresa</label>
+            <md-icon aria-label="Email" class="material-icons">mail_outline</md-icon>
+            <input required type="email" name="clientEmail" ng-model="user.clientEmail"
+                   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+            <div ng-messages="registerForm.clientEmail.$error" role="alert">
+              <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                Unijeta e-mail adresa je neispravna.
+              </div>
+            </div>
+          </md-input-container>
+          
+          <md-input-container class="md-block">
+            <label>Vaša lozinka</label>
+            <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
+            <input required type="password" name="userPassword"/>
+          </md-input-container>
+          
+          <md-input-container class="md-block">
+            <label>Ponovite Vašu lozinku</label>
+            <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
+            <input required type="password" name="userPasswordRepeated"/>
+          </md-input-container>
+          
+          <md-button class="md-raised">Registruj se</md-button>
+      
+        <div class="form-text-bottom">
+            Već imaš nalog? <a href="#login">Prijavi se</a>
+        </div>
+    </form>
+  </div>
 </div>

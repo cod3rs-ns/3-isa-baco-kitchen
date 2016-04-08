@@ -1,62 +1,154 @@
-<div class="user-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <img src="images/profile.jpg" alt="Sergio Ramos" class="img-thumbnail">
-            </div>
-            <div class="col-md-9">
-                <div class="pull-right">
-                    <span class="label label-primary">
-                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
-                        Nešto
-                    </span>
-                    <span class="label label-danger">Nešto ovdje</span>
-                </div>
-                <div>
-                    <h2>{{ guestProfileVm.name }}</h2>
-                    <h4 style="color: #666">GOST</h4>
-                    <h3 style="color: #444">sergioramos@realmadrid.com</h3>
-                    <blockquote class="blockquote-reverse">
-                        I'm not in danger, I'm the danger.
-                        <footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
-                    </blockquote>
-                    <div>
-                        <button class="btn btn-success">Dodaj kao prijatelja</button>
+<div layout="row" layout-xs="column">
+  <!-- Main Content -->
+  <div flex-gt-sm="70" class="main-content">
+    <md-toolbar scroll>
+      <div class="md-toolbar-tools">
+        <h3 md-header-title flex>Profil korisnika</h3>
+        <md-button class="md-icon-button" aria-label="Notification">
+          <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="More">
+          <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    
+    <div layout="column">
+      <div layout="row" layout-xs="column">
+        <div flex class="content">
+          <img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+        </div>
+        <div flex class="content">
+          <h2>{{ guestProfileVm.name }}</h2>
+          <h4> sergioramos@doktor.com </h4>
+        </div>
+      </div>
+    
+      <!--div class="main-fab">
+        <span flex></span>
+        <md-button class="md-fab" aria-label="Add friend">
+          <md-icon aria-label="Search" class="material-icons">person_add</md-icon>
+        </md-button>
+      </div-->
+      
+      <md-tabs md-dynamic-height md-border-bottom>
+        <md-tab label="Moje posjete">
+          <md-content class="md-padding">
+  					<div layout="row" layout-wrap>
+  						<div class='md-padding' style="background-color: #eee" layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
+  							<md-card>
+  								<img ng-src="{{visit.img_src}}" class="md-card-image" style="width: 196px">
+  								
+  								<md-card-content>
+  									<h4>{{visit.name}}</h4>
+  								</md-card-content>
+  								
+                  <div>
+                    <div class="rating-item">
+                      Restoran:
+                      <div ng-init="visit.rating_restaurant"></div>
+                      <div class="star-rating" star-rating rating-value="visit.rating_restaurant" data-max="5" on-rating-selected="rateFunction(rating)"></div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<div class="container">
-    <div class="friends-list">
-        <h4>Lista prijatelja</h4>
-        <div class="input-group col-sm-4">
-            <span class="input-group-addon" id="basic-addon1">@</span>
-            <input type="text" class="form-control" placeholder="Unesite ime i/ili prezime prijatelja..."/>
-        </div>
-        <div class="row">
-            <img src="images/friend-01-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-02-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-01-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-02-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-01-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-02-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-03-small.png" class="col-xs-1 friend"/>
-            <img src="images/friend-04-small.png" class="col-xs-1 friend"/>
-        </div>
-        
+                    <div class="rating-item">
+                      Usluga:
+                      <div ng-init="visit.rating_service"></div>
+                      <div class="star-rating" star-rating rating-value="visit.rating_service" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                    </div>
+                    
+                    <div class="rating-item">
+                      Hrana:
+                      <div ng-init="visit.rating_food"></div>
+                      <div class="star-rating" star-rating rating-value="visit.rating_food" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                    </div>
+                    
+                  </div>
+  							</md-card>
+  							
+  						</div>			
+  					</div>
+  				</md-content>
+        </md-tab>
+        <md-tab label="Aktivne rezervacije">
+          <md-content class="md-padding">
+            <div layout="row" layout-wrap>
+  						<div class='md-padding' layout="row" ng-repeat="reservation in guestProfileVm.reservations" layout-wrap>
+                <md-card>
+                  <md-card-title>
+                    <md-card-title-text>
+                      <span class="md-headline">{{ reservation.name }}</span>
+                      <span class="md-subhead">{{ reservation.type }}</span>
+                    </md-card-title-text>
+                  </md-card-title>
+                  <img ng-src="{{ reservation.img_src }}" class="md-card-image reservation" alt="Washed Out">
+                  
+                  <div class="reservation-item">
+                    <i class="material-icons">today</i> {{ reservation.date}}
+                  </div>
+                  <div class="reservation-item">
+                    <i class="material-icons">schedule</i> {{ reservation.time }}
+                  </div>
+                  <div class="reservation-item">
+                    <i class="material-icons">people</i> {{ reservation.guests}}
+                  </div>
+                  
+                  <md-card-actions layout="row" layout-align="end center">
+                    <md-button>Action 1</md-button>
+                    <md-button>Action 2</md-button>
+                  </md-card-actions>
+                </md-card>
+  							
+  						</div>			
+  					</div>
+          </md-content>
+        </md-tab>
+      </md-tabs>
     </div>
+  </div>
+  
+  <!-- Side Content -->
+  <div flex-gt-sm="30" class="side-content">
+      <md-toolbar ng-show="!showSearch">
+        <div class="md-toolbar-tools">
+          <h3>
+            Korisnici
+          </h3>
+          <span flex></span>
+          <md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
+            <md-icon aria-label="Search" class="material-icons">search</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+      <md-toolbar ng-show="showSearch">
+        <div class="md-toolbar-tools">
+          <md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
+            <md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
+          </md-button>
+          <md-input-container flex>
+            <input ng-model="search.who" placeholder="Traži po imenu/prezimenu">
+          </md-input-container>
+          <md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
+            <md-icon aria-label="Search" class="material-icons">search</md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+    <md-list>
+      <md-subheader class="md-primary">Moji prijatelji</md-subheader>
+      <md-list-item ng-repeat="friend in guestProfileVm.friends" ng-click="guestProfileVm.foo()" class="noright">
+        <img alt="{{ friend.name }}" ng-src="{{ friend.avatar }}" class="md-avatar" />
+        <p>{{ friend.name }}</p>
+        <md-icon aria-label="Search" class="material-icons">highlight_off</md-icon>
+      </md-list-item>
+    </md-list>
+    <md-divider></md-divider>
+    <md-list>
+      <md-subheader class="md-primary">Ostali korisnici</md-subheader>
+      <md-list-item ng-repeat="friend in guestProfileVm.friends" ng-click="guestProfileVm.foo()" class="noright">
+        <img alt="{{ friend.name }}" ng-src="{{ friend.avatar }}" class="md-avatar" />
+        <p>{{ friend.name }}</p>
+        <md-icon aria-label="Search" class="material-icons">add_circle_outline</md-icon>
+      </md-list-item>
+    </md-list>
+  </div>
+  
 </div>

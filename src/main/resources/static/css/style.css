@@ -1,52 +1,133 @@
-#login {
-    background-image: url('../images/background.jpg');
-    background-size: 100% auto;
-    height: 100%;
-    padding-top: 80px;
-    margin-top: -72px;
+md-tab > md-content > div > div {
+  background-color: #eee;
 }
 
-.box-no-radius {
-    background: #eee;
-    border-radius: 0px;
-    padding: 16pt;
+div.content {
+  background-color: #fff;
 }
 
-.no-border-radius {
-    border-radius: 0px;
+.main-content {
+  padding: 12px;
+  background-color: #eee;
 }
 
-.larger-text {
-    font-size: 150%;
+.side-content {
+  padding: 12px;
+  background-color: #eee;
 }
 
-.color-white {
-    color: #fff;
+.side-content > md-list {
+  padding: 0 8px;
+  background-color: #fff;
+}
+
+.form-content {
+  padding: 16;
 }
 
 .form-header {
     background-color: #fff;
     color: #666;
-    padding: 8pt 16pt;
+    padding: 4px 16px;
 }
 
-.friend {
-    margin-top: 5px;
-    text-align: center;
+.form-body {
+  background-color: #eee;
+  color: #333;
+  padding: 8px 32px;
 }
 
-.margin-top-24 {
-    margin-top: 24px;
+.form-text-bottom {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  text-align: center;
+  color: #333;
 }
 
-.user-header {
-    background-color: #fff;
-    border-bottom: 2px solid #ddd;
-    padding: 12px 0px;
+.form-text-bottom > a {
+  color: green;
 }
 
-.friends-list {
-    margin-top: 12px;
-    background-color: #fff;
-    padding: 4px 8px;
+.form-text-bottom > a:hover {
+  color: red;
+}
+
+.title-content {
+  color: #fff;
+  padding: 16px 32px;
+  text-align: center;
+}
+
+.large-text {
+  font-size: 16pt;
+  padding-top: 12px;
+}
+
+.main-fab {
+  text-align: right;
+  padding-right: 32px;
+}
+
+.image-background {
+  background-image: url('../images/background.jpg');
+  background-size: 100% auto;
+  height: 100%;
+}
+
+.rating-item {
+  margin-top: 0px;
+  padding-left: 4px;
+  font-size: 10pt;
+  font-weight: bold;
+}
+
+div.reservation-item {
+  color: #333;
+  padding-left: 4px;
+  font-size: 11pt;
+}
+
+div.reservation-item > i {
+  padding-right: 8px;
+  float: left;
+  margin-top: -4px;
+}
+
+.rating {
+  color: #a9a9a9;
+  margin: 0;
+  padding: 0;
+}
+
+ul.rating {
+  /* display: inline-block; */
+}
+
+.rating li {
+  list-style-type: none;
+  display: inline-block;
+  padding: 1px;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+  width: 24px; !important
+}
+
+.rating .filled {
+  color: #C2185B;
+}
+
+.reservation {
+  height: 196px;
+  width: 196px;
+}
+
+/* Buttons */
+md-button.md-success {
+  background-color: #43A047; !important
+  color: #fff; !important
+}
+
+md-button.md-success:hover {
+  background-color: #4CAF50; !important
 }
