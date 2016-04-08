@@ -42,11 +42,11 @@
 						<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
 
 							<md-card class="order-item">
-								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
 								
 								<md-card-content>
 									<h4>{{meal.name}}</h4>
-									<md-button style="visibility: hidden;"></md-button>
+									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">
@@ -78,6 +78,27 @@
 				</md-content>
 			
 			</md-tab>
+			
+			<md-tab label="Kalendar">
+				<md-content class="md-padding">
+					<mwl-calendar
+						view="waiterProfileVm.calendarView"
+						current-day="waiterProfileVm.calendarDate"
+						events="waiterProfileVm.events"
+						view-title="calendarTitle"
+						view-date="vm.viewDate"
+						on-event-click="eventClicked(calendarEvent)"
+						on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+						edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
+						delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
+						on-edit-event-click="eventEdited(calendarEvent)"
+						on-delete-event-click="eventDeleted(calendarEvent)"
+						cell-is-open="true">
+					</mwl-calendar>
+				</md-content>
+			
+			</md-tab>
+
 		</md-tabs>
 	</md-content>
 </div>

@@ -1,0 +1,92 @@
+<div class="container" style="background-color: white;">
+    <div class="row-fluid">
+        <div class="col-md-8">
+            <div class="bg-image">
+                <img src="images/background.jpg" alt="Restaurant image" class="img-thumbnail"/>
+                 <h1>{{restaurantVm.name}}</h1>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <md-content style="font-size:140%" class="md-padding">
+                <md-header class="md-primary"> <i class="material-icons md-36">restaurant_menu</i>&nbsp;&nbsp;Vrsta restorana</md-header>
+                <md-subheader class="md-primary" style="text-align:center"> {{restaurantVm.type}} </md-subheader>
+                <md-header class="md-primary"><i class="material-icons md-36">query_builder</i>&nbsp;&nbsp;Radno vreme</md-header>
+                <md-subheader class="md-primary"style="text-align:center"> {{restaurantVm.time}}</md-subheader>
+                <md-header class="md-primary"> <i class="material-icons">info_outline</i>&nbsp;&nbsp;Informacije</md-header>
+                <blockquote class="blockquote-reverse">
+                    {{restaurantVm.info}}
+                    <footer>Osoblje <cite title="Source Title">restoran {{restaurantVm.name}}</cite></footer>
+                </blockquote>
+            </md-content>
+
+            <div>
+                <md-content class="md-padding">
+                    <md-button class="md-raised md-accent">Rezerviši mesto</md-button>
+                    <md-button class="md-raised md-primary">Prikaži na mapi</md-button>
+                    <md-button class="md-raised md-default" ng-click="restaurantVm.createDrink()">Novo piće</md-button>
+                </md-content>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="margin-top:15px"ng-cloak>
+  <md-content>
+    <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+      <md-tab label="Jelovnik">
+        <md-content class="md-padding">
+
+        <div layout="row" layout-wrap>
+          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+
+              <md-card class="order-item">
+                    <img src="{{meal.img_src}}" class="md-card-image order-img">
+
+                    <md-card-content>
+                        <h4>{{meal.name}}</h4>
+                        <p class="md-primary" style="color:grey">{{meal.info}}</p>
+                        <md-button style="visibility: hidden;"></md-button>
+                    </md-card-content>
+
+                    <md-card-actions class="order-btns" layout="row" layout-align="center center">
+                        <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena jela: {{meal.price}}</md-button>
+                    </md-card-actions>
+              </md-card>
+
+          </div>
+        </div>
+        </md-content>
+      </md-tab>
+      <md-tab label="Karta pića">
+          <md-content class="md-padding">
+
+          <div layout="row" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.drinks" layout-wrap>
+
+                <md-card class="order-item">
+                      <img src="{{drink.img_src}}" class="md-card-image order-img">
+
+                      <md-card-content>
+                          <h4>{{drink.name}}</h4>
+                          <p class="md-primary" style="color:grey">{{drink.info}}</p>
+                          <md-button style="visibility: hidden;"></md-button>
+                      </md-card-content>
+
+                      <md-card-actions class="order-btns" layout="row" layout-align="center center">
+                          <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena pića: {{drink.price}}</md-button>
+                      </md-card-actions>
+                </md-card>
+
+            </div>
+          </div>
+          </md-content>
+      </md-tab>
+
+      <md-tab label="Utisci gostiju">
+        <md-content class="md-padding">
+              <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+        </md-content>
+      </md-tab>
+
+    </md-tabs>
+  </md-content>
+</div>

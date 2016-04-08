@@ -40,11 +40,11 @@
 						<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
 
 							<md-card class="order-item">
-								<img src="{{drink.img_src}}" class="md-card-image order-img">
+								<img ng-src="{{drink.img_src}}" class="md-card-image order-img">
 								
 								<md-card-content>
 									<h4>{{drink.name}}</h4>
-									<md-button style="visibility: hidden;"></md-button>
+									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">
@@ -63,11 +63,11 @@
 						<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks" layout-wrap>
 
 							<md-card class="order-item">
-								<img src="{{drink.img_src}}" class="md-card-image order-img">
+								<img ng-src="{{drink.img_src}}" class="md-card-image order-img">
 								
 								<md-card-content>
 									<h4>{{drink.name}}</h4>
-									<md-button style="visibility: hidden;"></md-button>
+									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">

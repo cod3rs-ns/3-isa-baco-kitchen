@@ -131,3 +131,30 @@ md-button.md-success {
 md-button.md-success:hover {
   background-color: #4CAF50; !important
 }
+
+.friends-list {
+    margin-top: 12px;
+    background-color: #fff;
+    padding: 4px 8px;
+}
+
+.bg-image {
+    position: relative;
+}
+.bg-image img {
+    display: block;
+    width: 100%;
+    max-width: 1200px; /* corresponds to max height of 450px */
+    margin: 0 auto;
+    max-height: 400px;
+}
+.bg-image h1 {
+    position: absolute;
+    text-align: center;
+    top: 200;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    font-weight: bold;
+}

@@ -39,11 +39,11 @@
 						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals" layout-wrap>
 
 							<md-card class="order-item">
-								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
 								
 								<md-card-content>
 									<h4>{{meal.name}}</h4>
-									<md-button style="visibility: hidden;"></md-button>
+									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">
@@ -62,11 +62,11 @@
 						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
 
 							<md-card class="order-item">
-								<img src="{{meal.img_src}}" class="md-card-image order-img">
+								<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
 								
 								<md-card-content>
 									<h4>{{meal.name}}</h4>
-									<md-button style="visibility: hidden;"></md-button>
+									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">
