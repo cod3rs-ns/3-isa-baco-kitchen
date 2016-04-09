@@ -59,9 +59,15 @@ function config($routeProvider) {
             controllerAs: 'systemManagerProfileVm'
         })
         // Route for restaurant profile page
-        .when('/profile-restaurant', {
+        .when('/profile-restaurant/:restaurantId', {
             templateUrl: 'views/profile-restaurant.html',
             controller: 'RestaurantProfileController',
             controllerAs: 'restaurantVm'
+        })
+        // Route for restaurant manager profile page
+        .when('/profile-rmanager', {
+            templateUrl: 'views/profile-restaurant-manager.html',
+            controller: 'RestaurantManagerController',
+            controllerAs: 'rmanagerVm'
         });
 }

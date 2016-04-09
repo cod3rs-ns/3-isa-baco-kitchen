@@ -2,15 +2,29 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ["$mdDialog"];
+RestaurantProfileController.$inject = ['restaurantService', '$mdDialog', '$routeParams'];
 
-function RestaurantProfileController($mdDialog, SingleDrinkController){
+function RestaurantProfileController(restaurantService, $mdDialog, $routeParams, SingleDrinkController){
     var restaurantVm = this;
+    restaurantVm.restaurant = {};
 
-    restaurantVm.name = 'Caffe Macchiato';
-    restaurantVm.type = 'Italijanska hrana';
-    restaurantVm.info = 'Takva i takva usluga, takva i takva ponuda, atmosfera, zašto baš da dodjete kod nas i to...'
-    restaurantVm.time = '06:00 - 23:00'
+    activate();
+
+    function activate() {
+        return getRestaurant($routeParams.restaurantId).then(function() {
+            //alert('Restaurant retreived from database.')
+            restaurantVm.worktime = restaurantVm.restaurant.startTime + ' h : '
+                                    + restaurantVm.restaurant.endTime + ' h'
+        });
+    };
+
+    function getRestaurant(id) {
+        return restaurantService.getRestaurant(id)
+            .then(function(data) {
+                restaurantVm.restaurant = data;
+                return restaurantVm.restaurant;
+            });
+    };
 
     restaurantVm.meals = [
           {
