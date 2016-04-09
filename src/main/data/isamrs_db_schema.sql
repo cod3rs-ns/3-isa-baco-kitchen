@@ -85,6 +85,22 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `isa_mrs_project`.`restaurants`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`restaurants` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
+  `r_id` INT NOT NULL AUTO_INCREMENT,
+  `r_name` VARCHAR(45) NULL,
+  `r_info` VARCHAR(100) NULL,
+  `r_type` VARCHAR(45) NULL,
+  `r_time_start` INT NULL,
+  `r_time_end` INT NULL,
+  PRIMARY KEY (`r_id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `isa_mrs_project`.`restaurant_managers`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `isa_mrs_project`.`restaurant_managers` ;
@@ -92,12 +108,19 @@ DROP TABLE IF EXISTS `isa_mrs_project`.`restaurant_managers` ;
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_managers` (
   `rm_id` INT NOT NULL,
   `rm_info` VARCHAR(100) NULL,
+  `rm_restaurant_id` INT NOT NULL,
   PRIMARY KEY (`rm_id`),
+  INDEX `fk_restaurant_managers_restaurants1_idx` (`rm_restaurant_id` ASC),
   CONSTRAINT `rm_fid`
     FOREIGN KEY (`rm_id`)
     REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_restaurant_managers_restaurants1`
+    FOREIGN KEY (`rm_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -115,29 +138,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_providers` (
     REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `isa_mrs_project`.`restaurants`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`restaurants` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
-  `r_id` INT NOT NULL,
-  `r_name` VARCHAR(45) NULL,
-  `r_info` VARCHAR(100) NULL,
-  `r_type` VARCHAR(45) NULL,
-  `r_time_start` INT NULL,
-  `r_time_end` INT NULL,
-  `sysm_id` INT NOT NULL,
-  PRIMARY KEY (`r_id`),
-  INDEX `fk_restaurants_sys_managers1_idx` (`sysm_id` ASC),
-  CONSTRAINT `fk_restaurants_sys_managers1`
-    FOREIGN KEY (`sysm_id`)
-    REFERENCES `isa_mrs_project`.`sys_managers` (`sm_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
