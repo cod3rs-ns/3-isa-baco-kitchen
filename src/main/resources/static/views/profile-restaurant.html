@@ -1,34 +1,75 @@
-<div class="container" style="background-color: white;">
-    <div class="row-fluid">
-        <div class="col-md-8">
-            <div class="bg-image">
-                <img src="images/background.jpg" alt="Restaurant image" class="img-thumbnail"/>
-                 <h1>{{restaurantVm.name}}</h1>
+<div layout="row">
+    <div flex-gt-sm="70" class="main-content">
+        <md-toolbar scroll>
+            <div class="md-toolbar-tools">
+                <h3 md-header-title flex>Profil restorana</h3>
+                <md-button class="md-raised md-accent" aria-label="Rezerviši">
+                    Rezerviši
+                </md-button>
+                <md-button class="md-raised md-default" aria-label="Prikaži na mapi">
+                    Prikaži na mapi
+                </md-button>
+                <md-button class="md-icon-button" aria-label="More">
+                    <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <div layout="row">
+            <div class="bg-image" flex>
+                <img src="images/background.jpg" alt="Restaurant image"/>
+                <h1>{{restaurantVm.restaurant.name}}</h1>
+            </div>
+            <div layout="column" flex>
+                <md-content class="md-padding" flex>
+                    <md-header class="add-info-header"> <i class="material-icons md-36">restaurant_menu</i>&nbsp;&nbsp;Vrsta restorana</md-header>
+                    <p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>
+                    <md-header class="add-info-header"><i class="material-icons md-36">query_builder</i>&nbsp;&nbsp;Radno vreme</md-header>
+                    <p class="add-info-details"> {{restaurantVm.worktime}} </p>
+                    <md-header class="add-info-header"> <i class="material-icons md-36">info_outline</i>&nbsp;&nbsp;Informacije</md-header>
+                    <p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>
+                </md-content>
+                <div>
+                    <md-content class="md-padding">
+                        <md-button class="md-raised md-default" ng-click="restaurantVm.createDrink()">Novo piće</md-button>
+                    </md-content>
+                </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <md-content style="font-size:140%" class="md-padding">
-                <md-header class="md-primary"> <i class="material-icons md-36">restaurant_menu</i>&nbsp;&nbsp;Vrsta restorana</md-header>
-                <md-subheader class="md-primary" style="text-align:center"> {{restaurantVm.type}} </md-subheader>
-                <md-header class="md-primary"><i class="material-icons md-36">query_builder</i>&nbsp;&nbsp;Radno vreme</md-header>
-                <md-subheader class="md-primary"style="text-align:center"> {{restaurantVm.time}}</md-subheader>
-                <md-header class="md-primary"> <i class="material-icons">info_outline</i>&nbsp;&nbsp;Informacije</md-header>
-                <blockquote class="blockquote-reverse">
-                    {{restaurantVm.info}}
-                    <footer>Osoblje <cite title="Source Title">restoran {{restaurantVm.name}}</cite></footer>
-                </blockquote>
-            </md-content>
+    </div>
+    <div flex-gt-sm="30" layout="column" class="main-content">
+        <md-toolbar scroll>
+            <div class="md-toolbar-tools">
+                <h3 md-header-title flex>Aktivnosti</h3>
+            </div>
+        </md-toolbar>
 
-            <div>
-                <md-content class="md-padding">
-                    <md-button class="md-raised md-accent">Rezerviši mesto</md-button>
-                    <md-button class="md-raised md-primary">Prikaži na mapi</md-button>
-                    <md-button class="md-raised md-default" ng-click="restaurantVm.createDrink()">Novo piće</md-button>
-                </md-content>
+        <div layout="column">
+            <div style="padding-right: 12px; padding-left:5px; background-color:white">
+                <div class="option">
+                    <md-button class="action-empl"> <i class="material-icons md-48">supervisor_account</i> </md-button>
+                    <h4> Registrovanje menadžera sistema</h4>
+                </div>
+                <hr>
+                <div class="option">
+                    <md-button class="action-empl"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+                    <h4> Dodavanje novog restorana </h4>
+                </div>
+                <hr>
+                <div class="option">
+                    <md-button class="action-empl"> <i class="material-icons md-48">assignment_ind</i> </md-button>
+                    <h4> Registrovanje provajdera </h4>
+                </div>
+                <hr>
+                <div class="option">
+                    <md-button class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
+                    <h4> Ažuriranje profila</h4>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
 <div style="margin-top:15px"ng-cloak>
   <md-content>
     <md-tabs class="md-primary" md-dynamic-height md-border-bottom>

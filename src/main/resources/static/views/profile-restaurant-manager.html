@@ -1,0 +1,132 @@
+<div layout="row">
+	<div flex-gt-sm="70" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Profil menadžera</h3>
+				<md-button class="md-icon-button" aria-label="Notification">
+					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+				</md-button>
+				<md-button class="md-icon-button" aria-label="More">
+					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<div layout="column">
+			<div layout="row" layout-xs="column">
+				<div flex class="content">
+					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+				</div>
+				<div flex class="content">
+					<h2> Ime </h2>
+					<h4> sergioramos@doktor.com </h4>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div flex-gt-sm="30" layout="column" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Aktivnosti</h3>
+			</div>
+		</md-toolbar>
+
+		<div layout="column">
+			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
+                <div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
+					<h4> Izmena podataka o restoranu </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
+					<h4> Registrovanje zaposlenog </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+					<h4> Dodavanje novog jela </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">local_bar</i> </md-button>
+					<h4> Dodavanje novog pića </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<h4> Ažuriranje profila</h4>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+
+<div style="margin-top:15px"ng-cloak>
+  <md-content>
+    <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+        <md-tab label="Informacije o restoranu">
+          <md-content class="md-padding">
+                <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+          </md-content>
+        </md-tab>
+          <md-tab label="Jelovnik">
+            <md-content class="md-padding">
+
+            <div layout="row" layout-wrap>
+              <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+
+                  <md-card class="order-item">
+                        <img src="{{meal.img_src}}" class="md-card-image order-img">
+
+                        <md-card-content>
+                            <h4>{{meal.name}}</h4>
+                            <p class="md-primary" style="color:grey">{{meal.info}}</p>
+                            <md-button style="visibility: hidden;"></md-button>
+                        </md-card-content>
+
+                        <md-card-actions class="order-btns" layout="row" layout-align="center center">
+                            <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena jela: {{meal.price}}</md-button>
+                        </md-card-actions>
+                  </md-card>
+
+              </div>
+            </div>
+            </md-content>
+          </md-tab>
+      <md-tab label="Karta pića">
+          <md-content class="md-padding">
+
+          <div layout="row" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.drinks" layout-wrap>
+
+                <md-card class="order-item">
+                      <img src="{{drink.img_src}}" class="md-card-image order-img">
+
+                      <md-card-content>
+                          <h4>{{drink.name}}</h4>
+                          <p class="md-primary" style="color:grey">{{drink.info}}</p>
+                          <md-button style="visibility: hidden;"></md-button>
+                      </md-card-content>
+
+                      <md-card-actions class="order-btns" layout="row" layout-align="center center">
+                          <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena pića: {{drink.price}}</md-button>
+                      </md-card-actions>
+                </md-card>
+
+            </div>
+          </div>
+          </md-content>
+      </md-tab>
+
+      <md-tab label="Spisak zaposlenih">
+        <md-content class="md-padding">
+              <md-subheader class="md-no-sticky">Trenutno nema zaposlenih</md-subheader>
+        </md-content>
+      </md-tab>
+
+    </md-tabs>
+  </md-content>
+</div>
