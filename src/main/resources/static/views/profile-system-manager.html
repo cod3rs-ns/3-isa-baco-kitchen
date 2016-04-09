@@ -1,103 +1,104 @@
-<div class="user-header">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3">
-				<img src="images/profile.jpg" alt="Sergio Ramos" class="img-thumbnail">
+<div layout="row">
+	<div flex-gt-sm="70" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Profil menadžera</h3>
+				<md-button class="md-icon-button" aria-label="Notification">
+					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+				</md-button>
+				<md-button class="md-icon-button" aria-label="More">
+					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+				</md-button>
 			</div>
-			<div class="col-md-9">
-				<div class="pull-right">
+		</md-toolbar>
+
+		<div layout="column">
+			<div layout="row" layout-xs="column">
+				<div flex class="content">
+					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
 				</div>
-				<div>
-					<h2>Sergio Ramos</h2>
-					<h4 style="color: #666">Menadžer sistema</h4>
-					<h3 style="color: #444">sergioramos@realmadrid.com</h3>
-					<blockquote class="blockquote-reverse">
-						I'm not in danger, I'm the danger.
-						<footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
-					</blockquote>
-					<div>
-                        <md-content class="md-padding">
-                            <md-button class="md-raised md-accent">Izmijeni podatke</md-button>
-                            <md-button class="md-raised md-accent">Promijeni lozinku</md-button>
-                        </md-content>
-					</div>
+				<div flex class="content">
+					<h2> Ime </h2>
+					<h4> sergioramos@doktor.com </h4>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div flex-gt-sm="30" layout="column" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Aktivnosti</h3>
+			</div>
+		</md-toolbar>
+
+		<div layout="column">
+			<div style="padding-right: 12px; padding-left:5px;">
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">supervisor_account</i> </md-button>
+					<h4> Registrovanje menadžera sistema</h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+					<h4> Dodavanje novog restorana </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">assignment_ind</i> </md-button>
+					<h4> Registrovanje provajdera </h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<h4> Ažuriranje profila</h4>
+				</div>
+				<hr>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="container">
-	<div class="row">
-		<div class="col-md-9">
-			<div class="notification-list">
-				<h4> Registrovani restorani </h4>
-				
-				<div class="row">
-				
-					<ul class="equal-height-thumbnail">
-						<li class="order">
-							<figure><img src="http://www.comohotels.com/metropolitanbangkok/sites/default/files/styles/background_image/public/images/background/metbkk_bkg_nahm_restaurant.jpg?itok=GSmnYYaU" class="order-img" alt="Equal height of thumbnail"></figure>
-							<div class="caption-waiter">
-								<h4>Restoran kod Baća</h4>
-								<input type="button" class="invisible">
-							</div>
-							<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>				 
-						</li>
-						<li class="order">
-							<figure><img class="order-img" src="http://tasteserbia.com/wp-content/uploads/2014/12/kafana.jpg" alt="Equal height of thumbnail"></figure>
-							<div class="caption-waiter">
-								<h4>Kafana kod Dragutinka</h4>
-								<input type="button" class="invisible">
-							</div>
-							<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>				 
+<div class="notification-list" style="margin-top: 12px;">
+	<md-toolbar ng-show="!showSearch">
+		<div class="md-toolbar-tools">
+			<h3>
+				Registrovani restorani
+			</h3>
+			<span flex></span>
+			<md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
+				<md-icon aria-label="Search" class="material-icons">search</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
+	<md-toolbar ng-show="showSearch">
+		<div class="md-toolbar-tools">
+			<md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
+				<md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
+			</md-button>
+			<md-input-container flex>
+				<input ng-model="rest_name" placeholder="Traži po imenu">
+			</md-input-container>
+			<md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
+				<md-icon aria-label="Search" class="material-icons">search</md-icon>
+			</md-button>
+		</div>
+	</md-toolbar>
 
-						</li>
-						<li class="order">
-							<figure><img class="order-img" src="http://urbantastebud.com/wp-content/uploads/2015/08/nc-food-and-beverage-pub.jpg" alt="Equal height of thumbnail"></figure>
-							<div class="caption-waiter">
-								<h4>Pub kod Keky-a</h4>
-								<input type="button" class="invisible">
-							</div>
-							<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>				 
-						</li>
-						
-					</ul>	
+	<div class="row">
+		<ul class="equal-height-thumbnail">
+			<li class="order" ng-repeat="restaurant in systemManagerProfileVm.restaurants | filter : rest_name as results ">
+				<figure><img ng-src="{{restaurant.img_src}}" class="order-img" alt="Equal height of thumbnail"></figure>
+				<div class="caption-waiter">
+					<h4>{{restaurant.name}}</h4>
+					<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>
 				</div>
-			</div>
-		</div>
-		
-		<div class="col-md-3">
-			<div class="options-list">
-				<hr classs="first-hr">
-					<div class="option">
-						<h4> Registrovanje restorana
-							<i class="material-icons md-48">restaurant</i> 
-							<h6 class="icon-text"> 
-								Opcija za registrovanje novog restorana unutar sistema.
-							</h6>
-						</h4>
-					</div>
-				<hr>						
-					<div class="option">
-						<h4> Registrovanje menadžera sistema 
-							<i class="material-icons md-48">supervisor_account</i> 
-							<h6 class="icon-text">
-								Opcija za dodavanje novog menadžera restorana za određeni restoran.
-							<h6>
-						</h4>
-					</div>
-				<hr>			
-					<div class="option">
-						<h4> Ažuriranje profila 
-							<i class="material-icons md-48">mode_edit</i> 
-							<h6 class="icon-text">
-								Izmjeni svoje postojeće podatke ili izmijeni šifru kako bi ažurirao svoj profil.
-							<h6>
-						</h4>
-					</div>
-				<hr>
-			</div>
-		</div>
+			</li>
+		</ul>
+
+		<p ng-if="results.length == 0" style="margin-left: 15px;">
+			<strong>Nema pronadjenih rezultata...</strong>
+		</p>
+
 	</div>
 </div>
