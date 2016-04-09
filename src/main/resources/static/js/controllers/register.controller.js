@@ -7,11 +7,11 @@ function RegisterController() {
     var registerVm = this;
     
     // Set bindable memebers at the top of the controller
-    registerVm.message = 'Welcome to Register page!';
-    registerVm.foo = foo;
+    registerVm.user = {};
+    registerVm.registerGuest = registerGuest;
     
     // Implement functions later
-    function foo() {
-        
+    function registerGuest() {
+        alert(registerVm.user);
     }
 }

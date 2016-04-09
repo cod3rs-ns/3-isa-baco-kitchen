@@ -28,11 +28,12 @@
       <h4>Registruj se</h4>
       <p>Popunite formu da biste napravili korisnički nalog.</p>
     </div>
-    <form name="registerForm" class="form-body" ng-submit="registerVm.foo()">
+    <form name="registerForm" class="form-body" ng-submit="registerForm.$valid && registerVm.registerGuest()">
+
       <md-input-container class="md-block">
           <label>Vaše ime</label>
           <md-icon aria-label="Email" class="material-icons">person</md-icon>
-          <input md-maxlength="10" required name="name" ng-model="user.name" />
+          <input md-maxlength="10" required name="name" ng-model="registerVm.user.name" />
           <!--div class="hint">Tell us what we should call you!</div-->
           <div ng-messages="registerForm.name.$error">
             <div ng-message="required">Ime je obavezno.</div>
@@ -43,7 +44,7 @@
         <md-input-container class="md-block">
             <label>Vaše prezime</label>
             <md-icon aria-label="Email" class="material-icons">person</md-icon>
-            <input md-maxlength="20" required name="lastname" ng-model="user.lastname" />
+            <input md-maxlength="20" required name="lastname" ng-model="registerVm.user.lastname" />
             <!--div class="hint">Tell us what we should call you!</div-->
             <div ng-messages="registerForm.lastname.$error" role="alert">
               <div ng-message="required">Prezime je obavezno.</div>
@@ -54,11 +55,15 @@
           <md-input-container class="md-block">
             <label>Vaša e-mail adresa</label>
             <md-icon aria-label="Email" class="material-icons">mail_outline</md-icon>
-            <input required type="email" name="clientEmail" ng-model="user.clientEmail"
-                   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" />
+            <input required type="email" name="clientEmail"
+                  data-wc-unique="{key: customer.id, property: 'email'}"
+                  minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="registerVm.user.clientEmail" />
             <div ng-messages="registerForm.clientEmail.$error" role="alert">
               <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
                 Unijeta e-mail adresa je neispravna.
+              </div>
+              <div ng-message-exp="['unique']">
+                Unijeta e-mail adresa već postoji.
               </div>
             </div>
           </md-input-container>
@@ -66,16 +71,25 @@
           <md-input-container class="md-block">
             <label>Vaša lozinka</label>
             <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-            <input required type="password" name="userPassword"/>
+            <input minlength="8" required type="password" id="userPassword" name="userPassword" ng-model="registerVm.user.password"/>
+            <div ng-messages="registerForm.userPassword.$error" role="alert">
+              <div ng-message="required">Lozinka je obavezna.</div>
+              <div ng-message="minlength">Lozinka mora imati bar 8 karaktera.</div>
+            </div>
           </md-input-container>
-          
+
           <md-input-container class="md-block">
             <label>Ponovite Vašu lozinku</label>
             <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-            <input required type="password" name="userPasswordRepeated"/>
+            <input required type="password" name="userPasswordRepeated" pw-match="userPassword" ng-model="registerVm.user.passwordRepeated"/>
+            <div ng-messages="registerForm.userPasswordRepeated.$error" role="alert">
+              <div ng-message="pwmatch">Lozinke se ne poklapaju.</div>
+            </div>
           </md-input-container>
           
-          <md-button class="md-raised">Registruj se</md-button>
+          <div class="align-right">
+            <md-button type="submit" class="md-raised md-primary">Registruj se</md-button>
+          </div>
       
         <div class="form-text-bottom">
             Već imaš nalog? <a href="#login">Prijavi se</a>
