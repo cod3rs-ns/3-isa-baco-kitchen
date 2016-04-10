@@ -1,29 +1,8 @@
-.options-list {
-    margin-top: 12px;
-}
-
 .option{
 	display: inline-block;
 	margin-left: 12px;
 	margin-right: 12px;
 	width: 100%;
-}
-
-hr{
-	margin-top: 2px;
-	margin-bottom: 2px;
-	border-top: solid 1px;
-	border-color: #9E9E9E;
-}
-
-.first-hr{
-	margin-top: 0px;
-}
-
-.material-icons.md-48 {
-	font-size: 48px;
-	margin-left : 7px;
-	margin-top: 7px;
 }
 
 .action-empl{
@@ -33,10 +12,23 @@ hr{
 	margin-right: 10px;
 }
 
+hr{
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border-top: solid 1px;
+	border-color: #9E9E9E;
+	opacity: 0.4;
+}
+
+.material-icons.md-48 {
+	font-size: 48px;
+	margin-left : 7px;
+	margin-top: 7px;
+}
+
 .material-icons.md-16 {
 	font-size: 16px;
 }
-
 
 .equal-height-thumbnail {
   display: -webkit-flex;
@@ -59,12 +51,16 @@ hr{
   background: #FFF;
   box-shadow: 0 0 1px 1px rgba(0,0,0,0.1)
 }
+
 .equal-height-thumbnail figure {
   display: block;
   margin: 5px 0;
   padding: 0;
 }
-.equal-height-thumbnail figure img{ width:100%;}
+
+.equal-height-thumbnail figure img{
+	width:100%;
+}
 
 .order { 
 	padding: 2%;
@@ -94,7 +90,6 @@ hr{
 	text-align: right;
 	margin-right: 5px;
 }
-
 
 .order-btns{
 	position:absolute;

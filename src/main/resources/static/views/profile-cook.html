@@ -1,30 +1,49 @@
-<div class="user-header">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-3">
-				<img src="images/profile.jpg" alt="Sergio Ramos" class="img-thumbnail">
+<div layout="row">
+	<div flex-gt-sm="70" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Profil kuvara</h3>
+				<md-button class="md-icon-button" aria-label="Notification">
+					<md-icon aria-label="Notification" class="material-icons">local_dining</md-icon>
+				</md-button>
+				<md-button class="md-icon-button" aria-label="More">
+					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+				</md-button>
 			</div>
-			<div class="col-md-9">
-				<div class="pull-right">
-                    <md-button class="md-icon-button" aria-label="Kalendarski prikaz">
-						<md-icon aria-label="Kalendarski prikaz" class="material-icons">date_range</md-icon>
-					</md-button>
+		</md-toolbar>
+
+		<div layout="column">
+			<div layout="row" layout-xs="column">
+				<div flex class="content">
+					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
 				</div>
-				<div>
-					<h2>Sergio Ramos</h2>
-					<h4 style="color: #666">Kuvar</h4>
-					<h3 style="color: #444">sergioramos@realmadrid.com</h3>
-					<blockquote class="blockquote-reverse">
-						I'm not in danger, I'm the danger.
-						<footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
-					</blockquote>
-					<div>
-                        <md-content class="md-padding">
-                            <md-button class="md-raised md-accent">Izmijeni podatke</md-button>
-                            <md-button class="md-raised md-accent">Promijeni lozinku</md-button>
-                        </md-content>
-					</div>
+				<div flex class="content">
+					<h2> Ime </h2>
+					<h4> sergioramos@doktor.com </h4>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div flex-gt-sm="30" layout="column" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Aktivnosti</h3>
+			</div>
+		</md-toolbar>
+
+		<div layout="column">
+			<div style="padding-right: 12px; padding-left:5px;">
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
+					<h4>Pregled rasporeda rada</h4>
+				</div>
+				<hr>
+				<div class="option">
+					<md-button class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<h4> Ažuriranje profila</h4>
+				</div>
+				<hr>
 			</div>
 		</div>
 	</div>

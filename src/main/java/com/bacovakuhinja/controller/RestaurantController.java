@@ -59,7 +59,7 @@ public class RestaurantController {
     @RequestMapping(
             value = "/api/restaurants/{id}",
             method = RequestMethod.DELETE)
-    public ResponseEntity <Restaurant> deleteEvent(@PathVariable("id") Integer id) {
+    public ResponseEntity <Restaurant> deleteRestaurant(@PathVariable("id") Integer id) {
         restaurantService.delete(id);
         return new ResponseEntity <Restaurant>(HttpStatus.NO_CONTENT);
     }

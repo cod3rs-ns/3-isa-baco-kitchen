@@ -1,7 +1,7 @@
 angular
     .module('isa-mrs-project')
     .service('uniqueService', uniqueService);
-    
+
 uniqueService.$inject = ['$http'];
 
 function uniqueService($http) {
@@ -9,7 +9,7 @@ function uniqueService($http) {
         checkUnique: checkUnique
     };
     return service;
-    
+
     function checkUnique(id, property, email) {
         return $http.get('api/users/' + email)
         .then(function (response) {
