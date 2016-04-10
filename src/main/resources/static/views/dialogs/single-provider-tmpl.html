@@ -4,7 +4,7 @@
             <h2>Dodaj provajdera</h2>
             <span flex></span>
 
-            <md-button class="md-icon-button" ng-click="addProviderVm.cancel()">
+            <md-button class="md-icon-button" ng-click="providerVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
             </md-button>
         </div>
@@ -16,7 +16,7 @@
                 <form name="providerForm">
                     <md-input-container class="md-block">
                         <label>Ime</label>
-                        <input md-maxlength="20" required name="providerFirstName" ng-model="addProviderVm.addingProvider.f_name">
+                        <input md-maxlength="20" required name="providerFirstName" ng-model="providerVm.provider.firstName">
                         <div ng-messages="providerForm.providerFirstName.$error">
                             <div ng-message="required">Ovo polje je obavezno.</div>
                             <div ng-message="md-maxlength">Ime mora biti kraće od 20 karaktera.</div>
@@ -25,7 +25,7 @@
 
                     <md-input-container class="md-block">
                         <label>Prezime</label>
-                        <input md-maxlength="30" required md-no-asterisk name="providerLastName" ng-model="addProviderVm.addingProvider.l_name">
+                        <input md-maxlength="30" required md-no-asterisk name="providerLastName" ng-model="providerVm.provider.lastName">
                         <div ng-messages="providerForm.providerLastName.$error">
                             <div ng-message="required">Ovo polje je obavezno</div>
                             <div ng-message="md-maxlength">Prezime mora biti kraće od 30 karaktera.</div>
@@ -36,13 +36,13 @@
                         <label>E-mail adresa</label>
                         <input required type="email" name="providerEmail"
                                data-wc-unique="{key: customer.id, property: 'email'}"
-                               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="addProviderVm.addingProvider.email" />
+                               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="providerVm.provider.email" />
                         <div ng-messages="providerForm.providerEmail.$error" role="alert">
                             <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-                                Unijeta e-mail adresa je neispravna.
+                                E-mail adresa je neispravna.
                             </div>
                             <div ng-message-exp="['unique']">
-                                Unijeta e-mail adresa već postoji.
+                                E-mail adresa već postoji.
                             </div>
                         </div>
                     </md-input-container>
@@ -54,10 +54,10 @@
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button class="md-raised md-primary" ng-click="addProviderVm.preview()" md-autofocus>
+        <md-button ng-disabled="!providerForm.$valid" class="md-raised md-primary" ng-click="providerVm.saveProvider()" md-autofocus>
             Potvrdi
         </md-button>
-        <md-button class="md-raised md-default" ng-click="addProviderVm.cancel()">
+        <md-button class="md-raised md-default" ng-click="providerVm.cancel()">
             Odustani
         </md-button>
     </md-dialog-actions>

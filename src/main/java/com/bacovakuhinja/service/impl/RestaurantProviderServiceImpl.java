@@ -15,12 +15,30 @@ public class RestaurantProviderServiceImpl implements RestaurantProviderService 
     private RestaurantProviderRepository providerRepository;
 
     @Override
-    public Collection<RestaurantProvider> findAll() {
+    public Collection <RestaurantProvider> findAll() {
         return providerRepository.findAll();
+    }
+
+    @Override
+    public RestaurantProvider findOne(Integer providerId) {
+        return providerRepository.findOne(providerId);
     }
 
     @Override
     public RestaurantProvider create(RestaurantProvider provider) {
         return providerRepository.save(provider);
     }
+
+    @Override
+    public RestaurantProvider update(RestaurantProvider provider) {
+        RestaurantProvider providerPersistent = findOne(provider.getUserId());
+        if (providerPersistent == null) return null;
+        return providerRepository.save(provider);
+    }
+
+    @Override
+    public void delete(Integer providerId) {
+        providerRepository.delete(providerId);
+    }
+
 }
