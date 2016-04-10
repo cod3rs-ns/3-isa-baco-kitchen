@@ -2,18 +2,30 @@ angular
     .module('isa-mrs-project')
     .controller('LoginController', LoginController);
     
-// LoginController.$inject = ['$location', '$routeParams', 'common', 'dataservice'];
+LoginController.$inject = ['$http', '$window', 'loginService'];
 
-function LoginController(/*$location, $routeParams, common, dataservice*/) {
+function LoginController($http, $window, loginService) {
     // Var vm stands for ViewModel
     var loginVm = this;
     
     // Set bindable memebers at the top of the controller
-    loginVm.message = 'Welcome to Login page!';
-    loginVm.foo = foo;
+    loginVm.credentials = {};
+    loginVm.invalid = false;
+    loginVm.login = login;
     
     // Implement functions later
-    function foo() {
-        alert('Hello, friend!');
-    }
+    function login() {
+        loginService.login(loginVm.credentials.email, loginVm.credentials.password)
+            .then(function(token) {
+                if (token !== undefined) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + token;
+                    $window.localStorage.setItem('AUTH_TOKEN', token);
+                    loginService.redirect(loginVm.credentials.email);
+                }
+                else {
+                    loginVm.invalid = true;
+                    loginVm.credentials.password = '';
+                }
+            });
+    };
 }

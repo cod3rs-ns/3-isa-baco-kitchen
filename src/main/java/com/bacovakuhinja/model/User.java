@@ -1,5 +1,7 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -29,6 +31,7 @@ public class User implements Serializable {
     @Column(name = "u_image")
     private String image;
 
+    @JsonIgnore
     @Column(name = "u_password")
     private String password;
 
