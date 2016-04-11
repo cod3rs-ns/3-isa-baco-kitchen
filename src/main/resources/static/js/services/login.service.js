@@ -18,8 +18,8 @@ function loginService($http, $location) {
     });
   };
   
-  function redirect(email) {
-    return $http.get('api/user/' + email)
+  function redirect() {
+    return $http.get('api/user')
     .then(function (response) {
         switch(response.data.type) {
             case 'guest':

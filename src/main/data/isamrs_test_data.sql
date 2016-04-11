@@ -1,5 +1,5 @@
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('1', 'Sergio', 'Ramos', 'sr4@real.com', 'image.png', 'ramos', 'guest');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('2', 'Cristiano', 'Ronaldo', 'cr7@real.com', 'image.png', 'cristiano', 'guest');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('1', 'Sergio', 'Ramos', 'sr4@real.com', 'images/profile.jpg', 'ramos', 'guest');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('2', 'Alarcon', 'Isco', 'ia22@real.com', 'https://pbs.twimg.com/profile_images/557812407171813376/kYVGA4t5.jpeg', 'isco', 'guest');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('3', 'Jamie', 'Vardy', 'jv@leilcester.com', 'image.jpg', 'party', 'restaurant_manager');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('4', 'Riyad', 'Mahrez', 'rm@leicester.com', 'image.gif', 'mahry', 'restaurant_provider');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('5', 'David', 'Beckham', 'becks@legend.com', 'image.png', 'retired', 'restaurant_provider');

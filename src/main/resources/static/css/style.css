@@ -167,3 +167,22 @@ ul.rating {
     font-size: 120%;
     font-weight: bold;
 }
+
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  text-align: center;
+}
+.alert h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: inherit;
+}
+
+.alert-danger {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}

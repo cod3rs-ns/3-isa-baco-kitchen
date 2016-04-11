@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @RequestMapping(
-            value    = "/api/user/{email:.+}",
+            value    = "/api/user",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )

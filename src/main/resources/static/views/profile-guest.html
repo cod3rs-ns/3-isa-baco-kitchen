@@ -16,11 +16,11 @@
     <div layout="column">
       <div layout="row" layout-xs="column">
         <div flex class="content">
-          <img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+          <img alt="{{guestProfileVm.user.firstName}}" ng-src="{{guestProfileVm.user.image}}" class="md-avatar" />
         </div>
         <div flex class="content">
-          <h2>{{ guestProfileVm.name }}</h2>
-          <h4> sergioramos@doktor.com </h4>
+          <h2>{{ guestProfileVm.user.firstName + ' ' +  guestProfileVm.user.lastName }}</h2>
+          <h4>{{ guestProfileVm.user.email }}</h4>
         </div>
       </div>
     
