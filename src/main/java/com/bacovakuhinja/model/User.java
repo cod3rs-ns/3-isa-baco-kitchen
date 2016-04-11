@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
@@ -35,7 +35,10 @@ public class User implements Serializable {
     @Column(name = "u_password")
     private String password;
 
-    public User(){
+    @Column(name = "u_type")
+    private String type;
+
+    public User() {
 
     }
 
@@ -77,6 +80,14 @@ public class User implements Serializable {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getPassword() {

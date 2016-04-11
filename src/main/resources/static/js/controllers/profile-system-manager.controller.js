@@ -6,7 +6,7 @@ SystemManagerProfileController.$inject = ['$mdDialog'];
 
 function SystemManagerProfileController($mdDialog, AddRestaurantController) {
     var systemManagerProfileVm = this;
-    
+
     // Set bindable memebers at the top of the controller
     systemManagerProfileVm.name = 'Sergio dr Ramos ';
     systemManagerProfileVm.showSearch = false;
@@ -44,9 +44,9 @@ function SystemManagerProfileController($mdDialog, AddRestaurantController) {
 
     function addProvider() {
         $mdDialog.show({
-            controller: 'AddProviderController',
-            controllerAs: 'addProviderVm',
-            templateUrl: '/views/dialogs/add-provider.html',
+            controller: 'SingleProviderController',
+            controllerAs: 'providerVm',
+            templateUrl: '/views/dialogs/single-provider-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
             fullscreen: false
