@@ -37,8 +37,12 @@ function restaurantService($http){
 
     };
 
-    function createRestaurant(restaurant){
-
+    function createRestaurant(restaurant, id){
+        console.log("create");
+        return $http.post('/api/restaurants/' + id, restaurant)
+        .then(function (response) {
+            return response.data;
+        })
     };
 
 }

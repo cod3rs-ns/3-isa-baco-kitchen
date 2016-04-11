@@ -1,7 +1,9 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.Restaurant;
+import com.bacovakuhinja.model.SystemManager;
 import com.bacovakuhinja.service.RestaurantService;
+import com.bacovakuhinja.service.SystemManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,12 +11,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Iterator;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 public class RestaurantController {
 
     @Autowired
     private RestaurantService restaurantService;
+
+    // injektovanje servisa menadzera zbog dodavanja restorana
+    @Autowired
+    private SystemManagerService systemManagerService;
 
     @RequestMapping(
             value = "/api/restaurants",
@@ -34,13 +43,15 @@ public class RestaurantController {
         return new ResponseEntity <Restaurant>(restaurant, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/restaurants",
+    @RequestMapping(value = "/api/restaurants/{id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Restaurant> createRestaurant(@RequestBody Restaurant restaurant) {
-        Restaurant createdRestaurant = restaurantService.create(restaurant);
-        return new ResponseEntity <Restaurant>(createdRestaurant, HttpStatus.CREATED);
+    public ResponseEntity <Restaurant> createRestaurant(@RequestBody Restaurant restaurant, @PathVariable("id") Integer id) {
+        SystemManager manager = systemManagerService.findOne(id);
+        restaurant.setSystemManager(manager);
+        Restaurant created = restaurantService.create(restaurant);
+        return new ResponseEntity<Restaurant>(created, HttpStatus.CREATED);
     }
 
     @RequestMapping(

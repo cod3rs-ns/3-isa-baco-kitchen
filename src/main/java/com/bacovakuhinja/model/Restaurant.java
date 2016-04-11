@@ -1,10 +1,13 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "restaurants")
+@JsonIgnoreProperties(value = {"systemManager"})
 public class Restaurant implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,6 +28,11 @@ public class Restaurant implements Serializable {
 
     @Column(name = "r_time_end")
     private Integer endTime;
+
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "r_sm_id")
+    private SystemManager systemManager;
 
     public Restaurant() {
     }
@@ -76,4 +84,8 @@ public class Restaurant implements Serializable {
     public void setEndTime(Integer endTime) {
         this.endTime = endTime;
     }
+
+    public SystemManager getSystemManager() { return systemManager; }
+
+    public void setSystemManager(SystemManager systemManager) { this.systemManager = systemManager; }
 }
