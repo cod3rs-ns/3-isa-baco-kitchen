@@ -2,6 +2,7 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
 
 @RestController
 public class UserController {
+
+    private static final String SECRET_KEY = "VojislavSeselj";
 
     @Autowired
     private UserService userService;
@@ -44,14 +48,29 @@ public class UserController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<User> getUser(@PathVariable String email) {
+    public ResponseEntity<?> getUser(final HttpServletRequest request) {
+
+        final String auth = request.getHeader("Authorization");
+        if (auth == null || !auth.startsWith("Bearer ")) {
+            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        }
+
+        // Authorization token
+        final String token = auth.substring(7);
+
+        final Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
+                .parseClaimsJws(token).getBody();
+
+        final String email = claims.get("user").toString();
+
+
         for (User user : userService.findAll()) {
             if (user.getEmail().equals(email)) {
                 return new ResponseEntity<User>(user, HttpStatus.OK);
             }
         }
 
-        return null;
+        return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
     }
 
     @RequestMapping(
@@ -63,8 +82,8 @@ public class UserController {
         for (User user : userService.findAll()) {
             if (user.getEmail().equals(username) && user.getPassword().equals(password)) {
                 return new LoginResponse(Jwts.builder().setSubject(username)
-                        .claim("role", "guest").setIssuedAt(new Date())
-                        .signWith(SignatureAlgorithm.HS256, "secretkey").compact());
+                        .claim("user", username).setIssuedAt(new Date())
+                        .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact());
             }
         }
 

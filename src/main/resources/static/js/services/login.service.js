@@ -21,12 +21,27 @@ function loginService($http, $location) {
   function redirect(email) {
     return $http.get('api/user/' + email)
     .then(function (response) {
-        loggedUser = response.data;
-        if (loggedUser.email == 'sr4@real.com') {
-            $location.path('profile-guest');
-        }
-        else {
-            $location.path('profile-system-manager');
+        switch(response.data.type) {
+            case 'guest':
+                $location.path('profile-guest');
+                break;
+            case 'system_manager':
+                $location.path('profile-system-manager');
+                break;
+            case 'restaurant_provider':
+                $location.path('profile-provider');
+                break;
+            case 'cook':
+                $location.path('profile-cook');
+                break;
+            case 'bartender':
+                $location.path('profile-barman');
+                break;
+            case 'waiter':
+                $location.path('profile-waiter');
+                break;
+            default:
+                $location.path('login');
         }
     });
   };

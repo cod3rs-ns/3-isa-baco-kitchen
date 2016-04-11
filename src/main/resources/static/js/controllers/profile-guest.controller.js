@@ -73,12 +73,6 @@ function GuestProfileController() {
                 rowspan: 1
             }, 
             {
-                avatar: 'images/friend-03-small.png',
-                name: 'Tijana',
-                colspan: 1, 
-                rowspan: 1
-            }, 
-            {
                 avatar: 'images/friend-04-small.png',
                 name: 'Mika',
                 colspan: 1, 

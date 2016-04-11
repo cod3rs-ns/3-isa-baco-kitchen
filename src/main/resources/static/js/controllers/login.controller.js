@@ -20,7 +20,7 @@ function LoginController($http, $window, loginService) {
                 if (token !== undefined) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + token;
                     $window.localStorage.setItem('AUTH_TOKEN', token);
-                    loginService.redirect(loginVm.credentials.email);
+                    loginService.redirect();
                 }
                 else {
                     loginVm.invalid = true;
