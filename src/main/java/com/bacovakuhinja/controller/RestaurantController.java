@@ -55,11 +55,13 @@ public class RestaurantController {
     }
 
     @RequestMapping(
-            value = "/api/restaurants",
+            value = "/api/restaurants/{sys_id}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Restaurant> updateRestaurant(@RequestBody Restaurant restaurant) {
+    public ResponseEntity <Restaurant> updateRestaurant(@RequestBody Restaurant restaurant,  @PathVariable("sys_id") Integer id) {
+        SystemManager manager = systemManagerService.findOne(id);
+        restaurant.setSystemManager(manager);
         Restaurant updatedRestaurant = restaurantService.update(restaurant);
         if (updatedRestaurant == null) {
             return new ResponseEntity <Restaurant>(HttpStatus.NOT_FOUND);

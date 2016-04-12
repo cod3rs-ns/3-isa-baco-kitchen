@@ -12,7 +12,7 @@ function restaurantService($http){
         deleteRestaurant: deleteRestaurant,
         createRestaurant: createRestaurant
     };
-    console.log('REstServ');
+
     return service;
 
     function getRestaurants(){
@@ -29,8 +29,11 @@ function restaurantService($http){
         });
     };
 
-    function updateRestaurant(restaurant){
-
+    function updateRestaurant(restaurant, id){
+        return $http.put('/api/restaurants/' + id, restaurant)
+        .then(function (response) {
+            return response.data;
+        })
     };
 
     function deleteRestaurant(id){

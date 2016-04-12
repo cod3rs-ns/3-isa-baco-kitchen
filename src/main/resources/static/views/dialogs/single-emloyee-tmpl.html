@@ -1,0 +1,109 @@
+<md-dialog flex="40" aria-label="Restoran"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Dialog Zaposleni</h2>
+            <span flex></span>
+
+            <md-button class="md-icon-button" ng-click="employeeVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout-gt-xs="column" ng-cloak>
+            <md-content layout-padding>
+                <form name="employeeForm">
+                    <md-input-container class="md-block">
+                        <label>Ime</label>
+                        <input md-maxlength="20" required name="employeeName" ng-model="employeeVm.employee.firstName">
+                        <div ng-messages="employeeForm.employeeName.$error">
+                            <div ng-message="required">Ovo polje je obavezno.</div>
+                            <div ng-message="md-maxlength">Ime radnika mora biti kraće od 20 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Prezime</label>
+                        <input md-maxlength="30" required name="employeeSurname" ng-model="employeeVm.employee.lastName">
+                        <div ng-messages="employeeForm.employeeSurname.$error">
+                            <div ng-message="required">Ovo polje je obavezno.</div>
+                            <div ng-message="md-maxlength">Prezime radnika mora biti kraće od 30 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>E-mail adresa</label>
+                        <input required type="email" name="employeeEmail"
+                               data-wc-unique="{key: customer.id, property: 'email'}"
+                               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="employeeVm.employee.email" />
+                        <div ng-messages="employeeForm.employeeEmail.$error" role="alert">
+                            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                                E-mail adresa je neispravna.
+                            </div>
+                            <div ng-message-exp="['unique']">
+                                E-mail adresa već postoji.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout-gt-xs="row">
+
+
+                        <md-input-container class="md-block" style="margin-left:20px" flex-gt-xs>
+                            <label>Tip zaposlenog</label>
+                            <md-select ng-model="employeeVm.employee.type">
+                                <md-option value="waiter">Konobar</md-option>
+                                <md-option value="cook">Kuvar</md-option>
+                                <md-option value="barmen">Šanker</md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-datepicker  ng-model="employeeVm.employee.birthDay" md-placeholder="Datum rodjenja"></md-datepicker>
+
+
+                    </div>
+
+                    <md-input-container class="md-block">
+                        <label>Opis</label>
+                        <input md-maxlength="45" required md-no-asterisk name="employeeInfo" ng-model="employeeVm.employee.info">
+                        <div ng-messages="employeeForm.employeeInfo.$error">
+                            <div ng-message="md-maxlength">Opis radnika mora biti kraći od 45 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <div layout-gt-xs="row">
+                        <md-input-container class="md-block" flex>
+                            <label>Veličina obuće</label>
+                            <input md-maxlength="6" required name="employeeShoes" ng-model="employeeVm.employee.shoesSize">
+                            <div ng-messages="employeeForm.employeeShoes.$error">
+                                <div ng-message="required">Ovo polje je obavezno.</div>
+                                <div ng-message="md-maxlength">Sadržaj polja mora biti krać od 6 karaktera.</div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex>
+                            <label>Konfekcijski broj</label>
+                            <input md-maxlength="6" required name="employeeDress" ng-model="employeeVm.employee.dressSize">
+                            <div ng-messages="employeeForm.employeeDress.$error">
+                                <div ng-message="required">Ovo polje je obavezno.</div>
+                                <div ng-message="md-maxlength">Sadržaj polja mora biti kraći od 6 karaktera.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-disabled="!employeeForm.$valid" class="md-raised md-primary" ng-click="employeeVm.create()" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="employeeVm.cancel()">
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

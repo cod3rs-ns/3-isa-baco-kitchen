@@ -25,7 +25,7 @@ public class RestaurantManagerController {
     }
 
     @RequestMapping(
-            value = "/api/rmanager/{id}",
+            value = "/api/rmanagers/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantManager> getRestaurantManagers(@PathVariable("id") Integer id) {

@@ -35,7 +35,7 @@
 		<div layout="column">
 			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
                 <div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
+					<md-button ng-click="rmanagerVm.updateRestaurant(rmanagerVm.rmanager.restaurant);" class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
 					<h4> Izmena podataka o restoranu </h4>
 				</div>
 				<hr>
@@ -69,7 +69,10 @@
     <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
         <md-tab label="Informacije o restoranu">
           <md-content class="md-padding">
-                <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+			  	<!-- NEEDS TO BE CHANGED -->
+                <h3><strong>Naziv</strong>: {{rmanagerVm.rmanager.restaurant.name}}</h3>
+				<h3><strong>Tip</strong>: {{rmanagerVm.rmanager.restaurant.type}}</h3>
+				<h3><strong>Opis</strong>: {{rmanagerVm.rmanager.restaurant.info}}</h3>
           </md-content>
         </md-tab>
           <md-tab label="Jelovnik">
