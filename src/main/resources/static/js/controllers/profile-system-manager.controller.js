@@ -4,7 +4,7 @@ angular
 
 SystemManagerProfileController.$inject = ['$mdDialog'];
 
-function SystemManagerProfileController($mdDialog, AddRestaurantController) {
+function SystemManagerProfileController($mdDialog, SingleRestaurantController) {
     var systemManagerProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -31,12 +31,15 @@ function SystemManagerProfileController($mdDialog, AddRestaurantController) {
     // Implement functions later
     function addRestaurant() {
         $mdDialog.show({
-            controller: 'AddRestaurantController',
-            controllerAs: 'addRestaurantVm',
-            templateUrl: '/views/dialogs/add-restaurant.html',
+            controller: 'SingleRestaurantController',
+            controllerAs: 'restaurantVm',
+            templateUrl: '/views/dialogs/restaurant-form-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
-            fullscreen: false
+            fullscreen: false,
+            locals: {
+                to_edit : null
+            }
         });
     }
 
