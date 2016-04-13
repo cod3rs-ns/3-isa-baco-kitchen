@@ -1,12 +1,12 @@
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('1', 'Sergio', 'Ramos', 'sr4@real.com', 'images/profile.jpg', 'ramos', 'guest');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('2', 'Alarcon', 'Isco', 'ia22@real.com', 'https://pbs.twimg.com/profile_images/557812407171813376/kYVGA4t5.jpeg', 'isco', 'guest');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('3', 'Jamie', 'Vardy', 'jv@leilcester.com', 'image.jpg', 'party', 'restaurant_manager');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('4', 'Riyad', 'Mahrez', 'rm@leicester.com', 'image.gif', 'mahry', 'restaurant_provider');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('5', 'David', 'Beckham', 'becks@legend.com', 'image.png', 'retired', 'restaurant_provider');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('6', 'Zinedine', 'Zidane', 'zizu@manager.com', 'image.png', 'headshot', 'system_manager');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('7', 'Hugo', 'Vieira', 'hugo@redstar.rs', 'image.png', 'redstar1', 'cook');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('8', 'Damien', 'le Tallec', 'tallec@redstar.rs', 'image.png', 'redstar2', 'bartender');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`) VALUES ('9', 'Michel', 'Donald', 'dm@redstar.rs', 'image.png', 'redstar3', 'waiter');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('1', 'Sergio', 'Ramos', 'sr4@real.com', 'images/profile.jpg', 'ramos', 'guest', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('2', 'Alarcon', 'Isco', 'ia22@real.com', 'https://pbs.twimg.com/profile_images/557812407171813376/kYVGA4t5.jpeg', 'isco', 'guest', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('3', 'Jamie', 'Vardy', 'jv@leilcester.com', 'image.jpg', 'party', 'restaurant_manager', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('4', 'Riyad', 'Mahrez', 'rm@leicester.com', 'image.gif', 'mahry', 'restaurant_provider', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('5', 'David', 'Beckham', 'becks@legend.com', 'image.png', 'retired', 'restaurant_provider', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('6', 'Zinedine', 'Zidane', 'zizu@manager.com', 'image.png', 'headshot', 'system_manager', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('7', 'Hugo', 'Vieira', 'hugo@redstar.rs', 'image.png', 'redstar1', 'cook', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('8', 'Damien', 'le Tallec', 'tallec@redstar.rs', 'image.png', 'redstar2', 'bartender', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('9', 'Michel', 'Donald', 'dm@redstar.rs', 'image.png', 'redstar3', 'waiter', 'verified');
 
 INSERT INTO `isa_mrs_project`.`sys_managers` (`sm_id`, `sm_info`) VALUES ('6', 'Zidane biography.');
 

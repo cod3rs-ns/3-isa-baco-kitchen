@@ -1,7 +1,8 @@
 <md-dialog flex="50" aria-label="Restoran"  ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Izmeni restoran</h2>
+            <h2 ng-hide="restaurantVm.editState">Kreiraj novi restoran</h2>
+            <h2 ng-hide="!restaurantVm.editState">Izmeni podatke o restoranu</h2>
             <span flex></span>
 
             <md-button class="md-icon-button" ng-click="restaurantVm.cancel()">
@@ -25,10 +26,10 @@
 
                     <md-input-container class="md-block">
                         <label>Opis</label>
-                        <input md-maxlength="45" required md-no-asterisk name="restaurantInfo" ng-model="restaurantVm.restaurant.info">
+                        <input md-maxlength="100" required md-no-asterisk name="restaurantInfo" ng-model="restaurantVm.restaurant.info">
                         <div ng-messages="restaurantForm.restaurantInfo.$error">
-                            <div ng-message="required">Ovo polje je obavezno</div>
-                            <div ng-message="md-maxlength">Opis restorana mora biti kraći od 45 karaktera.</div>
+                            <div ng-message="required">Ovo polje je obavezno.</div>
+                            <div ng-message="md-maxlength">Opis restorana mora biti kraći od 100 karaktera.</div>
                         </div>
                     </md-input-container>
 
@@ -36,34 +37,40 @@
                         <label>Tip</label>
                         <input md-maxlength="45" required md-no-asterisk name="restaurantType" ng-model="restaurantVm.restaurant.type">
                         <div ng-messages="restaurantForm.restaurantType.$error">
-                            <div ng-message="required">Ovo polje je obavezno</div>
+                            <div ng-message="required">Ovo polje je obavezno.</div>
                             <div ng-message="md-maxlength">Tip restorana mora biti kraći od 45 karaktera.</div>
                         </div>
                     </md-input-container>
 
                     <div layout="row">
                         <md-input-container class="md-block" flex>
-                            <label>Radno vrijeme od</label>
-                            <input required type="number" step="any" name="restaurantStart" ng-model="restaurantVm.restaurant.startTime" min="1" />
+                            <label>Početak radnog vremena</label>
+                            <input required type="number" step="any" name="restaurantStart" ng-model="restaurantVm.restaurant.startTime" min="0" max="24" />
                             <div ng-messages="restaurantForm.restaurantStart.$error" multiple md-auto-hide="false">
                                 <div ng-message="required">
                                     Ovo polje je obavezno.
                                 </div>
                                 <div ng-message="min">
-                                    Sadržaj polja mora biti veći od 0.
+                                    Sadržaj polja mora biti pozitivan.
+                                </div>
+                                <div ng-message="max">
+                                    Sadržaj polja mora biti manji od 24.
                                 </div>
                             </div>
                         </md-input-container>
 
                         <md-input-container class="md-block" flex>
-                            <label>Radno vrijeme do</label>
-                            <input required type="number" step="any" name="restaurantEnd" ng-model="restaurantVm.restaurant.endTime" min="1" />
+                            <label>Kraj radnog vremena</label>
+                            <input required type="number" step="any" name="restaurantEnd" ng-model="restaurantVm.restaurant.endTime" min="0" max="24"/>
                             <div ng-messages="restaurantForm.restaurantEnd.$error" multiple md-auto-hide="false">
                                 <div ng-message="required">
                                     Ovo polje je obavezno.
                                 </div>
                                 <div ng-message="min">
-                                    Sadržaj polja mora biti veći od 0.
+                                    Sadržaj polja mora biti pozitivan.
+                                </div>
+                                <div ng-message="max">
+                                    Sadržaj polja mora biti manji od 24.
                                 </div>
                             </div>
                         </md-input-container>
@@ -75,7 +82,10 @@
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-disabled="!restaurantForm.$valid" class="md-raised md-primary" ng-click="restaurantVm.update()" md-autofocus>
+        <md-button ng-hide="!restaurantVm.editState" ng-disabled="!restaurantForm.$valid" class="md-raised md-primary" ng-click="restaurantVm.update()" md-autofocus>
+            Potvrdi izmene
+        </md-button>
+        <md-button ng-hide="restaurantVm.editState" ng-disabled="!restaurantForm.$valid" class="md-raised md-primary" ng-click="restaurantVm.create()" md-autofocus>
             Potvrdi
         </md-button>
         <md-button class="md-raised md-default" ng-click="restaurantVm.cancel()">
