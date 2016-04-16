@@ -33,7 +33,7 @@
       <md-input-container class="md-block">
           <label>Vaše ime</label>
           <md-icon aria-label="Email" class="material-icons">person</md-icon>
-          <input md-maxlength="10" required name="name" ng-model="registerVm.user.name" />
+          <input md-maxlength="10" required name="name" ng-model="registerVm.user.firstName" />
           <!--div class="hint">Tell us what we should call you!</div-->
           <div ng-messages="registerForm.name.$error">
             <div ng-message="required">Ime je obavezno.</div>
@@ -44,7 +44,7 @@
         <md-input-container class="md-block">
             <label>Vaše prezime</label>
             <md-icon aria-label="Email" class="material-icons">person</md-icon>
-            <input md-maxlength="20" required name="lastname" ng-model="registerVm.user.lastname" />
+            <input md-maxlength="20" required name="lastname" ng-model="registerVm.user.lastName" />
             <!--div class="hint">Tell us what we should call you!</div-->
             <div ng-messages="registerForm.lastname.$error" role="alert">
               <div ng-message="required">Prezime je obavezno.</div>
@@ -57,7 +57,7 @@
             <md-icon aria-label="Email" class="material-icons">mail_outline</md-icon>
             <input required type="email" name="clientEmail"
                   data-wc-unique="{key: customer.id, property: 'email'}"
-                  minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="registerVm.user.clientEmail" />
+                  minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="registerVm.user.email" />
             <div ng-messages="registerForm.clientEmail.$error" role="alert">
               <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
                 Unijeta e-mail adresa je neispravna.

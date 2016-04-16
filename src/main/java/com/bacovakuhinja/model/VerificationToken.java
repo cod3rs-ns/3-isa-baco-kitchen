@@ -1,7 +1,19 @@
 package com.bacovakuhinja.model;
 
-/**
- * Created by DMG on 4/13/2016.
- */
+
 public class VerificationToken {
+
+    private String token;
+
+    public VerificationToken() {
+        super();
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 }

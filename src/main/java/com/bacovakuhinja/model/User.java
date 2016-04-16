@@ -1,6 +1,7 @@
 package com.bacovakuhinja.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,7 +43,7 @@ public class User implements Serializable {
     private String verified;
 
     public User() {
-
+        this.verified = "not_verified";
     }
 
     public Integer getUserId() {
@@ -93,15 +94,35 @@ public class User implements Serializable {
         this.type = type;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
 
+    @JsonProperty
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public String getVerified() { return verified; }
+    public String getVerified() {
+        return verified;
+    }
 
-    public void setVerified(String verified) { this.verified = verified; }
+    public void setVerified(String verified) {
+        this.verified = verified;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", image='" + image + '\'' +
+                ", password='" + password + '\'' +
+                ", type='" + type + '\'' +
+                ", verified='" + verified + '\'' +
+                '}';
+    }
 }

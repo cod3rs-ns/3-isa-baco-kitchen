@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Registration;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
 import io.jsonwebtoken.Claims;
@@ -90,6 +91,19 @@ public class UserController {
         return null;
     }
 
+    @Registration
+    @RequestMapping(
+            value    = "api/user/register",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> register(@RequestBody User user) {
+
+        System.out.println(user.toString());
+        User created = userService.create(user);
+        return new ResponseEntity<User>(created, HttpStatus.CREATED);
+    }
 
     private static class LoginResponse {
         public String token;
