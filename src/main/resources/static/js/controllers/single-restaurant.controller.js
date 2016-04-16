@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SingleRestaurantController', SingleRestaurantController);
 
-SingleRestaurantController.$inject = ['restaurantService', '$mdDialog','$mdToast', 'to_edit'];
+SingleRestaurantController.$inject = ['restaurantService', '$mdDialog','$mdToast', 'to_edit', 'restaurants'];
 
-function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_edit) {
+function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_edit, restaurants) {
     var restaurantVm = this;
     restaurantVm.restaurant = {};
     restaurantVm.backup = {};
@@ -42,6 +42,7 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
         // TODO: Change hardcoded 6 to current system_manager
         restaurantService.createRestaurant(restaurantVm.restaurant, 6)
             .then(function(addedRestaurant){
+                restaurants.push(addedRestaurant);
                 restaurantVm.showToast('Restoran je uspešno kreiran.')
                 restaurantVm.cancel();
             });
@@ -59,9 +60,9 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
 
     function showToast(toast_message) {
         $mdToast.show({
-          hideDelay : 3000,
-          position  : 'top right',
-          template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
     };
 
@@ -76,5 +77,4 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
         }
         $mdDialog.cancel();
     };
-
 }
