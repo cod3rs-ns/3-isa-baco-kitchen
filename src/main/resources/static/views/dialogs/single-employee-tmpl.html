@@ -32,7 +32,7 @@
                         </div>
                     </md-input-container>
 
-                    <md-input-container class="md-block">
+                    <md-input-container ng-show="!employeeVm.editState" class="md-block">
                         <label>E-mail adresa</label>
                         <input required type="email" name="employeeEmail"
                                data-wc-unique="{key: customer.id, property: 'email'}"
@@ -50,7 +50,7 @@
                     <div layout-gt-xs="row">
 
 
-                        <md-input-container class="md-block" style="margin-left:20px" flex-gt-xs>
+                        <md-input-container ng-show="!employeeVm.editState" class="md-block" style="margin-left:20px" flex-gt-xs>
                             <label>Tip zaposlenog</label>
                             <md-select ng-model="employeeVm.employee.type">
                                 <md-option value="waiter">Konobar</md-option>
@@ -59,18 +59,17 @@
                             </md-select>
                         </md-input-container>
 
-                        <md-datepicker  ng-model="employeeVm.employee.birthDay" md-placeholder="Datum rodjenja"></md-datepicker>
-
+                        <md-datepicker  data-ng-model="employeeVm.employee.birthday" md-placeholder="Datum rodjenja"></md-datepicker>
 
                     </div>
 
-                    <md-input-container class="md-block">
+                    <!--md-input-container class="md-block">
                         <label>Opis</label>
                         <input md-maxlength="45" required md-no-asterisk name="employeeInfo" ng-model="employeeVm.employee.info">
                         <div ng-messages="employeeForm.employeeInfo.$error">
                             <div ng-message="md-maxlength">Opis radnika mora biti kraći od 45 karaktera.</div>
                         </div>
-                    </md-input-container>
+                    </md-input-container-->
 
                     <div layout-gt-xs="row">
                         <md-input-container class="md-block" flex>
@@ -98,7 +97,10 @@
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-disabled="!employeeForm.$valid" class="md-raised md-primary" ng-click="employeeVm.create()" md-autofocus>
+        <md-button ng-hide="!employeeVm.editState" ng-disabled="!employeeForm.$valid" class="md-raised md-primary" ng-click="employeeVm.update()" md-autofocus>
+            Potvrdi izmjene
+        </md-button>
+        <md-button ng-hide="employeeVm.editState" ng-disabled="!employeeForm.$valid" class="md-raised md-primary" ng-click="employeeVm.create()" md-autofocus>
             Potvrdi
         </md-button>
         <md-button class="md-raised md-default" ng-click="employeeVm.cancel()">

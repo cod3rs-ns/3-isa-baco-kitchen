@@ -29,7 +29,7 @@ function config($routeProvider) {
             controllerAs: 'guestProfileVm'
         })
 		// Route for cook profile page
-        .when('/profile-cook', {
+        .when('/profile-cook/:cookId', {
             templateUrl: 'views/profile-cook.html',
             controller: 'CookProfileController',
             controllerAs: 'cookProfileVm'
