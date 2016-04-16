@@ -37,17 +37,18 @@ function SingleEmployeeController(cookService, $mdDialog, $mdToast, to_edit) {
     };
 
     function update() {
+        console.log(employeeVm.employee);
         switch (employeeVm.employee.type) {
             case "cook": cookService.
                 updateCook(employeeVm.employee)
                     .then(function (data) {
-                        employeeVm.confirmedEdit = true;
                         employeeVm.showToast('Kuvar je uspješno izmijenjen.');
                     });
                 break;
             default:
                 alert("wrong type of employee");
         }
+        employeeVm.confirmedEdit = true;
         employeeVm.cancel();
     };
 
