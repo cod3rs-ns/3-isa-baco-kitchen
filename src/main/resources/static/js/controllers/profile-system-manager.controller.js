@@ -12,6 +12,19 @@ function SystemManagerProfileController(systemManagerService, $mdDialog) {
     systemManagerProfileVm.showSearch = false;
     systemManagerProfileVm.restaurants = [];
 
+    //TODO get concrete manager
+    systemManagerProfileVm.smanager = {
+        'userId':null,
+        'firstName':'Zinedine',
+        'lastName':'Zidane',
+        'email':'zizu@manager.com',
+        'image':'image.png',
+        'type':'system_manager',
+        'verified':'verified',
+        'info':'Zidane biography',
+        'restaurants':[]
+    };
+
     activate();
 
     function activate() {
