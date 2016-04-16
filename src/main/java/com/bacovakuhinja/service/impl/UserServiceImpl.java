@@ -35,4 +35,25 @@ public class UserServiceImpl implements UserService {
     public User create(User user) {
         return userRepository.save(user);
     }
+
+    @Override
+    public User findOne(String email) {
+        for (User user: userRepository.findAll()) {
+            if (user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public User update(User user) {
+        User userPersistent = userRepository.findOne(user.getUserId());
+
+        if (userPersistent == null)
+            return null;
+
+        return userRepository.save(userPersistent);
+    }
 }

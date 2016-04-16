@@ -13,6 +13,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "users")
+@PrimaryKeyJoinColumn(name="u_id")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
     @Id
