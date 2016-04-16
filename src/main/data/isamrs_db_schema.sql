@@ -351,6 +351,26 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservation_tables` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`verification_tokens`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`verification_tokens` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`verification_tokens` (
+  `vt_id` INT NOT NULL AUTO_INCREMENT,
+  `vt_token` CHAR(40) NOT NULL,
+  `vt_expiry_date` DATETIME NOT NULL,
+  `vt_user_id` INT NOT NULL,
+  PRIMARY KEY (`vt_id`),
+  INDEX `fk_verification_tokens_users1_idx` (`vt_user_id` ASC),
+  CONSTRAINT `fk_verification_tokens_users1`
+    FOREIGN KEY (`vt_user_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
