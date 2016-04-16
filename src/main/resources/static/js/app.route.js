@@ -22,6 +22,10 @@ function config($routeProvider) {
             controller: 'RegisterController',
             controllerAs: 'registerVm'
         })
+        // Route for after register message
+        .when('/verify', {
+          templateUrl: 'views/messages/registered.html'
+        })
         // Route for guest profile page
         .when('/profile-guest', {
             templateUrl: 'views/profile-guest.html',
@@ -34,13 +38,13 @@ function config($routeProvider) {
             controller: 'CookProfileController',
             controllerAs: 'cookProfileVm'
         })
-		// Route for barman profile page
+        // Route for barman profile page
         .when('/profile-barman', {
             templateUrl: 'views/profile-barman.html',
             controller: 'BarmanProfileController',
             controllerAs: 'barmanProfileVm'
         })
-		// Route for waiter profile page
+		    // Route for waiter profile page
         .when('/profile-waiter', {
             templateUrl: 'views/profile-waiter.html',
             controller: 'WaiterProfileController',
@@ -52,7 +56,7 @@ function config($routeProvider) {
             controller: 'ProviderProfileController',
             controllerAs: 'providerProfileVm'
         })
-		// Route for system manager profile page
+		    // Route for system manager profile page
         .when('/profile-system-manager', {
             templateUrl: 'views/profile-system-manager.html',
             controller: 'SystemManagerProfileController',
@@ -69,5 +73,15 @@ function config($routeProvider) {
             templateUrl: 'views/profile-restaurant-manager.html',
             controller: 'RestaurantManagerController',
             controllerAs: 'rmanagerVm'
+        })
+        // Route for verification messages
+        .when('/registration-confirm-wrong-link', {
+            templateUrl: 'views/messages/verified-wrong.html'
+        })
+        .when('/registration-confirm-expired-link', {
+            templateUrl: 'views/messages/verified-expired.html'
+        })
+        .when('/registration-confirm-success', {
+            templateUrl: 'views/messages/verified-ok.html'
         });
 }

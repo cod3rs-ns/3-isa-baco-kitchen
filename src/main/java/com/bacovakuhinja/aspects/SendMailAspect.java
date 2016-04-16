@@ -32,7 +32,7 @@ public class SendMailAspect {
 
     // 30 minutes
     private static final long   TOKEN_EXPIRE_TIME  = 1800000;
-    private static final String TOKEN_CONFIRM_LINK = "http://localhost:8091/api/registrationConfirm?token=";
+    private static final String TOKEN_CONFIRM_LINK = "http://localhost:8091/api/registration-confirm?token=";
 
     private static final String HOST_NAME = "smtp.gmail.com";
     private static final int    HOST_PORT = 587;
