@@ -87,18 +87,14 @@
 
 	<div class="row">
 		<ul class="equal-height-thumbnail">
-			<li class="order" ng-repeat="restaurant in systemManagerProfileVm.restaurants | filter : rest_name as results ">
-				<figure><img ng-src="{{restaurant.img_src}}" class="order-img" alt="Equal height of thumbnail"></figure>
+			<li class="order" ng-repeat="restaurant in systemManagerProfileVm.restaurants">
+				<figure><img ng-src="http://db-hospitality.com/images/restaurant.jpeg" class="order-img" alt="Equal height of thumbnail"></figure>
 				<div class="caption-waiter">
 					<h4>{{restaurant.name}}</h4>
 					<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>
 				</div>
 			</li>
 		</ul>
-
-		<p ng-if="results.length == 0" style="margin-left: 15px;">
-			<strong>Nema pronadjenih rezultata...</strong>
-		</p>
 
 	</div>
 </div>

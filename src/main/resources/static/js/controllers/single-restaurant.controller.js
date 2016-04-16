@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('AddRestaurantController', AddRestaurantController);
 
-AddRestaurantController.$inject = ['restaurantService', '$mdDialog'];
+AddRestaurantController.$inject = ['restaurantService', '$mdDialog', 'restaurants'];
 
-function AddRestaurantController(restaurantService, $mdDialog) {
+function AddRestaurantController(restaurantService, $mdDialog, restaurants) {
     // Var vm stands for ViewModel
     var addRestaurantVm = this;
 
@@ -27,9 +27,8 @@ function AddRestaurantController(restaurantService, $mdDialog) {
         //Trenutno je podeseno da se restoran doda menadzeru ciji je id 6
         restaurantService.createRestaurant(addRestaurantVm.addingRestaurant, 6)
             .then(function(addedRestaurant){
-                console.log(addedRestaurant);
+                restaurants.push(addedRestaurant);
                 addRestaurantVm.cancel();
             });
     };
-
 }
