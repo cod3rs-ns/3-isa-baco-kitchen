@@ -38,6 +38,9 @@ public class User implements Serializable {
     @Column(name = "u_type")
     private String type;
 
+    @Column(name = "u_verified")
+    private String verified;
+
     public User() {
 
     }
@@ -97,4 +100,8 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getVerified() { return verified; }
+
+    public void setVerified(String verified) { this.verified = verified; }
 }

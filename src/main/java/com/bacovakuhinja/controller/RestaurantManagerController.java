@@ -1,7 +1,9 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.RestaurantManager;
 import com.bacovakuhinja.service.RestaurantManagerService;
+import com.bacovakuhinja.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,9 @@ import java.util.Collection;
 public class RestaurantManagerController {
     @Autowired
     private RestaurantManagerService rmService;
+
+    @Autowired
+    private RestaurantService rService;
 
     @RequestMapping(
             value = "/api/rmanagers",
@@ -33,11 +38,16 @@ public class RestaurantManagerController {
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/rmanagers",
+    @RequestMapping(value = "/api/rmanagers/{restaurant_id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <RestaurantManager> createRestaurantManager(@RequestBody RestaurantManager manager) {
+    public ResponseEntity <RestaurantManager> createRestaurantManager(@RequestBody RestaurantManager manager, @PathVariable("restaurant_id") Integer r_id) {
+        Restaurant restaurant = rService.findOne(r_id);
+        manager.setRestaurant(restaurant);
+        // TODO generate password and verified
+        manager.setPassword("generated_password");
+        manager.setVerified("not_verified");
         RestaurantManager createdManager = rmService.create(manager);
         return new ResponseEntity <RestaurantManager>(createdManager, HttpStatus.CREATED);
     }

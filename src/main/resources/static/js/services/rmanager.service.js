@@ -37,8 +37,11 @@ function restaurantManagerService($http){
 
     };
 
-    function createRestaurantManager(){
-
+    function createRestaurantManager(manager, restaurant_id){
+        return $http.post('/api/rmanagers/' + restaurant_id, manager)
+            .then(function (response) {
+                return response.data;
+            })
     };
 
 }
