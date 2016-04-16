@@ -1,0 +1,67 @@
+<md-dialog flex="50" aria-label="Menadžer restorana"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Dodaj menadžera restorana</h2>
+            <span flex></span>
+
+            <md-button class="md-icon-button" ng-click="rmanagerVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <md-content layout-padding>
+                <form name="rmanagerForm">
+                    <md-input-container class="md-block">
+                        <label>Ime</label>
+                        <input md-maxlength="20" required name="rmanagerFirstName" ng-model="rmanagerVm.rmanager.firstName">
+                        <div ng-messages="rmanagerForm.rmanagerFirstName.$error">
+                            <div ng-message="required">Ovo polje je obavezno.</div>
+                            <div ng-message="md-maxlength">Ime mora biti kraće od 20 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Prezime</label>
+                        <input md-maxlength="30" required md-no-asterisk name="rmanagerLastName" ng-model="rmanagerVm.rmanager.lastName">
+                        <div ng-messages="rmanagerForm.rmanagerLastName.$error">
+                            <div ng-message="required">Ovo polje je obavezno</div>
+                            <div ng-message="md-maxlength">Prezime mora biti kraće od 30 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>E-mail adresa</label>
+                        <input required type="email" name="rmanagerEmail"
+                               data-wc-unique="{key: customer.id, property: 'email'}"
+                               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="rmanagerVm.rmanager.email" />
+                        <div ng-messages="rmanagerForm.rmanagerEmail.$error" role="alert">
+                            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                                E-mail adresa je neispravna.
+                            </div>
+                            <div ng-message-exp="['unique']">
+                                E-mail adresa već postoji.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-hide="!rmanagerVm.editState" ng-disabled="!rmanagerForm.$valid" class="md-raised md-primary" ng-click="rmanagerVm.update()" md-autofocus>
+            Potvrdi izmene
+        </md-button>
+        <md-button ng-hide="rmanagerVm.editState" ng-disabled="!rmanagerForm.$valid" class="md-raised md-primary" ng-click="rmanagerVm.create()" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="rmanagerVm.cancel()">
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

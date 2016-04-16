@@ -4,7 +4,7 @@ angular
 
 SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog'];
 
-function SystemManagerProfileController(systemManagerService, $mdDialog, SingleRestaurantController) {
+function SystemManagerProfileController(systemManagerService, $mdDialog) {
     var systemManagerProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -25,9 +25,9 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, SingleR
             return systemManagerProfileVm.restaurants;
         });
     }
+
     
     systemManagerProfileVm.addRestaurant = addRestaurant;
-    // Implement functions later
     function addRestaurant() {
         $mdDialog.show({
             controller: 'SingleRestaurantController',
@@ -44,7 +44,6 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, SingleR
     }
 
     systemManagerProfileVm.addProvider = addProvider;
-
     function addProvider() {
         $mdDialog.show({
             controller: 'SingleProviderController',

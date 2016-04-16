@@ -104,4 +104,20 @@ function RestaurantProfileController(restaurantService, $mdDialog, $routeParams,
             fullscreen: false,
         });
     };
+
+    restaurantVm.addRestaurantManager = addRestaurantManager;
+    function addRestaurantManager() {
+        $mdDialog.show({
+            controller: 'SingleRManagerController',
+            controllerAs: 'rmanagerVm',
+            templateUrl: '/views/dialogs/single-rmanager-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : null,
+                restaurant_id :  restaurantVm.restaurant.restaurantId
+            }
+        });
+    }
 }
