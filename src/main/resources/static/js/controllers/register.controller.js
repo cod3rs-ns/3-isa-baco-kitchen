@@ -2,7 +2,10 @@ angular
     .module('isa-mrs-project')
     .controller('RegisterController', RegisterController);
     
-function RegisterController() {
+    
+RegisterController.$inject = ['userService'];
+    
+function RegisterController(userService) {
     // Var vm stands for ViewModel
     var registerVm = this;
     
@@ -10,8 +13,25 @@ function RegisterController() {
     registerVm.user = {};
     registerVm.registerGuest = registerGuest;
     
+    initState();
+    
+    function initState() {
+        registerVm.user = {
+            userId: 0,
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            image: 'http://www.cubadebate.cu/wp-content/uploads/2013/02/333.jpg',
+            type: 'guest',
+            verified: 'not_verified'
+        };
+    };
+    
     // Implement functions later
     function registerGuest() {
-        alert(registerVm.user);
+        userService.registerUser(registerVm.user)
+          .then(function (registeredUser) {    
+          });
     }
 }

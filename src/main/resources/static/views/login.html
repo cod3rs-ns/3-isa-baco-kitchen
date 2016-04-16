@@ -29,7 +29,7 @@
       <p>Popunite formu ispod da biste dobili pristup aplikaciji...</p>
     </div>
     <form class="form-body" ng-submit="loginVm.login()">
-      <div class="alert alert-danger" ng-show="loginVm.invalid"><h4>Ne postoji korisnik sa unesenom e-mail adresom i lozinkom.</h4></div>
+      <div class="alert alert-danger" ng-show="loginVm.invalid && loginVm.credentials.password == ''"><h4>Ne postoji korisnik sa unesenom e-mail adresom i lozinkom.</h4></div>
       <md-input-container class="md-block">
         <label>Vaš e-mail</label>
         <md-icon aria-label="Email" class="material-icons">mail_outline</md-icon>

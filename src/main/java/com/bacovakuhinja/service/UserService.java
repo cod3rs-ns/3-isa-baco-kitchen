@@ -9,4 +9,10 @@ public interface UserService {
     public Collection<User> findAll();
 
     public boolean alreadyExists(String email);
+
+    public User create(User user);
+
+    public User findOne(String email);
+
+    public User update(User user);
 }

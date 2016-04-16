@@ -1,7 +1,9 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Registration;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
+import com.bacovakuhinja.service.VerificationTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -80,7 +82,7 @@ public class UserController {
     public LoginResponse authenticate(@RequestParam(value="username") String username, @RequestParam(value="password") String password) {
 
         for (User user : userService.findAll()) {
-            if (user.getEmail().equals(username) && user.getPassword().equals(password)) {
+            if (user.getEmail().equals(username) && user.getPassword().equals(password) && user.getVerified().equals("verified")) {
                 return new LoginResponse(Jwts.builder().setSubject(username)
                         .claim("user", username).setIssuedAt(new Date())
                         .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact());
@@ -90,6 +92,19 @@ public class UserController {
         return null;
     }
 
+    @Registration
+    @RequestMapping(
+            value    = "api/user/register",
+            method   = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> register(@RequestBody User user) {
+
+        System.out.println(user.toString());
+        User created = userService.create(user);
+        return new ResponseEntity<User>(created, HttpStatus.CREATED);
+    }
 
     private static class LoginResponse {
         public String token;
