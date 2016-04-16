@@ -1,34 +1,80 @@
 angular
     .module('isa-mrs-project')
-    .controller('AddRestaurantController', AddRestaurantController);
+    .controller('SingleRestaurantController', SingleRestaurantController);
 
-AddRestaurantController.$inject = ['restaurantService', '$mdDialog', 'restaurants'];
+SingleRestaurantController.$inject = ['restaurantService', '$mdDialog','$mdToast', 'to_edit', 'restaurants'];
 
-function AddRestaurantController(restaurantService, $mdDialog, restaurants) {
-    // Var vm stands for ViewModel
-    var addRestaurantVm = this;
+function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_edit, restaurants) {
+    var restaurantVm = this;
+    restaurantVm.restaurant = {};
+    restaurantVm.backup = {};
+    restaurantVm.editState = false;
+    restaurantVm.confirmedEdit = false;
+    restaurantVm.showToast = showToast;
+    restaurantVm.cancel = cancel;
+    restaurantVm.update = update;
+    restaurantVm.create = create;
 
-    addRestaurantVm.addingRestaurant = {
-        restaurantId: null,
-        name: '',
-        info: '',
-        type: '',
-        startTime: 1,
-        endTime: 1
-    };
+    initState();
 
-    addRestaurantVm.cancel = cancel;
-    function cancel() {
-        $mdDialog.cancel();
-    };
+    function initState() {
+        if (to_edit == null) {
+            restaurantVm.restaurant = {
+                restaurantId: null,
+                name: '',
+                info: '',
+                type: '',
+                startTime: 0,
+                endTime: 24
+            };
 
-    addRestaurantVm.create = create;
+        } else {
+            // copy reference
+            restaurantVm.restaurant = to_edit;
+            // copy DATA for backup
+            restaurantVm.backup = angular.copy(to_edit);
+            // Set state to EDIT
+            restaurantVm.editState = true;
+        }
+    }
+
     function create() {
-        //Trenutno je podeseno da se restoran doda menadzeru ciji je id 6
-        restaurantService.createRestaurant(addRestaurantVm.addingRestaurant, 6)
+        // TODO: Change hardcoded 6 to current system_manager
+        restaurantService.createRestaurant(restaurantVm.restaurant, 6)
             .then(function(addedRestaurant){
                 restaurants.push(addedRestaurant);
-                addRestaurantVm.cancel();
+                restaurantVm.showToast('Restoran je uspešno kreiran.')
+                restaurantVm.cancel();
             });
+    };
+
+    function update() {
+        // TODO: Change hardcoded 6 to current system_manager
+        restaurantService.updateRestaurant(restaurantVm.restaurant, 6)
+            .then(function(data){
+                restaurantVm.confirmedEdit = true;
+                restaurantVm.showToast('Restoran je uspešno izmenjen.');
+                restaurantVm.cancel();
+            });
+    };
+
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+
+    function cancel() {
+        // revert changes if EDIT has been cancelled
+        if (!restaurantVm.confirmedEdit){
+            restaurantVm.restaurant.name = restaurantVm.backup.name;
+            restaurantVm.restaurant.info = restaurantVm.backup.info;
+            restaurantVm.restaurant.type = restaurantVm.backup.type;
+            restaurantVm.restaurant.startTime = restaurantVm.backup.startTime;
+            restaurantVm.restaurant.endTime = restaurantVm.backup.endTime;
+        }
+        $mdDialog.cancel();
     };
 }

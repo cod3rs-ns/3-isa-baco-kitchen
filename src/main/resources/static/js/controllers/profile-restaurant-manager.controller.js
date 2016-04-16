@@ -4,7 +4,7 @@ angular
 
 RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog']
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, EditRestaurantController) {
+function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
     rmanagerVm.updateRestaurant = updateRestaurant
@@ -28,11 +28,10 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, EditRe
 
     function updateRestaurant(to_edit) {
         $mdDialog.show({
-            controller: 'EditRestaurantController',
+            controller: 'SingleRestaurantController',
             controllerAs: 'restaurantVm',
-            templateUrl: '/views/dialogs/edit-restaurant.html',
+            templateUrl: '/views/dialogs/restaurant-form-tmpl.html',
             parent: angular.element(document.body),
-            //targetEvent: ev,
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {

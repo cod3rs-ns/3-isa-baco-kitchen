@@ -93,4 +93,15 @@ function RestaurantProfileController(restaurantService, $mdDialog, $routeParams,
             fullscreen: false,
         });
     };
+
+    restaurantVm.test = test;
+    function test(){
+        $mdDialog.show({
+            templateUrl: '/views/dialogs/single-emloyee-tmpl.html',
+            parent: angular.element(document.body),
+            //targetEvent: ev,
+            clickOutsideToClose:true,
+            fullscreen: false,
+        });
+    };
 }
