@@ -3,9 +3,9 @@ angular
     .controller('RegisterController', RegisterController);
     
     
-RegisterController.$inject = ['userService'];
+RegisterController.$inject = ['$location', 'userService'];
     
-function RegisterController(userService) {
+function RegisterController($location, userService) {
     // Var vm stands for ViewModel
     var registerVm = this;
     
@@ -31,7 +31,8 @@ function RegisterController(userService) {
     // Implement functions later
     function registerGuest() {
         userService.registerUser(registerVm.user)
-          .then(function (registeredUser) {    
+          .then(function (registeredUser) {
+            $location.path('verify');  
           });
     }
 }
