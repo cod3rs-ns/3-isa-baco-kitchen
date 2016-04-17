@@ -54,7 +54,7 @@ function config($routeProvider) {
         .when('/profile-provider', {
             templateUrl: 'views/profile-provider.html',
             controller: 'ProviderProfileController',
-            controllerAs: 'providerProfileVm'
+            controllerAs: 'providerVm'
         })
 		    // Route for system manager profile page
         .when('/profile-system-manager', {

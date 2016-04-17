@@ -1,100 +1,119 @@
-<div class="user-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3">
-                <img src="{{providerProfileVm.image}}" alt="Robert Downey Jr" class="img-thumbnail">
-            </div>
-            <div class="col-md-9">
-                <div class="pull-right larger-text">
-                    <span class="label label-primary md-raised">
-                        <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                        Uspešnih ponuda
-                    </span>
-                    <span class="label label-success md-raised">4</span>
-                </div>
-                <div>
-                    <h2>{{ providerProfileVm.name }}</h2>
-                    <h4 style="color: #666">Ponudjač</h4>
-                    <h3 style="color: #444">{{providerProfileVm.email}}</h3>
-                    <blockquote class="blockquote-reverse">
-                        I'm not in danger, I'm the danger.
-                        <footer>Walter White in <cite title="Source Title">Breaking Bad</cite></footer>
-                    </blockquote>
-                    <div>
-                        <md-content class="md-padding">
-                            <md-button class="md-raised md-accent">Izmeni podatke</md-button>
-                            <md-button class="md-raised md-accent">Promeni lozinku</md-button>
-                        </md-content>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div layout="row">
+	<div flex-gt-sm="70" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Profil Ponuđača</h3>
+				<md-button class="md-icon-button" aria-label="Notification">
+					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+				</md-button>
+				<md-button class="md-icon-button" aria-label="More">
+					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
+				</md-button>
+			</div>
+		</md-toolbar>
+
+		<div layout="column">
+			<div layout="row" layout-xs="column">
+				<div flex class="content">
+					<img alt="Provider profile picture." ng-src="{{providerVm.provider.image}}" class="md-avatar" />
+				</div>
+				<div flex class="content">
+					<h2> {{providerVm.provider.firstName}} </h2>
+					<h4> {{providerVm.provider.email}} </h4>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div flex-gt-sm="30" layout="column" class="main-content">
+		<md-toolbar scroll>
+			<div class="md-toolbar-tools">
+				<h3 md-header-title flex>Aktivnosti</h3>
+			</div>
+		</md-toolbar>
+        <!-- TODO ACTIONS -->
+		<div layout="column">
+			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
+				<div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<h4> Ažuriranje profila </h4>
+				</div>
+                </hr>
+                <div class="option">
+					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">vpn_key</i> </md-button>
+					<h4> Izmena lozinke </h4>
+				</div>
+
+			</div>
+		</div>
+	</div>
 </div>
-<div ng-cloak>
-  <md-content>
-    <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
-      <md-tab label="Nove porudžbine">
-        <md-content class="md-padding">
-            <md-list flex>
-              <md-subheader class="md-no-sticky">Spisak svih aktivnih porudžbina na koje nije poslata ponuda.</md-subheader>
-              <md-list-item class="md-3-line" ng-repeat="item in providerProfileVm.items" ng-click="null">
-                <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
-                <div class="md-list-item-text" layout="column">
-                  <h3>{{ item.restaurant_name }}</h3>
-                  <h4>{{ item.offer_name }}</h4>
-                  <p>{{ item.due_date }}</p>
-                </div >
-                <div class="md-secondary">
-                    <md-button class="md-raised" ng-click="providerProfileVm.showDetailed(item)">Više...</md-button>
-                    <md-button class="md-primary md-raised">Pošalji ponudu</md-button>
-                </div>
 
-                </md-list-item>
-            </md-list>
-        </md-content>
-      </md-tab>
-      <md-tab label="Aktivne ponude">
-          <md-content class="md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Spisak svik poslatih ponuda i njihovi trenutni statusi.</md-subheader>
-                <md-list-item class="md-3-line" ng-repeat="aitem in providerProfileVm.active" ng-click="null">
-                  <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
-                  <div class="md-list-item-text" layout="column">
-                    <h3>{{ aitem.offer }}</h3>
-                    <h4>Ponuđena cena: {{ aitem.price }}</h4>
-                    <p>Datum kreiranja: {{ aitem.date }}</p>
-                  </div >
-                  <div class="md-secondary">
-                      <md-button class="md-raised" ng-click="">Izmeni</md-button>
-                      <md-button class="md-primary md-raised" ng-click="">Povuci ponudu</md-button>
-                  </div>
+<div style="margin-top:15px" ng-cloak>
+    <md-content>
+        <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+          <md-tab label="Nove porudžbine">
+            <md-content class="md-padding">
+                <md-list flex>
+                  <md-subheader class="md-no-sticky">Spisak svih aktivnih porudžbina na koje nije poslata ponuda.</md-subheader>
+                  <md-list-item class="md-3-line" ng-repeat="item in providerVm.items" ng-click="null">
+                    <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
+                    <div class="md-list-item-text" layout="column">
+                      <h3>{{ item.restaurant_name }}</h3>
+                      <h4>{{ item.offer_name }}</h4>
+                      <p>{{ item.due_date }}</p>
+                    </div >
+                    <div class="md-secondary">
+                        <md-button class="md-raised" ng-click="providerVm.showDetailed(item)">Više...</md-button>
+                        <md-button class="md-primary md-raised">Pošalji ponudu</md-button>
+                    </div>
 
-                  </md-list-item>
-              </md-list>
-          </md-content>
-      </md-tab>
-      <md-tab label="Istorija ponuda">
-          <md-content class="md-padding">
-              <md-list flex>
-                <md-subheader class="md-no-sticky">Kompletna istorija svih ponuda.</md-subheader>
-                <md-list-item class="md-3-line" ng-repeat="hitem in providerProfileVm.history" ng-click="null">
-                  <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
-                  <div class="md-list-item-text" layout="column">
-                    <h3>{{ hitem.offer }}</h3>
-                    <h4>Ponuđena cena: {{ hitem.price }}</h4>
-                    <p>Datum kreiranja: {{ hitem.date }}</p>
-                  </div >
-                  <div class="md-secondary">
-                      <h3><span  class="label" ng-class="{   'label-primary' : hitem.status ===  'created',
-                                                        'label-success'  : hitem.status ===  'accepted',
-                                                        'label-danger'  : hitem.status ===  'denied'     }">Status: {{hitem.status}}</span></h3>
-                  </div>
+                    </md-list-item>
+                </md-list>
+            </md-content>
+          </md-tab>
+          <md-tab label="Aktivne ponude">
+              <md-content class="md-padding">
+                  <md-list flex>
+                    <md-subheader class="md-no-sticky">Spisak svik poslatih ponuda i njihovi trenutni statusi.</md-subheader>
+                    <md-list-item class="md-3-line" ng-repeat="aitem in providerVm.active" ng-click="null">
+                      <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
+                      <div class="md-list-item-text" layout="column">
+                        <h3>{{ aitem.offer }}</h3>
+                        <h4>Ponuđena cena: {{ aitem.price }}</h4>
+                        <p>Datum kreiranja: {{ aitem.date }}</p>
+                      </div >
+                      <div class="md-secondary">
+                          <md-button class="md-raised" ng-click="">Izmeni</md-button>
+                          <md-button class="md-primary md-raised" ng-click="">Povuci ponudu</md-button>
+                      </div>
 
-                  </md-list-item>
-              </md-list>
-          </md-content>
-      </md-tab>
-    </md-tabs>
-  </md-content>
+                      </md-list-item>
+                  </md-list>
+              </md-content>
+          </md-tab>
+          <md-tab label="Istorija ponuda">
+              <md-content class="md-padding">
+                  <md-list flex>
+                    <md-subheader class="md-no-sticky">Kompletna istorija svih ponuda.</md-subheader>
+                    <md-list-item class="md-3-line" ng-repeat="hitem in providerVm.history" ng-click="null">
+                      <img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar" alt="Offer icon" />
+                      <div class="md-list-item-text" layout="column">
+                        <h3>{{ hitem.offer }}</h3>
+                        <h4>Ponuđena cena: {{ hitem.price }}</h4>
+                        <p>Datum kreiranja: {{ hitem.date }}</p>
+                      </div >
+                      <div class="md-secondary">
+                          <h3><span  class="label" ng-class="{   'label-primary' : hitem.status ===  'created',
+                                                            'label-success'  : hitem.status ===  'accepted',
+                                                            'label-danger'  : hitem.status ===  'denied'     }">Status: {{hitem.status}}</span></h3>
+                      </div>
+
+                      </md-list-item>
+                  </md-list>
+              </md-content>
+          </md-tab>
+        </md-tabs>
+      </md-content>
+    </md-content>
 </div>
