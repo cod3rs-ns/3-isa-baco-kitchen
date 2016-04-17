@@ -45,11 +45,11 @@ public class Employee extends User{
         this.shoesSize = shoesSize;
     }
 
-    public void update(Cook newCook){
-        this.setFirstName(newCook.getFirstName());
-        this.setLastName(newCook.getLastName());
-        this.setBirthday(newCook.getBirthday());
-        this.setShoesSize(newCook.getShoesSize());
-        this.setDressSize(newCook.getDressSize());
+    public void update(Employee newEmployee){
+        this.setFirstName(newEmployee.getFirstName());
+        this.setLastName(newEmployee.getLastName());
+        this.setBirthday(newEmployee.getBirthday());
+        this.setShoesSize(newEmployee.getShoesSize());
+        this.setDressSize(newEmployee.getDressSize());
     }
 }

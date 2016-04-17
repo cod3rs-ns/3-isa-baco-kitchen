@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SingleEmployeeController', SingleEmployeeController);
 
-SingleEmployeeController.$inject = ['cookService', '$mdDialog','$mdToast', 'to_edit'];
+SingleEmployeeController.$inject = ['employeeService', '$mdDialog','$mdToast', 'to_edit'];
 
-function SingleEmployeeController(cookService, $mdDialog, $mdToast, to_edit) {
+function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit) {
     var employeeVm = this;
     employeeVm.employee = {};
     employeeVm.backup = {};
@@ -37,18 +37,13 @@ function SingleEmployeeController(cookService, $mdDialog, $mdToast, to_edit) {
     };
 
     function update() {
-        switch (employeeVm.employee.type) {
-            case "cook": cookService.
-                updateCook(employeeVm.employee)
+        employeeService.
+            updateEmployee(employeeVm.employee)
                     .then(function (data) {
+                        employeeVm.showToast('Uspješno ste izmijenili profil.');
                         employeeVm.confirmedEdit = true;
-                        employeeVm.showToast('Kuvar je uspješno izmijenjen.');
+                        employeeVm.cancel();
                     });
-                break;
-            default:
-                alert("wrong type of employee");
-        }
-        employeeVm.cancel();
     };
 
     function showToast(toast_message) {
