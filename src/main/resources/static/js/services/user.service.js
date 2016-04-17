@@ -6,7 +6,8 @@ userService.$inject = ['$http'];
 
 function userService($http) {
     var service = {
-        registerUser: registerUser
+        registerUser: registerUser,
+        getRegisteredUser: getRegisteredUser
     };
 
     return service;
@@ -18,4 +19,10 @@ function userService($http) {
         });
     };
 
+    function getRegisteredUser() {
+        return $http.get('api/user')
+            .then(function(response) {
+                return response.data;
+            });
+    }
 }

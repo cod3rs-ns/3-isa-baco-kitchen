@@ -40,6 +40,9 @@ function loginService($http, $location) {
             case 'waiter':
                 $location.path('profile-waiter');
                 break;
+            case 'restaurant_manager':
+                $location.path('profile-restaurant-manager');
+                break;
             default:
                 $location.path('login');
         }

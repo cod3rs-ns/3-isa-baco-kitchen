@@ -2,21 +2,33 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', '$mdDialog', '$routeParams'];
+RestaurantProfileController.$inject = ['restaurantService', 'userService', '$mdDialog', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, $mdDialog, $routeParams, SingleDrinkController){
+function RestaurantProfileController(restaurantService, userService, $mdDialog, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     restaurantVm.restaurant = {};
+    restaurantVm.addManagerOption = false;
 
     activate();
 
     function activate() {
-        return getRestaurant($routeParams.restaurantId).then(function() {
+        getRestaurant($routeParams.restaurantId).then(function() {
             //alert('Restaurant retreived from database.')
             restaurantVm.worktime = restaurantVm.restaurant.startTime + ' h : '
                                     + restaurantVm.restaurant.endTime + ' h'
         });
+
+
+        setPriorities().then(function(){
+        });
     };
+
+    function setPriorities(){
+        return userService.getRegisteredUser()
+            .then(function(data) {
+                restaurantVm.addManagerOption = (data.type == "system_manager");
+            });
+    }
 
     function getRestaurant(id) {
         return restaurantService.getRestaurant(id)
