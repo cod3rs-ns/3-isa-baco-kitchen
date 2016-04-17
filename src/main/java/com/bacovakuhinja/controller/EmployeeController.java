@@ -38,7 +38,7 @@ public class EmployeeController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Employee> createCook(@RequestBody Employee emp) {
+    public ResponseEntity <Employee> createEmployee(@RequestBody Employee emp) {
         Employee created = employeeService.create(emp);
         return new ResponseEntity<Employee>(created, HttpStatus.CREATED);
     }
@@ -48,7 +48,7 @@ public class EmployeeController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Employee> updateRestaurantManager(@RequestBody Employee emp) {
+    public ResponseEntity <Employee> updateEmployee(@RequestBody Employee emp) {
         Employee updatedEmp = employeeService.update(emp);
         if (updatedEmp == null) {
             return new ResponseEntity <Employee>(HttpStatus.NOT_FOUND);

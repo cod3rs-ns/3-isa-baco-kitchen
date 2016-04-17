@@ -26,7 +26,7 @@ public class VerificationTokenController {
     @Autowired
     private UserService userService;
 
-    // Registration Verification
+    // SendEmail Verification
     @RequestMapping(
             value    = "api/registration-confirm",
             method   = RequestMethod.GET

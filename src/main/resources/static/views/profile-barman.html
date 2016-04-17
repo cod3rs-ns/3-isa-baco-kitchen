@@ -18,8 +18,8 @@
 					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
 				</div>
 				<div flex class="content">
-					<h2> Ime </h2>
-					<h4> sergioramos@doktor.com </h4>
+					<h2> {{barmanProfileVm.barman.firstName}} &nbsp; {{barmanProfileVm.barman.lastName}} </h2>
+					<h4> {{barmanProfileVm.barman.email}} </h4>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<md-button  ng-click="barmanProfileVm.editProfile()" class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
 					<h4> Ažuriranje profila</h4>
 				</div>
 				<hr>

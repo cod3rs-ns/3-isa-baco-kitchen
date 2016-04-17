@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
 import com.bacovakuhinja.service.RestaurantService;
@@ -42,6 +43,7 @@ public class RestaurantController {
         Restaurant restaurant = restaurantService.findOne(id);
         return new ResponseEntity <Restaurant>(restaurant, HttpStatus.OK);
     }
+
 
     @RequestMapping(value = "/api/restaurants/{id}",
             method = RequestMethod.POST,

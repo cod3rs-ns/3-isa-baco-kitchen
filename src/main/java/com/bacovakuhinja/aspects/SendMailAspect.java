@@ -39,7 +39,7 @@ public class SendMailAspect {
     private static final String AUTH_USER = "dmarjanovic94@gmail.com";
     private static final String AUTH_PASS = "kyajhnarjqmrwqif";
 
-    @After(value = "@annotation(com.bacovakuhinja.annotations.Registration) && args(user)")
+    @After(value = "@annotation(com.bacovakuhinja.annotations.SendEmail) && args(user,..)")
     public void sendConfirmationMail(User user) throws MessagingException {
 
         // Generate VerificationToken

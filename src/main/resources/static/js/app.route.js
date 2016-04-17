@@ -39,13 +39,13 @@ function config($routeProvider) {
             controllerAs: 'cookProfileVm'
         })
         // Route for barman profile page
-        .when('/profile-barman', {
+        .when('/profile-barman/:barmanId', {
             templateUrl: 'views/profile-barman.html',
             controller: 'BarmanProfileController',
             controllerAs: 'barmanProfileVm'
         })
-		    // Route for waiter profile page
-        .when('/profile-waiter', {
+        // Route for waiter profile page
+        .when('/profile-waiter/:waiterId', {
             templateUrl: 'views/profile-waiter.html',
             controller: 'WaiterProfileController',
             controllerAs: 'waiterProfileVm'

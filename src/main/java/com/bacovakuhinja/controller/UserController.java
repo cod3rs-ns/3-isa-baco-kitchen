@@ -1,9 +1,8 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.annotations.Registration;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
-import com.bacovakuhinja.service.VerificationTokenService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -92,7 +91,7 @@ public class UserController {
         return null;
     }
 
-    @Registration
+    @SendEmail
     @RequestMapping(
             value    = "api/user/register",
             method   = RequestMethod.POST,

@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.RestaurantManager;
 import com.bacovakuhinja.service.RestaurantManagerService;
@@ -38,6 +39,7 @@ public class RestaurantManagerController {
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
 
+    @SendEmail
     @RequestMapping(value = "/api/rmanagers/{restaurant_id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,

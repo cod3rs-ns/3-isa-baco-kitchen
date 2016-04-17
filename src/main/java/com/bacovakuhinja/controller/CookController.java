@@ -50,7 +50,7 @@ public class CookController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Cook> updateRestaurantManager(@RequestBody Cook cook) {
+    public ResponseEntity <Cook> updateCook(@RequestBody Cook cook) {
         Cook updatedCook = cookService.update(cook);
         if (updatedCook == null) {
             return new ResponseEntity <Cook>(HttpStatus.NOT_FOUND);

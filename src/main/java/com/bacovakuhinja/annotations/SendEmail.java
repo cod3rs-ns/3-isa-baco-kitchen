@@ -1,4 +1,4 @@
 package com.bacovakuhinja.annotations;
 
-public @interface Registration {
+public @interface SendEmail {
 }

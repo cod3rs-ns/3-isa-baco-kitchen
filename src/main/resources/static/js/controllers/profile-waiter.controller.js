@@ -2,19 +2,33 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-function WaiterProfileController() {
+WaiterProfileController.$inject = ['waiterService', '$mdDialog', '$routeParams'];
+
+function WaiterProfileController(waiterService, $mdDialog, $routeParams) {
     var waiterProfileVm = this;
     
-    // Set bindable memebers at the top of the controller
-    waiterProfileVm.name = 'Sergio dr Ramos ';
-    waiterProfileVm.foo = foo;
-    
-    // Implement functions later
-    function foo() {
-        
-    }
-	
-	waiterProfileVm.meals = [
+    waiterProfileVm.waiter = {};
+
+    activate();
+
+    function activate(){
+        return getWaiter($routeParams.waiterId).then(function() {
+
+        });
+    };
+
+
+    function getWaiter(id){
+        return waiterService.getWaiter(id)
+            .then(function(data) {
+                waiterProfileVm.waiter = data;
+                waiterProfileVm.waiter.birthday = new Date(data.birthday);
+                return waiterProfileVm.cook;
+            });
+    };
+
+
+    waiterProfileVm.meals = [
       {
         name: 'Kolač sa borovnicama',
 		img_src: 'images/meals/borovnica.jpg'
@@ -50,6 +64,9 @@ function WaiterProfileController() {
         date: '15. septembar  2016',
       },
     ];
+
+
+    //Part for seting calendar  -----------------------------------
 	
 	waiterProfileVm.calendarView = 'month';
 	waiterProfileVm.calendarDate = new Date();
@@ -81,5 +98,21 @@ function WaiterProfileController() {
             resizable: true
         }
     ];
+
+
+    waiterProfileVm.editProfile = editProfile;
+    function editProfile() {
+        $mdDialog.show({
+            controller: 'SingleEmployeeController',
+            controllerAs: 'employeeVm',
+            templateUrl: '/views/dialogs/single-employee-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : waiterProfileVm.waiter,
+            }
+        });
+    };
 
 }
