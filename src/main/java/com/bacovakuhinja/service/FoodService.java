@@ -17,4 +17,5 @@ public interface FoodService {
     public void delete(Integer id);
 
     public Collection <Food> findAllByRestaurant(Integer restaurantId);
+
 }

@@ -41,11 +41,18 @@ function foodService($http){
 
     };
 
-    function createFood(restaurant, id){
+    function createFood(food, restaurant_id){
         return $http.post('/api/food/r=' + restaurant_id, food)
         .then(function (response) {
             return response.data;
         })
+    };
+
+    function getFoodByRestaurant(restaurant_id){
+        return $http.get('api/food/r=' + restaurant_id)
+        .then(function(response) {
+            return response.data;
+        });
     };
 
 }

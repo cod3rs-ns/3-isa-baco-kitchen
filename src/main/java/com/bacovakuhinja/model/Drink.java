@@ -1,47 +1,48 @@
 package com.bacovakuhinja.model;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "food")
+@Table(name = "drinks")
 @JsonIgnoreProperties(value = {"restaurant"})
-public class Food {
+public class Drink {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "f_id")
-    private Integer foodId;
+    @Column(name = "d_id")
+    private Integer drinkId;
 
-    @Column(name = "f_info")
+    @Column(name = "d_info")
     private String info;
 
-    @Column(name = "f_name")
+    @Column(name = "d_name")
     private String name;
 
-    @Column(name = "f_price")
+    @Column(name = "d_price")
     private Double price;
 
-    @Column(name = "f_type")
+    @Column(name = "d_type")
     private String type;
 
-    @Column(name = "f_image")
+    @Column(name = "d_image")
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "f_restaurant_id")
     private Restaurant restaurant;
 
-
-    public Food() {
+    public Drink() {
     }
 
-    public Integer getFoodId() {
-        return foodId;
+    public Integer getDrinkId() {
+        return drinkId;
     }
 
-    public void setFoodId(Integer foodId) {
-        this.foodId = foodId;
+    public void setDrinkId(Integer drinkId) {
+        this.drinkId = drinkId;
     }
 
     public String getInfo() {
