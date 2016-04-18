@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service
 public interface DrinkService {
 
     public Collection <Drink> findAll();

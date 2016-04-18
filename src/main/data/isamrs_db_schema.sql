@@ -298,7 +298,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`food` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`food` (
-  `f_id` INT NOT NULL,
+  `f_id` INT NOT NULL AUTO_INCREMENT,
   `f_info` VARCHAR(100) NULL,
   `f_name` VARCHAR(45) NOT NULL,
   `f_price` DOUBLE NOT NULL,
@@ -377,7 +377,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`drinks` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`drinks` (
-  `d_id` INT NOT NULL,
+  `d_id` INT NOT NULL AUTO_INCREMENT,
   `d_info` VARCHAR(100) NULL,
   `d_name` VARCHAR(45) NOT NULL,
   `d_price` DOUBLE NOT NULL,

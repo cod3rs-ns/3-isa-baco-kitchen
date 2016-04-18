@@ -4,10 +4,15 @@ angular
 
 RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog']
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController) {
+function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController, SingleDrinkController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
-    rmanagerVm.updateRestaurant = updateRestaurant
+    rmanagerVm.updateRestaurant = updateRestaurant;
+    rmanagerVm.createDrink = createDrink;
+    // Currently active tab
+    rmanagerVm.tabs = {
+        selected: 0
+    }
     activate();
 
     function activate() {
@@ -38,5 +43,22 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
                 to_edit : to_edit
             }
         });
-    }
+    };
+
+    function createDrink(restaurant_id, drinks_menu_ref) {
+        $mdDialog.show({
+            controller: 'SingleDrinkController',
+            controllerAs: 'drinkVm',
+            templateUrl: '/views/dialogs/drink-form-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant_id : restaurant_id,
+                drinks_menu_ref : drinks_menu_ref,
+                tabs : rmanagerVm.tabs
+            }
+        });
+    };
+
 }

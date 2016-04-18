@@ -10,7 +10,7 @@ function drinkService($http){
         getDrink: getDrink,
         updateDrink: updateDrink,
         deleteDrink: deleteDrink,
-        createDrink: createDrink
+        createDrink: createDrink,
         getDrinksByRestaurant: getDrinksByRestaurant
     };
 

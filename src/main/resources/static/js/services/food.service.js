@@ -10,7 +10,7 @@ function foodService($http){
         getSingle: getSingle,
         updateFood: updateFood,
         deleteFood: deleteFood,
-        createFood: createFood
+        createFood: createFood,
         getFoodByRestaurant: getFoodByRestaurant
     };
 

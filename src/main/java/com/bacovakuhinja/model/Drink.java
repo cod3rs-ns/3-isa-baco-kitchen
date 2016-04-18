@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "drinks")
 @JsonIgnoreProperties(value = {"restaurant"})
 public class Drink {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "d_id")
@@ -31,7 +31,7 @@ public class Drink {
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "f_restaurant_id")
+    @JoinColumn(name = "d_restaurant_id")
     private Restaurant restaurant;
 
     public Drink() {

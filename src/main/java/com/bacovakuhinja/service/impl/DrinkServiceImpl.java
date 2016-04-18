@@ -4,10 +4,12 @@ import com.bacovakuhinja.model.Drink;
 import com.bacovakuhinja.repository.DrinkRepository;
 import com.bacovakuhinja.service.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class DrinkServiceImpl implements DrinkService {
 
     @Autowired

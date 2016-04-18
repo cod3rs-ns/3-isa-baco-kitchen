@@ -40,7 +40,7 @@ public class DrinkController {
         return new ResponseEntity <Drink>(drink, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/drink/r={rst_id}",
+    @RequestMapping(value = "/api/drinks/r={rst_id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
