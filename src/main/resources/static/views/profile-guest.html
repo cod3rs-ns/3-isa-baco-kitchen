@@ -4,6 +4,15 @@
     <md-toolbar scroll>
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
+        <md-button ng-show="guestProfileVm.editMode" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
+          <md-icon aria-label="Cancel" class="material-icons">cancel</md-icon>
+        </md-button>
+        <md-button ng-show="guestProfileVm.editMode" class="md-icon-button" aria-label="Save changes" ng-disabled="editProfileForm.$invalid" ng-click="guestProfileVm.saveChanges()">
+          <md-icon aria-label="Save changes" class="material-icons">save</md-icon>
+        </md-button>
+        <md-button ng-hide="guestProfileVm.editMode" class="md-icon-button" aria-label="Edit profile" ng-click="guestProfileVm.editProfile()">
+          <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
+        </md-button>
         <md-button class="md-icon-button" aria-label="Notification">
           <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
         </md-button>
@@ -19,8 +28,52 @@
           <img alt="{{guestProfileVm.user.firstName}}" ng-src="{{guestProfileVm.user.image}}" class="md-avatar" />
         </div>
         <div flex class="content">
-          <h2>{{ guestProfileVm.user.firstName + ' ' +  guestProfileVm.user.lastName }}</h2>
+          <!-- Ime i prezime -->
+          <h2 ng-hide="guestProfileVm.editMode">{{ guestProfileVm.user.firstName + ' ' +  guestProfileVm.user.lastName }}</h2>
+          
+          <!-- E-mail (ne moze se mijenjati) -->
           <h4>{{ guestProfileVm.user.email }}</h4>
+          
+          <!-- Edit profila -->
+          <form name="editProfileForm" ng-show="guestProfileVm.editMode">
+            <div layout-gt-sm="row">
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Ime</label>
+                <input md-maxlength="10" required name="name" ng-model="guestProfileVm.user.firstName" />
+                <div ng-messages="editProfileForm.name.$error">
+                  <div ng-message="required">Ime je obavezno.</div>
+                  <div ng-message="md-maxlength">Ime ne može biti duže od 10 karaktera.</div>
+                </div>
+              </md-input-container>
+              <md-input-container class="md-block" flex-gt-sm>
+                <label>Prezime</label>
+                <input md-maxlength="20" required name="lastname" ng-model="guestProfileVm.user.lastName" />
+                <div ng-messages="editProfileForm.lastname.$error" role="alert">
+                  <div ng-message="required">Prezime je obavezno.</div>
+                  <div ng-message="md-maxlength">Prezime ne može biti duže od 20 karaktera.</div>
+                </div>
+              </md-input-container>
+            </div>
+            
+            <md-input-container class="md-block">
+              <label>Nova lozinka</label>
+              <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
+              <input minlength="8" required type="password" id="userPassword" name="userPassword" ng-model="guestProfileVm.user.password"/>
+              <div ng-messages="editProfileForm.userPassword.$error" role="alert">
+                <div ng-message="required">Lozinka je obavezna.</div>
+                <div ng-message="minlength">Lozinka mora imati bar 8 karaktera.</div>
+              </div>
+            </md-input-container>
+
+            <md-input-container class="md-block">
+              <label>Ponovite lozinku</label>
+              <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
+              <input required type="password" name="userPasswordRepeated" pw-match="userPassword" ng-model="guestProfileVm.user.passwordRepeated"/>
+              <div ng-messages="editProfileForm.userPasswordRepeated.$error" role="alert">
+                <div ng-message="pwmatch">Lozinke se ne poklapaju.</div>
+              </div>
+            </md-input-container>
+          </form>
         </div>
       </div>
     

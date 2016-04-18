@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
@@ -44,6 +45,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(exists, HttpStatus.OK);
     }
 
+    @Authorization(value = "guest")
     @RequestMapping(
             value    = "/api/user",
             method   = RequestMethod.GET,
@@ -51,27 +53,8 @@ public class UserController {
     )
     public ResponseEntity<?> getUser(final HttpServletRequest request) {
 
-        final String auth = request.getHeader("Authorization");
-        if (auth == null || !auth.startsWith("Bearer ")) {
-            return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
-        }
-
-        // Authorization token
-        final String token = auth.substring(7);
-
-        final Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
-                .parseClaimsJws(token).getBody();
-
-        final String email = claims.get("user").toString();
-
-
-        for (User user : userService.findAll()) {
-            if (user.getEmail().equals(email)) {
-                return new ResponseEntity<User>(user, HttpStatus.OK);
-            }
-        }
-
-        return new ResponseEntity<String>("Unauthorized", HttpStatus.UNAUTHORIZED);
+        User user = (User) request.getAttribute("loggedUser");
+        return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -103,6 +86,19 @@ public class UserController {
         System.out.println(user.toString());
         User created = userService.create(user);
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(
+            value    = "api/user/update",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> update(@RequestBody User user) {
+        System.out.println("Updating... ");
+        System.out.println(user.toString());
+        User updated = userService.update(user);
+        return new ResponseEntity<User>(updated, HttpStatus.OK);
     }
 
     private static class LoginResponse {

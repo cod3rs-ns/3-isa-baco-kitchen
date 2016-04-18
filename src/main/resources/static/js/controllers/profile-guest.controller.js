@@ -9,14 +9,30 @@ function GuestProfileController(guestService) {
 
     // Set bindable memebers at the top of the controller
     guestProfileVm.showSearch = false;
+    guestProfileVm.editMode = false;
     guestProfileVm.user = {};
-    guestProfileVm.foo = foo;
+    // Functions 
+    guestProfileVm.editProfile = editProfile;
+    guestProfileVm.saveChanges = saveChanges;
+    guestProfileVm.cancel = cancel;
 
     activate();
 
     // Implement functions later
-    function foo() {
-
+    function editProfile() {
+        guestProfileVm.editMode = true;
+    }
+    
+    function saveChanges() {
+        guestService.updateGuest(guestProfileVm.user)
+          .then(function (updatedUser) {
+            guestProfileVm.user = updatedUser;
+          });
+        guestProfileVm.editMode = false;
+    }
+    
+    function cancel() {
+        guestProfileVm.editMode = false;
     }
     
     function activate() {
