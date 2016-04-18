@@ -6,7 +6,8 @@ guestService.$inject = ['$http'];
 
 function guestService($http) {
     var service = {
-        getGuest: getGuest
+        getGuest: getGuest,
+        updateGuest: updateGuest
     };
 
     return service;
@@ -17,5 +18,11 @@ function guestService($http) {
             return response.data;
         });
     };
-
+    
+    function updateGuest(user) {
+        return $http.put('api/user/update', user)
+        .then(function(response) {
+            return response.data;
+        });
+    };
 }

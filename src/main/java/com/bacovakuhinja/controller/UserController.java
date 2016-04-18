@@ -88,6 +88,19 @@ public class UserController {
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
     }
 
+    @RequestMapping(
+            value    = "api/user/update",
+            method   = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<User> update(@RequestBody User user) {
+        System.out.println("Updating... ");
+        System.out.println(user.toString());
+        User updated = userService.update(user);
+        return new ResponseEntity<User>(updated, HttpStatus.OK);
+    }
+
     private static class LoginResponse {
         public String token;
         public LoginResponse(final String token) {

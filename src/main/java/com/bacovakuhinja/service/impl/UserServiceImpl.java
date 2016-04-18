@@ -49,11 +49,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        User userPersistent = userRepository.findOne(user.getUserId());
+        User userPersistent = findOne(user.getEmail());
 
+        System.out.println(userPersistent);
         if (userPersistent == null)
             return null;
 
-        return userRepository.save(userPersistent);
+        return userRepository.save(user);
     }
 }
