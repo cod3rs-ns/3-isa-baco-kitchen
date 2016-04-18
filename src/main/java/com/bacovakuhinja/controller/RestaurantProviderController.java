@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.RestaurantProvider;
 import com.bacovakuhinja.service.RestaurantProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class RestaurantProviderController {
         return new ResponseEntity <RestaurantProvider>(provider, HttpStatus.OK);
     }
 
+    @SendEmail
     @RequestMapping(value = "/api/providers",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -41,6 +43,7 @@ public class RestaurantProviderController {
     public ResponseEntity <RestaurantProvider> createProvider(@RequestBody RestaurantProvider provider) {
         // TODO generate password
         provider.setPassword("generated_password");
+        provider.setVerified("not_verified");
         RestaurantProvider created = providerService.create(provider);
         return new ResponseEntity <RestaurantProvider>(created, HttpStatus.CREATED);
     }

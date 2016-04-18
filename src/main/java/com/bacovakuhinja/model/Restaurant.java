@@ -1,9 +1,13 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurants")
@@ -29,10 +33,17 @@ public class Restaurant implements Serializable {
     @Column(name = "r_time_end")
     private Integer endTime;
 
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "r_sm_id")
     private SystemManager systemManager;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private Set<Food> foodMenu = new HashSet<Food>(0);
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private Set<Drink> drinksMenu = new HashSet<Drink>(0);
 
     public Restaurant() {
     }
@@ -88,4 +99,22 @@ public class Restaurant implements Serializable {
     public SystemManager getSystemManager() { return systemManager; }
 
     public void setSystemManager(SystemManager systemManager) { this.systemManager = systemManager; }
+
+    @JsonProperty
+    public Set <Food> getFoodMenu() {
+        return foodMenu;
+    }
+    @JsonIgnore
+    public void setFoodMenu(Set <Food> foodMenu) {
+        this.foodMenu = foodMenu;
+    }
+
+    @JsonProperty
+    public Set <Drink> getDrinksMenu() {
+        return drinksMenu;
+    }
+    @JsonIgnore
+    public void setDrinksMenu(Set <Drink> drinksMenu) {
+        this.drinksMenu = drinksMenu;
+    }
 }

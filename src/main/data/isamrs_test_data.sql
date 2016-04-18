@@ -29,3 +29,8 @@ INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('7');
 INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('8');
 INSERT INTO `isa_mrs_project`.`waiters` (`w_id`) VALUES ('9');
 
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('1', 'Ukusno.', 'Kolač s nečim.', '150', 'dessert', 'img.png', '1');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('2', 'Ukusno', 'Kolač s prelivom.', '235', 'dessert', 'img.png', '2');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('3', 'Ukusss', 'Supa', '300', 'main_dish', 'img.png', '1');
+
+

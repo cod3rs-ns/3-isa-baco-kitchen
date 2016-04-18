@@ -35,7 +35,8 @@
 		<div layout="column">
 			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
                 <div class="option">
-					<md-button ng-click="rmanagerVm.updateRestaurant(rmanagerVm.rmanager.restaurant);" class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
+					<md-button 	ng-click="rmanagerVm.updateRestaurant();"
+								class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
 					<h4> Izmena podataka o restoranu </h4>
 				</div>
 				<hr>
@@ -45,12 +46,14 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+					<md-button 	ng-click="rmanagerVm.createFood();"
+					 			class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
 					<h4> Dodavanje novog jela </h4>
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">local_bar</i> </md-button>
+					<md-button 	ng-click="rmanagerVm.createDrink();"
+								class="action-empl md-raised md-primary"> <i class="material-icons md-48">local_bar</i> </md-button>
 					<h4> Dodavanje novog pića </h4>
 				</div>
 				<hr>
@@ -66,7 +69,7 @@
 
 <div style="margin-top:15px"ng-cloak>
   <md-content>
-    <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
+    <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
         <md-tab label="Informacije o restoranu">
           <md-content class="md-padding">
 			  	<!-- NEEDS TO BE CHANGED -->
@@ -79,7 +82,7 @@
             <md-content class="md-padding">
 
             <div layout="row" layout-wrap>
-              <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.rmanager.restaurant.foodMenu" layout-wrap>
 
                   <md-card class="order-item">
                         <img src="{{meal.img_src}}" class="md-card-image order-img">
@@ -103,10 +106,10 @@
           <md-content class="md-padding">
 
           <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.drinks" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in rmanagerVm.rmanager.restaurant.drinksMenu" layout-wrap>
 
                 <md-card class="order-item">
-                      <img src="{{drink.img_src}}" class="md-card-image order-img">
+                      <img src="{{drink.image}}" class="md-card-image order-img">
 
                       <md-card-content>
                           <h4>{{drink.name}}</h4>

@@ -2,16 +2,32 @@ angular
     .module('isa-mrs-project')
     .controller('ProviderProfileController', ProviderProfileController);
 
-ProviderProfileController.$inject = ['$mdDialog'];
+ProviderProfileController.$inject = ['providerService', '$mdDialog'];
 
-function ProviderProfileController($mdDialog, OfferRequestController) {
-    var providerProfileVm = this;
+function ProviderProfileController(providerService, $mdDialog, OfferRequestController) {
+    var providerVm = this;
+    providerVm.provider = {};
 
-    // Test data, should be retreived from REST Service
-    providerProfileVm.name = 'Rober Downey Jr';
-    providerProfileVm.image = 'images/profile-provider.png';
-    providerProfileVm.email = 'head@stark.com';
-    providerProfileVm.items = [
+    activate();
+
+    function activate() {
+        getProvider(5).then(function() {
+            console.log("Provider retreived.");
+        });
+
+    };
+
+    function getProvider(id) {
+        return providerService.getProvider(id)
+            .then(function(data) {
+                providerVm.provider = data;
+                console.log(data);
+                return providerVm.provider;
+            });
+    };
+
+    // TODO: Test data, should be retreived from REST Service
+    providerVm.items = [
       {
         restaurant_name: 'Macchiato',
         offer_name: 'Generalna nabavka - JUN',
@@ -31,7 +47,7 @@ function ProviderProfileController($mdDialog, OfferRequestController) {
         content: "Potrebno toga i toga, toliko i toliko..."
       },
     ];
-    providerProfileVm.active = [
+    providerVm.active = [
         {
             offer: 'Irish pub - porudžbina JUL',
             price: '15 000 RSD',
@@ -43,7 +59,7 @@ function ProviderProfileController($mdDialog, OfferRequestController) {
             date: '30. jul 2016'
         }
     ];
-    providerProfileVm.history = [
+    providerVm.history = [
         {
             offer: 'Irish pub - porudžbina JUL',
             price: '15 000 RSD',
@@ -62,8 +78,9 @@ function ProviderProfileController($mdDialog, OfferRequestController) {
             date: '30. jul 2016',
             status: 'denied'
         }
-    ]
-    providerProfileVm.showDetailed = showDetailed;
+    ];
+
+    providerVm.showDetailed = showDetailed;
 
     // Implement functions later
     function showDetailed(offer) {

@@ -4,10 +4,16 @@ angular
 
 RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog']
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController) {
+function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController, SingleDrinkController, SingleFoodController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
-    rmanagerVm.updateRestaurant = updateRestaurant
+    rmanagerVm.updateRestaurant = updateRestaurant;
+    rmanagerVm.createDrink = createDrink;
+    rmanagerVm.createFood = createFood;
+    // Currently active tab
+    rmanagerVm.tabs = {
+        selected: 0
+    }
     activate();
 
     function activate() {
@@ -26,7 +32,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
             });
     };
 
-    function updateRestaurant(to_edit) {
+    function updateRestaurant() {
         $mdDialog.show({
             controller: 'SingleRestaurantController',
             controllerAs: 'restaurantVm',
@@ -35,8 +41,42 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                to_edit : to_edit
+                to_edit : rmanagerVm.rmanager.restaurant,
+                restaurants : null
             }
         });
-    }
+    };
+
+    function createDrink(restaurant_id, drinks_menu_ref) {
+        $mdDialog.show({
+            controller: 'SingleDrinkController',
+            controllerAs: 'drinkVm',
+            templateUrl: '/views/dialogs/drink-form-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
+                drinks_menu_ref :  rmanagerVm.rmanager.restaurant.drinksMenu,
+                tabs : rmanagerVm.tabs
+            }
+        });
+    };
+
+    function createFood() {
+        $mdDialog.show({
+            controller: 'SingleFoodController',
+            controllerAs: 'foodVm',
+            templateUrl: '/views/dialogs/food-form-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
+                food_menu_ref : rmanagerVm.rmanager.restaurant.foodMenu,
+                tabs : rmanagerVm.tabs
+            }
+        });
+    };
+
 }

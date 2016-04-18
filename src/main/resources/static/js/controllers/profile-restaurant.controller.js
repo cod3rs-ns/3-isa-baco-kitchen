@@ -38,60 +38,6 @@ function RestaurantProfileController(restaurantService, userService, $mdDialog, 
             });
     };
 
-    restaurantVm.meals = [
-          {
-            name: 'Kolač sa borovnicama',
-    		img_src: 'images/meals/borovnica.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-          },
-    	  {
-            name: 'Štrudla sa makom',
-    		img_src: 'images/meals/mak.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-          },
-    	  {
-            name: 'Štrudla sa makom',
-    		img_src: 'images/meals/mak.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        },
-        {
-          name: 'Kolač sa borovnicama',
-          img_src: 'images/meals/borovnica.jpg',
-          price: '150 RSD',
-          info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        }
-    ];
-
-    restaurantVm.drinks = [
-        {
-            name: 'Sour',
-            img_src: 'images/meals/sour.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        },
-        {
-            name: 'Cosmopolitan',
-            img_src: 'images/meals/cosmopolitan.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        },
-        {
-            name: 'Sour',
-            img_src: 'images/meals/sour.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        },
-        {
-            name: 'Cosmopolitan',
-            img_src: 'images/meals/cosmopolitan.jpg',
-            price: '150 RSD',
-            info: 'Kratke informacije o piću/jelu. Npr. od čega se pravi, nešto specifično...'
-        }
-    ];
-
     restaurantVm.createDrink = createDrink;
 
     function createDrink(){
