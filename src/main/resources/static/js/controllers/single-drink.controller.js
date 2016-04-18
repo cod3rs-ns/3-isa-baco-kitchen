@@ -4,7 +4,7 @@ angular
 
 SingleDrinkController.$inject = ['drinkService', '$mdDialog', '$mdToast', 'restaurant_id', 'drinks_menu_ref', 'tabs'];
 
-function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id, drinks_menu_ref, tabs){
+function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id, drinks_menu_ref, tabs) {
     var drinkVm = this;
     drinkVm.restaurant_id = restaurant_id;
     drinkVm.drinks_menu_ref = drinks_menu_ref;
@@ -12,6 +12,7 @@ function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id,
     drinkVm.cancel = cancel;
     drinkVm.createDrink = createDrink;
     drinkVm.showToast = showToast;
+
     drinkVm.drink = {
         name: '',
         info: '',
@@ -45,7 +46,6 @@ function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id,
             });
     };
 
-
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
@@ -54,9 +54,7 @@ function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id,
         });
     };
 
-    drinkVm.cancel = cancel;
-
-    function cancel(){
+    function cancel() {
         $mdDialog.cancel();
     };
 }

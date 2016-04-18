@@ -77,7 +77,7 @@
         <md-content class="md-padding">
 
         <div layout="row" layout-wrap>
-          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.restaurant.foodMenu" layout-wrap>
 
               <md-card class="order-item">
                     <img src="{{meal.img_src}}" class="md-card-image order-img">
@@ -101,7 +101,7 @@
           <md-content class="md-padding">
 
           <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.drinks" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.restaurant.drinksMenu" layout-wrap>
 
                 <md-card class="order-item">
                       <img src="{{drink.img_src}}" class="md-card-image order-img">

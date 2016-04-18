@@ -45,7 +45,7 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+					<md-button ng-click="rmanagerVm.createFood();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
 					<h4> Dodavanje novog jela </h4>
 				</div>
 				<hr>
@@ -80,7 +80,7 @@
             <md-content class="md-padding">
 
             <div layout="row" layout-wrap>
-              <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.rmanager.restaurant.foodMenu" layout-wrap>
 
                   <md-card class="order-item">
                         <img src="{{meal.img_src}}" class="md-card-image order-img">
