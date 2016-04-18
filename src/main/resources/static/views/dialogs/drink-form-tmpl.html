@@ -45,11 +45,14 @@
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Tip pića</label>
-                        <md-select ng-model="drinkVm.drink.type" required>
+                        <md-select name="drinkType" ng-model="drinkVm.drink.type" required>
                             <md-option ng-repeat="type in drinkVm.allowedTypes" value="{{type.db_value}}">
                                 {{type.name}}
                             </md-option>
                         </md-select>
+                        <div ng-messages="drinkForm.drinkType.$error">
+                            <div ng-message="required">Neophodno je izabrati tip pića.</div>
+                        </div>
                     </md-input-container>
                 </form>
             </md-content>

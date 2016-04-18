@@ -16,7 +16,7 @@ function SingleDrinkController(drinkService, $mdDialog, $mdToast, restaurant_id,
     drinkVm.drink = {
         name: '',
         info: '',
-        price: 0,
+        price: 1,
         type: '',
         image: 'images/meals/cosmopolitan.jpg',
         drinkId: null

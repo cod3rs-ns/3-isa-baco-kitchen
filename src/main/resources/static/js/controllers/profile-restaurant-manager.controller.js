@@ -32,7 +32,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
             });
     };
 
-    function updateRestaurant(to_edit) {
+    function updateRestaurant() {
         $mdDialog.show({
             controller: 'SingleRestaurantController',
             controllerAs: 'restaurantVm',
@@ -41,7 +41,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                to_edit : to_edit
+                to_edit : rmanagerVm.rmanager.restaurant,
+                restaurants : null
             }
         });
     };
@@ -55,8 +56,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                restaurant_id : restaurant_id,
-                drinks_menu_ref : drinks_menu_ref,
+                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
+                drinks_menu_ref :  rmanagerVm.rmanager.restaurant.drinksMenu,
                 tabs : rmanagerVm.tabs
             }
         });
