@@ -293,25 +293,25 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `isa_mrs_project`.`meals_and_drinks`
+-- Table `isa_mrs_project`.`food`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`meals_and_drinks` ;
+DROP TABLE IF EXISTS `isa_mrs_project`.`food` ;
 
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`meals_and_drinks` (
-  `md_id` INT NOT NULL,
-  `md_info` VARCHAR(100) NULL,
-  `md_name` VARCHAR(45) NOT NULL,
-  `md_price` DECIMAL NOT NULL,
-  `md_type` VARCHAR(45) NOT NULL,
-  `md_image` VARCHAR(100) NOT NULL,
-  `md_restaurant_id` INT NOT NULL,
-  PRIMARY KEY (`md_id`),
-  INDEX `md_restaurant_fid_idx` (`md_restaurant_id` ASC),
-  CONSTRAINT `md_restaurant_fid`
-    FOREIGN KEY (`md_restaurant_id`)
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`food` (
+  `f_id` INT NOT NULL,
+  `f_info` VARCHAR(100) NULL,
+  `f_name` VARCHAR(45) NOT NULL,
+  `f_price` DOUBLE NOT NULL,
+  `f_type` VARCHAR(45) NOT NULL,
+  `f_image` VARCHAR(100) NOT NULL,
+  `f_restaurant_id` INT NOT NULL,
+  PRIMARY KEY (`f_id`),
+  INDEX `md_restaurant_fid_idx` (`f_restaurant_id` ASC),
+  CONSTRAINT `f_restaurant_fid`
+    FOREIGN KEY (`f_restaurant_id`)
     REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -368,6 +368,29 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`verification_tokens` (
     REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`drinks`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`drinks` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`drinks` (
+  `d_id` INT NOT NULL,
+  `d_info` VARCHAR(100) NULL,
+  `d_name` VARCHAR(45) NOT NULL,
+  `d_price` DOUBLE NOT NULL,
+  `d_type` VARCHAR(45) NOT NULL,
+  `d_image` VARCHAR(100) NOT NULL,
+  `d_restaurant_id` INT NOT NULL,
+  PRIMARY KEY (`d_id`),
+  INDEX `d_restaurant_fid_idx` (`d_restaurant_id` ASC),
+  CONSTRAINT `d_restaurant_fid`
+    FOREIGN KEY (`d_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
