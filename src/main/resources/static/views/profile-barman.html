@@ -14,12 +14,32 @@
 
 		<div layout="column">
 			<div layout="row" layout-xs="column">
-				<div flex class="content">
+				<div class="content">
 					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
 				</div>
 				<div flex class="content">
-					<h2> {{barmanProfileVm.barman.firstName}} &nbsp; {{barmanProfileVm.barman.lastName}} </h2>
-					<h4> {{barmanProfileVm.barman.email}} </h4>
+					<table style="vertical-align: center; margin-top:40px; margin-left: 35px;">
+						<tr>
+							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
+							<td ><h2> {{barmanProfileVm.barman.firstName}} &nbsp; {{barmanProfileVm.barman.lastName}}</h2></td>
+						</tr>
+						<tr>
+							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
+							<td ><h4> {{barmanProfileVm.barman.email}} </h4></td>
+						</tr>
+						<tr>
+							<td valign="top"><md-icon class="material-icons">date_range</md-icon></td>
+							<td ><h4> {{barmanProfileVm.barman.birthday | date: 'longDate' }} </h4></td>
+						</tr>
+						<tr>
+							<td valign="top"><i>broj cipela: </i></td>
+							<td><h4> {{barmanProfileVm.barman.shoesSize}}</h4></td>
+						</tr>
+						<tr>
+							<td valign="top"><i>konfekcijski broj: &nbsp;&nbsp;</i></td>
+							<td><h4> {{barmanProfileVm.barman.dressSize}} </h4></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
