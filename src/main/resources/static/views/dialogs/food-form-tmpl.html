@@ -1,0 +1,69 @@
+<md-dialog flex="50" aria-label="Jelo"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Kreiranje novog jela</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="foodVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <md-content layout-padding>
+                <form name="foodForm">
+                    <md-input-container class="md-block">
+                        <label>Naziv jela</label>
+                        <input required name="foodName" ng-model="foodVm.food.name">
+                        <div ng-messages="foodForm.foodName.$error">
+                            <div ng-message="required">Ovo polje je neophodno.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Opis</label>
+                        <input md-maxlength="100" required md-no-asterisk name="foodInfo" ng-model="foodVm.food.info">
+                        <div ng-messages="foodForm.foodInfo.$error">
+                            <div ng-message="required">Ovo polje je neophodno</div>
+                            <div ng-message="md-maxlength">Opis jela mora biti kraći od 100 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Cena jela (RSD)</label>
+                        <input required type="number" step="any" name="foodPrice" ng-model="foodVm.food.price" min="1" />
+                        <div ng-messages="foodForm.foodPrice.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">
+                                Ovo polje je neophodno.
+                            </div>
+                            <div ng-message="min">
+                                Cena jela mora biti minimalno 1 RSD.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Tip jela</label>
+                        <md-select ng-model="foodVm.food.type" required>
+                            <md-option ng-repeat="type in foodVm.allowedTypes" value="{{type.db_value}}">
+                                {{type.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-disabled="!foodForm.$valid" class="md-raised md-primary" ng-click="foodVm.createFood();" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="foodVm.cancel()" md-autofocus>
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

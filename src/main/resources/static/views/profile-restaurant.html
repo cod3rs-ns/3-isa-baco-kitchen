@@ -3,10 +3,7 @@
         <md-toolbar scroll>
             <div class="md-toolbar-tools">
                 <h3 md-header-title flex>Profil restorana</h3>
-                <md-button class="md-raised md-accent" aria-label="Rezerviši">
-                    Rezerviši
-                </md-button>
-                <md-button class="md-raised md-default" aria-label="Prikaži na mapi">
+                <md-button class="md-raised md-accent" aria-label="Prikaži na mapi">
                     Prikaži na mapi
                 </md-button>
                 <md-button class="md-icon-button" aria-label="More">
@@ -29,11 +26,6 @@
                     <md-header class="add-info-header"> <i class="material-icons md-36">info_outline</i>&nbsp;&nbsp;Informacije</md-header>
                     <p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>
                 </md-content>
-                <div>
-                    <md-content class="md-padding">
-                        <md-button class="md-raised md-default" ng-click="restaurantVm.createDrink()">Novo piće</md-button>
-                    </md-content>
-                </div>
             </div>
         </div>
     </div>
@@ -46,25 +38,21 @@
 
         <div layout="column">
             <div style="padding-right: 12px; padding-left:5px; background-color:white">
+                <div class="option">
+                    <md-button ng-click="restaurantVm.test();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+                    <h4> Dodavanje novog restorana - test</h4>
+                </div>
+                <hr>
+                <div class="option">
+                    <md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
+                    <h4>Rezerviši</h4>
+                </div>
+                <hr>
                 <div class="option" ng-show="restaurantVm.addManagerOption">
-                    <md-button ng-click="restaurantVm.addRestaurantManager()" class="action-empl"> <i class="material-icons md-48">supervisor_account</i> </md-button>
+                    <md-button ng-click="restaurantVm.addRestaurantManager()" class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
                     <h4> Registrovanje menadžera restorana</h4>
                 </div>
                 <hr>
-                <div class="option">
-                    <md-button ng-click="restaurantVm.test();" class="action-empl"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
-                    <h4> Dodavanje novog restorana </h4>
-                </div>
-                <hr>
-                <div class="option">
-                    <md-button class="action-empl"> <i class="material-icons md-48">assignment_ind</i> </md-button>
-                    <h4> Registrovanje provajdera </h4>
-                </div>
-                <hr>
-                <div class="option">
-                    <md-button class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
-                    <h4> Ažuriranje profila</h4>
-                </div>
             </div>
         </div>
     </div>
@@ -77,7 +65,7 @@
         <md-content class="md-padding">
 
         <div layout="row" layout-wrap>
-          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.meals" layout-wrap>
+          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.restaurant.foodMenu" layout-wrap>
 
               <md-card class="order-item">
                     <img src="{{meal.img_src}}" class="md-card-image order-img">
@@ -101,7 +89,7 @@
           <md-content class="md-padding">
 
           <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.drinks" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.restaurant.drinksMenu" layout-wrap>
 
                 <md-card class="order-item">
                       <img src="{{drink.img_src}}" class="md-card-image order-img">
