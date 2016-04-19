@@ -7,7 +7,8 @@ cookService.$inject = ['$http'];
 function cookService($http){
     var service = {
         getCook: getCook,
-        updateCook: updateCook
+        updateCook: updateCook,
+        getLoggedCook: getLoggedCook
     };
 
     return service;
@@ -26,5 +27,10 @@ function cookService($http){
             })
     };
 
-
+    function getLoggedCook() {
+        return $http.get('api/cook')
+            .then(function(response){
+                return response.data;
+            });
+    };
 }

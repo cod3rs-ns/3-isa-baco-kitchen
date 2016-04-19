@@ -28,7 +28,8 @@ function SystemManagerProfileController(systemManagerService, $mdDialog) {
     activate();
 
     function activate() {
-        return getRestaurant(6).then(function() {
+        //TODO change id
+        return getRestaurant(5).then(function() {
         });
     }
 

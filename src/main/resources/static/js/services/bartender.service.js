@@ -7,7 +7,8 @@ bartenderService.$inject = ['$http'];
 function bartenderService($http){
     var service = {
         getBartender: getBartender,
-        updateBartender: updateBartender
+        updateBartender: updateBartender,
+        getLoggedBartender: getLoggedBartender
     };
 
     return service;
@@ -26,5 +27,10 @@ function bartenderService($http){
             })
     };
 
-
+    function getLoggedBartender() {
+        return $http.get('api/bartender')
+            .then(function(response){
+                return response.data;
+            });
+    };
 }

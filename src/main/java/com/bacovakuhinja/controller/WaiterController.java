@@ -1,6 +1,8 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Cook;
+import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.model.Waiter;
 import com.bacovakuhinja.service.EmployeeService;
 import com.bacovakuhinja.service.WaiterService;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +40,18 @@ public class WaiterController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> getWaiter(@PathVariable("id") Integer id) {
         Waiter waiter = waiterService.findOne(id);
+        return new ResponseEntity <Waiter>(waiter, HttpStatus.OK);
+    }
+
+
+    @Authorization(value = "waiter")
+    @RequestMapping(
+            value = "/api/waiter",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Waiter> getLoggedInCook(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
         return new ResponseEntity <Waiter>(waiter, HttpStatus.OK);
     }
 

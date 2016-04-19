@@ -17,8 +17,8 @@ function CookProfileController(cookService, $mdDialog, $routeParams) {
     };
 
 
-    function getCook(id){
-        return cookService.getCook(id)
+    function getCook(){
+        return cookService.getLoggedCook()
             .then(function(data) {
                 cookProfileVm.cook = data;
                 cookProfileVm.cook.birthday = new Date(data.birthday);

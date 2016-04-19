@@ -18,8 +18,8 @@ function WaiterProfileController(waiterService, $mdDialog, $routeParams) {
     };
 
 
-    function getWaiter(id){
-        return waiterService.getWaiter(id)
+    function getWaiter(){
+        return waiterService.getLoggedWaiter()
             .then(function(data) {
                 waiterProfileVm.waiter = data;
                 waiterProfileVm.waiter.birthday = new Date(data.birthday);

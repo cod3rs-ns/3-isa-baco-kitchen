@@ -1,9 +1,7 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.model.Cook;
-import com.bacovakuhinja.model.Restaurant;
-import com.bacovakuhinja.model.RestaurantManager;
-import com.bacovakuhinja.model.SystemManager;
+import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.CookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 @RestController
@@ -33,6 +32,18 @@ public class CookController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Cook> getCook(@PathVariable("id") Integer id) {
         Cook cook = cookService.findOne(id);
+        return new ResponseEntity <Cook>(cook, HttpStatus.OK);
+    }
+
+
+    @Authorization(value = "cook")
+    @RequestMapping(
+            value = "/api/cook",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Cook> getLoggedInCook(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Cook cook = cookService.findOne(user.getUserId());
         return new ResponseEntity <Cook>(cook, HttpStatus.OK);
     }
 

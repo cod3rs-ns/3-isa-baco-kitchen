@@ -7,7 +7,8 @@ waiterService.$inject = ['$http'];
 function waiterService($http){
     var service = {
         getWaiter: getWaiter,
-        updateWaiter: updateWaiter
+        updateWaiter: updateWaiter,
+        getLoggedWaiter: getLoggedWaiter
     };
 
     return service;
@@ -24,6 +25,13 @@ function waiterService($http){
             .then(function (response) {
                 return response.data;
             })
+    };
+
+    function getLoggedWaiter() {
+        return $http.get('api/waiter')
+            .then(function(response){
+                return response.data;
+            });
     };
 
 }

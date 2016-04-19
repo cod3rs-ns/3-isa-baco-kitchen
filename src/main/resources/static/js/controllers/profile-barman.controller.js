@@ -18,8 +18,8 @@ function BarmanProfileController(bartenderService, $mdDialog, $routeParams) {
     };
 
 
-    function getBarman(id){
-        return bartenderService.getBartender(id)
+    function getBarman(){
+        return bartenderService.getLoggedBartender()
             .then(function(data) {
                 barmanProfileVm.barman = data;
                 barmanProfileVm.barman.birthday = new Date(data.birthday);

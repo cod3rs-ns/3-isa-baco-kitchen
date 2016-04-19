@@ -1,6 +1,8 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Bartender;
+import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.BartenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 @RestController
@@ -43,6 +46,17 @@ public class BartenderController {
     public ResponseEntity <Bartender> createBartender(@RequestBody Bartender bartender) {
         Bartender created = bartenderService.create(bartender);
         return new ResponseEntity<Bartender>(created, HttpStatus.CREATED);
+    }
+
+    @Authorization(value = "bartender")
+    @RequestMapping(
+            value = "/api/bartender",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Bartender> getLoggedInBartender(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Bartender bartender = bartenderService.findOne(user.getUserId());
+        return new ResponseEntity <Bartender>(bartender, HttpStatus.OK);
     }
 
     @RequestMapping(
