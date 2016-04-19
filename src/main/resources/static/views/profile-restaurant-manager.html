@@ -15,7 +15,7 @@
 		<div layout="column">
 			<div layout="row" layout-xs="column">
 				<div flex class="content">
-					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+					<img alt="{{rmanagerVm.rmanager.firstName}}" src="{{rmanagerVm.rmanager.image}}" class="md-avatar" height="340px" width="340px"/>
 				</div>
 				<div flex class="content">
 					<h2> {{rmanagerVm.rmanager.firstName + ' ' + rmanagerVm.rmanager.lastName}} </h2>
@@ -41,7 +41,7 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
+					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
 					<h4> Registrovanje zaposlenog </h4>
 				</div>
 				<hr>
@@ -58,7 +58,7 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
 					<h4> Ažuriranje profila</h4>
 				</div>
 
@@ -71,11 +71,12 @@
   <md-content>
     <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
         <md-tab label="Informacije o restoranu">
-          <md-content class="md-padding">
+          <md-content class="md-padding" style="font-size:120%;">
 			  	<!-- NEEDS TO BE CHANGED -->
-                <h3><strong>Naziv</strong>: {{rmanagerVm.rmanager.restaurant.name}}</h3>
-				<h3><strong>Tip</strong>: {{rmanagerVm.rmanager.restaurant.type}}</h3>
-				<h3><strong>Opis</strong>: {{rmanagerVm.rmanager.restaurant.info}}</h3>
+                <p><em style="color:grey; font-size:100%;">Naziv: </em> {{rmanagerVm.rmanager.restaurant.name}}</p>
+				<p><em style="color:grey; font-size:100%;">Vrsta: </em> {{rmanagerVm.rmanager.restaurant.type}}</p>
+				<p><em style="color:grey; font-size:100%;">Opis: </em> {{rmanagerVm.rmanager.restaurant.info}}</p>
+				<p><em style="color:grey; font-size:100%;">Radno vreme: </em> {{rmanagerVm.rmanager.restaurant.startTime + 'h - ' + rmanagerVm.rmanager.restaurant.endTime + 'h'}}</p>
           </md-content>
         </md-tab>
           <md-tab label="Jelovnik">
@@ -85,7 +86,7 @@
               <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.rmanager.restaurant.foodMenu" layout-wrap>
 
                   <md-card class="order-item">
-                        <img src="{{meal.img_src}}" class="md-card-image order-img">
+                        <img src="{{meal.image}}" class="md-card-image order-img">
 
                         <md-card-content>
                             <h4>{{meal.name}}</h4>

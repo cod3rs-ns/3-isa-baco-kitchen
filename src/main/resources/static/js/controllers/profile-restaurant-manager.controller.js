@@ -29,8 +29,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
         return restaurantManagerService.getLoggedRestaurantManager()
             .then(function(data) {
                 rmanagerVm.rmanager = data;
-                alert(angular.toJson(data));
-                console.log(data);
                 return rmanagerVm.rmanager;
             });
     };
