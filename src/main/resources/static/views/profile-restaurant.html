@@ -3,7 +3,7 @@
         <md-toolbar scroll>
             <div class="md-toolbar-tools">
                 <h3 md-header-title flex>Profil restorana</h3>
-                <md-button class="md-raised md-accent" aria-label="Prikaži na mapi">
+                <md-button ng-disabled="true" class="md-raised md-accent" aria-label="Prikaži na mapi">
                     Prikaži na mapi
                 </md-button>
                 <md-button class="md-icon-button" aria-label="More">
@@ -39,12 +39,12 @@
         <div layout="column">
             <div style="padding-right: 12px; padding-left:5px; background-color:white">
                 <div class="option">
-                    <md-button ng-click="restaurantVm.test();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
+                    <md-button ng-disabled="true" ng-click="restaurantVm.test();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
                     <h4> Dodavanje novog restorana - test</h4>
                 </div>
                 <hr>
                 <div class="option">
-                    <md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
+                    <md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
                     <h4>Rezerviši</h4>
                 </div>
                 <hr>
@@ -68,7 +68,7 @@
           <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.restaurant.foodMenu" layout-wrap>
 
               <md-card class="order-item">
-                    <img src="{{meal.img_src}}" class="md-card-image order-img">
+                    <img src="{{meal.image}}" class="md-card-image order-img">
 
                     <md-card-content>
                         <h4>{{meal.name}}</h4>
@@ -92,7 +92,7 @@
             <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.restaurant.drinksMenu" layout-wrap>
 
                 <md-card class="order-item">
-                      <img src="{{drink.img_src}}" class="md-card-image order-img">
+                      <img src="{{drink.image}}" class="md-card-image order-img">
 
                       <md-card-content>
                           <h4>{{drink.name}}</h4>

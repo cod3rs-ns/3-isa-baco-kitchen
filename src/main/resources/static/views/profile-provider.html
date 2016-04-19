@@ -35,12 +35,12 @@
 		<div layout="column">
 			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
 				<div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
+					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
 					<h4> Ažuriranje profila </h4>
 				</div>
                 <hr>
                 <div class="option">
-					<md-button class="action-empl md-raised md-primary"> <i class="material-icons md-48">vpn_key</i> </md-button>
+					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">vpn_key</i> </md-button>
 					<h4> Izmena lozinke </h4>
 				</div>
 
@@ -65,7 +65,7 @@
                     </div >
                     <div class="md-secondary">
                         <md-button class="md-raised" ng-click="providerVm.showDetailed(item)">Više...</md-button>
-                        <md-button class="md-primary md-raised">Pošalji ponudu</md-button>
+                        <md-button ng-disabled="true" class="md-primary md-raised">Pošalji ponudu</md-button>
                     </div>
 
                     </md-list-item>
@@ -84,8 +84,8 @@
                         <p>Datum kreiranja: {{ aitem.date }}</p>
                       </div >
                       <div class="md-secondary">
-                          <md-button class="md-raised" ng-click="">Izmeni</md-button>
-                          <md-button class="md-primary md-raised" ng-click="">Povuci ponudu</md-button>
+                          <md-button ng-disabled="true" class="md-raised" ng-click="">Izmeni</md-button>
+                          <md-button ng-disabled="true" class="md-primary md-raised" ng-click="">Povuci ponudu</md-button>
                       </div>
 
                       </md-list-item>

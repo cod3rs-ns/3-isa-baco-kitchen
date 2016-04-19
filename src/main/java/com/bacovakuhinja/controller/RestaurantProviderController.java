@@ -1,7 +1,9 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.RestaurantProvider;
+import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.RestaurantProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 @RestController
@@ -26,12 +29,14 @@ public class RestaurantProviderController {
         return new ResponseEntity <Collection <RestaurantProvider>>(providers, HttpStatus.OK);
     }
 
+    @Authorization(value = "restaurant_provider")
     @RequestMapping(
             value = "/api/providers/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <RestaurantProvider> getProvider(@PathVariable("id") Integer id) {
-        RestaurantProvider provider = providerService.findOne(id);
+    public ResponseEntity <RestaurantProvider> getProvider(final HttpServletRequest request, @PathVariable("id") Integer id) {
+        User user = (User) request.getAttribute("loggedUser");
+        RestaurantProvider provider = providerService.findOne(user.getUserId());
         return new ResponseEntity <RestaurantProvider>(provider, HttpStatus.OK);
     }
 

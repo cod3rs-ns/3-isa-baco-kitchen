@@ -11,7 +11,8 @@ function ProviderProfileController(providerService, $mdDialog, OfferRequestContr
     activate();
 
     function activate() {
-        getProvider(5).then(function() {
+        // should be changed
+        getProvider(11111111).then(function() {
             console.log("Provider retreived.");
         });
 
@@ -21,7 +22,6 @@ function ProviderProfileController(providerService, $mdDialog, OfferRequestContr
         return providerService.getProvider(id)
             .then(function(data) {
                 providerVm.provider = data;
-                console.log(data);
                 return providerVm.provider;
             });
     };
