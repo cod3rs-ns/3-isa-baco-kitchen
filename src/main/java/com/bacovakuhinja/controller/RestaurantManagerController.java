@@ -1,8 +1,10 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.RestaurantManager;
+import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.RestaurantManagerService;
 import com.bacovakuhinja.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 
 @RestController
@@ -25,7 +28,7 @@ public class RestaurantManagerController {
             value = "/api/rmanagers",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <RestaurantManager>> getRestaurantMangers() {
+    public ResponseEntity <Collection <RestaurantManager>> getRestaurantManagers() {
         Collection <RestaurantManager> managers = rmService.findAll();
         return new ResponseEntity <Collection <RestaurantManager>>(managers, HttpStatus.OK);
     }
@@ -34,8 +37,19 @@ public class RestaurantManagerController {
             value = "/api/rmanagers/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <RestaurantManager> getRestaurantManagers(@PathVariable("id") Integer id) {
+    public ResponseEntity <RestaurantManager> getRestaurantManager(@PathVariable("id") Integer id) {
         RestaurantManager manager = rmService.findOne(id);
+        return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
+    }
+
+    @Authorization(value = "restaurant_manager")
+    @RequestMapping(
+            value = "/api/rmanager",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <RestaurantManager> getLoggedInRestaurantManager(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        RestaurantManager manager = rmService.findOne(user.getUserId());
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
 

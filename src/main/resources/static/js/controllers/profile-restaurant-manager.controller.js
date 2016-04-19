@@ -14,20 +14,23 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
     rmanagerVm.tabs = {
         selected: 0
     }
+
     activate();
 
     function activate() {
         // curently locked
-        return getRestaurantManager(3).then(function() {
+        return getLoggedRestaurantManager().then(function() {
             //alert('Restaurant retreived from database.')
 
         });
     };
 
-    function getRestaurantManager(id) {
-        return restaurantManagerService.getRestaurantManager(id)
+    function getLoggedRestaurantManager() {
+        return restaurantManagerService.getLoggedRestaurantManager()
             .then(function(data) {
                 rmanagerVm.rmanager = data;
+                alert(angular.toJson(data));
+                console.log(data);
                 return rmanagerVm.rmanager;
             });
     };

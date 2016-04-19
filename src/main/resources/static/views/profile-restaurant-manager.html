@@ -2,7 +2,7 @@
 	<div flex-gt-sm="70" class="main-content">
 		<md-toolbar scroll>
 			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Profil menadžera</h3>
+				<h3 md-header-title flex>Profil menadžera restorana</h3>
 				<md-button class="md-icon-button" aria-label="Notification">
 					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
 				</md-button>
@@ -18,8 +18,8 @@
 					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
 				</div>
 				<div flex class="content">
-					<h2> Ime </h2>
-					<h4> sergioramos@doktor.com </h4>
+					<h2> {{rmanagerVm.rmanager.firstName + ' ' + rmanagerVm.rmanager.lastName}} </h2>
+					<h4> {{rmanagerVm.rmanager.email}} </h4>
 				</div>
 			</div>
 		</div>

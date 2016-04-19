@@ -36,8 +36,8 @@ public class SendMailAspect {
 
     private static final String HOST_NAME = "smtp.gmail.com";
     private static final int    HOST_PORT = 587;
-    private static final String AUTH_USER = "dmarjanovic94@gmail.com";
-    private static final String AUTH_PASS = "kyajhnarjqmrwqif";
+    private static final String AUTH_USER = "bacovakuhinja@gmail.com";
+    private static final String AUTH_PASS = "jedanjebaco";
 
     @After(value = "@annotation(com.bacovakuhinja.annotations.SendEmail) && args(user,..)")
     public void sendConfirmationMail(User user) throws MessagingException {
@@ -57,7 +57,7 @@ public class SendMailAspect {
         // Message body
         final String message = "<html>\n" +
                 "<head>\n" +
-                "    <meta charset=\"UTF-8\">\n" +
+                "<meta http-equiv=\"Content-Type\"  content=\"text/html charset=UTF-8\" />" +
                 "</head>\n" +
                 "<body>\n" +
                 "<div>\n" +
@@ -66,7 +66,7 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro došli, " + user.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + user.getFirstName() + "!</h1>\n" +
                 "        <p>Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
@@ -74,7 +74,7 @@ public class SendMailAspect {
                 "</html>";
 
         System.out.println(TOKEN_CONFIRM_LINK + tokenValue);
-        // sendMail(user.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        //sendMail(user.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
     private void sendMail(String address, String subject, String message) throws MessagingException {
