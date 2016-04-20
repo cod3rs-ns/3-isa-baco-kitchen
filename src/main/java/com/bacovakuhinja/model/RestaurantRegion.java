@@ -1,8 +1,12 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant_regions")
@@ -22,6 +26,10 @@ public class RestaurantRegion {
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "rr_restaurant_id")
     private Restaurant restaurant;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
+    private Set<RestaurantTable> tables = new HashSet <RestaurantTable>(0);
 
     public RestaurantRegion() {
     }
@@ -58,4 +66,13 @@ public class RestaurantRegion {
         this.restaurant = restaurant;
     }
 
+    @JsonProperty
+    public Set <RestaurantTable> getTables() {
+        return tables;
+    }
+
+    @JsonIgnore
+    public void setTables(Set <RestaurantTable> tables) {
+        this.tables = tables;
+    }
 }

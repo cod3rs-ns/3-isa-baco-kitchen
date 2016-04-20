@@ -45,6 +45,10 @@ public class Restaurant implements Serializable {
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set<Drink> drinksMenu = new HashSet<Drink>(0);
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    private Set<RestaurantRegion> regions = new HashSet<RestaurantRegion>(0);
+
     public Restaurant() {
     }
 
@@ -116,5 +120,15 @@ public class Restaurant implements Serializable {
     @JsonIgnore
     public void setDrinksMenu(Set <Drink> drinksMenu) {
         this.drinksMenu = drinksMenu;
+    }
+
+    @JsonProperty
+    public Set <RestaurantRegion> getRegions() {
+        return regions;
+    }
+
+    @JsonIgnore
+    public void setRegions(Set <RestaurantRegion> regions) {
+        this.regions = regions;
     }
 }
