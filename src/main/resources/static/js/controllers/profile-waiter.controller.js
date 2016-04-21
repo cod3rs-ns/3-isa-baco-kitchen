@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['waiterService', '$mdDialog', '$routeParams'];
+WaiterProfileController.$inject = ['waiterService', '$mdDialog', 'passService'];
 
-function WaiterProfileController(waiterService, $mdDialog, $routeParams) {
+function WaiterProfileController(waiterService, $mdDialog, passService) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -12,9 +12,16 @@ function WaiterProfileController(waiterService, $mdDialog, $routeParams) {
     activate();
 
     function activate(){
-        return getWaiter($routeParams.waiterId).then(function() {
-
+        getWaiter().then(function() {
         });
+
+
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if(data){
+                    waiterProfileVm.changePassword(false);
+                }
+            });
     };
 
 
@@ -115,4 +122,23 @@ function WaiterProfileController(waiterService, $mdDialog, $routeParams) {
         });
     };
 
+    waiterProfileVm.changePassword = changePassword;
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
+    };
 }

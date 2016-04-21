@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('BarmanProfileController', BarmanProfileController);
 
-BarmanProfileController.$inject = ['bartenderService', '$mdDialog', '$routeParams'];
+BarmanProfileController.$inject = ['bartenderService', 'passService', '$mdDialog'];
 
-function BarmanProfileController(bartenderService, $mdDialog, $routeParams) {
+function BarmanProfileController(bartenderService, passService, $mdDialog) {
     var barmanProfileVm = this;
 
     barmanProfileVm.barman = {};
@@ -12,9 +12,18 @@ function BarmanProfileController(bartenderService, $mdDialog, $routeParams) {
     activate();
 
     function activate(){
-        return getBarman($routeParams.barmanId).then(function() {
+        getBarman().then(function() {
 
         });
+
+
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if(data){
+                    barmanProfileVm.changePassword(false);
+                }
+            });
+
     };
 
 
@@ -26,8 +35,6 @@ function BarmanProfileController(bartenderService, $mdDialog, $routeParams) {
                 return barmanProfileVm.barman;
             });
     };
-
-
 
 	
 	barmanProfileVm.waitingDrinks = [
@@ -68,4 +75,24 @@ function BarmanProfileController(bartenderService, $mdDialog, $routeParams) {
         });
     };
 
+
+    barmanProfileVm.changePassword = changePassword;
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
+    };
 }

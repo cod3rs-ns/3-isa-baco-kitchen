@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         User userPersistent = findOne(user.getEmail());
 
-        System.out.println(userPersistent);
         if (userPersistent == null)
             return null;
 

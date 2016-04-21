@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
@@ -45,6 +47,18 @@ public class UserController {
         return new ResponseEntity<Boolean>(exists, HttpStatus.OK);
     }
 
+    @Authorization()
+    @RequestMapping(
+            value    = "/api/users/oldPassword/{pass}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> passMatch(final HttpServletRequest request, @PathVariable String pass) {
+        User user = (User) request.getAttribute("loggedUser");
+        boolean matched = user.getPassword().equals(pass);
+        return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
+    }
+
     @Authorization(value = "guest")
     @RequestMapping(
             value    = "/api/user",
@@ -52,10 +66,37 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getUser(final HttpServletRequest request) {
-
         User user = (User) request.getAttribute("loggedUser");
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
+
+    @Authorization()
+    @RequestMapping(
+            value = "/api/users/pass",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> changePassword(final HttpServletRequest request, @RequestBody String pass){
+        User user = (User) request.getAttribute("loggedUser");
+        User current = userService.findOne(user.getEmail());
+        current.setPassword(pass);
+        userService.update(current);
+        return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+    }
+
+    @Authorization()
+    @RequestMapping(
+            value = "/api/users/passChanged/",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> isPasswordChanged(final HttpServletRequest request){
+        User user = (User)request.getAttribute("loggedUser");
+        User current = userService.findOne(user.getEmail());
+        boolean ret = current.getPassword().equals("generated_password");
+        return new ResponseEntity<Boolean>(ret, HttpStatus.OK);
+    }
+
 
     @RequestMapping(
             value    = "/api/authenticate",
