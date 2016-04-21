@@ -134,6 +134,29 @@
         </md-content>
       </md-tab>
 
+	  <md-tab label="Raspored stolova">
+        <md-content class="md-padding" ng-controller="TablesController as tablesVm">
+            <div  class="restaurant-canvas" >
+				<div 	id="{{table.tableId}}"
+						name="{{table.tableId}}"
+						data-x="{{table.datax + 'px'}}"
+						data-y="{{table.datay + 'px'}}"
+						style="	transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
+								height:{{table.height}};
+								width:{{table.width}};
+							  "
+						class="restaurant-table"
+						ng-repeat="table in tablesVm.tables">
+				    <p style="text-align:center;">{{table.tableId}}</p>
+					<p>broj ljudi: {{table.positions}}</p>
+				</div>
+
+			</div>
+
+        </md-content>
+      </md-tab>
+
     </md-tabs>
   </md-content>
+
 </div>
