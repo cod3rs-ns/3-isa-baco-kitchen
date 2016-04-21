@@ -12,7 +12,8 @@ function tableService($http){
         deleteTable: deleteTable,
         createTable: createTable,
         getTablesByRestaurant: getTablesByRestaurant,
-        getTablesByRegion: getTablesByRegion
+        getTablesByRegion: getTablesByRegion,
+        getNextId: getNextId
     };
 
     return service;
@@ -31,6 +32,13 @@ function tableService($http){
         });
     };
 
+    function getNextId(){
+        return $http.get('api/tables/next')
+        .then(function(response){
+            return response.data;
+        });
+    };
+
     function updateTable(table, region_id){
         return $http.put('/api/tables/r=' + region_id, table)
         .then(function (response) {
@@ -39,11 +47,14 @@ function tableService($http){
     };
 
     function deleteTable(id){
-
+        return $http.delete('/api/tables/' +id)
+        .then(function (response) {
+            return response.data;
+        })
     };
 
     function createTable(table, region_id){
-        return $http.post('/api/tables/r=' + region_id, region_id)
+        return $http.post('/api/tables/r=' + region_id, table)
         .then(function (response) {
             return response.data;
         })

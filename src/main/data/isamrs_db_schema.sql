@@ -125,11 +125,11 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_managers` (
     REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  CONSTRAINT `fk_restaurant_managers_restaurants1`
+  CONSTRAINT `rm_restaurants_rid`
     FOREIGN KEY (`rm_restaurant_id`)
     REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -330,8 +330,8 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
   CONSTRAINT `rr_restaurant_fid`
     FOREIGN KEY (`rr_restaurant_id`)
     REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 
@@ -353,8 +353,8 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   CONSTRAINT `rt_region_fid`
     FOREIGN KEY (`rt_region_id`)
     REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
 

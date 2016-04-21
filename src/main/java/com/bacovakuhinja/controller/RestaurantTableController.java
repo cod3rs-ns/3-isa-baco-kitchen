@@ -83,4 +83,13 @@ public class RestaurantTableController {
         return new ResponseEntity <Collection <RestaurantTable>>(restaurantTables, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "api/tables/next",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Integer> getNextId() {
+        Integer nextId = tableService.getNextId();
+        return new ResponseEntity <Integer>(nextId, HttpStatus.OK);
+    }
+
 }

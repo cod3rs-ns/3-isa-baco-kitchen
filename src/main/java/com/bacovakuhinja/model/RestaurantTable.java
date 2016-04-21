@@ -29,7 +29,7 @@ public class RestaurantTable {
     @Column(name = "rt_positions")
     private Integer positions;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "rt_region_id")
     private RestaurantRegion region;
 

@@ -59,4 +59,15 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
         return null;
     }
 
+    @Override
+    public Integer getNextId() {
+        int max = -1;
+        Collection <RestaurantTable> tables = findAll();
+        for (RestaurantTable table : tables) {
+            if (table.getTableId() > max) {
+                max = table.getTableId();
+            }
+        }
+        return max;
+    }
 }

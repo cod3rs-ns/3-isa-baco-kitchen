@@ -6,19 +6,23 @@
     height: 40px;
 
     margin: 5px;
-
-    background-color: #29e;
+    font-weight: bold;
     color: white;
-
-    border-radius: 3px;
-    padding: 4px;
+    background-color: #283593;
+    border: 5px solid white;
 
     /* This makes things *much* easier */
     box-sizing: border-box;
 }
 
+.restaurant-table.switch-bg {
+  background-color: #D500F9;
+}
+
 .restaurant-canvas {
     width: 600px;
     height: 600px;
-    background-color: #234455;
+    margin: 50px;
+    background-color: #212121;
+    border: 5px solid black;
 }
