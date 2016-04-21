@@ -20,4 +20,6 @@ public interface RestaurantTableService {
 
     public Collection <RestaurantTable> findAllByRegion(Integer regionId);
 
+    public Integer getNextId();
+
 }
