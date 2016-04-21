@@ -1,0 +1,24 @@
+.restaurant-table {
+    /* Almost got crazy because of this :) buahahhaha*/
+    position: absolute;
+
+    width: 40px;
+    height: 40px;
+
+    margin: 5px;
+
+    background-color: #29e;
+    color: white;
+
+    border-radius: 3px;
+    padding: 4px;
+
+    /* This makes things *much* easier */
+    box-sizing: border-box;
+}
+
+.restaurant-canvas {
+    width: 600px;
+    height: 600px;
+    background-color: #234455;
+}
