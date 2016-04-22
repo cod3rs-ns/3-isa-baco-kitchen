@@ -13,18 +13,22 @@
         <md-button ng-hide="guestProfileVm.editMode" class="md-icon-button" aria-label="Edit profile" ng-click="guestProfileVm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Notification">
-          <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
-        </md-button>
-        <!-- Requests menu -->
-        <md-menu-content width="4">
-          <md-menu-item ng-repeat="request in guestProfileVm.friendRequests">
-            <md-button>
-              <img class="png-icon" ng-src="{{request.image}}">
-              {{request.firstName + ' ' + request.lastName}}
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
+        <md-menu>
+          <md-button class="md-icon-button" aria-label="Notification" ng-click="$mdOpenMenu($event)">
+            <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+          </md-button>
+          <!-- Requests menu -->
+          <md-menu-content width="5">
+            <md-menu-item ng-repeat="request in guestProfileVm.friendRequests">
+                <md-list-item class="noright">
+                  <img class="md-avatar" ng-src="{{request.image}}">
+                  <p>{{request.firstName + ' ' + request.lastName}}</p>
+                  <md-icon aria-label="Accept friend" ng-click="guestProfileVm.acceptFriend(request.userId)" class="material-icons margin-left-4">done</md-icon>
+                  <md-icon aria-label="Reject friend" ng-click="guestProfileVm.rejectFriend(request.userId)" class="material-icons margin-left-4">clear</md-icon>
+                </md-list-item>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
         <md-button class="md-icon-button" aria-label="More">
           <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
         </md-button>
@@ -85,13 +89,13 @@
           </form>
         </div>
       </div>
-    
-      <!--div class="main-fab">
-        <span flex></span>
-        <md-button class="md-fab" aria-label="Add friend">
-          <md-icon aria-label="Search" class="material-icons">person_add</md-icon>
-        </md-button>
-      </div-->
+
+      <md-button class="md-fab" aria-label="Add friend">
+        <md-icon aria-label="Add person" class="material-icons">person_add</md-icon>
+      </md-button>
+      <md-button class="md-fab" aria-label="Remove person from friends">
+        <md-icon aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
+      </md-button>
       
       <md-tabs md-dynamic-height md-border-bottom>
         <md-tab label="Moje posjete">
@@ -197,8 +201,8 @@
     <md-list>
       <md-subheader class="md-primary">Moji prijatelji</md-subheader>
       <md-list-item ng-repeat="friend in guestProfileVm.friends" ng-click="guestProfileVm.foo()" class="noright">
-        <img alt="{{ friend.name }}" ng-src="{{ friend.avatar }}" class="md-avatar" />
-        <p>{{ friend.name }}</p>
+        <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}" class="md-avatar" />
+        <p>{{friend.firstName + ' ' + friend.lastName}}</p>
         <md-icon aria-label="Search" class="material-icons">highlight_off</md-icon>
       </md-list-item>
     </md-list>
@@ -206,8 +210,8 @@
     <md-list>
       <md-subheader class="md-primary">Ostali korisnici</md-subheader>
       <md-list-item ng-repeat="friend in guestProfileVm.friends" ng-click="guestProfileVm.foo()" class="noright">
-        <img alt="{{ friend.name }}" ng-src="{{ friend.avatar }}" class="md-avatar" />
-        <p>{{ friend.name }}</p>
+        <img alt="{{ friend.firstName }}" ng-src="{{ friend.image}}" class="md-avatar" />
+        <p>{{ friend.firstName }}</p>
         <md-icon aria-label="Search" class="material-icons">add_circle_outline</md-icon>
       </md-list-item>
     </md-list>

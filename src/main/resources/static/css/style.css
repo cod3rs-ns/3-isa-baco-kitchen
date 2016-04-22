@@ -191,12 +191,17 @@ ul.rating {
   padding: 40px;
 }
 
+.margin-left-4 {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
 .png-icon{
-    margin: 5px auto auto;
     padding: 0;
+    padding-right: 8px;
     display: inline-block;
     background-repeat: no-repeat no-repeat;
     pointer-events: none;
-    height: 24px;
-    width: 24px;
+    height: 32px;
+    width: 32px;
 }

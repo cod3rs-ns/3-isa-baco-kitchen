@@ -19,20 +19,62 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public Collection<User> getFriendshipsRequestByGuestID(Integer id) {
-
-        System.out.println("Called service");
-
         Collection<User> requests = new ArrayList<User>();
 
         for (Friendship fs : friendshipRepository.findAll()) {
-            System.out.println(fs);
-            System.out.println(fs.getReceiver());
-            System.out.println(fs.getSender());
-            if (fs.getReceiver().getUserId() == id) {
-                requests.add(fs.getReceiver());
+            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals("status")) {
+                requests.add(fs.getSender());
             }
         }
 
         return requests;
+    }
+
+    @Override
+    public Collection<User> getFriendsByGuestID(Integer id) {
+        Collection<User> friends = new ArrayList<User>();
+
+        for (Friendship fs : friendshipRepository.findAll()) {
+            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals("accepted")) {
+                friends.add(fs.getSender());
+            }
+            else if (fs.getSender().getUserId() == id && fs.getStatus().equals("accepted")) {
+                friends.add(fs.getReceiver());
+            }
+        }
+
+        return friends;
+    }
+
+    @Override
+    public void acceptRequest(Integer senderId, Integer receiverId) {
+        Friendship friendship = null;
+        for (Friendship fs : friendshipRepository.findAll()) {
+            if (fs.getStatus().equals("status") && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
+                friendship = fs;
+                break;
+            }
+        }
+
+        if (friendship != null) {
+            friendship.setStatus("accepted");
+            friendshipRepository.save(friendship);
+        }
+    }
+
+    @Override
+    public void rejectRequest(Integer senderId, Integer receiverId) {
+        Friendship friendship = null;
+        for (Friendship fs : friendshipRepository.findAll()) {
+            if (fs.getStatus().equals("status") && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
+                friendship = fs;
+                break;
+            }
+        }
+
+        if (friendship != null) {
+            friendship.setStatus("rejected");
+            friendshipRepository.save(friendship);
+        }
     }
 }

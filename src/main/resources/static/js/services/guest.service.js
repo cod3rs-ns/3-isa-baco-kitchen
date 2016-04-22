@@ -8,7 +8,10 @@ function guestService($http) {
     var service = {
         getGuest: getGuest,
         updateGuest: updateGuest,
-        getRequests: getRequests
+        getRequests: getRequests,
+        getFriends: getFriends,
+        accept: accept,
+        reject: reject
     };
 
     return service;
@@ -29,6 +32,27 @@ function guestService($http) {
     
     function getRequests() {
         return $http.get('api/guest/requests')
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function getFriends() {
+        return $http.get('api/guest/friends')
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function accept(id) {
+        return $http.put('api/guest/accept-friend/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function reject(id) {
+        return $http.put('api/guest/reject-friend/' + id)
         .then(function(response) {
             return response.data;
         });

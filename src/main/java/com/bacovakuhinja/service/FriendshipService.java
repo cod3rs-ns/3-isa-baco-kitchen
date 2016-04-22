@@ -7,4 +7,10 @@ import java.util.Collection;
 public interface FriendshipService {
 
     public Collection<User> getFriendshipsRequestByGuestID(Integer id);
+
+    public Collection<User> getFriendsByGuestID(Integer id);
+
+    public void acceptRequest(Integer senderId, Integer receiverId);
+
+    public void rejectRequest(Integer senderId, Integer receiverId);
 }
