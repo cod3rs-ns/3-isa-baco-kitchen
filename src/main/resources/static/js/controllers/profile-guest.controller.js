@@ -11,6 +11,7 @@ function GuestProfileController(guestService) {
     guestProfileVm.showSearch = false;
     guestProfileVm.editMode = false;
     guestProfileVm.user = {};
+    guestProfileVm.friendRequests = [];
     // Functions 
     guestProfileVm.editProfile = editProfile;
     guestProfileVm.saveChanges = saveChanges;
@@ -38,6 +39,9 @@ function GuestProfileController(guestService) {
     function activate() {
         return getUser().then(function() {
             console.log('User loaded.');
+            return getRequests().then(function() {
+                console.log('Requests loaded.');
+            });
         });
     }
 
@@ -46,5 +50,12 @@ function GuestProfileController(guestService) {
             guestProfileVm.user = data;
             return guestProfileVm.user;
         });
-    }
+    };
+    
+    function getRequests() {
+        return guestService.getRequests().then(function(data) {
+            guestProfileVm.friendRequests = data;
+            return guestProfileVm.requests;
+        });
+    };
 }

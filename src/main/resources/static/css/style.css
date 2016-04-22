@@ -190,3 +190,13 @@ ul.rating {
 .padding-40 {
   padding: 40px;
 }
+
+.png-icon{
+    margin: 5px auto auto;
+    padding: 0;
+    display: inline-block;
+    background-repeat: no-repeat no-repeat;
+    pointer-events: none;
+    height: 24px;
+    width: 24px;
+}

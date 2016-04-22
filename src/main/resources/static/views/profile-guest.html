@@ -16,6 +16,15 @@
         <md-button class="md-icon-button" aria-label="Notification">
           <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
         </md-button>
+        <!-- Requests menu -->
+        <md-menu-content width="4">
+          <md-menu-item ng-repeat="request in guestProfileVm.friendRequests">
+            <md-button>
+              <img class="png-icon" ng-src="{{request.image}}">
+              {{request.firstName + ' ' + request.lastName}}
+            </md-button>
+          </md-menu-item>
+        </md-menu-content>
         <md-button class="md-icon-button" aria-label="More">
           <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
         </md-button>
