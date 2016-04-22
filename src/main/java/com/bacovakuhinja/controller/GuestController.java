@@ -40,6 +40,28 @@ public class GuestController {
     }
 
     @Authorization(value = "guest")
+    @RequestMapping(
+            value    = "/api/guest/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> getUser(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest guest = guestService.getGuest(id);
+        return new ResponseEntity<Guest>(guest, HttpStatus.OK);
+    }
+
+    @Authorization(value = "guest")
+    @RequestMapping (
+            value    = "/api/guest/admin/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+        return new ResponseEntity<Boolean>(user.getGuestId() == id, HttpStatus.OK);
+    }
+
+    @Authorization(value = "guest")
     @RequestMapping (
             value    = "/api/guest/friends",
             method   = RequestMethod.GET,

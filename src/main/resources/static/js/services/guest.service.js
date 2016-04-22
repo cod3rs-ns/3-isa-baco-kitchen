@@ -11,13 +11,14 @@ function guestService($http) {
         getRequests: getRequests,
         getFriends: getFriends,
         accept: accept,
-        reject: reject
+        reject: reject,
+        isMy: isMy
     };
 
     return service;
 
-    function getGuest() {
-        return $http.get('api/user')
+    function getGuest(id) {
+        return $http.get('api/guest/' + id)
         .then(function(response) {
             return response.data;
         });
@@ -53,6 +54,13 @@ function guestService($http) {
     
     function reject(id) {
         return $http.put('api/guest/reject-friend/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function isMy(id) {
+        return $http.get('api/guest/admin/' + id)
         .then(function(response) {
             return response.data;
         });

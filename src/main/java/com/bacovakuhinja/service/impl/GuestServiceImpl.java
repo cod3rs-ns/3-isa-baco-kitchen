@@ -23,4 +23,9 @@ public class GuestServiceImpl implements GuestService {
     public Collection<Guest> getFriendRequests() {
         return null;
     }
+
+    @Override
+    public Guest getGuest(Integer id) {
+        return guestRepository.findOne(id);
+    }
 }

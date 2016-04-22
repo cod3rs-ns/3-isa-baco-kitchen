@@ -23,7 +23,8 @@ function loginService($http, $location) {
     .then(function (response) {
         switch(response.data.type) {
             case 'guest':
-                $location.path('profile-guest');
+                alert(response.data.userId);
+                $location.path('profile-guest/' + response.data.userId);
                 break;
             case 'system_manager':
                 $location.path('profile-system-manager');

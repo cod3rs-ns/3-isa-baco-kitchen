@@ -4,16 +4,16 @@
     <md-toolbar scroll>
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
-        <md-button ng-show="guestProfileVm.editMode" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
+        <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
           <md-icon aria-label="Cancel" class="material-icons">cancel</md-icon>
         </md-button>
-        <md-button ng-show="guestProfileVm.editMode" class="md-icon-button" aria-label="Save changes" ng-disabled="editProfileForm.$invalid" ng-click="guestProfileVm.saveChanges()">
+        <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Save changes" ng-disabled="editProfileForm.$invalid" ng-click="guestProfileVm.saveChanges()">
           <md-icon aria-label="Save changes" class="material-icons">save</md-icon>
         </md-button>
-        <md-button ng-hide="guestProfileVm.editMode" class="md-icon-button" aria-label="Edit profile" ng-click="guestProfileVm.editProfile()">
+        <md-button ng-hide="guestProfileVm.editMode || !guestProfileVm.admin" class="md-icon-button" aria-label="Edit profile" ng-click="guestProfileVm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
         </md-button>
-        <md-menu>
+        <md-menu ng-show="guestProfileVm.admin">
           <md-button class="md-icon-button" aria-label="Notification" ng-click="$mdOpenMenu($event)">
             <md-icon aria-label="Notification" class="material-icons">notifications</md-icon>
             <sup class="badge">{{guestProfileVm.friendRequests.length}}</sup>
@@ -49,7 +49,7 @@
           <h4>{{ guestProfileVm.user.email }}</h4>
           
           <!-- Edit profila -->
-          <form name="editProfileForm" ng-show="guestProfileVm.editMode">
+          <form name="editProfileForm" ng-show="guestProfileVm.editMode && guestProfileVm.admin">
             <div layout-gt-sm="row">
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Ime</label>
@@ -91,10 +91,10 @@
         </div>
       </div>
 
-      <md-button class="md-fab" aria-label="Add friend">
+      <md-button ng-hide="guestProfileVm.admin" class="md-fab" aria-label="Add friend">
         <md-icon aria-label="Add person" class="material-icons">person_add</md-icon>
       </md-button>
-      <md-button class="md-fab" aria-label="Remove person from friends">
+      <md-button ng-hide="guestProfileVm.admin" class="md-fab" aria-label="Remove person from friends">
         <md-icon aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
       </md-button>
       
