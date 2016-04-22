@@ -15,7 +15,8 @@
         </md-button>
         <md-menu>
           <md-button class="md-icon-button" aria-label="Notification" ng-click="$mdOpenMenu($event)">
-            <md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+            <md-icon aria-label="Notification" class="material-icons">notifications</md-icon>
+            <sup class="badge">{{guestProfileVm.friendRequests.length}}</sup>
           </md-button>
           <!-- Requests menu -->
           <md-menu-content width="5">

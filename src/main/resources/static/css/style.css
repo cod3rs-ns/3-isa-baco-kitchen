@@ -196,12 +196,14 @@ ul.rating {
   cursor: pointer;
 }
 
-.png-icon{
-    padding: 0;
-    padding-right: 8px;
-    display: inline-block;
-    background-repeat: no-repeat no-repeat;
-    pointer-events: none;
-    height: 32px;
-    width: 32px;
+.badge {
+  position: relative;
+  left: -12px;
+  font-size: 8pt;
+  width: 10px;
+  padding: 2px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: red;
+  
 }

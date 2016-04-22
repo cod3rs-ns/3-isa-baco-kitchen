@@ -61,7 +61,6 @@ public class GuestController {
     public ResponseEntity<?> acceptFriend(final HttpServletRequest request, @PathVariable Integer senderId) {
         Guest user = (Guest) request.getAttribute("loggedUser");
         friendshipService.acceptRequest(senderId, user.getGuestId());
-        System.out.println("Accepted called");
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
@@ -74,7 +73,6 @@ public class GuestController {
     public ResponseEntity<?> rejectFriend(final HttpServletRequest request, @PathVariable Integer senderId) {
         Guest user = (Guest) request.getAttribute("loggedUser");
         friendshipService.rejectRequest(senderId, user.getGuestId());
-        System.out.println("Rejected called");
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
