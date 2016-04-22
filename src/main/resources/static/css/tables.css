@@ -1,0 +1,35 @@
+.restaurant-table {
+    /* Almost got crazy because of this :) buahahhaha*/
+    position: absolute;
+
+    width: 40px;
+    height: 40px;
+
+    margin: 5px;
+    font-weight: bold;
+    color: white;
+    background-color: #283593;
+    border: 3px solid white;
+
+    /* This makes things *much* easier */
+    box-sizing: border-box;
+}
+
+.restaurant-table.switch-bg {
+  background-color: #D500F9;
+}
+
+.restaurant-canvas {
+    width: 600px;
+    height: 600px;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 10px;
+    background-color: #212121;
+    border: 5px solid black;
+}
+
+.restaurant-canvas.edit-bg {
+    background-color: #424242;
+    border: 5px solid #00695C;
+}

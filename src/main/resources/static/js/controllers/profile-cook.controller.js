@@ -2,18 +2,27 @@ angular
     .module('isa-mrs-project')
     .controller('CookProfileController', CookProfileController);
 
-CookProfileController.$inject = ['cookService', '$mdDialog', '$routeParams'];
+CookProfileController.$inject = ['cookService','passService', '$mdDialog'];
 
-function CookProfileController(cookService, $mdDialog, $routeParams) {
+function CookProfileController(cookService, passService, $mdDialog) {
     var cookProfileVm = this;
     cookProfileVm.cook = {}
 
     activate();
 
     function activate(){
-        return getCook($routeParams.cookId).then(function() {
+        getCook()
+            .then(function() {
 
         });
+        
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if(data){
+                    cookProfileVm.changePassword(false);
+                }
+            });
+        
     };
 
 
@@ -24,6 +33,7 @@ function CookProfileController(cookService, $mdDialog, $routeParams) {
                 cookProfileVm.cook.birthday = new Date(data.birthday);
                 return cookProfileVm.cook;
             });
+
     };
 
 
@@ -84,8 +94,28 @@ function CookProfileController(cookService, $mdDialog, $routeParams) {
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                to_edit : cookProfileVm.cook,
+                to_edit : cookProfileVm.cook
             }
         });
+    };
+    
+    cookProfileVm.changePassword = changePassword;
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
     };
 }

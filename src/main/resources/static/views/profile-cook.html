@@ -4,7 +4,8 @@
 			<div class="md-toolbar-tools">
 				<h3 md-header-title flex>Profil kuvara</h3>
 				<md-button class="md-icon-button" aria-label="Notification">
-					<md-icon aria-label="Notification" class="material-icons">local_dining</md-icon>
+					<md-tooltip>Promjena lozinke</md-tooltip>
+					<md-icon id="pass-option" aria-label="Notification" ng-click="cookProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
 				</md-button>
 				<md-button class="md-icon-button" aria-label="More">
 					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
