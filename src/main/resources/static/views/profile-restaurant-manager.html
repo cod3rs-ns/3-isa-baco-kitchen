@@ -1,4 +1,4 @@
-<div layout="row">
+<div id="upper" layout="row">
 	<div flex-gt-sm="70" class="main-content">
 		<md-toolbar scroll>
 			<div class="md-toolbar-tools">
@@ -67,9 +67,9 @@
 	</div>
 </div>
 
-<div style="margin-top:15px"ng-cloak>
+<div id="down" style="margin-top:15px"ng-cloak>
   <md-content>
-    <md-tabs class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
+    <md-tabs id="tabs" class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
         <md-tab label="Informacije o restoranu">
           <md-content class="md-padding" style="font-size:120%;">
 			  	<!-- NEEDS TO BE CHANGED -->
@@ -135,8 +135,8 @@
       </md-tab>
 
 	  <md-tab label="Raspored stolova">
-        <md-content class="md-padding" ng-controller="TablesController as tablesVm">
-            <div  id="canvas" class="restaurant-canvas" >
+        <md-content layout="row" class="md-padding" ng-controller="TablesController as tablesVm">
+            <div  layout="column" id="canvas" class="restaurant-canvas" >
 				<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
 						name="{{table.tableId != null ? table.tableId : table.tempId}}"
 						data-x="{{table.datax + 'px'}}"
@@ -147,13 +147,54 @@
 							  "
 						class="restaurant-table"
 						ng-repeat="table in tablesVm.tables">
-					<p style="color:white; font-weight:bold;">n: {{table.positions}}</p>
+					<!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
+					<md-tooltip md-direction="bottom">
+						Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
+					</md-tooltip>
+					<md-tooltip md-direction="right">
+						Pozicija  {{ table.positions }}
+					</md-tooltip>
+
 				</div>
 
 			</div>
-			<md-button ng-disabled="!tablesVm.enabledEdit" ng-click="tablesVm.saveState();" class="md-primary md-raised">Sačuvaj</md-button>
+			<div layout="column" style="margin-top: 50px;">
+				<div layout="row">
+					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.saveChanges();" class="md-fab md-primary md-raised">
+						<i class="material-icons md-36">save</i>
+						<md-tooltip md-direction="right">
+          					Sačuvaj izmene
+        				</md-tooltip>
+					</md-button>
 
-			<md-button ng-click="tablesVm.switchEdit();" class="md-primary md-raised">Izmenjivo</md-button>
+				</div>
+				<div layout="row">
+					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.cancelChanges();" class="md-fab md-accent md-raised">
+						<i class="material-icons md-36">cancel</i>
+						<md-tooltip md-direction="right">
+          					Poništi sve izmene
+        				</md-tooltip>
+					</md-button>
+				</div>
+				<div layout="row">
+					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.showInfo($event);" class="md-fab md-default md-raised">
+						<i class="material-icons md-36">info</i>
+						<md-tooltip md-direction="right">
+          					Uputstvo za korišćenje
+        				</md-tooltip>
+					</md-button>
+				</div>
+				<div layout="row">
+					<md-button ng-hide="tablesVm.enabledEdit" ng-click="tablesVm.switchCanvasState();" class="md-fab md-primary md-raised">
+						<i class="material-icons md-36">edit</i>
+						<md-tooltip md-direction="right">
+          					Izmeni trenutni raspored stolova
+        				</md-tooltip>
+					</md-button>
+				</div>
+
+			</div>
+
 
 		</md-content>
       </md-tab>

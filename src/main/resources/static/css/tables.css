@@ -9,7 +9,7 @@
     font-weight: bold;
     color: white;
     background-color: #283593;
-    border: 5px solid white;
+    border: 3px solid white;
 
     /* This makes things *much* easier */
     box-sizing: border-box;
@@ -22,7 +22,14 @@
 .restaurant-canvas {
     width: 600px;
     height: 600px;
-    margin: 50px;
+    margin-top: 20px;
+    margin-left: 40px;
+    margin-right: 10px;
     background-color: #212121;
     border: 5px solid black;
+}
+
+.restaurant-canvas.edit-bg {
+    background-color: #424242;
+    border: 5px solid #00695C;
 }
