@@ -48,12 +48,7 @@
               <span>Baćova kuhinja</span>
             </h2>
             <span flex></span>
-            <md-button aria-label="User profile" ng-href="#/profile-guest">
-              Profil
-            </md-button>
-            <md-button aria-label="User profile" ng-href="#/profile-system-manager">
-              Menadžer
-            </md-button>
+
 
             <md-button aria-label="Login" ng-href="#/login">
               Prijavi se
@@ -61,6 +56,26 @@
             <md-button aria-label="Sign up" ng-href="#/register">
               Registruj se
             </md-button>
+
+              <div ng-controller="DemoCtrl as demo" ng-if="$root.show" class="lock-size" layout="row" layout-align="center center">
+                  <md-fab-speed-dial md-open="demo.isOpen" md-direction="{{demo.selectedDirection}}"
+                                     ng-class="demo.selectedMode">
+                      <md-fab-trigger>
+                          <md-button aria-label="menu" class="md-fab">
+                              <md-icon class="material-icons">account_circle</md-icon>
+                          </md-button>
+                      </md-fab-trigger>
+                      <md-fab-actions>
+                          <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
+                              <md-icon ng-click="demo.logout();" class="material-icons">exit_to_app</md-icon>
+                          </md-button>
+                          <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
+                              <md-icon ng-click="demo.profile();"  class="material-icons">account_circle</md-icon>
+                          </md-button>
+                      </md-fab-actions>
+                  </md-fab-speed-dial>
+              </div>
+
           </div>
         </md-toolbar>
 
@@ -85,6 +100,7 @@
     <script src="/js/controllers/profile-restaurant.controller.js"></script>
     <script src="/js/controllers/profile-restaurant-manager.controller.js"></script>
     <script src="/js/controllers/tables.controller.js"></script>
+    <script src="/js/controllers/toolbarcontroller.js"></script>
     <!-- Dialog controllers -->
     <script src="/js/controllers/single-provider.controller.js"></script>
     <script src="/js/controllers/single-restaurant.controller.js"></script>

@@ -40,7 +40,7 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
 
     function create() {
         // TODO: Change hardcoded 6 to current system_manager
-        restaurantService.createRestaurant(restaurantVm.restaurant, 6)
+        restaurantService.createRestaurant(restaurantVm.restaurant, 5)
             .then(function(addedRestaurant){
                 restaurants.push(addedRestaurant);
                 restaurantVm.showToast('Restoran je uspešno kreiran.')
