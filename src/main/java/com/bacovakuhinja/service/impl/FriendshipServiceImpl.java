@@ -14,6 +14,10 @@ import java.util.Collection;
 @Service
 public class FriendshipServiceImpl implements FriendshipService {
 
+    private static final String ACCEPTED = "accepted";
+    private static final String REJECTED = "rejected";
+    private static final String WAITING  = "waiting";
+
     @Autowired
     FriendshipRepository friendshipRepository;
 
@@ -22,7 +26,7 @@ public class FriendshipServiceImpl implements FriendshipService {
         Collection<User> requests = new ArrayList<User>();
 
         for (Friendship fs : friendshipRepository.findAll()) {
-            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals("status")) {
+            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals(WAITING)) {
                 requests.add(fs.getSender());
             }
         }
@@ -35,10 +39,10 @@ public class FriendshipServiceImpl implements FriendshipService {
         Collection<User> friends = new ArrayList<User>();
 
         for (Friendship fs : friendshipRepository.findAll()) {
-            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals("accepted")) {
+            if (fs.getReceiver().getUserId() == id && fs.getStatus().equals(ACCEPTED)) {
                 friends.add(fs.getSender());
             }
-            else if (fs.getSender().getUserId() == id && fs.getStatus().equals("accepted")) {
+            else if (fs.getSender().getUserId() == id && fs.getStatus().equals(ACCEPTED)) {
                 friends.add(fs.getReceiver());
             }
         }
@@ -50,14 +54,14 @@ public class FriendshipServiceImpl implements FriendshipService {
     public void acceptRequest(Integer senderId, Integer receiverId) {
         Friendship friendship = null;
         for (Friendship fs : friendshipRepository.findAll()) {
-            if (fs.getStatus().equals("status") && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
+            if (fs.getStatus().equals(WAITING) && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
                 friendship = fs;
                 break;
             }
         }
 
         if (friendship != null) {
-            friendship.setStatus("accepted");
+            friendship.setStatus(ACCEPTED);
             friendshipRepository.save(friendship);
         }
     }
@@ -66,14 +70,14 @@ public class FriendshipServiceImpl implements FriendshipService {
     public void rejectRequest(Integer senderId, Integer receiverId) {
         Friendship friendship = null;
         for (Friendship fs : friendshipRepository.findAll()) {
-            if (fs.getStatus().equals("status") && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
+            if (fs.getStatus().equals(WAITING) && fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
                 friendship = fs;
                 break;
             }
         }
 
         if (friendship != null) {
-            friendship.setStatus("rejected");
+            friendship.setStatus(ACCEPTED);
             friendshipRepository.save(friendship);
         }
     }

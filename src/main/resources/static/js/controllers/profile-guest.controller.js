@@ -29,6 +29,13 @@ function GuestProfileController($mdDialog, guestService) {
         guestService.accept(id)
           .then(function (response) {
               console.log('Accepted friend ' + id);
+              for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
+                  if (guestProfileVm.friendRequests[i].guestId === id) {
+                     guestProfileVm.friends.push(guestProfileVm.friendRequests[i]);
+                     guestProfileVm.friendRequests.splice(i, 1);
+                     break;
+                  }
+              }
           });
     };
     
@@ -36,6 +43,12 @@ function GuestProfileController($mdDialog, guestService) {
       guestService.reject(id)
         .then(function (response) {
             console.log('Rejected friend ' + id);
+            for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
+                if (guestProfileVm.friendRequests[i].guestId === id) {
+                   guestProfileVm.friendRequests.splice(i, 1);
+                   break;
+                }
+            }
         });
     };
     
