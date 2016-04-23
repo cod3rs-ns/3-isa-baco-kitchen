@@ -170,4 +170,53 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
         }
     }
 
+    waiterProfileVm.selectedTable = null;
+    waiterProfileVm.selectTable = selectTable;
+    function selectTable(tableId){
+        for(table in waiterProfileVm.allTables){
+            if (waiterProfileVm.allTables[table].tableId == tableId){
+                waiterProfileVm.selectedTable = waiterProfileVm.allTables[table];
+                break;
+            }
+        }
+    }
+
+    waiterProfileVm.finishedOrders = [
+        {
+            title: "Sto broj 5",
+            desc: "Spremljen je gulaš."
+        },
+        {
+            title: "Sto broj 9",
+            desc: "Spremljen je pasulj."
+        },
+        {
+            title: "Sto broj 2",
+            desc: "Spremljen je koktel."
+        }
+    ];
+
+    waiterProfileVm.deleteFinishedOrder = deleteFinishedOrder
+    function deleteFinishedOrder(order){
+        var index = waiterProfileVm.finishedOrders.indexOf(order);
+        waiterProfileVm.finishedOrders[index] = true;
+        waiterProfileVm.finishedOrders.splice(index,1);
+    };
+
+
+    waiterProfileVm.addOrder = addOrder;
+    function addOrder() {
+        $mdDialog.show({
+            controller: 'AddOrderController',
+            controllerAs: 'orderVm',
+            templateUrl: '/views/dialogs/add-order.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: true,
+            locals: {
+                table: waiterProfileVm.selectedTable
+            }
+        });
+    };
+
 }

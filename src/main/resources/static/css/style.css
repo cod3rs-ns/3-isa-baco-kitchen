@@ -203,3 +203,35 @@ ul.rating {
     height: 300px;
     margin-left: auto;
     margin-right: auto; }
+
+
+#table-img-div{
+    position : relative;
+    width: 100%;
+    display: table;
+    text-align: center;
+}
+
+#inside-img{
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    right: 30%;
+    bottom: 30%;
+    display: flex;
+    justify-content: center;
+}
+
+#center-vert{
+    align-self: center;
+}
+
+#selected-table{
+    position: absolute;
+    top:5px;
+    width: 100%;
+    text-align:center;
+}
+
+
+

@@ -143,30 +143,57 @@
 				</md-content>
 			</md-tab>
 
-			<md-tab label="Raspored stolova">
-				<md-content layout="row" class="md-padding">
-					<div  layout="column" id="canvas" class="restaurant-canvas" >
-						<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
-								name="{{table.tableId != null ? table.tableId : table.tempId}}"
-								data-x="{{table.datax + 'px'}}"
-								data-y="{{table.datay + 'px'}}"
-								style="transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
-								height:{{table.height}};
-								width:{{table.width}};
-								background-color: {{table.color}}"
-								class="restaurant-table"
-								ng-repeat="table in waiterProfileVm.allTables">
-							<!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
-							<md-tooltip md-direction="bottom">
-								Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
-							</md-tooltip>
-							<md-tooltip md-direction="right">
-								Pozicija  {{ table.positions }}
-							</md-tooltip>
+			<md-tab label="Raspored stolova" layout = "row">
+                <md-content layout="row" class="md-padding" style="background-color:#DDDDDD">
+                    <div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas" >
+                        <div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
+                                name="{{table.tableId != null ? table.tableId : table.tempId}}"
+                                data-x="{{table.datax + 'px'}}"
+                                data-y="{{table.datay + 'px'}}"
+                                style="transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
+                                height:{{table.height}};
+                                width:{{table.width}};
+                                background-color: {{table.color}}"
+                                class="restaurant-table"
+								ng-click="waiterProfileVm.selectTable(table.tableId);"
+                                ng-repeat="table in waiterProfileVm.allTables">
+                            <!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
+                            <md-tooltip md-direction="bottom">
+                                Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
+                            </md-tooltip>
+                            <md-tooltip md-direction="right">
+                                Pozicija  {{ table.positions }}
+                            </md-tooltip>
+                        </div>
+                    </div>
 
+                    <div flex-gt-sm="30" layout="column" style="padding-top: 20px;">
+                        <div id="table-img-div">
+							<img width="100%" id="table-img" src="http://www.yliving.com/images/mattiazzi-solo-square-table/gallery_3.jpg"/>
+							<div id="selected-table">
+								<p ng-show="waiterProfileVm.selectedTable != null"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
+								<p ng-show="waiterProfileVm.selectedTable == null"> Kliknite na sto da biste ga selektovali! </p>
+							</div>
+							<div id="inside-img">
+								<div id="center-vert" layout="column">
+									<md-button class="md-raised md-primary">Izdaj račun</md-button>
+									<md-button class="md-raised md-primary" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
+								</div>
+							</div>
 						</div>
-					</div>
-				</md-content>
+                        <div layout="column">
+							<md-list>
+								<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.finishedOrders">
+									<md-checkbox ng-click="waiterProfileVm.deleteFinishedOrder(order)"></md-checkbox>
+									<div class="md-list-item-text">
+										<h3>{{order.title}}</h3>
+										<p>{{order.desc}}</p>
+									</div>
+								</md-list-item>
+							</md-list>
+                        </div>
+                    </div>
+                </md-content>
 			</md-tab>
 
 		</md-tabs>

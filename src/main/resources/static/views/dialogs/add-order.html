@@ -1,0 +1,82 @@
+<md-dialog flex="70" aria-label="Porudžbina"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Dodavanje porudžbine</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="orderVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="row" style="max-height:80%" ng-cloak>
+            <div flex-gt-sm="50">
+                <md-toolbar layout="row" class="md-hue-3">
+                    <div class="md-toolbar-tools">
+                        <span>Lista jela i pića</span>
+                    </div>
+                </md-toolbar>
+
+                <md-input-container md-no-float class="md-block">
+                    <input ng-model="search" type="text" placeholder="Ime stavke" >
+                    <md-icon style="display:inline-block;">search</md-icon>
+                </md-input-container>
+
+                <md-content  max-height="90%" layout="column">
+                    <md-list>
+                        <md-list-item class="md-2-line" ng-repeat="meal in orderVm.meals | filter : search ">
+                            <img ng-src="{{meal.image}}" class="md-avatar" />
+                            <div class="md-list-item-text" layout="column">
+                                <h3>{{ meal.name }}</h3>
+                                <h4>{{ meal.info }}</h4>
+                            </div>
+                            <md-checkbox aria-label="check" ng-model="meal.check" ng-click="orderVm.addMeal(meal);" class="md-secondary"></md-checkbox>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+
+            <div flex-gt-sm="50">
+                <md-toolbar layout="row" class="md-hue-3">
+                    <div class="md-toolbar-tools">
+                        <span>Stavke porudžbine</span>
+                    </div>
+                </md-toolbar>
+
+                <md-content  max-height="90%" layout="column">
+                    <md-list>
+                        <md-list-item class="md-3-line md-long-text" ng-repeat="meal in  orderVm.orderMeals" style="margin-top: 5px; margin-bottom: 0px;">
+                            <img ng-src="{{meal.image}}" class="md-avatar" />
+                            <div flex="85" class="md-list-item-text" layout="column">
+                                <h3>Moje ime je jako dugo i imacete problem sa njim</h3>
+                                <h4>drugi dugi red smanji se oo</h4>
+                                <md-input-container class="md-block">
+                                    <label>Količina</label>
+                                    <input required type="number" step="any" name="mealCount" ng-model="meal.count" min="1" />
+                                </md-input-container>
+                            </div>
+                            <div flex="15">
+                                <md-button style="position: relative" class="md-icon-button" ng-click="orderVm.removeMeal(meal);">
+                                    <md-icon style="position: absolute; top: 0px; right: 0px; " md-svg-src="images/icons/ic_close_black_24px.svg" aria-label="Close dialog"></md-icon>
+                                </md-button>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </md-content>
+            </div>
+
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-primary" ng-click="" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="orderVm.cancel()" md-autofocus>
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>
