@@ -1,4 +1,4 @@
-<html ng-app="isa-mrs-project" ng-cloak>
+<html ng-app="isa-mrs-project">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,8 +38,8 @@
 
 </head>
 <body>
-    <md-content>
-        <md-toolbar class="md-hue-2">
+    <md-content ng-cloak>
+        <md-toolbar ng-controller="ToolbarController as tbCtrl" class="md-hue-2">
           <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Menu" ng-disabled="true">
               <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
@@ -49,17 +49,16 @@
             </h2>
             <span flex></span>
 
-
-            <md-button aria-label="Login" ng-href="#/login">
+            <md-button aria-label="Login" ng-hide="$root.show" ng-href="#/login">
               Prijavi se
             </md-button>
-            <md-button aria-label="Sign up" ng-href="#/register">
+            <md-button aria-label="Sign up" ng-hide="$root.show" ng-href="#/register">
               Registruj se
             </md-button>
 
-              <div ng-controller="DemoCtrl as demo" ng-if="$root.show" class="lock-size" layout="row" layout-align="center center">
-                  <md-fab-speed-dial md-open="demo.isOpen" md-direction="{{demo.selectedDirection}}"
-                                     ng-class="demo.selectedMode">
+              <div  ng-if="$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
+                  <md-fab-speed-dial md-open="tbCtrl.isOpen" md-direction="{{tbCtrl.selectedDirection}}"
+                                     ng-class="tbCtrl.selectedMode">
                       <md-fab-trigger>
                           <md-button aria-label="menu" class="md-fab">
                               <md-icon class="material-icons">account_circle</md-icon>
@@ -67,15 +66,14 @@
                       </md-fab-trigger>
                       <md-fab-actions>
                           <md-button aria-label="Twitter" class="md-fab md-raised md-mini">
-                              <md-icon ng-click="demo.logout();" class="material-icons">exit_to_app</md-icon>
+                              <md-icon ng-click="tbCtrl.logout();" class="material-icons">exit_to_app</md-icon>
                           </md-button>
                           <md-button aria-label="Facebook" class="md-fab md-raised md-mini">
-                              <md-icon ng-click="demo.profile();"  class="material-icons">account_circle</md-icon>
+                              <md-icon ng-click="tbCtrl.profile();"  class="material-icons">account_circle</md-icon>
                           </md-button>
                       </md-fab-actions>
                   </md-fab-speed-dial>
               </div>
-
           </div>
         </md-toolbar>
 
@@ -100,7 +98,7 @@
     <script src="/js/controllers/profile-restaurant.controller.js"></script>
     <script src="/js/controllers/profile-restaurant-manager.controller.js"></script>
     <script src="/js/controllers/tables.controller.js"></script>
-    <script src="/js/controllers/toolbarcontroller.js"></script>
+    <script src="/js/controllers/toolbar.controller.js"></script>
     <!-- Dialog controllers -->
     <script src="/js/controllers/single-provider.controller.js"></script>
     <script src="/js/controllers/single-restaurant.controller.js"></script>

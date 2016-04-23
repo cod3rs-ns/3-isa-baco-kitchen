@@ -1,30 +1,23 @@
 angular
     .module('isa-mrs-project')
-    .controller('DemoCtrl', DemoCtrl);
+    .controller('ToolbarController', ToolbarController);
 
-DemoCtrl.$inject = ['loginService', '$rootScope'];
+ToolbarController.$inject = ['loginService', '$rootScope'];
 
 
-function DemoCtrl(loginService) {
-    this.topDirections = ['left', 'up'];
-    this.bottomDirections = ['down', 'right'];
+function ToolbarController(loginService) {
     this.isOpen = false;
-    this.availableModes = ['md-fling', 'md-scale'];
-    this.selectedMode = 'md-fling';
-    this.availableDirections = ['up', 'down', 'left', 'right'];
+    this.selectedMode = 'md-scale';
     this.selectedDirection = 'left';
-
 
     this.logout = logout;
     function logout() {
-        console.log("logout");
+        loginService.logout();
     };
 
     this.profile = profile;
     function profile() {
         loginService.redirect();
     };
-
-
 
 }

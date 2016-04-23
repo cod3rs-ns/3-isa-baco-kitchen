@@ -20,8 +20,8 @@ function LoginController($http, $window, $rootScope, loginService) {
                 if (token !== undefined) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + token;
                     $window.localStorage.setItem('AUTH_TOKEN', token);
-                    loginService.redirect();
                     $rootScope.show = true;
+                    loginService.redirect();
                 }
                 else {
                     loginVm.invalid = true;
