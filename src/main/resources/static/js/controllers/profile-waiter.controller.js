@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['waiterService', '$mdDialog', 'passService'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', '$mdDialog', 'passService'];
 
-function WaiterProfileController(waiterService, $mdDialog, passService) {
+function WaiterProfileController(tableService, waiterService, $mdDialog, passService) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -22,6 +22,8 @@ function WaiterProfileController(waiterService, $mdDialog, passService) {
                     waiterProfileVm.changePassword(false);
                 }
             });
+
+        getTablesByRestaurant();
     };
 
 
@@ -106,6 +108,7 @@ function WaiterProfileController(waiterService, $mdDialog, passService) {
         }
     ];
 
+    //editing profile
 
     waiterProfileVm.editProfile = editProfile;
     function editProfile() {
@@ -141,4 +144,30 @@ function WaiterProfileController(waiterService, $mdDialog, passService) {
             }
         );
     };
+
+
+    //part for tables
+
+    waiterProfileVm.allTables = [];
+    function getTablesByRestaurant() {
+        //TODO SET RESTAURANT ID
+        return tableService.getTablesByRestaurant(2)
+            .then(function(data) {
+                changeWaitersTables(data);
+                waiterProfileVm.allTables = data;
+                return waiterProfileVm.tables;
+            });
+    };
+
+    function changeWaitersTables(tables){
+        for (pos in tables){
+            if(pos<3) {
+                tables[pos].color = '#CDDC39';
+            }
+            else{
+                tables[pos].color = '#1B5E20';
+            }
+        }
+    }
+
 }

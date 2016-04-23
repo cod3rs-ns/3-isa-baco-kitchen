@@ -141,7 +141,32 @@
 						cell-is-open="true">
 					</mwl-calendar>
 				</md-content>
-			
+			</md-tab>
+
+			<md-tab label="Raspored stolova">
+				<md-content layout="row" class="md-padding">
+					<div  layout="column" id="canvas" class="restaurant-canvas" >
+						<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
+								name="{{table.tableId != null ? table.tableId : table.tempId}}"
+								data-x="{{table.datax + 'px'}}"
+								data-y="{{table.datay + 'px'}}"
+								style="transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
+								height:{{table.height}};
+								width:{{table.width}};
+								background-color: {{table.color}}"
+								class="restaurant-table"
+								ng-repeat="table in waiterProfileVm.allTables">
+							<!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
+							<md-tooltip md-direction="bottom">
+								Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
+							</md-tooltip>
+							<md-tooltip md-direction="right">
+								Pozicija  {{ table.positions }}
+							</md-tooltip>
+
+						</div>
+					</div>
+				</md-content>
 			</md-tab>
 
 		</md-tabs>
