@@ -4,6 +4,7 @@ package com.bacovakuhinja.service.impl;
 import com.bacovakuhinja.model.Friendship;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.repository.FriendshipRepository;
+import com.bacovakuhinja.repository.GuestRepository;
 import com.bacovakuhinja.service.FriendshipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Autowired
     FriendshipRepository friendshipRepository;
+
+    @Autowired
+    GuestRepository guestRepository;
 
     @Override
     public Collection<User> getFriendshipsRequestByGuestID(Integer id) {
@@ -77,8 +81,49 @@ public class FriendshipServiceImpl implements FriendshipService {
         }
 
         if (friendship != null) {
-            friendship.setStatus(ACCEPTED);
+            friendship.setStatus(REJECTED);
             friendshipRepository.save(friendship);
         }
     }
+
+    @Override
+    public void addFriend(Integer senderId, Integer receiverId) {
+        Friendship fs = new Friendship();
+        fs.setSender(guestRepository.findOne(senderId));
+        fs.setReceiver(guestRepository.findOne(receiverId));
+        fs.setStatus(WAITING);
+
+        friendshipRepository.save(fs);
+    }
+
+    @Override
+    public void removeFriend(Integer senderId, Integer receiverId) {
+        Friendship friendship = null;
+        for (Friendship fs : friendshipRepository.findAll()) {
+            if (fs.getSender().getGuestId() == senderId && fs.getReceiver().getGuestId() == receiverId) {
+                friendship = fs;
+                break;
+            }
+            else if (fs.getSender().getGuestId() == receiverId && fs.getReceiver().getGuestId() == senderId) {
+                friendship = fs;
+                break;
+            }
+        }
+
+        if (friendship != null) {
+            friendshipRepository.delete(friendship);
+        }
+    }
+
+    @Override
+    public boolean areWeFriends(Integer senderId, Integer receiverId) {
+        for (User g : getFriendsByGuestID(senderId)) {
+            if (g.getUserId() == receiverId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

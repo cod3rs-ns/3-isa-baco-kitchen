@@ -56,20 +56,30 @@ public class GuestController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Boolean> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
+    public ResponseEntity<Boolean> isAdmin(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
         return new ResponseEntity<Boolean>(user.getGuestId() == id, HttpStatus.OK);
     }
 
     @Authorization(value = "guest")
     @RequestMapping (
-            value    = "/api/guest/friends",
+            value    = "/api/guest/friend/{id}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Collection<User>> getFriends(final HttpServletRequest request) {
+    public ResponseEntity<Boolean> isFriend(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
-        Collection<User> friends = friendshipService.getFriendsByGuestID(user.getGuestId());
+        return new ResponseEntity<Boolean>(friendshipService.areWeFriends(user.getGuestId(), id), HttpStatus.OK);
+    }
+
+    @Authorization(value = "guest")
+    @RequestMapping (
+            value    = "/api/guest/friends/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<User>> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
+        Collection<User> friends = friendshipService.getFriendsByGuestID(id);
 
         return new ResponseEntity<Collection<User>>(friends, HttpStatus.OK);
     }
@@ -95,6 +105,32 @@ public class GuestController {
     public ResponseEntity<?> rejectFriend(final HttpServletRequest request, @PathVariable Integer senderId) {
         Guest user = (Guest) request.getAttribute("loggedUser");
         friendshipService.rejectRequest(senderId, user.getGuestId());
+        return new ResponseEntity<Guest>(user, HttpStatus.OK);
+    }
+
+    @Authorization(value = "guest")
+    @RequestMapping (
+            value    = "/api/guest/add-friend/{id}",
+            method   = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> addFriend(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+        System.out.println("add friend");
+        friendshipService.addFriend(user.getGuestId(), id);
+        return new ResponseEntity<Guest>(user, HttpStatus.OK);
+    }
+
+    @Authorization(value = "guest")
+    @RequestMapping (
+            value    = "/api/guest/remove-friend/{id}",
+            method   = RequestMethod.DELETE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> removeFriend(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+        System.out.println("remove friend");
+        friendshipService.removeFriend(user.getGuestId(), id);
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 

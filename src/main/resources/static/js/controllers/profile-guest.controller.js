@@ -14,14 +14,46 @@ function GuestProfileController($routeParams, guestService) {
     guestProfileVm.user = {};
     guestProfileVm.friendRequests = [];
     guestProfileVm.friends = [];
+    guestProfileVm.isFriend = false;
+    guestProfileVm.sendRequest = false;
     // Functions 
     guestProfileVm.editProfile = editProfile;
     guestProfileVm.saveChanges = saveChanges;
     guestProfileVm.cancel = cancel;
     guestProfileVm.acceptFriend = acceptFriend;
     guestProfileVm.rejectFriend = rejectFriend;
+    guestProfileVm.removeFriend = removeFriend;
+    guestProfileVm.addFriend = addFriend;
 
     activate();
+    
+    function addFriend(id) {
+        guestService.addFriend(id)
+          .then(function (response) {
+              console.log('Added friend ' + id);
+              guestProfileVm.sendRequest = true;
+          });
+    };
+    
+    function removeFriend(id) {
+      guestService.removeFriend(id)
+        .then(function (response) {
+            console.log('Removed friend ' + id);
+            guestProfileVm.isFriend = false;
+            
+            if (guestProfileVm.admin) {
+                for (var i = guestProfileVm.friends.length - 1; i >= 0; i--) {
+                    if (guestProfileVm.friends[i].guestId === id) {
+                       guestProfileVm.friends.splice(i, 1);
+                       break;
+                    }
+                }
+            }
+            else {
+                getFriends();
+            }
+        });
+    };
 
     // Implement functions later
     function acceptFriend(id) {
@@ -82,7 +114,11 @@ function GuestProfileController($routeParams, guestService) {
         });
         
         getFriends().then(function() {
-            console.log('Friends loaded');
+            console.log('Friends loaded.');
+        });
+        
+        isFriend().then(function() {
+            console.log('Is friend loaded.')
         });
     };
 
@@ -101,9 +137,16 @@ function GuestProfileController($routeParams, guestService) {
     };
     
     function getFriends() {
-        return guestService.getFriends().then(function(data) {
-          guestProfileVm.friends = data;
-          return guestProfileVm.friends;
-      });
+        return guestService.getFriends($routeParams.guestId).then(function(data) {
+            guestProfileVm.friends = data;
+            return guestProfileVm.friends;
+        });
+    };
+    
+    function isFriend() {
+        return guestService.isFriend($routeParams.guestId).then(function(data) {
+            guestProfileVm.isFriend = data;
+            return guestProfileVm.isFriend;
+        });
     };
 }

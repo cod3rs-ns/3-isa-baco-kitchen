@@ -91,11 +91,11 @@
         </div>
       </div>
 
-      <md-button ng-hide="guestProfileVm.admin" class="md-fab" aria-label="Add friend">
-        <md-icon aria-label="Add person" class="material-icons">person_add</md-icon>
+      <md-button ng-show="!guestProfileVm.admin && !guestProfileVm.isFriend && !guestProfileVm.sendRequest" class="md-fab" aria-label="Add friend">
+        <md-icon ng-click="guestProfileVm.addFriend(guestProfileVm.user.guestId)" aria-label="Add person" class="material-icons">person_add</md-icon>
       </md-button>
-      <md-button ng-hide="guestProfileVm.admin" class="md-fab" aria-label="Remove person from friends">
-        <md-icon aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
+      <md-button ng-show="!guestProfileVm.admin && guestProfileVm.isFriend" class="md-fab" aria-label="Remove person from friends">
+        <md-icon ng-click="guestProfileVm.removeFriend(guestProfileVm.user.guestId)" aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
       </md-button>
       
       <md-tabs md-dynamic-height md-border-bottom>
@@ -201,10 +201,10 @@
       </md-toolbar>
     <md-list>
       <md-subheader class="md-primary">Moji prijatelji</md-subheader>
-      <md-list-item ng-repeat="friend in guestProfileVm.friends" ng-click="guestProfileVm.foo()" class="noright">
-        <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}" class="md-avatar" />
-        <p>{{friend.firstName + ' ' + friend.lastName}}</p>
-        <md-icon aria-label="Search" class="material-icons">highlight_off</md-icon>
+      <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
+          <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}" class="md-avatar" />
+          <p>{{friend.firstName + ' ' + friend.lastName}}</p>
+        <md-icon ng-show="guestProfileVm.admin" ng-click="guestProfileVm.removeFriend(friend.guestId)" aria-label="Remove friend" class="material-icons cursor-pointer">highlight_off</md-icon>
       </md-list-item>
     </md-list>
     <md-divider></md-divider>

@@ -12,7 +12,10 @@ function guestService($http) {
         getFriends: getFriends,
         accept: accept,
         reject: reject,
-        isMy: isMy
+        isMy: isMy,
+        addFriend: addFriend,
+        removeFriend: removeFriend,
+        isFriend: isFriend
     };
 
     return service;
@@ -38,8 +41,8 @@ function guestService($http) {
         });
     };
     
-    function getFriends() {
-        return $http.get('api/guest/friends')
+    function getFriends(id) {
+        return $http.get('api/guest/friends/' + id)
         .then(function(response) {
             return response.data;
         });
@@ -61,6 +64,27 @@ function guestService($http) {
     
     function isMy(id) {
         return $http.get('api/guest/admin/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function addFriend(id) {
+        return $http.post('api/guest/add-friend/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function removeFriend(id) {
+        return $http.delete('api/guest/remove-friend/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function isFriend(id) {
+        return $http.get('api/guest/friend/' + id)
         .then(function(response) {
             return response.data;
         });

@@ -15,11 +15,11 @@ public class Friendship implements Serializable {
     private Integer id;
 
     @JoinColumn(name = "fs_first")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Guest sender;
 
     @JoinColumn(name = "fs_second")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Guest receiver;
 
     @Column(name = "fs_status")

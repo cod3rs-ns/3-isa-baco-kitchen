@@ -13,4 +13,10 @@ public interface FriendshipService {
     public void acceptRequest(Integer senderId, Integer receiverId);
 
     public void rejectRequest(Integer senderId, Integer receiverId);
+
+    public void addFriend(Integer senderId, Integer receiverId);
+
+    public void removeFriend(Integer senderId, Integer receiverId);
+
+    public boolean areWeFriends(Integer senderId, Integer receiverId);
 }
