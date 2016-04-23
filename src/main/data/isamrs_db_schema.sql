@@ -13,6 +13,15 @@ DROP SCHEMA IF EXISTS `isa_mrs_project` ;
 -- Schema isa_mrs_project
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `isa_mrs_project` DEFAULT CHARACTER SET utf8 ;
+-- -----------------------------------------------------
+-- Schema myopinion
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `myopinion` ;
+
+-- -----------------------------------------------------
+-- Schema myopinion
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `myopinion` DEFAULT CHARACTER SET utf8 ;
 USE `isa_mrs_project` ;
 
 -- -----------------------------------------------------
@@ -99,6 +108,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
   `r_time_start` INT NOT NULL,
   `r_time_end` INT NOT NULL,
   `r_sm_id` INT NULL,
+  `r_address` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`r_id`),
   INDEX `r_sm_fid_idx` (`r_sm_id` ASC),
   CONSTRAINT `r_sm_fid`
@@ -354,7 +364,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
     FOREIGN KEY (`rt_region_id`)
     REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
     ON DELETE CASCADE
-    ON UPDATE CASCADE)
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -424,6 +434,237 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`drinks` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`work_periods`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`work_periods` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`work_periods` (
+  `wp_id` INT NOT NULL AUTO_INCREMENT,
+  `wp_start` DATETIME NOT NULL,
+  `wp_end` DATETIME NOT NULL,
+  `wp_restaurant_id` INT NOT NULL,
+  PRIMARY KEY (`wp_id`),
+  INDEX `wp_restaurant_fid_idx` (`wp_restaurant_id` ASC),
+  CONSTRAINT `wp_restaurant_fid`
+    FOREIGN KEY (`wp_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`shifts`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`shifts` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`shifts` (
+  `sh_id` INT NOT NULL,
+  `sh_name` VARCHAR(45) NOT NULL,
+  `sh_start` INT NOT NULL,
+  `sh_end` INT NOT NULL,
+  `sh_restaurant_id` INT NOT NULL,
+  PRIMARY KEY (`sh_id`),
+  INDEX `sh_restaurant_fid_idx` (`sh_restaurant_id` ASC),
+  CONSTRAINT `sh_restaurant_fid`
+    FOREIGN KEY (`sh_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`day_schedules`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`day_schedules` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`day_schedules` (
+  `ds_id` INT NOT NULL,
+  `ds_day` DATETIME NOT NULL,
+  `ds_shift_id` INT NOT NULL,
+  `ds_work_period_id` INT NOT NULL,
+  `ds_region_id` INT NOT NULL,
+  `ds_employee_id` INT NOT NULL,
+  PRIMARY KEY (`ds_id`),
+  INDEX `ds_work_period_id_idx` (`ds_work_period_id` ASC),
+  INDEX `ds_shift_fid_idx` (`ds_shift_id` ASC),
+  INDEX `ds_table_region_fid_idx` (`ds_region_id` ASC),
+  INDEX `ds_employee_fid_idx` (`ds_employee_id` ASC),
+  CONSTRAINT `ds_shift_fid`
+    FOREIGN KEY (`ds_shift_id`)
+    REFERENCES `isa_mrs_project`.`shifts` (`sh_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ds_work_period_fid`
+    FOREIGN KEY (`ds_work_period_id`)
+    REFERENCES `isa_mrs_project`.`work_periods` (`wp_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ds_region_fid`
+    FOREIGN KEY (`ds_region_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `ds_employee_fid`
+    FOREIGN KEY (`ds_employee_id`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+USE `myopinion` ;
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`categories`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`categories` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`categories` (
+  `c_name` VARCHAR(45) NOT NULL,
+  `c_info` VARCHAR(100) NOT NULL,
+  PRIMARY KEY (`c_name`),
+  UNIQUE INDEX `categoryname_UNIQUE` (`c_name` ASC))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`users`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`users` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`users` (
+  `u_username` VARCHAR(45) NOT NULL,
+  `u_pswd` VARCHAR(45) NOT NULL,
+  `u_fname` VARCHAR(45) NOT NULL,
+  `u_lname` VARCHAR(45) NOT NULL,
+  `u_role` VARCHAR(20) NOT NULL,
+  `u_phone` VARCHAR(45) NOT NULL,
+  `u_email` VARCHAR(45) NOT NULL,
+  `u_img` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`u_username`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`objects`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`objects` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`objects` (
+  `o_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `o_name` VARCHAR(45) NOT NULL,
+  `o_location` VARCHAR(45) NOT NULL,
+  `o_city` VARCHAR(45) NOT NULL,
+  `o_phone` VARCHAR(45) NOT NULL,
+  `o_email` VARCHAR(45) NOT NULL,
+  `o_pib` VARCHAR(45) NOT NULL,
+  `o_account` VARCHAR(45) NOT NULL,
+  `o_img` VARCHAR(200) NOT NULL,
+  `o_wsite` VARCHAR(100) NOT NULL,
+  `o_latitude` DOUBLE NOT NULL,
+  `o_longitude` DOUBLE NOT NULL,
+  `o_category` VARCHAR(45) NOT NULL,
+  `o_user` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`o_id`),
+  UNIQUE INDEX `o_account_UNIQUE` (`o_account` ASC),
+  UNIQUE INDEX `o_pib_UNIQUE` (`o_pib` ASC),
+  INDEX `fk_objects_categories1_idx` (`o_category` ASC),
+  INDEX `fk_objects_users1_idx` (`o_user` ASC),
+  CONSTRAINT `fk_objects_categories1`
+    FOREIGN KEY (`o_category`)
+    REFERENCES `myopinion`.`categories` (`c_name`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_objects_users1`
+    FOREIGN KEY (`o_user`)
+    REFERENCES `myopinion`.`users` (`u_username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`events`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`events` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`events` (
+  `e_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `e_date` DATETIME NOT NULL,
+  `e_info` VARCHAR(200) NOT NULL,
+  `e_img` VARCHAR(200) NOT NULL,
+  `e_object` INT(11) NOT NULL,
+  PRIMARY KEY (`e_id`),
+  INDEX `fk_events_objects1_idx` (`e_object` ASC),
+  CONSTRAINT `fk_events_objects1`
+    FOREIGN KEY (`e_object`)
+    REFERENCES `myopinion`.`objects` (`o_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`reviews`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`reviews` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`reviews` (
+  `rv_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `rv_text` VARCHAR(200) NOT NULL,
+  `rv_date` DATETIME NOT NULL,
+  `rv_rating` INT(11) NOT NULL,
+  `rv_user` VARCHAR(45) NOT NULL,
+  `rv_object` INT(11) NOT NULL,
+  PRIMARY KEY (`rv_id`),
+  INDEX `fk_reviews_users1_idx` (`rv_user` ASC),
+  INDEX `fk_reviews_objects1_idx` (`rv_object` ASC),
+  CONSTRAINT `fk_reviews_objects1`
+    FOREIGN KEY (`rv_object`)
+    REFERENCES `myopinion`.`objects` (`o_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_reviews_users1`
+    FOREIGN KEY (`rv_user`)
+    REFERENCES `myopinion`.`users` (`u_username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `myopinion`.`users_attending_events`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `myopinion`.`users_attending_events` ;
+
+CREATE TABLE IF NOT EXISTS `myopinion`.`users_attending_events` (
+  `uae_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `uae_user` VARCHAR(45) NOT NULL,
+  `uae_event` INT(11) NOT NULL,
+  PRIMARY KEY (`uae_id`),
+  INDEX `fk_users_has_events_events1_idx` (`uae_event` ASC),
+  INDEX `fk_users_has_events_users_idx` (`uae_user` ASC),
+  CONSTRAINT `fk_users_has_events_events1`
+    FOREIGN KEY (`uae_event`)
+    REFERENCES `myopinion`.`events` (`e_id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_users_has_events_users`
+    FOREIGN KEY (`uae_user`)
+    REFERENCES `myopinion`.`users` (`u_username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

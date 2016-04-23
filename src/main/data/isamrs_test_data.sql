@@ -9,9 +9,9 @@ INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, 
 
 INSERT INTO `isa_mrs_project`.`sys_managers` (`sm_id`, `sm_info`) VALUES ('5', 'Zidane biography.');
 
-INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`) VALUES ('1', 'Macchiato', 'Macchiato Liman vama na usluzi. Najlepši pogled na Limanski park u gradu xD.', 'Custom', '6', '23', '5');
-INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`) VALUES ('2', 'Orfei', 'Restoran Orfei vama na usluzi.', 'Orfei ima baštu. Dođite u baštu.', '7', '21', '5');
-INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`) VALUES ('3', 'Mašinac', 'Studenti na prvom mestu.', 'Studentski, studentski...', '6', '18', '5');
+INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`) VALUES ('1', 'Macchiato', 'Macchiato Liman vama na usluzi. Najlepši pogled na Limanski park u gradu xD.', 'Custom', '6', '23', '5', 'Narodnog Fronta 21');
+INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`) VALUES ('2', 'Orfei', 'Restoran Orfei vama na usluzi.', 'Orfei ima baštu. Dođite u baštu.', '7', '21', '5', 'Narodnog Fronta 21');
+INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`) VALUES ('3', 'Mašinac', 'Studenti na prvom mestu.', 'Studentski, studentski...', '6', '18', '5', 'Narodnog Fronta 21');
 
 INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('1', 'Ramos biography.');
 INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('2', 'Isco biography.');

@@ -33,21 +33,24 @@ public class Restaurant implements Serializable {
     @Column(name = "r_time_end")
     private Integer endTime;
 
+    @Column(name = "r_address")
+    private String address;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "r_sm_id")
     private SystemManager systemManager;
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Set<Food> foodMenu = new HashSet<Food>(0);
+    private Set <Food> foodMenu = new HashSet <Food>(0);
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Set<Drink> drinksMenu = new HashSet<Drink>(0);
+    private Set <Drink> drinksMenu = new HashSet <Drink>(0);
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Set<RestaurantRegion> regions = new HashSet<RestaurantRegion>(0);
+    private Set <RestaurantRegion> regions = new HashSet <RestaurantRegion>(0);
 
     public Restaurant() {
     }
@@ -100,14 +103,27 @@ public class Restaurant implements Serializable {
         this.endTime = endTime;
     }
 
-    public SystemManager getSystemManager() { return systemManager; }
+    public SystemManager getSystemManager() {
+        return systemManager;
+    }
 
-    public void setSystemManager(SystemManager systemManager) { this.systemManager = systemManager; }
+    public void setSystemManager(SystemManager systemManager) {
+        this.systemManager = systemManager;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     @JsonProperty
     public Set <Food> getFoodMenu() {
         return foodMenu;
     }
+
     @JsonIgnore
     public void setFoodMenu(Set <Food> foodMenu) {
         this.foodMenu = foodMenu;
@@ -117,6 +133,7 @@ public class Restaurant implements Serializable {
     public Set <Drink> getDrinksMenu() {
         return drinksMenu;
     }
+
     @JsonIgnore
     public void setDrinksMenu(Set <Drink> drinksMenu) {
         this.drinksMenu = drinksMenu;
