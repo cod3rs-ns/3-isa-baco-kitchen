@@ -2,51 +2,55 @@ angular
     .module('isa-mrs-project')
     .controller('TablesController', TablesController);
 
-TablesController.$inject = ['tableService'];
+TablesController.$inject = ['tableService', '$mdDialog', '$mdToast'];
 
-function TablesController(tableService) {
+function TablesController(tableService, $mdDialog, $mdToast) {
     var tablesVm = this;
+    // switch of edit or no-edit state
+    tablesVm.enabledEdit = false;
+    // table containers
     tablesVm.tables = [];
-    tablesVm.createTable = createTable;
-    tablesVm.enabledEdit = true;
     tablesVm.deletedTables = [];
     tablesVm.backup = [];
 
-    tablesVm.saveState = saveState;
+    // objects of interaction (canvas and all its object separated)
+    tablesVm.interactObject = null;
+    tablesVm.interactCanvas = null;
+
+    // processing state changes
+    tablesVm.saveChanges = saveChanges;
     tablesVm.cancelChanges = cancelChanges;
 
-    function saveState() {
-        for (var i = 0; i < tablesVm.tables.length; i++) {
-            if ( tablesVm.tables[i].hasOwnProperty('isNew')) {
-                console.log('create');
-                tableService.createTable(angular.toJson(tablesVm.tables[i]), 1);
-            }else{
-                console.log('update');
-                tableService.updateTable(angular.toJson(tablesVm.tables[i]), 1);
-            };
-        };
+    // saves current layout, used for backup
+    tablesVm.saveCurrentState = saveCurrentState;
 
-        for (var i = 0; i < tablesVm.deletedTables.length; i++) {
-            tableService.deleteTable(tablesVm.deletedTables[i].tableId);
-        };
-        tablesVm.deletedTables = [];
-    };
+    // calculates number of people for table
+    tablesVm.tableSizeHeuristic = tableSizeHeuristic;
 
-    function cancelChanges() {
+    // enable interaction with elements
+    tablesVm.startInteraction = startInteraction;
 
-    };
+    // toogle editState attribute true/false and do appropriate actions
+    tablesVm.switchCanvasState = switchCanvasState;
+
+    // returns table with provided ID
+    tablesVm.findTable = findTable;
+
+    // feedback to user
+    tablesVm.showInfo = showInfo;
+    tablesVm.showToast = showToast
 
     activate();
 
-
     function activate() {
-        return getTablesByRestaurant().then(function() {
+        getTablesByRestaurant().then(function() {
             // after success action
         });
     };
 
     function getTablesByRestaurant() {
         // TODO currently locked on 2
+        // find way to access to logged user
         return tableService.getTablesByRestaurant(2)
             .then(function(data) {
                 tablesVm.tables = data;
@@ -54,8 +58,71 @@ function TablesController(tableService) {
             });
     };
 
-    tablesVm.calculatePeople = calculatePeople;
-    function calculatePeople(x, y){
+    function showInfo(ev){
+        $mdDialog.show(
+            $mdDialog.alert()
+                .parent(angular.element(document.querySelector('#upper')))
+                .clickOutsideToClose(true)
+                .title('Uputstvo za korišćenje')
+                .textContent(
+                    'Za dodavanje novog stola potrebno je zadržati klik na praznoj površin dok se ne pojavi sto '
+                +   'Za uklanjanje postojećeg stola potrebno je uraditi dupli klik na njegovoj površini. '
+                +   'Za promenu regiona stola potrebno je kliknuti na sto i boja će mu se promeniti. '
+                +   'Promenom veličine stola menja se i broj ljudi koji mogu da sednu za njega. '
+                +   'Promena veličine omogućena je u levoj i donjoj ivici stola, prevlačenjem miša do željene pozicije. '
+                +   'Promena pozicije stola moguća je prostim prevlačenjem stola na drugu poziciju. '
+                +   'Sve promene se čuvaju tek nakon klika na dugme Sačuvaj. Ukoliko se klikne na dugme Poništi, sve '
+                +   'promene će biti poništene i raspored će biti vraćen u pređašnje stanje.')
+                .ariaLabel('Uputstvo za korišćenje')
+                .ok('OK')
+                .targetEvent(ev)
+            );
+    };
+
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'bottom left',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+
+    function saveChanges() {
+        // TODO Region currently locked onto 1
+        for (var i = 0; i < tablesVm.tables.length; i++) {
+            // create new tables
+            if (tablesVm.tables[i].hasOwnProperty('isNew')) {
+                tableService.createTable(angular.toJson(tablesVm.tables[i]), 1);
+            }else{ // update existing tables
+                tableService.updateTable(angular.toJson(tablesVm.tables[i]), 1);
+            };
+        };
+
+        // remove deleted tables from database
+        for (var i = 0; i < tablesVm.deletedTables.length; i++) {
+            tableService.deleteTable(tablesVm.deletedTables[i].tableId);
+        };
+        // reset list for next time
+        tablesVm.deletedTables = [];
+        tablesVm.switchCanvasState();
+        tablesVm.showToast('Raspored stolova je sačuvan.')
+    };
+
+    function cancelChanges() {
+        tablesVm.tables = tablesVm.backup;
+        tablesVm.backup = [];
+        tablesVm.deletedTables = [];
+        tablesVm.switchCanvasState();
+        tablesVm.showToast('Sve promene su poništene.')
+    };
+
+    function saveCurrentState(){
+        tablesVm.backup = angular.copy(tablesVm.tables);
+        tablesVm.deletedTables = [];
+    };
+
+    function tableSizeHeuristic(x, y){
+        // TODO This is example of function, should be way smarter
         var area = x*y;
         console.log(area);
         if(area < 100){
@@ -73,12 +140,9 @@ function TablesController(tableService) {
         }else {
             return 'puno ljudi';
         }
-
     };
 
-    tablesVm.initInteractable = initInteractable;
-
-    function initInteractable(){
+    function startInteraction(){
         // Define how should tables behave
         tablesVm.interactObject = interact('.restaurant-table')
             .draggable({
@@ -92,7 +156,6 @@ function TablesController(tableService) {
                 },
                 // enable autoScroll
                 autoScroll: false,
-
                 // call this function on every dragmove event
                 onmove: dragMoveListener,
                 // call this function on every dragend event
@@ -104,37 +167,39 @@ function TablesController(tableService) {
                 edges: { left: false, right: true, bottom: true, top: false }
             })
             .on('resizemove', resizeListener)
-            .on('tap', function (event) {
-                event.currentTarget.classList.toggle('switch-bg');
-                event.preventDefault();
-            })
+            .on('tap', colorSwitchListener)
             .on('doubletap', removeListener);
 
-            tablesVm.canvas = interact('.restaurant-canvas')
-                .on('hold', function(event){
-
-                    tablesVm.newTable = {
-                        tableId: null,
-                        datax: event.layerX - 90,
-                        datay: event.layerY - 140,
-                        width: 40,
-                        height: 40,
-                        positions: 2,
-                        tempId: 10000 + tablesVm.tables.length,
-                        isNew: true
-                    };
-
-                    tablesVm.tables.push(tablesVm.newTable);
-                    var parent = document.getElementById('canvas');
-                    var test =  document.createElement("p");
-                    parent.appendChild(test);
-                    parent.removeChild(test);
-
-                } );
+            tablesVm.interactCanvas = interact('.restaurant-canvas')
+                .on('hold', addTableListener);
     };
-    tablesVm.initInteractable();
+
+    function addTableListener(event) {
+        tablesVm.newTable = {
+            tableId: null,
+            datax: event.layerX - 90,
+            datay: event.layerY - 140,
+            width: 40,
+            height: 40,
+            positions: 2,
+            tempId: 10000 + tablesVm.tables.length,
+            isNew: true
+        };
+
+        tablesVm.tables.push(tablesVm.newTable);
+        var parent = document.getElementById('canvas');
+        var test =  document.createElement("p");
+        parent.appendChild(test);
+        parent.removeChild(test);
+    };
+
+    function colorSwitchListener(event) {
+        event.currentTarget.classList.toggle('switch-bg');
+        event.preventDefault();
+    };
+
     // Function that saves current positon of the element after dragging
-    function dragMoveListener (event) {
+    function dragMoveListener(event) {
         var target = event.target;
         // keep the dragged position in the data-x/data-y attributes
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
@@ -182,8 +247,8 @@ function TablesController(tableService) {
         currentTable.datax = x;
         currentTable.datay = y;
 
-        // TODO calculatePeople
-        target.textContent = 'n:' + 'br'
+        // TODO tableSizeHeuristic
+        //target.textContent = 'n:' + 'br'
     };
 
     function removeListener(event) {
@@ -220,50 +285,42 @@ function TablesController(tableService) {
     };
 
     // this is used on whole window when draggin or resizing
+    // TODO maybe this should be restricted only to canvas
     window.dragMoveListener = dragMoveListener;
     window.resizeListener = resizeListener;
-
+    window.colorSwitchListener = colorSwitchListener;
+    window.removeListener = removeListener;
+    window.addTableListener = addTableListener;
     //interact.maxInteractions(Infinity);
 
-    function createTable(){
-        tablesVm.newTable = {
-            tableId: null,
-            datax: 10,
-            datay: -50,
-            width: 40,
-            height: 40,
-            positions: 2
-        };
-        tablesVm.tables.push(tablesVm.newTable);
-    };
-
-    tablesVm.switchEdit = switchEdit;
-    function switchEdit(){
+    function switchCanvasState() {
         tablesVm.enabledEdit = !tablesVm.enabledEdit;
-        if(tablesVm.enabledEdit){
-            tablesVm.initInteractable();
-        }else{
+        if(tablesVm.enabledEdit) {
+            tablesVm.startInteraction();
+            tablesVm.saveCurrentState();
+            document.getElementById('canvas').classList.toggle('edit-bg');
+        }else {
             tablesVm.interactObject.unset();
-            tablesVm.canvas.unset();
+            tablesVm.interactCanvas.unset();
+            document.getElementById('canvas').classList.toggle('edit-bg');
         }
 
     }
 
-    tablesVm.findTable = findTable;
-    function findTable(table_id){
+    function findTable(table_id) {
         for (var i = 0; i < tablesVm.tables.length; i++) {
             if ( tablesVm.tables[i].hasOwnProperty('isNew')) {
-                if(tablesVm.tables[i].tempId == table_id){
+                // use .tempId
+                if(tablesVm.tables[i].tempId == table_id) {
                     return tablesVm.tables[i];
                 };
-            }else{
-                if(tablesVm.tables[i].tableId == table_id){
+            }else {
+                // use standard .tableId
+                if(tablesVm.tables[i].tableId == table_id) {
                     return tablesVm.tables[i];
-                }
+                };
             };
-        }
+        };
         return null;
     };
-
-
 }
