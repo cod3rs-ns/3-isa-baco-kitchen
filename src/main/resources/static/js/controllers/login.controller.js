@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('LoginController', LoginController);
     
-LoginController.$inject = ['$http', '$window', 'loginService'];
+LoginController.$inject = ['$http', '$window', '$rootScope', 'loginService'];
 
-function LoginController($http, $window, loginService) {
+function LoginController($http, $window, $rootScope, loginService) {
     // Var vm stands for ViewModel
     var loginVm = this;
     
@@ -20,6 +20,7 @@ function LoginController($http, $window, loginService) {
                 if (token !== undefined) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + token;
                     $window.localStorage.setItem('AUTH_TOKEN', token);
+                    $rootScope.show = true;
                     loginService.redirect();
                 }
                 else {
