@@ -2,12 +2,14 @@ angular
     .module('isa-mrs-project')
     .service('loginService', loginService);
     
-loginService.$inject = ['$http', '$location'];
+loginService.$inject = ['$http', '$location', '$window', '$rootScope'];
 
-function loginService($http, $location) {
-  var service = {
-      login: login,
-      redirect: redirect
+function loginService($http, $location, $window, $rootScope) {
+
+    var service = {
+        login: login,
+        redirect: redirect,
+        logout: logout
   };
   return service;
   
@@ -17,7 +19,8 @@ function loginService($http, $location) {
         return response.data.token;
     });
   };
-  
+
+
   function redirect() {
     return $http.get('api/user')
     .then(function (response) {
@@ -48,4 +51,12 @@ function loginService($http, $location) {
         }
     });
   };
+
+   function logout() {
+       $rootScope.show = false;
+       $window.localStorage.setItem('AUTH_TOKEN', null);
+       $http.defaults.headers.common.Authorization = '';
+       $location.path('login');
+   };
+
 }
