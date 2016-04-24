@@ -27,7 +27,7 @@ function config($routeProvider) {
           templateUrl: 'views/messages/registered.html'
         })
         // Route for guest profile page
-        .when('/profile-guest', {
+        .when('/profile-guest/:guestId', {
             templateUrl: 'views/profile-guest.html',
             controller: 'GuestProfileController',
             controllerAs: 'guestProfileVm'

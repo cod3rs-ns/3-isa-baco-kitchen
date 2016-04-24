@@ -190,6 +190,27 @@ ul.rating {
   padding: 40px;
 }
 
+
+.margin-left-4 {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.badge {
+  position: relative;
+  left: -12px;
+  font-size: 8pt;
+  width: 10px;
+  padding: 2px;
+  border-radius: 4px;
+  color: #fff;
+  background-color: red;
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
 .fabSpeedDialdemoBasicUsage .text-capitalize {
     text-transform: capitalize; }
 .fabSpeedDialdemoBasicUsage .md-fab:hover, .fabSpeedDialdemoBasicUsage .md-fab.md-focused {
@@ -232,6 +253,4 @@ ul.rating {
     width: 100%;
     text-align:center;
 }
-
-
 
