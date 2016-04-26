@@ -8,7 +8,8 @@ function waiterService($http){
     var service = {
         getWaiter: getWaiter,
         updateWaiter: updateWaiter,
-        getLoggedWaiter: getLoggedWaiter
+        getLoggedWaiter: getLoggedWaiter,
+        getTables: getTables
     };
 
     return service;
@@ -24,7 +25,7 @@ function waiterService($http){
         return $http.put('/api/waiter', waiter)
             .then(function (response) {
                 return response.data;
-            })
+            });
     };
 
     function getLoggedWaiter() {
@@ -33,5 +34,12 @@ function waiterService($http){
                 return response.data;
             });
     };
+
+    function getTables(){
+        return $http.get('api/waiter/tables')
+            .then(function (response) {
+                return response.data;
+            });
+    }
 
 }

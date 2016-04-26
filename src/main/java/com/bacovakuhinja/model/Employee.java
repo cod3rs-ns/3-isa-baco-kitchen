@@ -20,7 +20,6 @@ public class Employee extends User{
     @Column(name="e_shoes_size")
     private String shoesSize;
 
-
     public Date getBirthday() {
         return birthday;
     }

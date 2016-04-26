@@ -1,9 +1,8 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.model.Cook;
-import com.bacovakuhinja.model.User;
-import com.bacovakuhinja.model.Waiter;
+import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.service.DayScheduleService;
 import com.bacovakuhinja.service.EmployeeService;
 import com.bacovakuhinja.service.WaiterService;
 import com.bacovakuhinja.service.impl.WaiterServiceImpl;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -23,6 +23,8 @@ public class WaiterController {
     @Autowired
     private WaiterService waiterService;
 
+    @Autowired
+    private DayScheduleService dayScheduleService;
 
     @RequestMapping(
             value = "/api/waiters",
@@ -54,6 +56,26 @@ public class WaiterController {
         Waiter waiter = waiterService.findOne(user.getUserId());
         return new ResponseEntity <Waiter>(waiter, HttpStatus.OK);
     }
+
+
+    @Authorization(value = "waiter")
+    @RequestMapping(
+            value = "/api/waiter/tables",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <ArrayList<RestaurantTable>> getTables(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+
+        //TODO get real tables from database
+        RestaurantTable t = new RestaurantTable();
+        t.setTableId(1);
+
+        ArrayList<RestaurantTable> tables = new ArrayList<RestaurantTable>();
+        tables.add(t);
+        return new ResponseEntity <ArrayList<RestaurantTable>>(tables, HttpStatus.OK);
+    }
+
 
     @RequestMapping(value = "/api/waiter",
             method = RequestMethod.POST,

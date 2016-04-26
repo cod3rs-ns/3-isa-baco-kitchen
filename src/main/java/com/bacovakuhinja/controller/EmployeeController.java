@@ -1,6 +1,9 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Employee;
+import com.bacovakuhinja.model.User;
+import com.bacovakuhinja.model.WorkPeriod;
 import com.bacovakuhinja.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,7 +11,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @RestController
 public class EmployeeController {
@@ -54,5 +62,32 @@ public class EmployeeController {
             return new ResponseEntity <Employee>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity <Employee>(updatedEmp, HttpStatus.OK);
+    }
+
+
+    @Authorization()
+    @RequestMapping(
+            value = "/api/employee/schedule",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <ArrayList<WorkPeriod>> getSchedule(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Employee emp = employeeService.findOne(user.getUserId());
+
+        //TODO get real workperiods from database
+        WorkPeriod w = new WorkPeriod();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date d1 = sdf.parse("26/04/2016");
+            w.setStart(d1);
+            Date d2 = sdf.parse("27/04/2016");
+            w.setEnd(d2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<WorkPeriod> schedule = new ArrayList<WorkPeriod>();
+        schedule.add(w);
+        return new ResponseEntity <ArrayList<WorkPeriod>>(schedule, HttpStatus.OK);
     }
 }

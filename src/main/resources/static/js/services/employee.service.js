@@ -7,7 +7,8 @@ employeeService.$inject = ['$http'];
 function employeeService($http){
     var service = {
         getEmployee: getEmployee,
-        updateEmployee: updateEmployee
+        updateEmployee: updateEmployee,
+        getSchedule: getSchedule
     };
 
     return service;
@@ -25,4 +26,11 @@ function employeeService($http){
                 return response.data;
             })
     };
+
+    function getSchedule(){
+        return $http.get('api/employee/schedule')
+            .then(function(response){
+                return response.data;
+        });
+    }
 }

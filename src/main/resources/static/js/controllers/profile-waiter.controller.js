@@ -15,7 +15,6 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
         getWaiter().then(function() {
         });
 
-
         passService.isPasswordChanged()
             .then(function (data) {
                 if(data){
@@ -74,42 +73,7 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
       },
     ];
 
-
-    //Part for seting calendar  -----------------------------------
-	
-	waiterProfileVm.calendarView = 'month';
-	waiterProfileVm.calendarDate = new Date();
-	waiterProfileVm.viewDate = new Date();
-
-
-    waiterProfileVm.events = [
-        {
-            title: 'An event',
-            type: 'warning',
-            startsAt: moment().subtract(1, 'day').toDate(),
-            endsAt: moment().subtract(1, 'day').add(5, 'hours').toDate(),
-            draggable: true,
-            resizable: true
-        }, {
-            title: '<i class="glyphicon glyphicon-asterisk"></i> <span class="text-primary">Another event</span>, with a <i>html</i> title',
-            type: 'info',
-            startsAt: moment().subtract(1, 'day').toDate(),
-            endsAt: moment().add(5, 'days').toDate(),
-            draggable: true,
-            resizable: true
-        }, {
-            title: 'This is a really long event title that occurs on every year',
-            type: 'important',
-            startsAt: moment().startOf('day').add(7, 'hours').toDate(),
-            endsAt: moment().startOf('day').add(19, 'hours').toDate(),
-            recursOn: 'year',
-            draggable: true,
-            resizable: true
-        }
-    ];
-
     //editing profile
-
     waiterProfileVm.editProfile = editProfile;
     function editProfile() {
         $mdDialog.show({
@@ -160,26 +124,30 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
     };
 
     function changeWaitersTables(tables){
-        for (pos in tables){
-            if(pos<3) {
-                tables[pos].color = '#CDDC39';
-            }
-            else{
-                tables[pos].color = '#1B5E20';
-            }
-        }
-    }
+        waiterService.getTables()
+            .then(function (data) {
+                for (var pos in tables){
+                    for(var mypos in data){
+                        if(tables[pos].tableId == data[mypos].tableId)
+                            tables[pos].color = '#CDDC39';
+                    }
+                }
+            });
+    };
 
     waiterProfileVm.selectedTable = null;
     waiterProfileVm.selectTable = selectTable;
     function selectTable(tableId){
-        for(table in waiterProfileVm.allTables){
+        for(var table in waiterProfileVm.allTables){
             if (waiterProfileVm.allTables[table].tableId == tableId){
                 waiterProfileVm.selectedTable = waiterProfileVm.allTables[table];
+                if(waiterProfileVm.selectedTable.color !== '#CDDC39'){
+                    waiterProfileVm.selectedTable = -1;
+                }
                 break;
             }
         }
-    }
+    };
 
     waiterProfileVm.finishedOrders = [
         {
@@ -219,4 +187,18 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
         });
     };
 
+
+    waiterProfileVm.openSchedule = openSchedule;
+    function openSchedule() {
+        $mdDialog.show(
+            {
+                controller: 'EmployeeScheduleController',
+                controllerAs: 'employeeScheduleVm',
+                templateUrl: '/views/dialogs/calendar-view.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: false
+            }
+        );
+    };
 }

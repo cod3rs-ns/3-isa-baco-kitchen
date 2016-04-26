@@ -95,4 +95,19 @@ function BarmanProfileController(bartenderService, passService, $mdDialog) {
             }
         );
     };
+
+
+    barmanProfileVm.openSchedule = openSchedule;
+    function openSchedule() {
+        $mdDialog.show(
+            {
+                controller: 'EmployeeScheduleController',
+                controllerAs: 'employeeScheduleVm',
+                templateUrl: '/views/dialogs/calendar-view.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: false
+            }
+        );
+    };
 }

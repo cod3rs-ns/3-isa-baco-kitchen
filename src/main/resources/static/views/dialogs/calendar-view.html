@@ -1,0 +1,46 @@
+<md-dialog flex="90" aria-label="Raspored"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Raspored rada</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="employeeScheduleVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div class="btn-group">
+            <md-toolbar layout="row" class="md-hue-3">
+                <div class="md-toolbar-tools">
+                    <h2 style="text-align: center">{{ employeeScheduleVm.calendarTitle }}</h2>
+                    <span flex></span>
+                    <md-button ng-click="employeeScheduleVm.changeToDay()">
+                        Dan
+                    </md-button>
+                    <md-button ng-click="employeeScheduleVm.changeToMonth()">
+                        Mjesec
+                    </md-button>
+                </div>
+            </md-toolbar>
+
+        </div>
+
+
+        <mwl-calendar
+                view="employeeScheduleVm.calendarView"
+                current-day="employeeScheduleVm.calendarDate"
+                events="employeeScheduleVm.events"
+                view-title="employeeScheduleVm.calendarTitle"
+                view-date="vm.viewDate"
+                on-event-click="eventClicked(calendarEvent)"
+                on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+                edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
+                delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
+                on-edit-event-click="eventEdited(calendarEvent)"
+                on-delete-event-click="eventDeleted(calendarEvent)"
+                cell-is-open="true">
+        </mwl-calendar>
+    </md-dialog-content>
+
+</md-dialog>

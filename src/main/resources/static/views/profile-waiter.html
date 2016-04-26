@@ -61,7 +61,7 @@
 				</div>
 				<hr>
 				<div class="option">
-					<md-button class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
+					<md-button ng-click="waiterProfileVm.openSchedule()" class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
 					<h4>Pregled rasporeda rada</h4>
 				</div>
 				<hr>
@@ -120,28 +120,6 @@
 				</md-content>
 			
 			</md-tab>
-			
-			<md-tab label="Kalendar">
-				<md-content class="md-padding">
-
-					<h2 style="text-align: center">{{ waiterProfileVm.calendarTitle }}</h2>
-
-					<mwl-calendar
-						view="waiterProfileVm.calendarView"
-						current-day="waiterProfileVm.calendarDate"
-						events="waiterProfileVm.events"
-						view-title="waiterProfileVm.calendarTitle"
-						view-date="vm.viewDate"
-						on-event-click="eventClicked(calendarEvent)"
-						on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
-						edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
-						delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
-						on-edit-event-click="eventEdited(calendarEvent)"
-						on-delete-event-click="eventDeleted(calendarEvent)"
-						cell-is-open="true">
-					</mwl-calendar>
-				</md-content>
-			</md-tab>
 
 			<md-tab label="Raspored stolova" layout = "row">
                 <md-content layout="row" class="md-padding" style="background-color:#DDDDDD">
@@ -169,15 +147,16 @@
 
                     <div flex-gt-sm="30" layout="column" style="padding-top: 20px;">
                         <div id="table-img-div">
-							<img width="100%" id="table-img" src="http://www.yliving.com/images/mattiazzi-solo-square-table/gallery_3.jpg"/>
+							<img width="100%" id="table-img" src="../images/table.jpg"/>
 							<div id="selected-table">
-								<p ng-show="waiterProfileVm.selectedTable != null"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
+								<p ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
+								<p ng-show="waiterProfileVm.selectedTable == -1" style="color:#B71C1C"> Selektovani sto nije u vašoj nadležnosti!</p>
 								<p ng-show="waiterProfileVm.selectedTable == null"> Kliknite na sto da biste ga selektovali! </p>
 							</div>
 							<div id="inside-img">
 								<div id="center-vert" layout="column">
-									<md-button class="md-raised md-primary">Izdaj račun</md-button>
-									<md-button class="md-raised md-primary" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
+									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1">Izdaj račun</md-button>
+									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
 								</div>
 							</div>
 						</div>

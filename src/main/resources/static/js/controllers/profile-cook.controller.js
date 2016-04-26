@@ -118,4 +118,19 @@ function CookProfileController(cookService, passService, $mdDialog) {
             }
         );
     };
+
+
+    cookProfileVm.openSchedule = openSchedule;
+    function openSchedule() {
+        $mdDialog.show(
+            {
+                controller: 'EmployeeScheduleController',
+                controllerAs: 'employeeScheduleVm',
+                templateUrl: '/views/dialogs/calendar-view.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                fullscreen: false
+            }
+        );
+    };
 }
