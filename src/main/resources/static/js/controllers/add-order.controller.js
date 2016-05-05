@@ -48,6 +48,8 @@ function AddOrderController(drinkService, foodService, $mdDialog, $mdToast, tabl
     function addMeal(meal) {
         var idx = orderVm.orderMeals.indexOf(meal);
         if (idx === -1) {
+            meal.count = 1;
+            meal.hide = true;
             orderVm.orderMeals.push(meal);
         }
         else {
@@ -61,7 +63,7 @@ function AddOrderController(drinkService, foodService, $mdDialog, $mdToast, tabl
     function removeMeal(meal) {
         var idx = orderVm.orderMeals.indexOf(meal);
         if (idx !== -1) {
-            meal.check = false;
+            meal.hide = false;
             meal.count = 0;
             orderVm.orderMeals.splice(idx, 1);
         }

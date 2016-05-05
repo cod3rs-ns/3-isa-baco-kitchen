@@ -4,7 +4,8 @@
 			<div class="md-toolbar-tools">
 				<h3 md-header-title flex>Profil menadžera</h3>
 				<md-button class="md-icon-button" aria-label="Notification">
-					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+					<md-tooltip>Promjena lozinke</md-tooltip>
+					<md-icon id="pass-option" aria-label="Notification" ng-click="systemManagerProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
 				</md-button>
 				<md-button class="md-icon-button" aria-label="More">
 					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
@@ -14,12 +15,20 @@
 
 		<div layout="column">
 			<div layout="row" layout-xs="column">
-				<div flex class="content">
-					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+				<div class="content" flex="50">
+					<img ng-src="{{systemManagerProfileVm.smanager.image}}" class="md-avatar" style="width:100%; height:400px; "/>
 				</div>
 				<div flex class="content">
-					<h2> Ime </h2>
-					<h4> sergioramos@doktor.com </h4>
+					<table style="vertical-align: center; margin-top:40px; margin-left: 35px;">
+						<tr>
+							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
+							<td ><h2> {{systemManagerProfileVm.smanager.firstName}} &nbsp; {{systemManagerProfileVm.smanager.lastName}}</h2></td>
+						</tr>
+						<tr>
+							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
+							<td ><h4> {{systemManagerProfileVm.smanager.email}} </h4></td>
+						</tr>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -87,8 +96,8 @@
 
 	<div class="row">
 		<ul class="equal-height-thumbnail">
-			<li class="order" ng-repeat="restaurant in systemManagerProfileVm.restaurants">
-				<figure><img ng-src="http://www.mulhollandav.com/wp-content/uploads/2015/02/Rest-22.jpg" class="order-img" alt="Equal height of thumbnail"></figure>
+			<li class="order" ng-repeat="restaurant in systemManagerProfileVm.smanager.restaurants">
+				<figure><img ng-src="http://www.comohotels.com/metropolitanbangkok/sites/default/files/styles/background_image/public/images/background/metbkk_bkg_nahm_restaurant.jpg?itok=GSmnYYaU" class="order-img" alt="Equal height of thumbnail"></figure>
 				<div class="caption-waiter">
 					<h4>{{restaurant.name}}</h4>
 					<p class="desk-num-rest"> <i class="material-icons md-16">restaurant_menu</i>broj stolova : 4 <p/>

@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SingleRestaurantController', SingleRestaurantController);
 
-SingleRestaurantController.$inject = ['restaurantService', '$mdDialog','$mdToast', 'to_edit', 'restaurants'];
+SingleRestaurantController.$inject = ['restaurantService', '$mdDialog','$mdToast', 'to_edit', 'smanager'];
 
-function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_edit, restaurants) {
+function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_edit, smanager) {
     var restaurantVm = this;
     restaurantVm.restaurant = {};
     restaurantVm.backup = {};
@@ -39,18 +39,18 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
     }
 
     function create() {
-        // TODO: Change hardcoded 6 to current system_manager
-        restaurantService.createRestaurant(restaurantVm.restaurant, 5)
+        // TODO: Change hardcoded address
+        restaurantVm.restaurant.address = 'Narodnog fronta 21';
+        restaurantService.createRestaurant(restaurantVm.restaurant, smanager.userId)
             .then(function(addedRestaurant){
-                restaurants.push(addedRestaurant);
+                smanager.restaurants.push(addedRestaurant);
                 restaurantVm.showToast('Restoran je uspešno kreiran.')
                 restaurantVm.cancel();
             });
     };
 
     function update() {
-        // TODO: Change hardcoded 6 to current system_manager
-        restaurantService.updateRestaurant(restaurantVm.restaurant, 6)
+        restaurantService.updateRestaurant(restaurantVm.restaurant, smanager.userId)
             .then(function(data){
                 restaurantVm.confirmedEdit = true;
                 restaurantVm.showToast('Restoran je uspešno izmenjen.');
