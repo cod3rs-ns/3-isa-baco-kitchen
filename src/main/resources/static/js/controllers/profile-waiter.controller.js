@@ -143,33 +143,35 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
                 waiterProfileVm.selectedTable = waiterProfileVm.allTables[table];
                 if(waiterProfileVm.selectedTable.color !== '#CDDC39'){
                     waiterProfileVm.selectedTable = -1;
+                    waiterProfileVm.selectedTableOrders.length = 0;
+                }
+                else{
+                    getOrders();
                 }
                 break;
             }
         }
     };
 
-    waiterProfileVm.finishedOrders = [
-        {
-            title: "Sto broj 5",
-            desc: "Spremljen je gulaš."
-        },
-        {
-            title: "Sto broj 9",
-            desc: "Spremljen je pasulj."
-        },
-        {
-            title: "Sto broj 2",
-            desc: "Spremljen je koktel."
-        }
-    ];
 
-    waiterProfileVm.deleteFinishedOrder = deleteFinishedOrder
-    function deleteFinishedOrder(order){
-        var index = waiterProfileVm.finishedOrders.indexOf(order);
-        waiterProfileVm.finishedOrders[index] = true;
-        waiterProfileVm.finishedOrders.splice(index,1);
-    };
+    function getOrders(){
+        waiterProfileVm.selectedTableOrders = [
+            {
+                title: "Porudžbina : 15",
+                desc: "Kreirana prije 25min."
+            },
+            {
+                title: "Porudžbina : 5",
+                desc: "Kreirana prije 5min."
+            },
+            {
+                title: "Porudžbina : 7",
+                desc: "Kreirana prije 17min."
+            }
+        ];
+    }
+
+    waiterProfileVm.selectedTableOrders = [];
 
 
     waiterProfileVm.addOrder = addOrder;

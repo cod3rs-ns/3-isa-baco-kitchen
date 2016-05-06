@@ -162,12 +162,14 @@
 						</div>
                         <div layout="column">
 							<md-list>
-								<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.finishedOrders">
-									<md-checkbox ng-click="waiterProfileVm.deleteFinishedOrder(order)"></md-checkbox>
+								<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.selectedTableOrders">
+									<md-icon class="material-icons md-avatar">description</md-icon>
 									<div class="md-list-item-text">
 										<h3>{{order.title}}</h3>
 										<p>{{order.desc}}</p>
 									</div>
+
+									<md-button class="md-icon-button"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>
 								</md-list-item>
 							</md-list>
                         </div>
