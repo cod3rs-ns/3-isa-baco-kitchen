@@ -19,9 +19,9 @@ INSERT INTO `isa_mrs_project`.`restaurant_managers` (`rm_id`, `rm_info`, `rm_res
 INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('4', 'Becks biography.');
 
 
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('6', '1988-06-15', 'L', '42b');
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('7', '1988-07-15', 'XXL', '43b');
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('8', '1988-08-15', 'M', '44b');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('6', '1988-06-15', 'L', '42b', '2');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('7', '1988-07-15', 'XXL', '43b', '2');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('8', '1988-08-15', 'M', '44b', '2');
 
 INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('6');
 INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('7');
