@@ -60,25 +60,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `isa_mrs_project`.`employees`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`employees` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`employees` (
-  `e_id` INT NOT NULL,
-  `e_bday` DATETIME NOT NULL,
-  `e_dress_size` VARCHAR(45) NOT NULL,
-  `e_shoes_size` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`e_id`),
-  CONSTRAINT `e_fid`
-    FOREIGN KEY (`e_id`)
-    REFERENCES `isa_mrs_project`.`users` (`u_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `isa_mrs_project`.`sys_managers`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `isa_mrs_project`.`sys_managers` ;
@@ -116,6 +97,32 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
     REFERENCES `isa_mrs_project`.`sys_managers` (`sm_id`)
     ON DELETE SET NULL
     ON UPDATE SET NULL)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`employees`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`employees` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`employees` (
+  `e_id` INT NOT NULL,
+  `e_bday` DATETIME NOT NULL,
+  `e_dress_size` VARCHAR(45) NOT NULL,
+  `e_shoes_size` VARCHAR(45) NOT NULL,
+  `e_restaurant` INT NOT NULL,
+  PRIMARY KEY (`e_id`),
+  INDEX `e_restaurant_fid_idx` (`e_restaurant` ASC),
+  CONSTRAINT `e_fid`
+    FOREIGN KEY (`e_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `e_restaurant_fid`
+    FOREIGN KEY (`e_restaurant`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -335,6 +342,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
   `rr_name` VARCHAR(45) NOT NULL,
   `rr_color` VARCHAR(45) NULL,
   `rr_restaurant_id` INT NOT NULL,
+  `rr_region_no` INT NOT NULL,
   PRIMARY KEY (`rr_id`),
   INDEX `tr_restaurant_fid_idx` (`rr_restaurant_id` ASC),
   CONSTRAINT `rr_restaurant_fid`
@@ -358,6 +366,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   `rt_height` DOUBLE NOT NULL,
   `rt_positions` INT NOT NULL,
   `rt_region_id` INT NOT NULL,
+  `rt_table_in_restaurant_no` INT NOT NULL,
   PRIMARY KEY (`rt_id`),
   INDEX `rt_region_fid_idx` (`rt_region_id` ASC),
   CONSTRAINT `rt_region_fid`
@@ -513,6 +522,93 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`day_schedules` (
     FOREIGN KEY (`ds_employee_id`)
     REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`bills`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`bills` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bills` (
+  `bl_id` INT NOT NULL,
+  `bl_publish_date` DATETIME NOT NULL,
+  `bl_total_amount` DOUBLE NOT NULL,
+  `bl_waiter_id` INT NOT NULL,
+  PRIMARY KEY (`bl_id`),
+  INDEX `fk_bills_waiters1_idx` (`bl_waiter_id` ASC),
+  CONSTRAINT `bl_waiter_fid`
+    FOREIGN KEY (`bl_waiter_id`)
+    REFERENCES `isa_mrs_project`.`waiters` (`w_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`client_orders`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`client_orders` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
+  `co_id` INT NOT NULL AUTO_INCREMENT,
+  `co_date` DATETIME NOT NULL,
+  `co_deadline` DATETIME NULL,
+  `co_reservation_id` INT NOT NULL,
+  `co_table_id` INT NOT NULL,
+  `co_bill_id` INT NOT NULL,
+  PRIMARY KEY (`co_id`),
+  INDEX `fk_client_orders_reservations1_idx` (`co_reservation_id` ASC),
+  INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),
+  INDEX `fk_client_orders_bills1_idx` (`co_bill_id` ASC),
+  CONSTRAINT `co_reservation_fid`
+    FOREIGN KEY (`co_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `co_table_fid`
+    FOREIGN KEY (`co_table_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `co_bill_fid`
+    FOREIGN KEY (`co_bill_id`)
+    REFERENCES `isa_mrs_project`.`bills` (`bl_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`order_items`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`order_items` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
+  `oi_id` INT NOT NULL,
+  `oi_state` VARCHAR(45) NOT NULL,
+  `oi_order_id` INT NOT NULL,
+  `oi_food_id` INT NULL,
+  `oi_drink_id` INT NULL,
+  PRIMARY KEY (`oi_id`),
+  INDEX `fk_order_items_client_orders1_idx` (`oi_order_id` ASC),
+  INDEX `fk_order_items_food1_idx` (`oi_food_id` ASC),
+  INDEX `fk_order_items_drinks1_idx` (`oi_drink_id` ASC),
+  CONSTRAINT `oi_order_fid`
+    FOREIGN KEY (`oi_order_id`)
+    REFERENCES `isa_mrs_project`.`client_orders` (`co_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `oi_food_fid`
+    FOREIGN KEY (`oi_food_id`)
+    REFERENCES `isa_mrs_project`.`food` (`f_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `oi_drink_fid`
+    FOREIGN KEY (`oi_drink_id`)
+    REFERENCES `isa_mrs_project`.`drinks` (`d_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 

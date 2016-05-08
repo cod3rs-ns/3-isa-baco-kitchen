@@ -145,14 +145,18 @@
 								height:{{table.height}};
 								width:{{table.width}};
 							  "
-						class="restaurant-table"
+						class="restaurant-table {{tablesVm.tableColors[table.region.regionNo - 1]}}"
+						layout="row"
 						ng-repeat="table in tablesVm.tables">
-					<!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
+					<p flex layout="column" layout-align="center center" style="color:white; font-weight:bold;">{{table.tableInRestaurantNo}}</p>
 					<md-tooltip md-direction="bottom">
 						Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
 					</md-tooltip>
 					<md-tooltip md-direction="right">
 						Pozicija  {{ table.positions }}
+					</md-tooltip>
+					<md-tooltip md-direction="left">
+						Region:  {{ table.region.name }}
 					</md-tooltip>
 
 				</div>
@@ -192,6 +196,68 @@
         				</md-tooltip>
 					</md-button>
 				</div>
+
+			</div>
+			<div layout="column" style="margin-top: 50px;">
+
+				<div layout="row">
+					<md-button ng-click="tablesVm.addNewRegion();" class="md-fab md-primary md-raised">
+						<i class="material-icons md-36">add</i>
+						<md-tooltip md-direction="right">
+          					Dodaj region
+        				</md-tooltip>
+					</md-button>
+				</div>
+
+			</div>
+
+			<div layout="column" class="restaurant-regions">
+
+					<div layout="row" class="region-tab" layout-align="center center"
+						ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
+							<div 	layout="column"
+									ng-hide="tablesVm.regionEditFields[$index]"
+									flex>
+								<h4 style="color:white;">{{region.name}}</h4>
+							</div>
+
+							<md-input-container class="md-block" flex-gt-xs
+								ng-show="tablesVm.regionEditFields[$index]">
+            					<label>Naziv regiona</label>
+            					<input ng-model="tablesVm.regions[$index].name" >
+          					</md-input-container>
+
+							<div layout="column" layout-align="center end">
+								<md-button  class="md-fab md-mini md-default md-raised"
+											ng-click="tablesVm.regionEditFields[$index] = true"
+											ng-hide="tablesVm.regionEditFields[$index]">
+   		   							<i class="material-icons md-24">edit</i>
+   		   							<md-tooltip md-direction="right">
+   		             					Izmeni region
+   		           					</md-tooltip>
+   		   						</md-button>
+
+								<md-button  class="md-fab md-mini md-default md-raised"
+											ng-show="tablesVm.regionEditFields[$index]"
+											ng-click="tablesVm.saveRegion($index)">
+   		   							<i class="material-icons md-24">save</i>
+   		   							<md-tooltip md-direction="right">
+   		             					Sačuvaj
+   		           					</md-tooltip>
+   		   						</md-button>
+								<md-button  class="md-fab md-mini md-default md-raised"
+											ng-click="tablesVm.regionEditFields[$index] = false"
+											ng-show="tablesVm.regionEditFields[$index]"
+											ng-click="tablesVm.deleteRegion($index)">
+   		   							<i class="material-icons md-24">delete_forever</i>
+   		   							<md-tooltip md-direction="right">
+   		             					Obriši region
+   		           					</md-tooltip>
+   		   						</md-button>
+							</div>
+	                </div>
+
+
 
 			</div>
 

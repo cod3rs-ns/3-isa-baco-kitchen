@@ -1,12 +1,13 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "restaurant_tables")
-@JsonIgnoreProperties(value = {"region"})
 public class RestaurantTable {
 
     @Id
@@ -29,6 +30,10 @@ public class RestaurantTable {
     @Column(name = "rt_positions")
     private Integer positions;
 
+    @Column(name = "rt_table_in_restaurant_no")
+    private Integer tableInRestaurantNo;
+
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "rt_region_id")
     private RestaurantRegion region;
@@ -84,12 +89,21 @@ public class RestaurantTable {
         this.positions = positions;
     }
 
+    @JsonProperty
     public RestaurantRegion getRegion() {
         return region;
     }
 
+    @JsonIgnore
     public void setRegion(RestaurantRegion region) {
         this.region = region;
     }
 
+    public Integer getTableInRestaurantNo() {
+        return tableInRestaurantNo;
+    }
+
+    public void setTableInRestaurantNo(Integer tableInRestaurantNo) {
+        this.tableInRestaurantNo = tableInRestaurantNo;
+    }
 }
