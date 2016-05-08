@@ -335,6 +335,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
   `rr_name` VARCHAR(45) NOT NULL,
   `rr_color` VARCHAR(45) NULL,
   `rr_restaurant_id` INT NOT NULL,
+  `rr_region_no` INT NOT NULL,
   PRIMARY KEY (`rr_id`),
   INDEX `tr_restaurant_fid_idx` (`rr_restaurant_id` ASC),
   CONSTRAINT `rr_restaurant_fid`
@@ -358,6 +359,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   `rt_height` DOUBLE NOT NULL,
   `rt_positions` INT NOT NULL,
   `rt_region_id` INT NOT NULL,
+  `rt_table_in_restaurant_no` INT NOT NULL,
   PRIMARY KEY (`rt_id`),
   INDEX `rt_region_fid_idx` (`rt_region_id` ASC),
   CONSTRAINT `rt_region_fid`
