@@ -13,15 +13,6 @@ DROP SCHEMA IF EXISTS `isa_mrs_project` ;
 -- Schema isa_mrs_project
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `isa_mrs_project` DEFAULT CHARACTER SET utf8 ;
--- -----------------------------------------------------
--- Schema myopinion
--- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `myopinion` ;
-
--- -----------------------------------------------------
--- Schema myopinion
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `myopinion` DEFAULT CHARACTER SET utf8 ;
 USE `isa_mrs_project` ;
 
 -- -----------------------------------------------------
@@ -53,25 +44,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`guests` (
   PRIMARY KEY (`g_id`),
   CONSTRAINT `g_fid`
     FOREIGN KEY (`g_id`)
-    REFERENCES `isa_mrs_project`.`users` (`u_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `isa_mrs_project`.`employees`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`employees` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`employees` (
-  `e_id` INT NOT NULL,
-  `e_bday` DATETIME NOT NULL,
-  `e_dress_size` VARCHAR(45) NOT NULL,
-  `e_shoes_size` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`e_id`),
-  CONSTRAINT `e_fid`
-    FOREIGN KEY (`e_id`)
     REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
@@ -116,6 +88,32 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
     REFERENCES `isa_mrs_project`.`sys_managers` (`sm_id`)
     ON DELETE SET NULL
     ON UPDATE SET NULL)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`employees`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`employees` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`employees` (
+  `e_id` INT NOT NULL,
+  `e_bday` DATETIME NOT NULL,
+  `e_dress_size` VARCHAR(45) NOT NULL,
+  `e_shoes_size` VARCHAR(45) NOT NULL,
+  `e_restaurant` INT NOT NULL,
+  PRIMARY KEY (`e_id`),
+  INDEX `e_restaurant_fid_idx` (`e_restaurant` ASC),
+  CONSTRAINT `e_fid`
+    FOREIGN KEY (`e_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `e_restaurant_fid`
+    FOREIGN KEY (`e_restaurant`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
@@ -335,6 +333,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
   `rr_name` VARCHAR(45) NOT NULL,
   `rr_color` VARCHAR(45) NULL,
   `rr_restaurant_id` INT NOT NULL,
+  `rr_region_no` INT NOT NULL,
   PRIMARY KEY (`rr_id`),
   INDEX `tr_restaurant_fid_idx` (`rr_restaurant_id` ASC),
   CONSTRAINT `rr_restaurant_fid`
@@ -358,6 +357,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   `rt_height` DOUBLE NOT NULL,
   `rt_positions` INT NOT NULL,
   `rt_region_id` INT NOT NULL,
+  `rt_table_in_restaurant_no` INT NOT NULL,
   PRIMARY KEY (`rt_id`),
   INDEX `rt_region_fid_idx` (`rt_region_id` ASC),
   CONSTRAINT `rt_region_fid`
@@ -516,155 +516,92 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`day_schedules` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-USE `myopinion` ;
 
 -- -----------------------------------------------------
--- Table `myopinion`.`categories`
+-- Table `isa_mrs_project`.`bills`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`categories` ;
+DROP TABLE IF EXISTS `isa_mrs_project`.`bills` ;
 
-CREATE TABLE IF NOT EXISTS `myopinion`.`categories` (
-  `c_name` VARCHAR(45) NOT NULL,
-  `c_info` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`c_name`),
-  UNIQUE INDEX `categoryname_UNIQUE` (`c_name` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `myopinion`.`users`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`users` ;
-
-CREATE TABLE IF NOT EXISTS `myopinion`.`users` (
-  `u_username` VARCHAR(45) NOT NULL,
-  `u_pswd` VARCHAR(45) NOT NULL,
-  `u_fname` VARCHAR(45) NOT NULL,
-  `u_lname` VARCHAR(45) NOT NULL,
-  `u_role` VARCHAR(20) NOT NULL,
-  `u_phone` VARCHAR(45) NOT NULL,
-  `u_email` VARCHAR(45) NOT NULL,
-  `u_img` VARCHAR(200) NOT NULL,
-  PRIMARY KEY (`u_username`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bills` (
+  `bl_id` INT NOT NULL,
+  `bl_publish_date` DATETIME NOT NULL,
+  `bl_total_amount` DOUBLE NOT NULL,
+  `bl_waiter_id` INT NOT NULL,
+  PRIMARY KEY (`bl_id`),
+  INDEX `fk_bills_waiters1_idx` (`bl_waiter_id` ASC),
+  CONSTRAINT `bl_waiter_fid`
+    FOREIGN KEY (`bl_waiter_id`)
+    REFERENCES `isa_mrs_project`.`waiters` (`w_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `myopinion`.`objects`
+-- Table `isa_mrs_project`.`client_orders`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`objects` ;
+DROP TABLE IF EXISTS `isa_mrs_project`.`client_orders` ;
 
-CREATE TABLE IF NOT EXISTS `myopinion`.`objects` (
-  `o_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `o_name` VARCHAR(45) NOT NULL,
-  `o_location` VARCHAR(45) NOT NULL,
-  `o_city` VARCHAR(45) NOT NULL,
-  `o_phone` VARCHAR(45) NOT NULL,
-  `o_email` VARCHAR(45) NOT NULL,
-  `o_pib` VARCHAR(45) NOT NULL,
-  `o_account` VARCHAR(45) NOT NULL,
-  `o_img` VARCHAR(200) NOT NULL,
-  `o_wsite` VARCHAR(100) NOT NULL,
-  `o_latitude` DOUBLE NOT NULL,
-  `o_longitude` DOUBLE NOT NULL,
-  `o_category` VARCHAR(45) NOT NULL,
-  `o_user` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`o_id`),
-  UNIQUE INDEX `o_account_UNIQUE` (`o_account` ASC),
-  UNIQUE INDEX `o_pib_UNIQUE` (`o_pib` ASC),
-  INDEX `fk_objects_categories1_idx` (`o_category` ASC),
-  INDEX `fk_objects_users1_idx` (`o_user` ASC),
-  CONSTRAINT `fk_objects_categories1`
-    FOREIGN KEY (`o_category`)
-    REFERENCES `myopinion`.`categories` (`c_name`)
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
+  `co_id` INT NOT NULL AUTO_INCREMENT,
+  `co_date` DATETIME NOT NULL,
+  `co_deadline` DATETIME NULL,
+  `co_reservation_id` INT NOT NULL,
+  `co_table_id` INT NOT NULL,
+  `co_bill_id` INT NOT NULL,
+  PRIMARY KEY (`co_id`),
+  INDEX `fk_client_orders_reservations1_idx` (`co_reservation_id` ASC),
+  INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),
+  INDEX `fk_client_orders_bills1_idx` (`co_bill_id` ASC),
+  CONSTRAINT `co_reservation_fid`
+    FOREIGN KEY (`co_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_objects_users1`
-    FOREIGN KEY (`o_user`)
-    REFERENCES `myopinion`.`users` (`u_username`)
+  CONSTRAINT `co_table_fid`
+    FOREIGN KEY (`co_table_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `myopinion`.`events`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`events` ;
-
-CREATE TABLE IF NOT EXISTS `myopinion`.`events` (
-  `e_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `e_date` DATETIME NOT NULL,
-  `e_info` VARCHAR(200) NOT NULL,
-  `e_img` VARCHAR(200) NOT NULL,
-  `e_object` INT(11) NOT NULL,
-  PRIMARY KEY (`e_id`),
-  INDEX `fk_events_objects1_idx` (`e_object` ASC),
-  CONSTRAINT `fk_events_objects1`
-    FOREIGN KEY (`e_object`)
-    REFERENCES `myopinion`.`objects` (`o_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `myopinion`.`reviews`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`reviews` ;
-
-CREATE TABLE IF NOT EXISTS `myopinion`.`reviews` (
-  `rv_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `rv_text` VARCHAR(200) NOT NULL,
-  `rv_date` DATETIME NOT NULL,
-  `rv_rating` INT(11) NOT NULL,
-  `rv_user` VARCHAR(45) NOT NULL,
-  `rv_object` INT(11) NOT NULL,
-  PRIMARY KEY (`rv_id`),
-  INDEX `fk_reviews_users1_idx` (`rv_user` ASC),
-  INDEX `fk_reviews_objects1_idx` (`rv_object` ASC),
-  CONSTRAINT `fk_reviews_objects1`
-    FOREIGN KEY (`rv_object`)
-    REFERENCES `myopinion`.`objects` (`o_id`)
-    ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_reviews_users1`
-    FOREIGN KEY (`rv_user`)
-    REFERENCES `myopinion`.`users` (`u_username`)
+  CONSTRAINT `co_bill_fid`
+    FOREIGN KEY (`co_bill_id`)
+    REFERENCES `isa_mrs_project`.`bills` (`bl_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `myopinion`.`users_attending_events`
+-- Table `isa_mrs_project`.`order_items`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `myopinion`.`users_attending_events` ;
+DROP TABLE IF EXISTS `isa_mrs_project`.`order_items` ;
 
-CREATE TABLE IF NOT EXISTS `myopinion`.`users_attending_events` (
-  `uae_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `uae_user` VARCHAR(45) NOT NULL,
-  `uae_event` INT(11) NOT NULL,
-  PRIMARY KEY (`uae_id`),
-  INDEX `fk_users_has_events_events1_idx` (`uae_event` ASC),
-  INDEX `fk_users_has_events_users_idx` (`uae_user` ASC),
-  CONSTRAINT `fk_users_has_events_events1`
-    FOREIGN KEY (`uae_event`)
-    REFERENCES `myopinion`.`events` (`e_id`)
-    ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
+  `oi_id` INT NOT NULL,
+  `oi_state` VARCHAR(45) NOT NULL,
+  `oi_order_id` INT NOT NULL,
+  `oi_food_id` INT NULL,
+  `oi_drink_id` INT NULL,
+  PRIMARY KEY (`oi_id`),
+  INDEX `fk_order_items_client_orders1_idx` (`oi_order_id` ASC),
+  INDEX `fk_order_items_food1_idx` (`oi_food_id` ASC),
+  INDEX `fk_order_items_drinks1_idx` (`oi_drink_id` ASC),
+  CONSTRAINT `oi_order_fid`
+    FOREIGN KEY (`oi_order_id`)
+    REFERENCES `isa_mrs_project`.`client_orders` (`co_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_users_has_events_users`
-    FOREIGN KEY (`uae_user`)
-    REFERENCES `myopinion`.`users` (`u_username`)
+  CONSTRAINT `oi_food_fid`
+    FOREIGN KEY (`oi_food_id`)
+    REFERENCES `isa_mrs_project`.`food` (`f_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `oi_drink_fid`
+    FOREIGN KEY (`oi_drink_id`)
+    REFERENCES `isa_mrs_project`.`drinks` (`d_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
