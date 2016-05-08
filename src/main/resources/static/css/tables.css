@@ -14,9 +14,43 @@
     /* This makes things *much* easier */
     box-sizing: border-box;
 }
+.restaurant-table.default {
+    background-color: #283593;
+}
+.restaurant-table.first-color {
+  background-color: #00695C;
+}
 
-.restaurant-table.switch-bg {
-  background-color: #D500F9;
+.restaurant-table.second-color {
+  background-color: #CDDC39;
+}
+
+.restaurant-table.third-color {
+  background-color: #AD1457;
+}
+
+.restaurant-table.fourth-color {
+  background-color: #0277BD;
+}
+
+.restaurant-table.fifth-color {
+  background-color: #5D4037;
+}
+
+.restaurant-table.sixth-color {
+  background-color: #607D8B;
+}
+
+.restaurant-table.seventh-color {
+  background-color: #E91E63;
+}
+
+.restaurant-table.eighth-color {
+  background-color: #43A047;
+}
+
+.restaurant-table.ninth-color {
+  background-color: #76FF03;
 }
 
 .restaurant-canvas {
@@ -32,4 +66,22 @@
 .restaurant-canvas.edit-bg {
     background-color: #424242;
     border: 5px solid #00695C;
+}
+
+.restaurant-regions {
+    width: 15%;
+    height: 100%:auto;
+    margin: 10px;
+    background-color: #212121;
+    border: 5px solid black;
+}
+
+.region-tab{
+	width: 90%;
+    height: 10%;
+	background-color:#283593;
+    align-self: center;
+    margin: 5px;
+    border: 1px solid black;
+    padding: 5px;
 }

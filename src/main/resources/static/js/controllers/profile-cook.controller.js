@@ -22,7 +22,6 @@ function CookProfileController(cookService, passService, $mdDialog) {
                     cookProfileVm.changePassword(false);
                 }
             });
-        
     };
 
 

@@ -1,7 +1,9 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
+import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.SystemManagerService;
 import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Set;
@@ -29,8 +32,8 @@ public class SystemManagerController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <SystemManager>> getManagers() {
-        Collection <SystemManager> providers = systemManagerService.findAll();
-        return new ResponseEntity <Collection <SystemManager>>(providers, HttpStatus.OK);
+        Collection <SystemManager> smanagers = systemManagerService.findAll();
+        return new ResponseEntity <Collection <SystemManager>>(smanagers, HttpStatus.OK);
     }
 
     @RequestMapping(
@@ -40,6 +43,18 @@ public class SystemManagerController {
     public ResponseEntity <SystemManager> getProvider(@PathVariable("id") Integer id) {
         SystemManager provider = systemManagerService.findOne(id);
         return new ResponseEntity <SystemManager>(provider, HttpStatus.OK);
+    }
+
+
+    @Authorization(value = "system_manager")
+    @RequestMapping(
+            value = "/api/smanager",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <SystemManager> getLoggedInSystemManager(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        SystemManager sm = systemManagerService.findOne(user.getUserId());
+        return new ResponseEntity <SystemManager>(sm, HttpStatus.OK);
     }
 
 

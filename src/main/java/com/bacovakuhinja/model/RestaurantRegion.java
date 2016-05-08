@@ -27,6 +27,9 @@ public class RestaurantRegion {
     @JoinColumn(name = "rr_restaurant_id")
     private Restaurant restaurant;
 
+    @Column(name = "rr_region_no")
+    private Integer regionNo;
+
     @JsonIgnore
     @OneToMany(mappedBy = "region", fetch = FetchType.LAZY)
     private Set<RestaurantTable> tables = new HashSet <RestaurantTable>(0);
@@ -66,7 +69,7 @@ public class RestaurantRegion {
         this.restaurant = restaurant;
     }
 
-    @JsonProperty
+    @JsonIgnore
     public Set <RestaurantTable> getTables() {
         return tables;
     }
@@ -74,5 +77,13 @@ public class RestaurantRegion {
     @JsonIgnore
     public void setTables(Set <RestaurantTable> tables) {
         this.tables = tables;
+    }
+
+    public Integer getRegionNo() {
+        return regionNo;
+    }
+
+    public void setRegionNo(Integer regionNo) {
+        this.regionNo = regionNo;
     }
 }

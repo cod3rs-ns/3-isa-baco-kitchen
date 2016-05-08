@@ -76,11 +76,11 @@ public class EmployeeController {
 
         //TODO get real workperiods from database
         WorkPeriod w = new WorkPeriod();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date d1 = sdf.parse("26/04/2016");
+            Date d1 = sdf.parse("2016-04-26 15:00:00");
             w.setStart(d1);
-            Date d2 = sdf.parse("27/04/2016");
+            Date d2 = sdf.parse("2016-04-26 21:00:00");
             w.setEnd(d2);
         } catch (ParseException e) {
             e.printStackTrace();
