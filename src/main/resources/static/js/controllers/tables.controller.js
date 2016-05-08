@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('TablesController', TablesController);
 
-TablesController.$inject = ['tableService', '$mdDialog', '$mdToast'];
+TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast'];
 
-function TablesController(tableService, $mdDialog, $mdToast) {
+function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     var tablesVm = this;
     // switch of edit or no-edit state
     tablesVm.enabledEdit = false;
@@ -40,12 +40,35 @@ function TablesController(tableService, $mdDialog, $mdToast) {
     tablesVm.showInfo = showInfo;
     tablesVm.showToast = showToast
 
+    tablesVm.tableColors = ['default', 'first-color', 'second-color' , 'third-color',
+                            'fourth-color', 'fifth-color', 'sixth-color', 'seventh-color',
+                            'eighth-color', 'ninth-color'];
+    tablesVm.hexColors = [  '#28359', '#00695C', '#CDDC39', '#AD1457', '#0277BD',
+                            '#5D4037', '#607D8B', '#E91E63', '#43A047', '#76FF03'];
+    tablesVm.regionCount = 1;
+    tablesVm.regions = [];
+    tablesVm.regionEditFields = [];
+    tablesVm.addNewRegion = addNewRegion;
+    tablesVm.backupRegion = null;
+    tablesVm.saveRegion = saveRegion;
+    tablesVm.deleteRegion = deleteRegion;
+    tablesVm.getNextRestaurantTableNo = getNextRestaurantTableNo;
+    tablesVm.tablesInRestaurantNumbers = [];
     activate();
 
     function activate() {
         getTablesByRestaurant().then(function() {
             // after success action
         });
+
+
+        getRegionsByRestaurant();
+        tablesVm.regionCount = tablesVm.regions.length;
+
+
+        for (var i = 0; i < tablesVm.regions.length; i++) {
+            tablesVm.regionEditFields[i] = false;
+        }
     };
 
     function getTablesByRestaurant() {
@@ -54,9 +77,25 @@ function TablesController(tableService, $mdDialog, $mdToast) {
         return tableService.getTablesByRestaurant(2)
             .then(function(data) {
                 tablesVm.tables = data;
+
+                for (var i = 0; i < tablesVm.tables.length; i++) {
+                    tablesVm.tablesInRestaurantNumbers.push(tablesVm.tables[i].tableInRestaurantNo);
+                };
+                tablesVm.tablesInRestaurantNumbers.sort();
+                console.log(tablesVm.tablesInRestaurantNumbers);
                 return tablesVm.tables;
             });
     };
+
+    function getRegionsByRestaurant() {
+        // TODO currently locked on 2
+        // find way to access to logged user
+        return regionService.getRegionsByRestaurant(2)
+            .then(function(data) {
+                tablesVm.regions = data;
+                tablesVm.regionCount = tablesVm.regions.length;
+            })
+    }
 
     function showInfo(ev){
         $mdDialog.show(
@@ -92,9 +131,9 @@ function TablesController(tableService, $mdDialog, $mdToast) {
         for (var i = 0; i < tablesVm.tables.length; i++) {
             // create new tables
             if (tablesVm.tables[i].hasOwnProperty('isNew')) {
-                tableService.createTable(angular.toJson(tablesVm.tables[i]), 1);
+                tableService.createTable(angular.toJson(tablesVm.tables[i]), tablesVm.tables[i].region.regionId);
             }else{ // update existing tables
-                tableService.updateTable(angular.toJson(tablesVm.tables[i]), 1);
+                tableService.updateTable(angular.toJson(tablesVm.tables[i]), tablesVm.tables[i].region.regionId);
             };
         };
 
@@ -174,6 +213,22 @@ function TablesController(tableService, $mdDialog, $mdToast) {
                 .on('hold', addTableListener);
     };
 
+    function getNextRestaurantTableNo(){
+        var nextTableNo = -1;
+        for (var i = 0; i < tablesVm.tablesInRestaurantNumbers.length; i++) {
+            if(tablesVm.tablesInRestaurantNumbers[i] != (i+1)){
+                nextTableNo = i+1;
+                break;
+            };
+        }
+        if(nextTableNo == -1){
+            nextTableNo = tablesVm.tablesInRestaurantNumbers.length + 1;
+        };
+
+
+        return nextTableNo;
+    }
+
     function addTableListener(event) {
         tablesVm.newTable = {
             tableId: null,
@@ -183,10 +238,16 @@ function TablesController(tableService, $mdDialog, $mdToast) {
             height: 40,
             positions: 2,
             tempId: 10000 + tablesVm.tables.length,
-            isNew: true
+            isNew: true,
+            region_color: 'green',
+            region: tablesVm.regions[0],
+            tableInRestaurantNo: tablesVm.getNextRestaurantTableNo()
         };
 
         tablesVm.tables.push(tablesVm.newTable);
+        tablesVm.tablesInRestaurantNumbers.push(tablesVm.newTable.tableInRestaurantNo);
+        tablesVm.tablesInRestaurantNumbers.sort();
+        console.log(tablesVm.tablesInRestaurantNumbers);
         var parent = document.getElementById('canvas');
         var test =  document.createElement("p");
         parent.appendChild(test);
@@ -194,7 +255,31 @@ function TablesController(tableService, $mdDialog, $mdToast) {
     };
 
     function colorSwitchListener(event) {
-        event.currentTarget.classList.toggle('switch-bg');
+        var to_disable = null;
+        var index = -1;
+        var current = null;
+        var stylename = null;
+        for (var j = 0; j < tablesVm.tableColors.length; j++) {
+            stylename = tablesVm.tableColors[j];
+            index = index + 1;
+            for (var i = 0; i < event.currentTarget.classList.length; i++) {
+                current = event.currentTarget.classList[i];
+                if (stylename == current){
+                    to_disable = current;
+                    break;
+                }
+            }
+            if(to_disable != null){
+                break;
+            }
+        }
+        event.currentTarget.classList.toggle(to_disable);
+        var next = (index+1)%(tablesVm.regionCount);
+        console.log(next);
+        event.currentTarget.classList.toggle(tablesVm.tableColors[next]);
+        var currentTable = tablesVm.findTable(event.currentTarget.getAttribute('id'));
+        console.log(currentTable);
+        currentTable.region = tablesVm.regions[next];
         event.preventDefault();
     };
 
@@ -323,4 +408,56 @@ function TablesController(tableService, $mdDialog, $mdToast) {
         };
         return null;
     };
+
+    function addNewRegion() {
+        var nextFreeNo = -1;
+        for (var i = 0; i < tablesVm.regions.length; i++) {
+            if(tablesVm.regions[i].regionNo != (i+1) ){
+                nextFreeNo = i+1;
+                break;
+            };
+        };
+
+        if(nextFreeNo == -1) {
+            if(tablesVm.regions.length < 10){
+                nextFreeNo = tablesVm.regions.length + 1;
+            };
+        };
+
+        if(nextFreeNo == -1){
+            // TODO Show alert
+            alert("No free region slots");
+            return;
+        }
+        var newRegion = {
+            regionId: null,
+            name: "novi_region",
+            regionNo: nextFreeNo,
+            color: tablesVm.hexColors[nextFreeNo-1]
+        };
+        tablesVm.regions.push(newRegion);
+        tablesVm.regionCount = tablesVm.regionCount + 1;
+        regionService.createRegion(newRegion, 2).then(
+            function(data){
+                alert("Saved region.");
+                console.log(data);
+            }
+        );
+    };
+
+    function saveRegion(idx) {
+        // TODO get real restaurant NO
+        regionService.updateRegion(tablesVm.regions[idx], 2)
+            .then(function(data){
+                console.log(data);
+
+            });
+        tablesVm.regionEditFields[idx] = false;
+    };
+
+    function deleteRegion() {
+        tablesVm.regionEditFields[idx] = false;
+        //tablesVm.regionEditFields.splice(idx, 1);
+
+    }
 }
