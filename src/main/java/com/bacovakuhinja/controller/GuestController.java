@@ -139,7 +139,6 @@ public class GuestController {
     public ResponseEntity<Collection<User>> queryResults(@RequestParam(value="query") String query) {
         Collection<User> result = guestService.getUsers(query.toLowerCase());
 
-        System.out.println(result);
         return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);}
 
 }
