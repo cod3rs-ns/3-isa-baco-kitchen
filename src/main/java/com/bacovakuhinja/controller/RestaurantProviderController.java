@@ -29,12 +29,21 @@ public class RestaurantProviderController {
         return new ResponseEntity <Collection <RestaurantProvider>>(providers, HttpStatus.OK);
     }
 
-    @Authorization(value = "restaurant_provider")
     @RequestMapping(
             value = "/api/providers/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantProvider> getProvider(final HttpServletRequest request, @PathVariable("id") Integer id) {
+        RestaurantProvider provider = providerService.findOne(id);
+        return new ResponseEntity <RestaurantProvider>(provider, HttpStatus.OK);
+    }
+
+    @Authorization(value = "restaurant_provider")
+    @RequestMapping(
+            value = "/api/provider",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <RestaurantProvider> getLoggedInRestaurantProvider(final HttpServletRequest request) {
         User user = (User) request.getAttribute("loggedUser");
         RestaurantProvider provider = providerService.findOne(user.getUserId());
         return new ResponseEntity <RestaurantProvider>(provider, HttpStatus.OK);

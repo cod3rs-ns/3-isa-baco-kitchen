@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('ProviderProfileController', ProviderProfileController);
 
-ProviderProfileController.$inject = ['providerService', '$mdDialog'];
+ProviderProfileController.$inject = ['providerService', 'passService', '$mdDialog', '$mdToast'];
 
-function ProviderProfileController(providerService, $mdDialog, OfferRequestController) {
+function ProviderProfileController(providerService, passService, $mdDialog, $mdToast, OfferRequestController) {
     var providerVm = this;
     providerVm.provider = {};
     providerVm.editState = false;
@@ -13,18 +13,27 @@ function ProviderProfileController(providerService, $mdDialog, OfferRequestContr
     providerVm.saveChanges = saveChanges;
     providerVm.cancelChanges = cancelChanges;
     providerVm.initEditState = initEditState;
+    providerVm.showToast = showToast;
 
+    providerVm.changePassword = changePassword;
     activate();
 
     function activate() {
         // TODO retrieve active Provider
-        getProvider(4).then(function() {
+        getLoggedProvider().then(function() {
             console.log("Provider retreived.");
         });
+
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if(data){
+                    providerVm.changePassword(false);
+                }
+            });
     };
 
-    function getProvider(id) {
-        return providerService.getProvider(id)
+    function getLoggedProvider() {
+        return providerService.getLoggedProvider()
             .then(function(data) {
                 providerVm.provider = data;
             });
@@ -38,13 +47,44 @@ function ProviderProfileController(providerService, $mdDialog, OfferRequestContr
     function saveChanges() {
         providerVm.backup = null;
         providerVm.editState = false;
-        providerService.updateProvider(providerVm.provider);
+        providerService.updateProvider(providerVm.provider)
+            .then(function(){
+                providerVm.showToast("Izmene profila uspešno sačuvane.")
+            });
     };
 
     function cancelChanges() {
         providerVm.provider = providerVm.backup;
         providerVm.backup = null;
         providerVm.editState = false;
+    };
+
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
+    };
+
+
+    function showToast(toast_message) {
+        $mdToast.show({
+          hideDelay : 3000,
+          position  : 'top right',
+          template  : '<md-toast><strong>' + toast_message +'</md-toast>'
+        });
     };
 
     // TODO: Test data, should be retreived from REST Service

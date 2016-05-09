@@ -10,7 +10,8 @@ function providerService($http){
         getProvider: getProvider,
         updateProvider: updateProvider,
         deleteProvider: deleteProvider,
-        createProvider: createProvider
+        createProvider: createProvider,
+        getLoggedProvider: getLoggedProvider
     };
 
     return service;
@@ -24,6 +25,13 @@ function providerService($http){
 
     function getProvider(id){
         return $http.get('api/providers/' + id)
+        .then(function(response){
+            return response.data;
+        });
+    };
+
+    function getLoggedProvider(){
+        return $http.get('api/provider')
         .then(function(response){
             return response.data;
         });

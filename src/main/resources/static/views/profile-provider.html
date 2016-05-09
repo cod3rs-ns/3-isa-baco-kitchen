@@ -7,15 +7,24 @@
 				<md-button	ng-hide="!providerVm.editState" class="md-icon-button"
 							ng-click="providerVm.cancelChanges();" aria-label="Cancel changes">
 					<md-icon aria-label="Cancel changes" class="material-icons">cancel</md-icon>
+					<md-tooltip>Poništi promene</md-tooltip>
 				</md-button>
 				<md-button 	ng-hide="!providerVm.editState " class="md-icon-button"
 				 			ng-click="providerVm.saveChanges();"
 							ng-disabled="!providerForm.$valid" aria-label="Save changes">
 					<md-icon aria-label="Save changes" class="material-icons">save</md-icon>
+					<md-tooltip>Sačuvaj promene</md-tooltip>
 				</md-button>
 				<md-button 	ng-hide="providerVm.editState" class="md-icon-button"
 							ng-click="providerVm.initEditState();" aria-label="Edit profile">
 					<md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
+					<md-tooltip>Izmeni profil</md-tooltip>
+				</md-button>
+				<md-button 	ng-hide="providerVm.editState" class="md-icon-button"
+							ng-click="providerVm.changePassword(true);" aria-label="Password change"
+							id="pass-option">
+					<md-tooltip>Promeni lozinku</md-tooltip>
+					<md-icon aria-label="Password change"class="material-icons">lock</md-icon>
 				</md-button>
 				<md-button class="md-icon-button" aria-label="More">
 					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
@@ -63,7 +72,7 @@
 								</div>
 							</md-input-container>
 
-				  </form>
+						</form>
 				</div>
 			</div>
 		</div>
@@ -74,7 +83,7 @@
 	<div flex-gt-sm="30" layout="column" class="main-content">
 		<md-toolbar scroll>
 			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
+				<h3 md-header-title flex>Dodatne informacije</h3>
 			</div>
 		</md-toolbar>
         <!-- TODO ACTIONS -->
@@ -82,12 +91,12 @@
 			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
 				<div class="option">
 					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila </h4>
+					<h4> Informacija broj 1 </h4>
 				</div>
                 <hr>
                 <div class="option">
 					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">vpn_key</i> </md-button>
-					<h4> Izmena lozinke </h4>
+					<h4> Informacija broj 2 </h4>
 				</div>
 
 			</div>
