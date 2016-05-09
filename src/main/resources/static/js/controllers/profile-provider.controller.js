@@ -7,23 +7,44 @@ ProviderProfileController.$inject = ['providerService', '$mdDialog'];
 function ProviderProfileController(providerService, $mdDialog, OfferRequestController) {
     var providerVm = this;
     providerVm.provider = {};
+    providerVm.editState = false;
+    providerVm.backup = {};
+
+    providerVm.saveChanges = saveChanges;
+    providerVm.cancelChanges = cancelChanges;
+    providerVm.initEditState = initEditState;
 
     activate();
 
     function activate() {
-        // should be changed
-        getProvider(11111111).then(function() {
+        // TODO retrieve active Provider
+        getProvider(4).then(function() {
             console.log("Provider retreived.");
         });
-
     };
 
     function getProvider(id) {
         return providerService.getProvider(id)
             .then(function(data) {
                 providerVm.provider = data;
-                return providerVm.provider;
             });
+    };
+
+    function initEditState() {
+        providerVm.editState = true;
+        providerVm.backup = angular.copy(providerVm.provider);
+    };
+
+    function saveChanges() {
+        providerVm.backup = null;
+        providerVm.editState = false;
+        providerService.updateProvider(providerVm.provider);
+    };
+
+    function cancelChanges() {
+        providerVm.provider = providerVm.backup;
+        providerVm.backup = null;
+        providerVm.editState = false;
     };
 
     // TODO: Test data, should be retreived from REST Service

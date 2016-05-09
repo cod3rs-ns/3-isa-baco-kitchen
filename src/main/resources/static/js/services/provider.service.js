@@ -30,7 +30,10 @@ function providerService($http){
     };
 
     function updateProvider(provider){
-
+        return $http.put('/api/providers/', provider)
+        .then(function (response) {
+            return response.data;
+        });
     };
 
     function deleteProvider(id){

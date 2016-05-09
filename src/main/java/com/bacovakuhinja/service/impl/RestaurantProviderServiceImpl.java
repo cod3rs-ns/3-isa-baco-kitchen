@@ -33,6 +33,7 @@ public class RestaurantProviderServiceImpl implements RestaurantProviderService 
     public RestaurantProvider update(RestaurantProvider provider) {
         RestaurantProvider providerPersistent = findOne(provider.getUserId());
         if (providerPersistent == null) return null;
+        if (provider.getPassword() == null) provider.setPassword(providerPersistent.getPassword());
         return providerRepository.save(provider);
     }
 

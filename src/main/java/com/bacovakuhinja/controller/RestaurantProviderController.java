@@ -59,6 +59,7 @@ public class RestaurantProviderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantProvider> updateRestaurantManager(@RequestBody RestaurantProvider provider) {
+        System.out.println(provider);
         RestaurantProvider updatedProvider = providerService.update(provider);
         if (updatedProvider == null) {
             return new ResponseEntity <RestaurantProvider>(HttpStatus.NOT_FOUND);
