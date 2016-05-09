@@ -4,11 +4,11 @@ angular
 
 function config($routeProvider) {
     $routeProvider
-        // Route for homepage (login.html)
+        // Route for homepage
         .when('/', {
-            templateUrl: 'views/login.html',
-            controller: 'LoginController',
-            controllerAs: 'loginVm'
+            templateUrl: 'views/home.html',
+            controller: 'HomeController',
+            controllerAs: 'homeVm'
         })
         // Route for login page
         .when('/login', {

@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', 'guestService'];
+GuestProfileController.$inject = ['$routeParams', '$location', 'guestService'];
 
-function GuestProfileController($routeParams, guestService) {
+function GuestProfileController($routeParams, $location, guestService) {
     var guestProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -16,6 +16,8 @@ function GuestProfileController($routeParams, guestService) {
     guestProfileVm.friends = [];
     guestProfileVm.isFriend = false;
     guestProfileVm.sendRequest = false;
+    guestProfileVm.query = "";
+    guestProfileVm.queryResult = [];
     // Functions 
     guestProfileVm.editProfile = editProfile;
     guestProfileVm.saveChanges = saveChanges;
@@ -24,8 +26,14 @@ function GuestProfileController($routeParams, guestService) {
     guestProfileVm.rejectFriend = rejectFriend;
     guestProfileVm.removeFriend = removeFriend;
     guestProfileVm.addFriend = addFriend;
+    guestProfileVm.search = search;
+    guestProfileVm.to = to;
 
     activate();
+    
+    function to(id) {
+        $location.path('profile-guest/' + id);
+    };
     
     function addFriend(id) {
         guestService.addFriend(id)
@@ -80,6 +88,13 @@ function GuestProfileController($routeParams, guestService) {
                    break;
                 }
             }
+        });
+    };
+    
+    function search() {
+      return guestService.getSearchResult(guestProfileVm.query)
+        .then(function (data) {
+            guestProfileVm.queryResult = data;
         });
     };
     

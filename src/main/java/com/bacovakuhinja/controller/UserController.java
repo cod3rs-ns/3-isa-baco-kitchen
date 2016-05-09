@@ -3,6 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.User;
+import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -26,6 +27,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GuestService guestService;
 
     @RequestMapping(
             value    = "/api/users",
@@ -126,6 +130,7 @@ public class UserController {
 
         System.out.println(user.toString());
         User created = userService.create(user);
+        guestService.create(user, "Additional guest info.");
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
     }
 

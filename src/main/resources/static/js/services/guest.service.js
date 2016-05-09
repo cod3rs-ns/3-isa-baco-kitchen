@@ -15,7 +15,8 @@ function guestService($http) {
         isMy: isMy,
         addFriend: addFriend,
         removeFriend: removeFriend,
-        isFriend: isFriend
+        isFriend: isFriend,
+        getSearchResult: getSearchResult
     };
 
     return service;
@@ -85,6 +86,13 @@ function guestService($http) {
     
     function isFriend(id) {
         return $http.get('api/guest/friend/' + id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function getSearchResult(query) {
+        return $http.get('api/guest/users?query=' + query)
         .then(function(response) {
             return response.data;
         });

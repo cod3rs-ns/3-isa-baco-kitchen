@@ -6,8 +6,17 @@ RestaurantProfileController.$inject = ['restaurantService', 'userService', '$mdD
 
 function RestaurantProfileController(restaurantService, userService, $mdDialog, $routeParams, SingleDrinkController){
     var restaurantVm = this;
+    
     restaurantVm.restaurant = {};
     restaurantVm.addManagerOption = false;
+    restaurantVm.review = {
+      rating_restaurant: 1,
+      rating_food:       1,
+      rating_service:    1,
+      comment:           'comment'
+    };
+    
+    restaurantVm.sendReview = sendReview;
 
     activate();
 
@@ -21,6 +30,13 @@ function RestaurantProfileController(restaurantService, userService, $mdDialog, 
 
         setPriorities().then(function(){
         });
+    };
+    
+    function sendReview() {
+      alert(restaurantVm.review.rating_restaurant);
+      alert(restaurantVm.review.rating_service);
+      alert(restaurantVm.review.rating_food);
+      alert(restaurantVm.review.comment);
     };
 
     function setPriorities(){

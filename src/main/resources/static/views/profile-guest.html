@@ -192,12 +192,21 @@
             <md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
           </md-button>
           <md-input-container flex>
-            <input ng-model="search.who" placeholder="Traži po imenu/prezimenu">
+            <input type="text" placeholder="Traži po imenu/prezimenu" ng-change="guestProfileVm.search()" ng-model="guestProfileVm.query">
           </md-input-container>
           <md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
             <md-icon aria-label="Search" class="material-icons">search</md-icon>
           </md-button>
         </div>
+        <md-menu-content width="5">
+          <md-menu-item ng-repeat="result in guestProfileVm.queryResult">
+              <md-list-item class="noright" ng-click="guestProfileVm.to(result.userId)">
+                <img class="md-avatar" ng-src="{{result.image}}">
+                <p class="color-gray">{{result.firstName + ' ' + result.lastName}}</p>
+              </md-list-item>
+          </md-menu-item>
+        </md-menu-content>
+      </md-menu>
       </md-toolbar>
     <md-list>
       <md-subheader class="md-primary">Moji prijatelji</md-subheader>
