@@ -112,7 +112,36 @@
 
       <md-tab label="Utisci gostiju">
         <md-content class="md-padding">
-              <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+            <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+            
+            <div style="padding: 5 40">
+              <div layout-gt-sm="row" layout="column">
+                <div class="rating-item" flex>
+                  Restoran:
+                  <div ng-init="restaurantVm.review.rating_restaurant"></div>
+                  <div class="star-rating" star-rating rating-value="restaurantVm.review.rating_restaurant" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                </div>
+
+                <div class="rating-item" flex>
+                  Usluga:
+                  <div ng-init="restaurantVm.review.rating_service"></div>
+                  <div class="star-rating" star-rating rating-value="restaurantVm.review.rating_service" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                </div>
+                
+                <div class="rating-item" flex>
+                  Hrana:
+                  <div ng-init="restaurantVm.review.rating_food"></div>
+                  <div class="star-rating" star-rating rating-value="restaurantVm.review.rating_food" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                </div>
+              </div>
+                
+              <md-input-container class="md-block">
+                <label>Komentar</label>
+                <textarea ng-model="restaurantVm.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+              </md-input-container>
+                  
+              <md-button ng-click="restaurantVm.sendReview();" style="float: right">Potvrdi</md-button>
+            </div>
         </md-content>
       </md-tab>
 
