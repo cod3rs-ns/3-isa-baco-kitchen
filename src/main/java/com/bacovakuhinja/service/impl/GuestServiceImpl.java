@@ -43,4 +43,23 @@ public class GuestServiceImpl implements GuestService {
 
         return users;
     }
+
+    @Override
+    public void create(User user, String additionalInfo) {
+        // FIXME
+        Guest guest = new Guest();
+
+        guest.setEmail(user.getEmail());
+        guest.setFirstName(user.getFirstName());
+        guest.setLastName(user.getLastName());
+        guest.setImage(user.getImage());
+        guest.setPassword(user.getPassword());
+        guest.setType(user.getType());
+        guest.setVerified(user.getVerified());
+
+        guest.setGuestId(user.getUserId());
+        guest.setGuestInfo(additionalInfo);
+
+        guestRepository.save(guest);
+    }
 }

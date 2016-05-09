@@ -14,4 +14,6 @@ public interface GuestService {
     public Guest getGuest(Integer id);
 
     public Collection<User> getUsers(String query);
+
+    public void create(User user, String additionalInfo);
 }
