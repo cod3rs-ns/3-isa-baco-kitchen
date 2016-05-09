@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', '$mdDialog', 'passService'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog'];
 
-function WaiterProfileController(tableService, waiterService, $mdDialog, passService) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -155,21 +155,15 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
 
 
     function getOrders(){
-        waiterProfileVm.selectedTableOrders = [
-            {
-                title: "Porudžbina : 15",
-                desc: "Kreirana prije 25min."
-            },
-            {
-                title: "Porudžbina : 5",
-                desc: "Kreirana prije 5min."
-            },
-            {
-                title: "Porudžbina : 7",
-                desc: "Kreirana prije 17min."
-            }
-        ];
-    }
+        if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
+        orderService.getOrders(waiterProfileVm.selectedTable.tableId)
+            .then(function (data) {
+                waiterProfileVm.selectedTableOrders = data;
+                waiterProfileVm.selectedTableOrders.forEach(function (order) {
+                    order.date = new Date(order.date);
+                });
+            });
+    };
 
     waiterProfileVm.selectedTableOrders = [];
 
@@ -185,7 +179,8 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable
-            }
+            },
+            onRemoving : function() {getOrders();}
         });
     };
 

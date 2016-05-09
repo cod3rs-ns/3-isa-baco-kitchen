@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "restaurant_tables")
@@ -37,6 +39,10 @@ public class RestaurantTable {
     @ManyToOne
     @JoinColumn(name = "rt_region_id")
     private RestaurantRegion region;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "table", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);
 
     public RestaurantTable() {
     }
@@ -105,5 +111,13 @@ public class RestaurantTable {
 
     public void setTableInRestaurantNo(Integer tableInRestaurantNo) {
         this.tableInRestaurantNo = tableInRestaurantNo;
+    }
+
+    public Set<ClientOrder> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<ClientOrder> orders) {
+        this.orders = orders;
     }
 }

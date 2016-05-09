@@ -1,6 +1,7 @@
 package com.bacovakuhinja.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Table(name = "food")
 @JsonIgnoreProperties(value = {"restaurant"})
 public class Food {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "f_id")
@@ -90,5 +92,18 @@ public class Food {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public String toString() {
+        return "Food{" +
+                "foodId=" + foodId +
+                ", info='" + info + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", type='" + type + '\'' +
+                ", image='" + image + '\'' +
+                ", restaurant=" + restaurant +
+                '}';
     }
 }

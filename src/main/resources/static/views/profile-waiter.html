@@ -165,8 +165,8 @@
 								<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.selectedTableOrders">
 									<md-icon class="material-icons md-avatar">description</md-icon>
 									<div class="md-list-item-text">
-										<h3>{{order.title}}</h3>
-										<p>{{order.desc}}</p>
+										<h3>id porudžbine : {{order.orderId}}</h3>
+										<p>{{order.date | date: 'medium'}}</p>
 									</div>
 
 									<md-button class="md-icon-button"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>

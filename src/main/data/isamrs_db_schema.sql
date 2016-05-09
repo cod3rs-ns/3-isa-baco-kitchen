@@ -546,9 +546,9 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   `co_id` INT NOT NULL AUTO_INCREMENT,
   `co_date` DATETIME NOT NULL,
   `co_deadline` DATETIME NULL,
-  `co_reservation_id` INT NOT NULL,
+  `co_reservation_id` INT,
   `co_table_id` INT NOT NULL,
-  `co_bill_id` INT NOT NULL,
+  `co_bill_id` INT,
   PRIMARY KEY (`co_id`),
   INDEX `fk_client_orders_reservations1_idx` (`co_reservation_id` ASC),
   INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),
@@ -577,7 +577,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`order_items` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
-  `oi_id` INT NOT NULL,
+  `oi_id` INT NOT NULL AUTO_INCREMENT,
   `oi_state` VARCHAR(45) NOT NULL,
   `oi_order_id` INT NOT NULL,
   `oi_food_id` INT NULL,

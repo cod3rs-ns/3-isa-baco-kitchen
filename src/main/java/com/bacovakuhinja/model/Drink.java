@@ -92,4 +92,17 @@ public class Drink {
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
+
+    @Override
+    public String toString() {
+        return "Drink{" +
+                "drinkId=" + drinkId +
+                ", info='" + info + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", type='" + type + '\'' +
+                ", image='" + image + '\'' +
+                ", restaurant=" + restaurant +
+                '}';
+    }
 }

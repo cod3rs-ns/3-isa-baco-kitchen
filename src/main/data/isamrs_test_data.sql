@@ -19,22 +19,22 @@ INSERT INTO `isa_mrs_project`.`restaurant_managers` (`rm_id`, `rm_info`, `rm_res
 INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('4', 'Becks biography.');
 
 
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('6', '1988-06-15', 'L', '42b', '2');
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('7', '1988-07-15', 'XXL', '43b', '2');
-INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`) VALUES ('8', '1988-08-15', 'M', '44b', '2');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`, `e_restaurant`) VALUES ('6', '1988-06-15', 'L', '42b', '2');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`, `e_restaurant`) VALUES ('7', '1988-07-15', 'XXL', '43b', '2');
+INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`, `e_restaurant`) VALUES ('8', '1988-08-15', 'M', '44b', '2');
 
 INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('6');
 INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('7');
 INSERT INTO `isa_mrs_project`.`waiters` (`w_id`) VALUES ('8');
 
-INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('1', 'Ukusno.', 'Kolač s borovnicom.', '150', 'dessert', 'images/meals/borovnica.jpg', '1');
-INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('2', 'Ukusno', 'Štrudla s makom.', '235', 'dessert', 'images/meals/mak.jpg', '1');
-INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('3', 'Ukusno.', 'Kolač s borovnicom.', '150', 'dessert', 'images/meals/borovnica.jpg', '2');
-INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('4', 'Ukusno.', 'Kolač s borovnicom.', '150', 'dessert', 'images/meals/borovnica.jpg', '3');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('1', 'Ukusno.', 'Kolač s borovnicom.', '150', 'f_dessert', 'images/meals/borovnica.jpg', '1');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('2', 'Ukusno', 'Štrudla s makom.', '235', 'f_dessert', 'images/meals/mak.jpg', '1');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('3', 'Ukusno.', 'Kolač s borovnicom.', '150', 'f_dessert', 'images/meals/borovnica.jpg', '2');
+INSERT INTO `isa_mrs_project`.`food` (`f_id`, `f_info`, `f_name`, `f_price`, `f_type`, `f_image`, `f_restaurant_id`) VALUES ('4', 'Ukusno.', 'Kolač s borovnicom.', '150', 'f_dessert', 'images/meals/borovnica.jpg', '3');
 
-INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('1', 'Opis ovog pića.', 'Cosmopolitan', '350', 'alcoholic', 'images/meals/cosmopolitan.jpg', '1');
-INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('2', 'Opis ovog pića.', 'Cosmopolitan', '350', 'alcoholic', 'images/meals/cosmopolitan.jpg', '2');
-INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('3', 'Opis ovog pića.', 'Cosmopolitan', '350', 'alcoholic', 'images/meals/cosmopolitan.jpg', '3');
+INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('1', 'Opis ovog pića.', 'Cosmopolitan', '350', 'd_alcoholic', 'images/meals/cosmopolitan.jpg', '1');
+INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('2', 'Opis ovog pića.', 'Cosmopolitan', '350', 'd_alcoholic', 'images/meals/cosmopolitan.jpg', '2');
+INSERT INTO `isa_mrs_project`.`drinks` (`d_id`, `d_info`, `d_name`, `d_price`, `d_type`, `d_image`, `d_restaurant_id`) VALUES ('3', 'Opis ovog pića.', 'Cosmopolitan', '350', 'd_alcoholic', 'images/meals/cosmopolitan.jpg', '3');
 
 INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_color`, `rr_restaurant_id`, `rr_region_no`) VALUES ('1', 'basta', '#283593', '2', '1');
 INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_color`, `rr_restaurant_id`, `rr_region_no`) VALUES ('2', 'prostorija_1', '#00695C', '2', '2');
