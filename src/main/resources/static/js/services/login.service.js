@@ -9,7 +9,8 @@ function loginService($http, $location, $window, $rootScope) {
     var service = {
         login: login,
         redirect: redirect,
-        logout: logout
+        logout: logout,
+        redirectProfile : redirectProfile
   };
   return service;
   
@@ -34,5 +35,37 @@ function loginService($http, $location, $window, $rootScope) {
        $http.defaults.headers.common.Authorization = '';
        $location.path('login');
    };
+
+    function redirectProfile(){
+        return $http.get('api/user')
+            .then(function (response) {
+            switch(response.data.type) {
+                case 'guest':
+                    $location.path('profile-guest/' + response.data.userId);
+                    break;
+                case 'system_manager':
+                    $location.path('profile-system-manager');
+                    break;
+                case 'restaurant_provider':
+                    $location.path('profile-provider');
+                    break;
+                case 'cook':
+                    $location.path('profile-cook');
+                    break;
+                case 'bartender':
+                    $location.path('profile-barman');
+                    break;
+                case 'waiter':
+                    console.log("waiter");
+                    $location.path('profile-waiter');
+                    break;
+                case 'restaurant_manager':
+                    $location.path('profile-restaurant-manager');
+                    break;
+               default:
+                    $location.path('login');
+               }
+        });
+    }
 
 }
