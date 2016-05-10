@@ -34,6 +34,34 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
     }
 
     function create() {
+        employeeVm.employee.restaurantID = 2;
+        console.log(employeeVm.employee);
+        if (employeeVm.employee.type == 'waiter') {
+            employeeVm.employee.image = 'images/waiter.png';
+            employeeService.createWaiter(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+            showToast('Uspešno ste kreirali profil konobara.');
+        }else if (employeeVm.employee.type == 'cook') {
+            employeeVm.employee.image = 'images/cook.png';
+            employeeService.createCook(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+            showToast('Uspešno ste kreirali profil kuvara.');
+        }else if (employeeVm.employee.type == 'bartender') {
+            employeeVm.employee.image = 'images/bartender.png';
+            employeeService.createBartender(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+            showToast('Uspešno ste kreirali profil šankera.');
+        }else {
+            console.log('Invalid employee type.')
+            return;
+        };
+        $mdDialog.cancel();
     };
 
     function update() {

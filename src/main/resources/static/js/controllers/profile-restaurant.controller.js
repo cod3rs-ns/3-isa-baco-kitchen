@@ -2,18 +2,21 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', '$mdDialog', '$routeParams'];
+RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', '$mdDialog', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, $mdDialog, $routeParams, SingleDrinkController){
+function RestaurantProfileController(restaurantService, userService, reviewService, $mdDialog, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
+    restaurantVm.reviews = [];
     restaurantVm.addManagerOption = false;
     restaurantVm.review = {
-      rating_restaurant: 1,
-      rating_food:       1,
-      rating_service:    1,
-      comment:           'comment'
+      // reviewId: 1,
+      restaurantRate: 1,
+      foodRate: 1,
+      serviceRate: 1,
+      reservation: 1,
+      comment: ''
     };
     
     restaurantVm.sendReview = sendReview;
@@ -30,27 +33,48 @@ function RestaurantProfileController(restaurantService, userService, $mdDialog, 
 
         setPriorities().then(function(){
         });
+        
+        getReviews($routeParams.restaurantId).then(function() {
+          
+        });
     };
     
     function sendReview() {
-      alert(restaurantVm.review.rating_restaurant);
-      alert(restaurantVm.review.rating_service);
-      alert(restaurantVm.review.rating_food);
-      alert(restaurantVm.review.comment);
+        return reviewService.addReview(restaurantVm.review)
+            .then(function(data) {
+                restaurantVm.reviews.push(data);
+                
+                restaurantVm.review = {
+                  // reviewId: 1,
+                  restaurantRate: 1,
+                  foodRate: 1,
+                  serviceRate: 1,
+                  reservation: 1,
+                  comment: ''
+                };
+            });
     };
 
-    function setPriorities(){
+    function setPriorities() {
         return userService.getRegisteredUser()
             .then(function(data) {
                 restaurantVm.addManagerOption = (data.type == "system_manager");
             });
-    }
+    };
 
     function getRestaurant(id) {
         return restaurantService.getRestaurant(id)
             .then(function(data) {
                 restaurantVm.restaurant = data;
                 return restaurantVm.restaurant;
+            });
+    };
+    
+    function getReviews(id) {
+        return reviewService.getReviews(id)
+            .then(function(data) {
+                restaurantVm.reviews = data;
+                return restaurantVm.reviews;
             });
     };
 

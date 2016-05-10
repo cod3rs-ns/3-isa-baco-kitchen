@@ -73,3 +73,9 @@ INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_data
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('4', '150', '380', '40', '40', '2', '1', '4');
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('5', '380', '520', '40', '40', '2', '2', '5');
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('6', '500', '520', '40', '40', '2', '2', '6');
+
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`, `rs_duration`, `rs_length`) VALUES ('1', '2014-04-02 08:49:43', '5');
+
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('1', 'Neki komentar...', '4', '3', '3', '1', '1');
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('2', 'Drugi komentar...', '4', '3', '3', '1', '1');
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('3', 'Treci komentar...', '4', '3', '5', '1', '1');

@@ -1,34 +1,89 @@
 <div layout="row">
 	<div flex-gt-sm="70" class="main-content">
+		<!-- Available actions -->
 		<md-toolbar scroll>
 			<div class="md-toolbar-tools">
 				<h3 md-header-title flex>Profil Ponuđača</h3>
-				<md-button class="md-icon-button" aria-label="Notification">
-					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
+				<md-button	ng-hide="!providerVm.editState" class="md-icon-button"
+							ng-click="providerVm.cancelChanges();" aria-label="Cancel changes">
+					<md-icon aria-label="Cancel changes" class="material-icons">cancel</md-icon>
+					<md-tooltip>Poništi promene</md-tooltip>
+				</md-button>
+				<md-button 	ng-hide="!providerVm.editState " class="md-icon-button"
+				 			ng-click="providerVm.saveChanges();"
+							ng-disabled="!providerForm.$valid" aria-label="Save changes">
+					<md-icon aria-label="Save changes" class="material-icons">save</md-icon>
+					<md-tooltip>Sačuvaj promene</md-tooltip>
+				</md-button>
+				<md-button 	ng-hide="providerVm.editState" class="md-icon-button"
+							ng-click="providerVm.initEditState();" aria-label="Edit profile">
+					<md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
+					<md-tooltip>Izmeni profil</md-tooltip>
+				</md-button>
+				<md-button 	ng-hide="providerVm.editState" class="md-icon-button"
+							ng-click="providerVm.changePassword(true);" aria-label="Password change"
+							id="pass-option">
+					<md-tooltip>Promeni lozinku</md-tooltip>
+					<md-icon aria-label="Password change"class="material-icons">lock</md-icon>
 				</md-button>
 				<md-button class="md-icon-button" aria-label="More">
 					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
 				</md-button>
 			</div>
 		</md-toolbar>
-
+		<!-- Provider details -->
 		<div layout="column">
 			<div layout="row" layout-xs="column">
 				<div flex class="content">
 					<img alt="Provider profile picture." ng-src="{{providerVm.provider.image}}" class="md-avatar" />
 				</div>
-				<div flex class="content">
-					<h2> {{providerVm.provider.firstName}} </h2>
+				<div ng-hide="providerVm.editState" flex class="content">
+					<h2> {{providerVm.provider.firstName + ' ' + providerVm.provider.lastName}} </h2>
 					<h4> {{providerVm.provider.email}} </h4>
+					<p><em> {{providerVm.provider.info}} </em> </p>
+				</div>
+				<div ng-hide="!providerVm.editState" flex class="content">
+					<!-- Edit form -->
+					<form name="providerForm" style="margin:7px;" >
+						<div layout-gt-sm="row">
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Ime</label>
+								<input md-maxlength="20" required name="firstName" ng-model="providerVm.provider.firstName" />
+								<div ng-messages="providerForm.firstName.$error">
+									<div ng-message="required">Ime je obavezno.</div>
+									<div ng-message="md-maxlength">Ime ne može biti duže od 20 karaktera.</div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Prezime</label>
+								<input md-maxlength="30" required name="lastName" ng-model="providerVm.provider.lastName" />
+								<div ng-messages="providerForm.lastName.$error" role="alert">
+									<div ng-message="required">Prezime je obavezno.</div>
+									<div ng-message="md-maxlength">Prezime ne može biti duže od 30 karaktera.</div>
+								</div>
+							</md-input-container>
+						</div>
+
+							<md-input-container class="md-block" flex>
+			        			<label>Biografija</label>
+			        			<textarea md-maxlength="100" name="providerInfo" ng-model="providerVm.provider.info" columns="1" rows="5" md-select-on-focus></textarea>
+								<div ng-messages="providerForm.providerInfo.$error" role="alert">
+									<div ng-message="md-maxlength">Vaša biografija mora imati manje od 100 karaktera.</div>
+								</div>
+							</md-input-container>
+
+						</form>
 				</div>
 			</div>
 		</div>
+
+
 	</div>
 
 	<div flex-gt-sm="30" layout="column" class="main-content">
 		<md-toolbar scroll>
 			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
+				<h3 md-header-title flex>Dodatne informacije</h3>
 			</div>
 		</md-toolbar>
         <!-- TODO ACTIONS -->
@@ -36,12 +91,12 @@
 			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
 				<div class="option">
 					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila </h4>
+					<h4> Informacija broj 1 </h4>
 				</div>
                 <hr>
                 <div class="option">
 					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">vpn_key</i> </md-button>
-					<h4> Izmena lozinke </h4>
+					<h4> Informacija broj 2 </h4>
 				</div>
 
 			</div>

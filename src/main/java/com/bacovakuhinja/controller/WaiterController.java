@@ -1,6 +1,7 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.DayScheduleService;
 import com.bacovakuhinja.service.EmployeeService;
@@ -76,12 +77,14 @@ public class WaiterController {
         return new ResponseEntity <ArrayList<RestaurantTable>>(tables, HttpStatus.OK);
     }
 
-
+    @SendEmail
     @RequestMapping(value = "/api/waiter",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> createWaiter(@RequestBody Waiter waiter) {
+        waiter.setPassword("generated_password");
+        waiter.setVerified("not_verified");
         Waiter created = waiterService.create(waiter);
         return new ResponseEntity<Waiter>(created, HttpStatus.CREATED);
     }

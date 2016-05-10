@@ -277,7 +277,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`reviews` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reviews` (
-  `rv_id` INT NOT NULL,
+  `rv_id` INT NOT NULL AUTO_INCREMENT,
   `rv_info` VARCHAR(100) NULL,
   `rv_food_rate` INT NOT NULL,
   `rv_service_rate` INT NOT NULL,
