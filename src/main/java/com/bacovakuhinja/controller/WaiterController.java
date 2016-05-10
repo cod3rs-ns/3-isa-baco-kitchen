@@ -82,6 +82,8 @@ public class WaiterController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> createWaiter(@RequestBody Waiter waiter) {
+        waiter.setPassword("generated_password");
+        waiter.setVerified("not_verified");
         Waiter created = waiterService.create(waiter);
         return new ResponseEntity<Waiter>(created, HttpStatus.CREATED);
     }
