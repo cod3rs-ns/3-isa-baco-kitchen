@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('AddOrderController', AddOrderController);
 
-AddOrderController.$inject = ['drinkService','foodService', 'orderService', '$mdDialog', '$mdToast', 'table'];
+AddOrderController.$inject = ['drinkService','foodService', 'orderService', '$mdDialog', '$mdToast', 'table', 'edit'];
 
-function AddOrderController(drinkService, foodService, orderService, $mdDialog, $mdToast, table) {
+function AddOrderController(drinkService, foodService, orderService, $mdDialog, $mdToast, table, edit) {
     var orderVm = this;
     orderVm.cancel = cancel;
     orderVm.showToast = showToast;
@@ -13,20 +13,49 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     activate();
     
     function activate() {
-        drinkService.getDrinks()
-            .then(function (data) {
-                for (var pos in data) {
-                    orderVm.meals.push(data[pos]);
-                }
-            });
+        if(edit == null) {
+            drinkService.getDrinks()
+                .then(function (data) {
+                    for (var pos in data) {
+                        orderVm.meals.push(data[pos]);
+                    }
+                });
 
-        foodService.getFood()
-            .then(function (data) {
-                for (var pos in data) {
-                    orderVm.meals.push(data[pos]);
-                }
-            });
+            foodService.getFood()
+                .then(function (data) {
+                    for (var pos in data) {
+                        orderVm.meals.push(data[pos]);
+                    }
+                });
+        }
+        else{
+            orderService.getOrder(edit).
+                then(function (map) {
+                    drinkService.getDrinks()
+                        .then(function (data) {
+                            for (var pos in data) {
+                                if(('d' + data[pos].drinkId)  in map) {
+                                    data[pos].hide = true;
+                                    data[pos].count = map['d' + data[pos].drinkId];
+                                    orderVm.orderMeals.push(data[pos]);
+                                }
+                                orderVm.meals.push(data[pos]);
+                            }
+                        });
 
+                    foodService.getFood()
+                        .then(function (data) {
+                            for (var pos in data) {
+                                if(('f' + data[pos].foodId)  in map) {
+                                    data[pos].hide = true;
+                                    data[pos].count = map['f' + data[pos].foodId];
+                                    orderVm.orderMeals.push(data[pos]);
+                                }
+                                orderVm.meals.push(data[pos]);
+                            }
+                        });
+            });
+        }
     }
 
     function showToast(toast_message) {
@@ -73,20 +102,30 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     function confirm(){
         if (orderVm.orderMeals.length !== 0){
             var order = createOrder();
-            orderService.addOrder(order, table.tableId)
-                .then(function (data) {
-                    if (data != null){
-                        showToast("Porudžbina je uspješno dodata.");
-                        $mdDialog.cancel();
-                    }
-                });
-
+            if(edit == null) {
+                orderService.addOrder(order, table.tableId)
+                    .then(function (data) {
+                        if (data != null) {
+                            showToast("Porudžbina je uspješno dodata.");
+                            $mdDialog.cancel();
+                        }
+                    });
+            }
+            else{
+                orderService.updateOrder(order, table.tableId)
+                    .then(function (data) {
+                        if (data != null) {
+                            showToast("Porudžbina je uspješno izmijenjena.");
+                            $mdDialog.cancel();
+                        }
+                    });
+            }
         }
     };
 
     function createOrder(){
         var order = {
-            orderId: null,
+            orderId: edit,
             date : new Date(),
             deadline: null,
             items : []

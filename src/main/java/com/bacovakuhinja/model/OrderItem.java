@@ -20,11 +20,11 @@ public class OrderItem implements Serializable{
     @JoinColumn(name = "oi_order_id")
     private ClientOrder order;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "oi_drink_id")
     private Drink drink;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "oi_food_id")
     private Food food;
 

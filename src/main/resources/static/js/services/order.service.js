@@ -7,12 +7,22 @@ orderService.$inject = ['$http'];
 function orderService($http) {
     var service = {
         addOrder: addOrder,
-        getOrders: getOrders
+        getOrders: getOrders,
+        getOrder: getOrder,
+        updateOrder : updateOrder
     };
     return service;
 
     function addOrder(order, table_id){
         return $http.post('api/orders/' + table_id, order)
+            .then(function(response){
+                return response.data;
+            });
+    };
+
+
+    function updateOrder(order, table_id){
+        return $http.put('api/orders/' + table_id, order)
             .then(function(response){
                 return response.data;
             });
@@ -25,5 +35,12 @@ function orderService($http) {
                 return response.data;
             });
     };
+
+    function getOrder(orderId){
+        return $http.get('api/order/' + orderId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
 }
 

@@ -178,7 +178,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
             clickOutsideToClose:true,
             fullscreen: true,
             locals: {
-                table: waiterProfileVm.selectedTable
+                table: waiterProfileVm.selectedTable,
+                edit : null
             },
             onRemoving : function() {getOrders();}
         });
@@ -198,4 +199,20 @@ function WaiterProfileController(tableService, waiterService, passService, order
             }
         );
     };
-}
+
+    waiterProfileVm.editOrder = editOrder;
+    function editOrder(orderId) {
+        $mdDialog.show({
+            controller: 'AddOrderController',
+            controllerAs: 'orderVm',
+            templateUrl: '/views/dialogs/add-order.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: true,
+            locals: {
+                table: waiterProfileVm.selectedTable,
+                edit : orderId
+            },
+            onRemoving : function() {getOrders();}
+        });
+    };}

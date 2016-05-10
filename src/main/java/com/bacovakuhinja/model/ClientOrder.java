@@ -26,12 +26,12 @@ public class ClientOrder implements Serializable{
     private Date deadline;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "co_table_id")
     private RestaurantTable table;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
 
     public ClientOrder(){
