@@ -52,6 +52,8 @@ public class CookController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Cook> createCook(@RequestBody Cook cook) {
+        cook.setPassword("generated_password");
+        cook.setVerified("not_verified");
         Cook created = cookService.create(cook);
         return new ResponseEntity<Cook>(created, HttpStatus.CREATED);
     }

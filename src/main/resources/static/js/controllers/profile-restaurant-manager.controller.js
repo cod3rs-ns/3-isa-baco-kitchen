@@ -4,12 +4,14 @@ angular
 
 RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog']
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController, SingleDrinkController, SingleFoodController) {
+function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController,
+                                     SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
     rmanagerVm.updateRestaurant = updateRestaurant;
     rmanagerVm.createDrink = createDrink;
     rmanagerVm.createFood = createFood;
+    rmanagerVm.createNewEmployee = createNewEmployee;
     // Currently active tab
     rmanagerVm.tabs = {
         selected: 0
@@ -76,6 +78,20 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
                 restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
                 food_menu_ref : rmanagerVm.rmanager.restaurant.foodMenu,
                 tabs : rmanagerVm.tabs
+            }
+        });
+    };
+
+    function createNewEmployee() {
+        $mdDialog.show({
+            controller: 'SingleEmployeeController',
+            controllerAs: 'employeeVm',
+            templateUrl: '/views/dialogs/single-employee-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : null
             }
         });
     };

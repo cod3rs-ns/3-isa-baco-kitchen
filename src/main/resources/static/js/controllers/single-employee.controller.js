@@ -34,6 +34,29 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
     }
 
     function create() {
+        console.log(employeeVm.employee);
+        if (employeeVm.employee.type == 'waiter') {
+            employeeVm.employee.image = 'images/waiter.png';
+            employeeService.createWaiter(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+        }else if (employeeVm.employee.type == 'cook') {
+            employeeVm.employee.image = 'images/cook.png';
+            employeeService.createCook(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+        }else if (employeeVm.employee.type == 'bartender') {
+            employeeVm.employee.image = 'images/bartender.png';
+            employeeService.createBartender(employeeVm.employee)
+                .then(function(data){
+                    console.log(data);
+                });
+        }else {
+            console.log('Invalid employee type.')
+            return;
+        };
     };
 
     function update() {

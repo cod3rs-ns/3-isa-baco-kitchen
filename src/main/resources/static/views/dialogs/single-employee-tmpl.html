@@ -47,19 +47,18 @@
                         </div>
                     </md-input-container>
 
-                    <div layout-gt-xs="row">
+                    <div layout="row">
 
-
-                        <md-input-container ng-show="!employeeVm.editState" class="md-block" style="margin-left:20px" flex-gt-xs>
+                        <md-input-container ng-show="!employeeVm.editState" class="md-block">
                             <label>Tip zaposlenog</label>
                             <md-select ng-model="employeeVm.employee.type">
                                 <md-option value="waiter">Konobar</md-option>
                                 <md-option value="cook">Kuvar</md-option>
-                                <md-option value="barmen">Šanker</md-option>
+                                <md-option value="bartender">Šanker</md-option>
                             </md-select>
                         </md-input-container>
 
-                        <md-datepicker  data-ng-model="employeeVm.employee.birthday" md-placeholder="Datum rodjenja"></md-datepicker>
+                        <md-datepicker  data-ng-model="employeeVm.employee.birthday" md-placeholder="Datum"></md-datepicker>
 
                     </div>
 

@@ -44,6 +44,8 @@ public class BartenderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Bartender> createBartender(@RequestBody Bartender bartender) {
+        bartender.setPassword("generated_password");
+        bartender.setVerified("not_verified");
         Bartender created = bartenderService.create(bartender);
         return new ResponseEntity<Bartender>(created, HttpStatus.CREATED);
     }
