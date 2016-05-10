@@ -43,7 +43,7 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     tablesVm.tableColors = ['default', 'first-color', 'second-color' , 'third-color',
                             'fourth-color', 'fifth-color', 'sixth-color', 'seventh-color',
                             'eighth-color', 'ninth-color'];
-    tablesVm.hexColors = [  '#28359', '#00695C', '#CDDC39', '#AD1457', '#0277BD',
+    tablesVm.hexColors = [  '#283593', '#00695C', '#CDDC39', '#AD1457', '#0277BD',
                             '#5D4037', '#607D8B', '#E91E63', '#43A047', '#76FF03'];
     tablesVm.regionCount = 1;
     tablesVm.regions = [];

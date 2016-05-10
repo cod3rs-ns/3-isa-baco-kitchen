@@ -1,6 +1,7 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.CookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class CookController {
         Cook cook = cookService.findOne(user.getUserId());
         return new ResponseEntity <Cook>(cook, HttpStatus.OK);
     }
-
+    @SendEmail
     @RequestMapping(value = "/api/cook",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,

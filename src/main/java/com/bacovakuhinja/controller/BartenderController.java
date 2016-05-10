@@ -1,6 +1,7 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Bartender;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.BartenderService;
@@ -61,6 +62,7 @@ public class BartenderController {
         return new ResponseEntity <Bartender>(bartender, HttpStatus.OK);
     }
 
+    @SendEmail
     @RequestMapping(
             value = "/api/bartender",
             method = RequestMethod.PUT,

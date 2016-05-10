@@ -1,5 +1,7 @@
 package com.bacovakuhinja.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -19,6 +21,9 @@ public class Employee extends User{
 
     @Column(name="e_shoes_size")
     private String shoesSize;
+
+    @Column(name = "e_restaurant")
+    private Integer restaurantID;
 
     public Date getBirthday() {
         return birthday;
@@ -42,6 +47,14 @@ public class Employee extends User{
 
     public void setShoesSize(String shoesSize) {
         this.shoesSize = shoesSize;
+    }
+
+    public Integer getRestaurantID() {
+        return restaurantID;
+    }
+
+    public void setRestaurantID(Integer restaurantID) {
+        this.restaurantID = restaurantID;
     }
 
     public void update(Employee newEmployee){
