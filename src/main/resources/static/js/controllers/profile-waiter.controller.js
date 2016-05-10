@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', '$mdDialog', 'passService'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog'];
 
-function WaiterProfileController(tableService, waiterService, $mdDialog, passService) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -143,33 +143,29 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
                 waiterProfileVm.selectedTable = waiterProfileVm.allTables[table];
                 if(waiterProfileVm.selectedTable.color !== '#CDDC39'){
                     waiterProfileVm.selectedTable = -1;
+                    waiterProfileVm.selectedTableOrders.length = 0;
+                }
+                else{
+                    getOrders();
                 }
                 break;
             }
         }
     };
 
-    waiterProfileVm.finishedOrders = [
-        {
-            title: "Sto broj 5",
-            desc: "Spremljen je gulaš."
-        },
-        {
-            title: "Sto broj 9",
-            desc: "Spremljen je pasulj."
-        },
-        {
-            title: "Sto broj 2",
-            desc: "Spremljen je koktel."
-        }
-    ];
 
-    waiterProfileVm.deleteFinishedOrder = deleteFinishedOrder
-    function deleteFinishedOrder(order){
-        var index = waiterProfileVm.finishedOrders.indexOf(order);
-        waiterProfileVm.finishedOrders[index] = true;
-        waiterProfileVm.finishedOrders.splice(index,1);
+    function getOrders(){
+        if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
+        orderService.getOrders(waiterProfileVm.selectedTable.tableId)
+            .then(function (data) {
+                waiterProfileVm.selectedTableOrders = data;
+                waiterProfileVm.selectedTableOrders.forEach(function (order) {
+                    order.date = new Date(order.date);
+                });
+            });
     };
+
+    waiterProfileVm.selectedTableOrders = [];
 
 
     waiterProfileVm.addOrder = addOrder;
@@ -183,7 +179,8 @@ function WaiterProfileController(tableService, waiterService, $mdDialog, passSer
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable
-            }
+            },
+            onRemoving : function() {getOrders();}
         });
     };
 

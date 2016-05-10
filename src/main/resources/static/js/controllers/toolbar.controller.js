@@ -17,7 +17,7 @@ function ToolbarController(loginService) {
 
     this.profile = profile;
     function profile() {
-        loginService.redirect();
+        loginService.redirectProfile();
     };
 
 }

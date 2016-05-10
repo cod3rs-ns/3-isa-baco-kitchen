@@ -1,7 +1,7 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.model.RestaurantRegion;
-import com.bacovakuhinja.model.RestaurantTable;
+import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.RestaurantRegionService;
 import com.bacovakuhinja.service.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Array;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
 
 @RestController
 public class RestaurantTableController {
@@ -91,5 +95,4 @@ public class RestaurantTableController {
         Integer nextId = tableService.getNextId();
         return new ResponseEntity <Integer>(nextId, HttpStatus.OK);
     }
-
 }
