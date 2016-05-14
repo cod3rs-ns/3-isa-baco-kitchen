@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('AddOrderController', AddOrderController);
 
-AddOrderController.$inject = ['drinkService','foodService', 'orderService', '$mdDialog', '$mdToast', 'table', 'edit'];
+AddOrderController.$inject = ['menuItemService', 'orderService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit'];
 
-function AddOrderController(drinkService, foodService, orderService, $mdDialog, $mdToast, table, edit) {
+function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, table, restaurantId, edit) {
     var orderVm = this;
     orderVm.cancel = cancel;
     orderVm.showToast = showToast;
@@ -13,15 +13,10 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     activate();
     
     function activate() {
-        if(edit == null) {
-            drinkService.getDrinks()
-                .then(function (data) {
-                    for (var pos in data) {
-                        orderVm.meals.push(data[pos]);
-                    }
-                });
+        console.log(table);
 
-            foodService.getFood()
+        if(edit == null) {
+            menuItemService.getMenuItemsByRestaurant(restaurantId)
                 .then(function (data) {
                     for (var pos in data) {
                         orderVm.meals.push(data[pos]);
@@ -31,6 +26,7 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         else{
             orderService.getOrder(edit).
                 then(function (map) {
+                    /*
                     drinkService.getDrinks()
                         .then(function (data) {
                             for (var pos in data) {
@@ -54,6 +50,7 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
                                 orderVm.meals.push(data[pos]);
                             }
                         });
+                        */
             });
         }
     }
@@ -131,30 +128,18 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         };
 
         orderVm.orderMeals.forEach(function (meal) {
-            var f = false;
             var count = meal.count;
             delete meal.count;
             delete meal.hide;
 
-            if (meal.type.charAt(0)=='f')
-                f = true;
-
-            for (var i=0; i<count; i++){
-                var item = {
-                    itemId : null,
-                    state : "CREATED",
-                    order : null,
-                    food: null,
-                    drink: null
-                };
-                if (f) {
-                    item.food = meal;
-                }
-                else {
-                    item.drink = meal;
-                }
-                order.items.push(item);
-            }
+            var item = {
+                itemId : null,
+                state : "CREATED",
+                order : null,
+                menuItem : meal,
+                amount : count
+            };
+            order.items.push(item);
         });
 
         console.log(order);

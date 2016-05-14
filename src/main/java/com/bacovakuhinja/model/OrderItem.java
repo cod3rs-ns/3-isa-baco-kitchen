@@ -27,7 +27,8 @@ public class OrderItem implements Serializable{
     @Column(name = "oi_amount")
     private Integer amount;
 
-
+    @Column(name = "oi_version")
+    private Integer version = 0;
 
     public Integer getItemId() {
         return itemId;
@@ -61,4 +62,19 @@ public class OrderItem implements Serializable{
         this.menuItem = menuItem;
     }
 
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 }

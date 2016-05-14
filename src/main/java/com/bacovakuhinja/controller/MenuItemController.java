@@ -23,10 +23,10 @@ public class MenuItemController {
     private RestaurantService restaurantService;
 
     @RequestMapping(
-            value = "/api/food",
+            value = "/api/menuItems",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <MenuItem>> getFood() {
+    public ResponseEntity <Collection <MenuItem>> getMenuItems() {
         Collection <MenuItem> menuItem = menuItemService.findAll();
         return new ResponseEntity <Collection <MenuItem>>(menuItem, HttpStatus.OK);
     }
@@ -76,10 +76,10 @@ public class MenuItemController {
     }
 
     @RequestMapping(
-            value = "api/food/r={rst_id}",
+            value = "api/menuItems/r={rst_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <MenuItem>> getFoodByRestaurant(@PathVariable("rst_id") Integer id) {
+    public ResponseEntity <Collection <MenuItem>> getMenuItemsByRestaurant(@PathVariable("rst_id") Integer id) {
         Collection <MenuItem> restaurantMenuItem = menuItemService.findAllByRestaurant(id);
         return new ResponseEntity <Collection <MenuItem>>(restaurantMenuItem, HttpStatus.OK);
     }

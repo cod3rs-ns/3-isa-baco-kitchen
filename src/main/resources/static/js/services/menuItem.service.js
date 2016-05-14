@@ -1,23 +1,23 @@
 angular
     .module('isa-mrs-project')
-    .factory('foodService', foodService);
+    .factory('menuItemService', menuItemService);
 
-foodService.$inject = ['$http'];
+menuItemService.$inject = ['$http'];
 
-function foodService($http){
+function menuItemService($http){
     var service = {
-        getFood: getFood,
+        getMenuItems: getMenuItems,
         getSingle: getSingle,
         updateFood: updateFood,
         deleteFood: deleteFood,
         createFood: createFood,
-        getFoodByRestaurant: getFoodByRestaurant
+        getMenuItemsByRestaurant: getMenuItemsByRestaurant
     };
 
     return service;
 
-    function getFood(){
-        return $http.get('api/food')
+    function getMenuItems(){
+        return $http.get('api/menuItems')
         .then(function(response) {
             return response.data;
         });
@@ -48,8 +48,8 @@ function foodService($http){
         })
     };
 
-    function getFoodByRestaurant(restaurant_id){
-        return $http.get('api/food/r=' + restaurant_id)
+    function getMenuItemsByRestaurant(restaurant_id){
+        return $http.get('api/menuItems/r=' + restaurant_id)
         .then(function(response) {
             return response.data;
         });

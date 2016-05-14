@@ -182,6 +182,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable,
+                restaurantId : waiterProfileVm.waiter.restaurantID,
                 edit : null
             },
             onRemoving : function() {getOrders();}
@@ -214,6 +215,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable,
+                restaurantId : waiterProfileVm.waiter.restaurantID,
                 edit : orderId
             },
             onRemoving : function() {getOrders();}

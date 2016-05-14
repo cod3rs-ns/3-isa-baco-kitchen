@@ -100,12 +100,7 @@ public class OrderController {
         for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
             i.setOrder(newOrder);
-            /*
-            if(i.getDrink()!= null)
-                i.setDrink(drinkService.findOne(i.getDrink().getDrinkId()));
-            else
-                i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
-            */
+            i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
             orderItemService.create(i);
         }
 

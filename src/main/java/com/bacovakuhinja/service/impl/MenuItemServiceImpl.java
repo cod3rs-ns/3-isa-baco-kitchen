@@ -32,14 +32,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public Collection <MenuItem> findAllByRestaurant(Integer restaurantId) {
-        Collection<MenuItem> allMenuItem = menuItemRepository.findAll();
-        Collection<MenuItem> restaurantMenuItem = new ArrayList <MenuItem>();
-        for (MenuItem menuItem : allMenuItem) {
-            if(menuItem.getRestaurant().getRestaurantId() == restaurantId){
-                restaurantMenuItem.add(menuItem);
-            }
-        }
-        return restaurantMenuItem;
+        return menuItemRepository.findByRestaurant_RestaurantId(restaurantId);
     }
 
     @Override
