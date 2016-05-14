@@ -57,49 +57,65 @@ public class OrderController {
     private SimpMessagingTemplate template;
 
     @RequestMapping(
-            value = "/api/orders/{tableId}",
+            value = "/api/orders/{restaurantId}/{tableId}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClientOrder> addOrder(@RequestBody ClientOrder order, @PathVariable("tableId") Integer tableId) {
+    public ResponseEntity<ClientOrder> addOrder(@RequestBody ClientOrder order, @PathVariable("tableId") Integer tableId, @PathVariable("restaurantId") Integer restaurantId) {
         RestaurantTable table = tableService.findOne(tableId);
         order.setTable(table);
 
-        ClientOrder newOrder = createOrder(order);
-
-        this.template.convertAndSend("/topic/greetings", new Greeting("This is Send From Server"));
+        ClientOrder newOrder = createOrder(order, restaurantId);
 
         return new ResponseEntity <ClientOrder>(newOrder, HttpStatus.OK);
     }
 
-    private ClientOrder createOrder(ClientOrder order){
+    private ClientOrder createOrder(ClientOrder order, int restaurantId){
         ClientOrder newOrder = clientOrderService.create(order);
+
+        //notify for new items
+        HashMap<String, ArrayList<OrderItem>> foodMap = new HashMap<String, ArrayList<OrderItem>>();
+        ArrayList<OrderItem> foodList = new ArrayList<OrderItem>();
 
         for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
             i.setOrder(newOrder);
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
-            orderItemService.create(i);
+            i.setRestaurantId(restaurantId);
+            OrderItem nItem = orderItemService.create(i);
+            if (nItem.getMenuItem().getType().equals("food"))
+                foodList.add(nItem);
         }
+
+        foodMap.put("new", foodList);
+        this.template.convertAndSend("/subscribe/ActiveFood/" + restaurantId, foodMap);
 
         return newOrder;
     }
 
 
     @RequestMapping(
-            value = "/api/orders/{tableId}",
+            value = "/api/orders/{restaurantId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClientOrder> editOrder(@RequestBody ClientOrder order, @PathVariable("tableId") Integer tableId) {
+    public ResponseEntity<ClientOrder> editOrder(@RequestBody ClientOrder order, @PathVariable("restaurantId") Integer restaurantId) {
+
         ClientOrder oldOrder = clientOrderService.findOne(order.getOrderId());
-        ClientOrder updated = updateOrder(order, oldOrder);
+        ClientOrder updated = updateOrder(order, oldOrder, restaurantId);
         clientOrderService.update(updated);
 
         return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
     }
 
-    private ClientOrder updateOrder(ClientOrder newOrder, ClientOrder oldOrder){
+    private ClientOrder updateOrder(ClientOrder newOrder, ClientOrder oldOrder, int r_id){
         Set<OrderItem> oldItems = new HashSet<OrderItem>();
         oldItems.addAll(oldOrder.getItems());
+
+        //notify for new items
+        HashMap<String, ArrayList<OrderItem>> foodMap = new HashMap<String, ArrayList<OrderItem>>();
+        ArrayList<OrderItem> foodNew = new ArrayList<OrderItem>();
+        ArrayList<OrderItem> foodRemove = new ArrayList<OrderItem>();
+        ArrayList<OrderItem> foodUpdate = new ArrayList<OrderItem>();
+
 
         Set<OrderItem> newItems = new HashSet<OrderItem>();
 
@@ -109,7 +125,11 @@ public class OrderController {
             for(Iterator<OrderItem> itOld = oldItems.iterator(); itOld.hasNext();){
                 OrderItem oldItem = itOld.next();
                 if(oldItem.getMenuItem().getMenuItemId() == newItem.getMenuItem().getMenuItemId()){
-                    oldItem.setAmount(newItem.getAmount());
+                    if(oldItem.getAmount() != newItem.getAmount()) {
+                        oldItem.setAmount(newItem.getAmount());
+                        if (oldItem.getMenuItem().getType().equals("food"))
+                            foodUpdate.add(oldItem);
+                    }
                     newItems.add(oldItem);
                     flag = true;
                     break;
@@ -118,9 +138,12 @@ public class OrderController {
 
             if(!flag) {
                 newItem.setOrder(oldOrder);
+                newItem.setRestaurantId(r_id);
                 newItem.setMenuItem(menuItemService.findOne(newItem.getMenuItem().getMenuItemId()));
                 OrderItem item = orderItemService.create(newItem);
                 newItems.add(item);
+                if(newItem.getMenuItem().getType().equals("food"))
+                    foodNew.add(newItem);
             }
         }
 
@@ -130,8 +153,15 @@ public class OrderController {
 
         for(Iterator<OrderItem> itOld = oldItems.iterator(); itOld.hasNext();){
             OrderItem oi= itOld.next();
+            if(oi.getMenuItem().getType().equals("food"))
+                foodRemove.add(oi);
             orderItemService.delete(oi.getItemId());
         }
+
+        foodMap.put("new", foodNew);
+        foodMap.put("remove" , foodRemove);
+        foodMap.put("update", foodUpdate);
+        this.template.convertAndSend("/subscribe/ActiveFood/" + r_id, foodMap);
 
         return oldOrder;
     }

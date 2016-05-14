@@ -19,4 +19,6 @@ public interface OrderItemService {
     public void delete(Integer oiId);
 
     public Collection<OrderItem> findOrderItemsByOrder(Integer orderId);
+
+    public Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId);
 }

@@ -1,6 +1,8 @@
 package com.bacovakuhinja.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,6 +18,7 @@ public class OrderItem implements Serializable{
     @Column(name = "oi_state")
     private String state;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "oi_order_id")
     private ClientOrder order;
@@ -29,6 +32,9 @@ public class OrderItem implements Serializable{
 
     @Column(name = "oi_version")
     private Integer version = 0;
+
+    @Column(name = "oi_restaurant_id")
+    private Integer restaurantId;
 
     public Integer getItemId() {
         return itemId;
@@ -76,5 +82,13 @@ public class OrderItem implements Serializable{
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }

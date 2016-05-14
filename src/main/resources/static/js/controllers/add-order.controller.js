@@ -98,7 +98,7 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
         if (orderVm.orderMeals.length !== 0){
             var order = createOrder();
             if(edit == null) {
-                orderService.addOrder(order, table.tableId)
+                orderService.addOrder(order, table.tableId, restaurantId)
                     .then(function (data) {
                         if (data != null) {
                             showToast("Porudžbina je uspješno dodata.");
@@ -107,7 +107,7 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
                     });
             }
             else{
-                orderService.updateOrder(order, table.tableId)
+                orderService.updateOrder(order, restaurantId)
                     .then(function (data) {
                         if (data != null) {
                             showToast("Porudžbina je uspješno izmijenjena.");

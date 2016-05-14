@@ -14,6 +14,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     function activate(){
         getWaiter().then(function() {
+            connect(waiterProfileVm.waiter.restaurantID);
         });
 
         passService.isPasswordChanged()
@@ -25,7 +26,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
         getTablesByRestaurant();
 
-        connect();
     };
 
 
@@ -34,7 +34,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             .then(function(data) {
                 waiterProfileVm.waiter = data;
                 waiterProfileVm.waiter.birthday = new Date(data.birthday);
-                return waiterProfileVm.cook;
+                return waiterProfileVm.waiter;
             });
     };
 
@@ -161,6 +161,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
         if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
         orderService.getOrders(waiterProfileVm.selectedTable.tableId)
             .then(function (data) {
+                console.log(data);
                 waiterProfileVm.selectedTableOrders = data;
                 waiterProfileVm.selectedTableOrders.forEach(function (order) {
                     order.date = new Date(order.date);
@@ -247,13 +248,13 @@ function WaiterProfileController(tableService, waiterService, passService, order
         });
     };
 
-    function connect() {
-        var socket = new SockJS('/hello');
+    function connect(id) {
+        var socket = new SockJS('/connectFood');
         waiterProfileVm.stompClient = Stomp.over(socket);
         waiterProfileVm.stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
-            waiterProfileVm.stompClient.subscribe('/topic/greetings', function(greeting){
-                showGreeting(JSON.parse(greeting.body).content);
+            waiterProfileVm.stompClient.subscribe('/subscribe/ActiveFood/'+ id, function(greeting){
+                showGreeting(JSON.parse(greeting.body));
             });
         });
     }
@@ -266,8 +267,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
     }
 
     waiterProfileVm.sendName = sendName;
-    function sendName() {
-        waiterProfileVm.stompClient.send("/app/hello", {}, JSON.stringify({ 'name': 'Bojan' }));
+    function sendName(id) {
+        waiterProfileVm.stompClient.send("/app/connectFood/" + id, {}, JSON.stringify({ 'name': 'Bojan' }));
     }
 
     function showGreeting(message) {

@@ -30,7 +30,18 @@ public class OrderItemsController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<OrderItem>> getOrderItemsOfOrder(@PathVariable("order_id") Integer orderId) {
-        ClientOrder order = clientOrderService.findOne(orderId);
-        return new ResponseEntity <Collection <OrderItem>>(order.getItems(), HttpStatus.OK);
+        Collection<OrderItem> items = orderItemService.findOrderItemsByOrder(orderId);
+        return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
+
+
+    @RequestMapping(
+            value = "api/orderItems/activeFood/r={r_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<OrderItem>> getActiveFoodByRestaurant(@PathVariable("r_id") Integer restaurantId) {
+        Collection<OrderItem> items = orderItemService.findActiveFoodByRestaurant(restaurantId);
+        return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
+    }
+
 }

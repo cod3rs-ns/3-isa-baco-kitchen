@@ -8,7 +8,8 @@ function cookService($http){
     var service = {
         getCook: getCook,
         updateCook: updateCook,
-        getLoggedCook: getLoggedCook
+        getLoggedCook: getLoggedCook,
+        getActiveFood: getActiveFood
     };
 
     return service;
@@ -29,6 +30,13 @@ function cookService($http){
 
     function getLoggedCook() {
         return $http.get('api/cook')
+            .then(function(response){
+                return response.data;
+            });
+    };
+
+    function getActiveFood(restaurantId){
+        return $http.get('api/orderItems/activeFood/r=' + restaurantId)
             .then(function(response){
                 return response.data;
             });

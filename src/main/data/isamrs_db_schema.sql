@@ -474,6 +474,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
   `oi_order_id` INT(11) NOT NULL,
   `oi_menu_item_id` INT(11) NOT NULL,
   `oi_amount` INT NOT NULL,
+  `oi_restaurant_id` INT NOT NULL,
   `oi_version` INT NOT NULL,
   PRIMARY KEY (`oi_id`),
   INDEX `fk_order_items_client_orders1_idx` (`oi_order_id` ASC),

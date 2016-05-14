@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
     Collection<OrderItem> findByOrder_OrderId(Integer orderId);
+
+    Collection<OrderItem> findByRestaurantIdAndStateAndMenuItem_Type(Integer restaurantId, String state, String type);
 }
