@@ -31,7 +31,7 @@ public class ClientOrder implements Serializable{
     private RestaurantTable table;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE, CascadeType.MERGE})
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
 
     public ClientOrder(){

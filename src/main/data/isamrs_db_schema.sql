@@ -545,7 +545,7 @@ DROP TABLE IF EXISTS `isa_mrs_project`.`client_orders` ;
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   `co_id` INT NOT NULL AUTO_INCREMENT,
   `co_date` DATETIME NOT NULL,
-  `co_deadline` DATETIME NULL,
+  `co_deadline` DATETIME,
   `co_reservation_id` INT,
   `co_table_id` INT NOT NULL,
   `co_bill_id` INT,

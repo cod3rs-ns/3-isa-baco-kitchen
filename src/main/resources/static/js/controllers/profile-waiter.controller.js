@@ -8,6 +8,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
+    waiterProfileVm.stompClient = null;
 
     activate();
 
@@ -23,6 +24,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
 
         getTablesByRestaurant();
+
+        connect();
     };
 
 
@@ -215,4 +218,34 @@ function WaiterProfileController(tableService, waiterService, passService, order
             },
             onRemoving : function() {getOrders();}
         });
-    };}
+    };
+
+    
+    function connect() {
+        var socket = new SockJS('/hello');
+        waiterProfileVm.stompClient = Stomp.over(socket);
+        waiterProfileVm.stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            waiterProfileVm.stompClient.subscribe('/topic/greetings', function(greeting){
+                showGreeting(JSON.parse(greeting.body).content);
+            });
+        });
+    }
+
+    function disconnect() {
+        if (waiterProfileVm.stompClient != null) {
+            waiterProfileVm.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    waiterProfileVm.sendName = sendName;
+    function sendName() {
+        waiterProfileVm.stompClient.send("/app/hello", {}, JSON.stringify({ 'name': 'Bojan' }));
+    }
+
+    function showGreeting(message) {
+        console.log("message");
+        console.log(message);
+    }
+}

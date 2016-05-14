@@ -67,7 +67,6 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     };
 
     function cancel() {
-        console.log(table);
         $mdDialog.cancel();
     };
 
@@ -148,7 +147,6 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
                     food: null,
                     drink: null
                 };
-                console.log(meal);
                 if (f) {
                     item.food = meal;
                 }
@@ -159,6 +157,7 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
             }
         });
 
+        console.log(order);
         return order;
     };
 

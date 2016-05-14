@@ -1,15 +1,15 @@
 package com.bacovakuhinja.controller;
 
 
-import com.bacovakuhinja.model.ClientOrder;
-import com.bacovakuhinja.model.Food;
-import com.bacovakuhinja.model.OrderItem;
-import com.bacovakuhinja.model.RestaurantTable;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -72,6 +72,9 @@ public class OrderController {
         return new ResponseEntity <HashMap <String, Integer>>(countItems, HttpStatus.OK);
     }
 
+    @Autowired
+    private SimpMessagingTemplate template;
+
 
     @RequestMapping(
             value = "/api/orders/{tableId}",
@@ -82,6 +85,8 @@ public class OrderController {
         order.setTable(table);
 
         ClientOrder newOrder = createOrder(order);
+
+        this.template.convertAndSend("/topic/greetings", new Greeting("This is Send From Server"));
 
         return new ResponseEntity <ClientOrder>(newOrder, HttpStatus.OK);
     }
@@ -103,20 +108,38 @@ public class OrderController {
         return newOrder;
     }
 
+
     @RequestMapping(
             value = "/api/orders/{tableId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClientOrder> editOrder(@RequestBody ClientOrder order, @PathVariable("tableId") Integer tableId) {
-        clientOrderService.delete(order.getOrderId());
+        ClientOrder oldOrder = clientOrderService.findOne(order.getOrderId());
+        oldOrder.setItems(updateOrder(order));
+        clientOrderService.update(oldOrder);
 
-        RestaurantTable table = tableService.findOne(tableId);
-        order.setTable(table);
-
-        System.out.println(order.getOrderId());
-        ClientOrder newOrder = createOrder(order);
-
-        return new ResponseEntity <ClientOrder>(newOrder, HttpStatus.OK);
+        return new ResponseEntity <ClientOrder>(oldOrder, HttpStatus.OK);
     }
+
+
+    private Set<OrderItem> updateOrder(ClientOrder order){
+        Set<OrderItem> items = new HashSet<OrderItem>();
+
+        for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
+            OrderItem i = it.next();
+            i.setOrder(order);
+
+            if(i.getDrink()!= null)
+                i.setDrink(drinkService.findOne(i.getDrink().getDrinkId()));
+            else
+                i.setFood(foodService.findOne(i.getFood().getFoodId()));
+
+            OrderItem item = orderItemService.create(i);
+            items.add(item);
+        }
+
+        return items;
+    }
+
 }
 
