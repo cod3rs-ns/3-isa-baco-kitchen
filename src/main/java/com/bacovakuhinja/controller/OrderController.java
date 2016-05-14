@@ -1,7 +1,11 @@
 package com.bacovakuhinja.controller;
 
 
+
 import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.model.ClientOrder;
+import com.bacovakuhinja.model.OrderItem;
+import com.bacovakuhinja.model.RestaurantTable;
 import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,10 +30,7 @@ public class OrderController {
     private OrderItemService orderItemService;
 
     @Autowired
-    private DrinkService drinkService;
-
-    @Autowired
-    private FoodService foodService;
+    private MenuItemService menuItemService;
 
 
     @RequestMapping(
@@ -51,24 +52,26 @@ public class OrderController {
         Set <OrderItem> items =  order.getItems();
         HashMap <String, Integer> countItems = new HashMap<String, Integer>();
 
+        /*
         for (Iterator<OrderItem> it = items.iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
             if(i.getDrink()!= null && countItems.containsKey("d"+i.getDrink().getDrinkId())){
                 int count = countItems.get("d" + i.getDrink().getDrinkId());
                 countItems.put("d" + i.getDrink().getDrinkId(), count + 1);
             }
-            else if (i.getFood() != null && countItems.containsKey("f" + i.getFood().getFoodId())){
-                int count = countItems.get("f" + i.getFood().getFoodId());
-                countItems.put("f" + i.getFood().getFoodId(), count + 1);
+            else if (i.getMenuItem() != null && countItems.containsKey("f" + i.getMenuItem().getMenuItemId())){
+                int count = countItems.get("f" + i.getMenuItem().getMenuItemId());
+                countItems.put("f" + i.getMenuItem().getMenuItemId(), count + 1);
             }
             else{
                 if(i.getDrink() != null)
                     countItems.put("d" + i.getDrink().getDrinkId(), 1);
                 else
-                    countItems.put("f" + i.getFood().getFoodId(), 1);
+                    countItems.put("f" + i.getMenuItem().getMenuItemId(), 1);
             }
-        }
 
+        }
+        */
         return new ResponseEntity <HashMap <String, Integer>>(countItems, HttpStatus.OK);
     }
 
@@ -97,11 +100,12 @@ public class OrderController {
         for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
             i.setOrder(newOrder);
+            /*
             if(i.getDrink()!= null)
                 i.setDrink(drinkService.findOne(i.getDrink().getDrinkId()));
             else
-                i.setFood(foodService.findOne(i.getFood().getFoodId()));
-
+                i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
+            */
             orderItemService.create(i);
         }
 
@@ -125,6 +129,7 @@ public class OrderController {
     private Set<OrderItem> updateOrder(ClientOrder order){
         Set<OrderItem> items = new HashSet<OrderItem>();
 
+        /*
         for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
             i.setOrder(order);
@@ -136,10 +141,9 @@ public class OrderController {
 
             OrderItem item = orderItemService.create(i);
             items.add(item);
-        }
+        }*/
 
         return items;
     }
-
 }
 
