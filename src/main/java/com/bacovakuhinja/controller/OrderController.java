@@ -8,6 +8,7 @@ import com.bacovakuhinja.model.OrderItem;
 import com.bacovakuhinja.model.RestaurantTable;
 import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,37 +48,13 @@ public class OrderController {
             value = "api/order/{order_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <HashMap<String,  Integer>> getOrderById(@PathVariable("order_id") Integer orderId) {
+    public ResponseEntity <ClientOrder> getOrderById(@PathVariable("order_id") Integer orderId) {
         ClientOrder order = clientOrderService.findOne(orderId);
-        Set <OrderItem> items =  order.getItems();
-        HashMap <String, Integer> countItems = new HashMap<String, Integer>();
-
-        /*
-        for (Iterator<OrderItem> it = items.iterator(); it.hasNext(); ) {
-            OrderItem i = it.next();
-            if(i.getDrink()!= null && countItems.containsKey("d"+i.getDrink().getDrinkId())){
-                int count = countItems.get("d" + i.getDrink().getDrinkId());
-                countItems.put("d" + i.getDrink().getDrinkId(), count + 1);
-            }
-            else if (i.getMenuItem() != null && countItems.containsKey("f" + i.getMenuItem().getMenuItemId())){
-                int count = countItems.get("f" + i.getMenuItem().getMenuItemId());
-                countItems.put("f" + i.getMenuItem().getMenuItemId(), count + 1);
-            }
-            else{
-                if(i.getDrink() != null)
-                    countItems.put("d" + i.getDrink().getDrinkId(), 1);
-                else
-                    countItems.put("f" + i.getMenuItem().getMenuItemId(), 1);
-            }
-
-        }
-        */
-        return new ResponseEntity <HashMap <String, Integer>>(countItems, HttpStatus.OK);
+        return new ResponseEntity <ClientOrder>(order, HttpStatus.OK);
     }
 
     @Autowired
     private SimpMessagingTemplate template;
-
 
     @RequestMapping(
             value = "/api/orders/{tableId}",
@@ -114,31 +91,49 @@ public class OrderController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClientOrder> editOrder(@RequestBody ClientOrder order, @PathVariable("tableId") Integer tableId) {
         ClientOrder oldOrder = clientOrderService.findOne(order.getOrderId());
-        oldOrder.setItems(updateOrder(order));
-        clientOrderService.update(oldOrder);
+        ClientOrder updated = updateOrder(order, oldOrder);
+        clientOrderService.update(updated);
 
-        return new ResponseEntity <ClientOrder>(oldOrder, HttpStatus.OK);
+        return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
     }
 
+    private ClientOrder updateOrder(ClientOrder newOrder, ClientOrder oldOrder){
+        Set<OrderItem> oldItems = new HashSet<OrderItem>();
+        oldItems.addAll(oldOrder.getItems());
 
-    private Set<OrderItem> updateOrder(ClientOrder order){
-        Set<OrderItem> items = new HashSet<OrderItem>();
+        Set<OrderItem> newItems = new HashSet<OrderItem>();
 
-        /*
-        for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
-            OrderItem i = it.next();
-            i.setOrder(order);
+        for (Iterator<OrderItem> itNew = newOrder.getItems().iterator(); itNew.hasNext(); ) {
+            OrderItem newItem = itNew.next();
+            boolean flag = false;
+            for(Iterator<OrderItem> itOld = oldItems.iterator(); itOld.hasNext();){
+                OrderItem oldItem = itOld.next();
+                if(oldItem.getMenuItem().getMenuItemId() == newItem.getMenuItem().getMenuItemId()){
+                    oldItem.setAmount(newItem.getAmount());
+                    newItems.add(oldItem);
+                    flag = true;
+                    break;
+                }
+            }
 
-            if(i.getDrink()!= null)
-                i.setDrink(drinkService.findOne(i.getDrink().getDrinkId()));
-            else
-                i.setFood(foodService.findOne(i.getFood().getFoodId()));
+            if(!flag) {
+                newItem.setOrder(oldOrder);
+                newItem.setMenuItem(menuItemService.findOne(newItem.getMenuItem().getMenuItemId()));
+                OrderItem item = orderItemService.create(newItem);
+                newItems.add(item);
+            }
+        }
 
-            OrderItem item = orderItemService.create(i);
-            items.add(item);
-        }*/
+        oldOrder.getItems().clear();
+        oldOrder.getItems().addAll(newItems);
+        oldItems.removeAll(newItems);
 
-        return items;
+        for(Iterator<OrderItem> itOld = oldItems.iterator(); itOld.hasNext();){
+            OrderItem oi= itOld.next();
+            orderItemService.delete(oi.getItemId());
+        }
+
+        return oldOrder;
     }
 }
 

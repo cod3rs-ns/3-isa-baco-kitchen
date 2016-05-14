@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog', '$mdToast'];
 
-function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog, $mdToast) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -178,7 +178,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             controllerAs: 'orderVm',
             templateUrl: '/views/dialogs/add-order.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable,
@@ -205,24 +205,48 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
     waiterProfileVm.editOrder = editOrder;
-    function editOrder(orderId) {
-        $mdDialog.show({
-            controller: 'AddOrderController',
-            controllerAs: 'orderVm',
-            templateUrl: '/views/dialogs/add-order.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose:true,
-            fullscreen: true,
-            locals: {
-                table: waiterProfileVm.selectedTable,
-                restaurantId : waiterProfileVm.waiter.restaurantID,
-                edit : orderId
-            },
-            onRemoving : function() {getOrders();}
+    function editOrder(order) {
+        var difference = (new Date()).getTime() - order.date.getTime();
+        var minDiff = Math.floor(difference / 60000);
+        if(minDiff > 30){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .clickOutsideToClose(false)
+                    .title('Upozorenje!')
+                    .textContent('Ne možete izmijeniti porudžbinu!\n Isteklo je više od 30 min od kreiranja iste.')
+                    .ok('POTVRDA!')
+            );
+            //showToast();
+        }
+        else {
+            $mdDialog.show({
+                controller: 'AddOrderController',
+                controllerAs: 'orderVm',
+                templateUrl: '/views/dialogs/add-order.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: false,
+                fullscreen: true,
+                locals: {
+                    table: waiterProfileVm.selectedTable,
+                    restaurantId: waiterProfileVm.waiter.restaurantID,
+                    edit: order.orderId
+                },
+                onRemoving: function () {
+                    getOrders();
+                }
+            });
+        }
+    };
+
+
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
     };
 
-    
     function connect() {
         var socket = new SockJS('/hello');
         waiterProfileVm.stompClient = Stomp.over(socket);

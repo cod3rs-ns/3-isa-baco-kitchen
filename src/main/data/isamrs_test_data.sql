@@ -55,10 +55,10 @@ INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('6');
 INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('7');
 INSERT INTO `isa_mrs_project`.`waiters` (`w_id`) VALUES ('8');
 
-INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('1', 'Ukusno.', 'Kolač s borovnicom.', '150', 'menuItem', 'images/meals/borovnica.jpg', '1', 'desert');
-INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('2', 'Ukusno', 'Štrudla s makom.', '235', 'menuItem', 'images/meals/mak.jpg', '1', 'desert');
-INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('3', 'Ukusno.', 'Kolač s borovnicom.', '150', 'menuItem', 'images/meals/borovnica.jpg', '2', 'desert');
-INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('4', 'Ukusno.', 'Kolač s borovnicom.', '150', 'menuItem', 'images/meals/borovnica.jpg', '3', 'desert');
+INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('1', 'Ukusno.', 'Kolač s borovnicom.', '150', 'food', 'images/meals/borovnica.jpg', '1', 'desert');
+INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('2', 'Ukusno', 'Štrudla s makom.', '235', 'food', 'images/meals/mak.jpg', '1', 'desert');
+INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('3', 'Ukusno.', 'Kolač s borovnicom.', '150', 'food', 'images/meals/borovnica.jpg', '2', 'desert');
+INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('4', 'Ukusno.', 'Kolač s borovnicom.', '150', 'food', 'images/meals/borovnica.jpg', '3', 'desert');
 
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('5', 'Opis ovog pića.', 'Cosmopolitan', '350', 'drink', 'images/meals/cosmopolitan.jpg', '1', 'cocktail');
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('6', 'Opis ovog pića.', 'Cosmopolitan', '350', 'drink', 'images/meals/cosmopolitan.jpg', '2', 'cocktail');

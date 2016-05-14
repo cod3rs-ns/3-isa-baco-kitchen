@@ -42,4 +42,10 @@ public class OrderItemServiceImpl implements OrderItemService{
     public void delete(Integer oiId) {
         orderItemRepository.delete(oiId);
     }
+
+
+    @Override
+    public Collection<OrderItem> findOrderItemsByOrder(Integer orderId) {
+        return orderItemRepository.findByOrder_OrderId(orderId);
+    }
 }

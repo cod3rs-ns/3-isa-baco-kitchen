@@ -25,33 +25,33 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
         }
         else{
             orderService.getOrder(edit).
-                then(function (map) {
-                    /*
-                    drinkService.getDrinks()
+                then(function (orderItems) {
+                    menuItemService.getMenuItemsByRestaurant(restaurantId)
                         .then(function (data) {
-                            for (var pos in data) {
-                                if(('d' + data[pos].drinkId)  in map) {
-                                    data[pos].hide = true;
-                                    data[pos].count = map['d' + data[pos].drinkId];
-                                    orderVm.orderMeals.push(data[pos]);
-                                }
-                                orderVm.meals.push(data[pos]);
-                            }
-                        });
+                            console.log(data);
+                            console.log(orderItems);
 
-                    foodService.getFood()
-                        .then(function (data) {
                             for (var pos in data) {
-                                if(('f' + data[pos].foodId)  in map) {
-                                    data[pos].hide = true;
-                                    data[pos].count = map['f' + data[pos].foodId];
-                                    orderVm.orderMeals.push(data[pos]);
-                                }
+                                //dodaj sve menuItem-e u listu za dodavanje
                                 orderVm.meals.push(data[pos]);
                             }
+
+                            for (var item in orderItems) {
+                                //dodaj sve poručene stavke i obriši ih iz liste svih jela i pića
+                                var mitem  = orderItems[item].menuItem
+
+                                console.log(mitem);
+                                for(var orderMeal in orderVm.meals){
+                                    if (mitem.menuItemId === orderVm.meals[orderMeal].menuItemId){
+                                        orderVm.meals[orderMeal].hide = true;
+                                        orderVm.meals[orderMeal].count = orderItems[item].amount;
+                                        orderVm.orderMeals.push(orderVm.meals[orderMeal]);
+                                        break;
+                                    }
+                                }
+                            }
                         });
-                        */
-            });
+                });
         }
     }
 
@@ -82,7 +82,6 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
             meal.count = 0;
         }
     };
-
 
     orderVm.removeMeal = removeMeal;
     function removeMeal(meal) {

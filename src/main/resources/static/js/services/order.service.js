@@ -37,7 +37,7 @@ function orderService($http) {
     };
 
     function getOrder(orderId){
-        return $http.get('api/order/' + orderId)
+        return $http.get('api/orderItems/' + orderId)
             .then(function (response) {
                 return response.data;
             });

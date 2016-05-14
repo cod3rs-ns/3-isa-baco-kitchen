@@ -18,4 +18,5 @@ public interface OrderItemService {
 
     public void delete(Integer oiId);
 
+    public Collection<OrderItem> findOrderItemsByOrder(Integer orderId);
 }
