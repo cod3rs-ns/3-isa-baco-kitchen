@@ -13,13 +13,21 @@ function employeeService($http) {
         createWaiter: createWaiter,
         createBartender: createBartender,
         prepareOrderItem: prepareOrderItem,
-        getAcceptedItems: getAcceptedItems
+        getAcceptedItems: getAcceptedItems,
+        getEmployees: getEmployees
     };
 
     return service;
 
     function getEmployee(id) {
         return $http.get('api/employees/' + id)
+            .then(function(response){
+                return response.data;
+            });
+    };
+
+    function getEmployees() {
+        return $http.get('api/employees')
             .then(function(response){
                 return response.data;
             });
