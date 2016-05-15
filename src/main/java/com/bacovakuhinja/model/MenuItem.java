@@ -1,48 +1,52 @@
 package com.bacovakuhinja.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "drinks")
+@Table(name = "menu_items")
 @JsonIgnoreProperties(value = {"restaurant"})
-public class Drink {
+public class MenuItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "d_id")
-    private Integer drinkId;
+    @Column(name = "mi_id")
+    private Integer menuItemId;
 
-    @Column(name = "d_info")
+    @Column(name = "mi_info")
     private String info;
 
-    @Column(name = "d_name")
+    @Column(name = "mi_name")
     private String name;
 
-    @Column(name = "d_price")
+    @Column(name = "mi_price")
     private Double price;
 
-    @Column(name = "d_type")
+    @Column(name = "mi_type")
     private String type;
 
-    @Column(name = "d_image")
+    @Column(name = "mi_image")
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "d_restaurant_id")
+    @JoinColumn(name = "mi_restaurant_id")
     private Restaurant restaurant;
 
-    public Drink() {
+    @Column(name = "mi_spec_type")
+    private String specType;
+
+
+    public MenuItem() {
     }
 
-    public Integer getDrinkId() {
-        return drinkId;
+    public Integer getMenuItemId() {
+        return menuItemId;
     }
 
-    public void setDrinkId(Integer drinkId) {
-        this.drinkId = drinkId;
+    public void setMenuItemId(Integer menuItemId) {
+        this.menuItemId = menuItemId;
     }
 
     public String getInfo() {
@@ -93,16 +97,11 @@ public class Drink {
         this.restaurant = restaurant;
     }
 
-    @Override
-    public String toString() {
-        return "Drink{" +
-                "drinkId=" + drinkId +
-                ", info='" + info + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", type='" + type + '\'' +
-                ", image='" + image + '\'' +
-                ", restaurant=" + restaurant +
-                '}';
+    public String getSpecType() {
+        return specType;
+    }
+
+    public void setSpecType(String specType) {
+        this.specType = specType;
     }
 }

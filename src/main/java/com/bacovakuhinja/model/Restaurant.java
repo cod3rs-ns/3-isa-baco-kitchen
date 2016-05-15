@@ -42,11 +42,8 @@ public class Restaurant implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Set <Food> foodMenu = new HashSet <Food>(0);
+    private Set <MenuItem> menuItemMenu = new HashSet <MenuItem>(0);
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    private Set <Drink> drinksMenu = new HashSet <Drink>(0);
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
@@ -120,23 +117,13 @@ public class Restaurant implements Serializable {
     }
 
     @JsonProperty
-    public Set <Food> getFoodMenu() {
-        return foodMenu;
+    public Set <MenuItem> getMenuItemMenu() {
+        return menuItemMenu;
     }
 
     @JsonIgnore
-    public void setFoodMenu(Set <Food> foodMenu) {
-        this.foodMenu = foodMenu;
-    }
-
-    @JsonProperty
-    public Set <Drink> getDrinksMenu() {
-        return drinksMenu;
-    }
-
-    @JsonIgnore
-    public void setDrinksMenu(Set <Drink> drinksMenu) {
-        this.drinksMenu = drinksMenu;
+    public void setMenuItemMenu(Set <MenuItem> menuItemMenu) {
+        this.menuItemMenu = menuItemMenu;
     }
 
     @JsonProperty

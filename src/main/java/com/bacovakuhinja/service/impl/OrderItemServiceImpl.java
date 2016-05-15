@@ -12,6 +12,8 @@ import java.util.List;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService{
+
+
     @Autowired
     private OrderItemRepository orderItemRepository;
 
@@ -42,4 +44,16 @@ public class OrderItemServiceImpl implements OrderItemService{
     public void delete(Integer oiId) {
         orderItemRepository.delete(oiId);
     }
+
+
+    @Override
+    public Collection<OrderItem> findOrderItemsByOrder(Integer orderId) {
+        return orderItemRepository.findByOrder_OrderId(orderId);
+    }
+
+    @Override
+    public Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId) {
+        return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, "CREATED", "food");
+    }
+
 }

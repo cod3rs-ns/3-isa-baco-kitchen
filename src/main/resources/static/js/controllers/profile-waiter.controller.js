@@ -2,17 +2,19 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog', '$mdToast'];
 
-function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog, $mdToast) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
+    waiterProfileVm.stompClient = null;
 
     activate();
 
     function activate(){
         getWaiter().then(function() {
+            connect(waiterProfileVm.waiter.restaurantID);
         });
 
         passService.isPasswordChanged()
@@ -23,6 +25,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
 
         getTablesByRestaurant();
+
     };
 
 
@@ -31,7 +34,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             .then(function(data) {
                 waiterProfileVm.waiter = data;
                 waiterProfileVm.waiter.birthday = new Date(data.birthday);
-                return waiterProfileVm.cook;
+                return waiterProfileVm.waiter;
             });
     };
 
@@ -158,6 +161,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
         if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
         orderService.getOrders(waiterProfileVm.selectedTable.tableId)
             .then(function (data) {
+                console.log(data);
                 waiterProfileVm.selectedTableOrders = data;
                 waiterProfileVm.selectedTableOrders.forEach(function (order) {
                     order.date = new Date(order.date);
@@ -175,10 +179,11 @@ function WaiterProfileController(tableService, waiterService, passService, order
             controllerAs: 'orderVm',
             templateUrl: '/views/dialogs/add-order.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: true,
             locals: {
                 table: waiterProfileVm.selectedTable,
+                restaurantId : waiterProfileVm.waiter.restaurantID,
                 edit : null
             },
             onRemoving : function() {getOrders();}
@@ -201,18 +206,73 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
     waiterProfileVm.editOrder = editOrder;
-    function editOrder(orderId) {
-        $mdDialog.show({
-            controller: 'AddOrderController',
-            controllerAs: 'orderVm',
-            templateUrl: '/views/dialogs/add-order.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose:true,
-            fullscreen: true,
-            locals: {
-                table: waiterProfileVm.selectedTable,
-                edit : orderId
-            },
-            onRemoving : function() {getOrders();}
+    function editOrder(order) {
+        var difference = (new Date()).getTime() - order.date.getTime();
+        var minDiff = Math.floor(difference / 60000);
+        if(minDiff > 30){
+            $mdDialog.show(
+                $mdDialog.alert()
+                    .clickOutsideToClose(false)
+                    .title('Upozorenje!')
+                    .textContent('Ne možete izmijeniti porudžbinu!\n Isteklo je više od 30 min od kreiranja iste.')
+                    .ok('POTVRDA!')
+            );
+            //showToast();
+        }
+        else {
+            $mdDialog.show({
+                controller: 'AddOrderController',
+                controllerAs: 'orderVm',
+                templateUrl: '/views/dialogs/add-order.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: false,
+                fullscreen: true,
+                locals: {
+                    table: waiterProfileVm.selectedTable,
+                    restaurantId: waiterProfileVm.waiter.restaurantID,
+                    edit: order.orderId
+                },
+                onRemoving: function () {
+                    getOrders();
+                }
+            });
+        }
+    };
+
+
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
-    };}
+    };
+
+    function connect(id) {
+        var socket = new SockJS('/connectFood');
+        waiterProfileVm.stompClient = Stomp.over(socket);
+        waiterProfileVm.stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            waiterProfileVm.stompClient.subscribe('/subscribe/ActiveFood/'+ id, function(greeting){
+                showGreeting(JSON.parse(greeting.body));
+            });
+        });
+    }
+
+    function disconnect() {
+        if (waiterProfileVm.stompClient != null) {
+            waiterProfileVm.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    waiterProfileVm.sendName = sendName;
+    function sendName(id) {
+        waiterProfileVm.stompClient.send("/app/connectFood/" + id, {}, JSON.stringify({ 'name': 'Bojan' }));
+    }
+
+    function showGreeting(message) {
+        console.log("message");
+        console.log(message);
+    }
+}

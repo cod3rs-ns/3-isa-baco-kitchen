@@ -13,7 +13,8 @@ function CookProfileController(cookService, passService, $mdDialog) {
     function activate(){
         getCook()
             .then(function() {
-
+                getActiveFood(cookProfileVm.cook.restaurantID);
+                connect(cookProfileVm.cook.restaurantID);
         });
         
         passService.isPasswordChanged()
@@ -24,6 +25,14 @@ function CookProfileController(cookService, passService, $mdDialog) {
             });
     };
 
+    function getActiveFood(r_id){
+        cookService.getActiveFood(r_id)
+            .then(function(data){
+                for(var i in data){
+                    cookProfileVm.waitingMeals.push(data[i]);
+                }
+        });
+    }
 
     function getCook(){
         return cookService.getLoggedCook()
@@ -36,36 +45,7 @@ function CookProfileController(cookService, passService, $mdDialog) {
     };
 
 
-	cookProfileVm.waitingMeals = [
-      {
-        name: 'Kolač sa borovnicama',
-		img_src: 'images/meals/borovnica.jpg'
-      },
-	  {
-        name: 'Štrudla sa makom',
-		img_src: 'images/meals/mak.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      }
-    ];
+	cookProfileVm.waitingMeals = [];
 
 
 	cookProfileVm.preparingMeals = [
@@ -132,4 +112,28 @@ function CookProfileController(cookService, passService, $mdDialog) {
             }
         );
     };
+
+
+    function connect(id) {
+        var socket = new SockJS('/connectFood');
+        cookProfileVm.stompClient = Stomp.over(socket);
+        cookProfileVm.stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            cookProfileVm.stompClient.subscribe('/subscribe/ActiveFood/'+ id, function(greeting){
+                showGreeting(JSON.parse(greeting.body));
+            });
+        });
+    }
+
+    function disconnect() {
+        if (cookProfileVm.stompClient != null) {
+            cookProfileVm.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    function showGreeting(message) {
+        console.log("message");
+        console.log(message);
+    }
 }

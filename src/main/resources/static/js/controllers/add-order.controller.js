@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('AddOrderController', AddOrderController);
 
-AddOrderController.$inject = ['drinkService','foodService', 'orderService', '$mdDialog', '$mdToast', 'table', 'edit'];
+AddOrderController.$inject = ['menuItemService', 'orderService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit'];
 
-function AddOrderController(drinkService, foodService, orderService, $mdDialog, $mdToast, table, edit) {
+function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, table, restaurantId, edit) {
     var orderVm = this;
     orderVm.cancel = cancel;
     orderVm.showToast = showToast;
@@ -13,15 +13,10 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     activate();
     
     function activate() {
-        if(edit == null) {
-            drinkService.getDrinks()
-                .then(function (data) {
-                    for (var pos in data) {
-                        orderVm.meals.push(data[pos]);
-                    }
-                });
+        console.log(table);
 
-            foodService.getFood()
+        if(edit == null) {
+            menuItemService.getMenuItemsByRestaurant(restaurantId)
                 .then(function (data) {
                     for (var pos in data) {
                         orderVm.meals.push(data[pos]);
@@ -30,31 +25,33 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         }
         else{
             orderService.getOrder(edit).
-                then(function (map) {
-                    drinkService.getDrinks()
+                then(function (orderItems) {
+                    menuItemService.getMenuItemsByRestaurant(restaurantId)
                         .then(function (data) {
-                            for (var pos in data) {
-                                if(('d' + data[pos].drinkId)  in map) {
-                                    data[pos].hide = true;
-                                    data[pos].count = map['d' + data[pos].drinkId];
-                                    orderVm.orderMeals.push(data[pos]);
-                                }
-                                orderVm.meals.push(data[pos]);
-                            }
-                        });
+                            console.log(data);
+                            console.log(orderItems);
 
-                    foodService.getFood()
-                        .then(function (data) {
                             for (var pos in data) {
-                                if(('f' + data[pos].foodId)  in map) {
-                                    data[pos].hide = true;
-                                    data[pos].count = map['f' + data[pos].foodId];
-                                    orderVm.orderMeals.push(data[pos]);
-                                }
+                                //dodaj sve menuItem-e u listu za dodavanje
                                 orderVm.meals.push(data[pos]);
                             }
+
+                            for (var item in orderItems) {
+                                //dodaj sve poručene stavke i obriši ih iz liste svih jela i pića
+                                var mitem  = orderItems[item].menuItem
+
+                                console.log(mitem);
+                                for(var orderMeal in orderVm.meals){
+                                    if (mitem.menuItemId === orderVm.meals[orderMeal].menuItemId){
+                                        orderVm.meals[orderMeal].hide = true;
+                                        orderVm.meals[orderMeal].count = orderItems[item].amount;
+                                        orderVm.orderMeals.push(orderVm.meals[orderMeal]);
+                                        break;
+                                    }
+                                }
+                            }
                         });
-            });
+                });
         }
     }
 
@@ -67,7 +64,6 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
     };
 
     function cancel() {
-        console.log(table);
         $mdDialog.cancel();
     };
 
@@ -87,7 +83,6 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         }
     };
 
-
     orderVm.removeMeal = removeMeal;
     function removeMeal(meal) {
         var idx = orderVm.orderMeals.indexOf(meal);
@@ -103,7 +98,7 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         if (orderVm.orderMeals.length !== 0){
             var order = createOrder();
             if(edit == null) {
-                orderService.addOrder(order, table.tableId)
+                orderService.addOrder(order, table.tableId, restaurantId)
                     .then(function (data) {
                         if (data != null) {
                             showToast("Porudžbina je uspješno dodata.");
@@ -112,7 +107,7 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
                     });
             }
             else{
-                orderService.updateOrder(order, table.tableId)
+                orderService.updateOrder(order, restaurantId)
                     .then(function (data) {
                         if (data != null) {
                             showToast("Porudžbina je uspješno izmijenjena.");
@@ -132,33 +127,21 @@ function AddOrderController(drinkService, foodService, orderService, $mdDialog, 
         };
 
         orderVm.orderMeals.forEach(function (meal) {
-            var f = false;
             var count = meal.count;
             delete meal.count;
             delete meal.hide;
 
-            if (meal.type.charAt(0)=='f')
-                f = true;
-
-            for (var i=0; i<count; i++){
-                var item = {
-                    itemId : null,
-                    state : "CREATED",
-                    order : null,
-                    food: null,
-                    drink: null
-                };
-                console.log(meal);
-                if (f) {
-                    item.food = meal;
-                }
-                else {
-                    item.drink = meal;
-                }
-                order.items.push(item);
-            }
+            var item = {
+                itemId : null,
+                state : "CREATED",
+                order : null,
+                menuItem : meal,
+                amount : count
+            };
+            order.items.push(item);
         });
 
+        console.log(order);
         return order;
     };
 

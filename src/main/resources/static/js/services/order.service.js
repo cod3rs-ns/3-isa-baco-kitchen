@@ -13,21 +13,19 @@ function orderService($http) {
     };
     return service;
 
-    function addOrder(order, table_id){
-        return $http.post('api/orders/' + table_id, order)
+    function addOrder(order, table_id, r_id){
+        return $http.post('api/orders/' + r_id + '/' +table_id, order)
             .then(function(response){
                 return response.data;
             });
     };
 
-
-    function updateOrder(order, table_id){
-        return $http.put('api/orders/' + table_id, order)
+    function updateOrder(order, r_id){
+        return $http.put('api/orders/' + r_id, order)
             .then(function(response){
                 return response.data;
             });
     };
-
 
     function getOrders(tableId){
         return $http.get('api/orders/' + tableId)
@@ -37,7 +35,7 @@ function orderService($http) {
     };
 
     function getOrder(orderId){
-        return $http.get('api/order/' + orderId)
+        return $http.get('api/orderItems/' + orderId)
             .then(function (response) {
                 return response.data;
             });

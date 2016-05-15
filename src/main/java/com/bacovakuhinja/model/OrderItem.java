@@ -1,6 +1,8 @@
 package com.bacovakuhinja.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,18 +18,23 @@ public class OrderItem implements Serializable{
     @Column(name = "oi_state")
     private String state;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "oi_order_id")
     private ClientOrder order;
 
     @ManyToOne()
-    @JoinColumn(name = "oi_drink_id")
-    private Drink drink;
+    @JoinColumn(name = "oi_menu_item_id")
+    private MenuItem menuItem;
 
-    @ManyToOne()
-    @JoinColumn(name = "oi_food_id")
-    private Food food;
+    @Column(name = "oi_amount")
+    private Integer amount;
 
+    @Column(name = "oi_version")
+    private Integer version = 0;
+
+    @Column(name = "oi_restaurant_id")
+    private Integer restaurantId;
 
     public Integer getItemId() {
         return itemId;
@@ -53,30 +60,35 @@ public class OrderItem implements Serializable{
         this.order = order;
     }
 
-    public Drink getDrink() {
-        return drink;
+    public MenuItem getMenuItem() {
+        return menuItem;
     }
 
-    public void setDrink(Drink drink) {
-        this.drink = drink;
+    public void setMenuItem(MenuItem menuItem) {
+        this.menuItem = menuItem;
     }
 
-    public Food getFood() {
-        return food;
+    public Integer getAmount() {
+        return amount;
     }
 
-    public void setFood(Food food) {
-        this.food = food;
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
-    @Override
-    public String toString() {
-        return "OrderItem{" +
-                "itemId=" + itemId +
-                ", state='" + state + '\'' +
-                ", order=" + order +
-                ", drink=" + drink +
-                ", food=" + food +
-                '}';
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public Integer getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(Integer restaurantId) {
+        this.restaurantId = restaurantId;
     }
 }
