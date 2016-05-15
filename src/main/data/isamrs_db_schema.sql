@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`users` (
   `u_verified` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`u_id`))
   ENGINE = InnoDB
-  AUTO_INCREMENT = 21
+  AUTO_INCREMENT = 22
   DEFAULT CHARACTER SET = utf8;
 
 
@@ -260,7 +260,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
   ENGINE = InnoDB
-  AUTO_INCREMENT = 2
+  AUTO_INCREMENT = 8
   DEFAULT CHARACTER SET = utf8;
 
 
@@ -366,32 +366,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`day_schedules` (
 
 
 -- -----------------------------------------------------
--- Table `isa_mrs_project`.`menu_items`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`menu_items` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
-  `mi_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `mi_info` VARCHAR(100) NULL,
-  `mi_name` VARCHAR(45) NOT NULL,
-  `mi_price` DOUBLE NOT NULL,
-  `mi_type` VARCHAR(10) NOT NULL,
-  `mi_image` VARCHAR(100) NOT NULL,
-  `mi_restaurant_id` INT(11) NOT NULL,
-  `mi_spec_type` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`mi_id`),
-  INDEX `d_restaurant_fid_idx` (`mi_restaurant_id` ASC),
-  CONSTRAINT `d_restaurant_fid`
-  FOREIGN KEY (`mi_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 4
-  DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
 -- Table `isa_mrs_project`.`guests`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `isa_mrs_project`.`guests` ;
@@ -464,6 +438,32 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`guests_on_reservations` (
 
 
 -- -----------------------------------------------------
+-- Table `isa_mrs_project`.`menu_items`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`menu_items` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
+  `mi_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `mi_info` VARCHAR(100) NULL DEFAULT NULL,
+  `mi_name` VARCHAR(45) NOT NULL,
+  `mi_price` DOUBLE NOT NULL,
+  `mi_type` VARCHAR(10) NOT NULL,
+  `mi_image` VARCHAR(100) NOT NULL,
+  `mi_restaurant_id` INT(11) NOT NULL,
+  `mi_spec_type` VARCHAR(20) NOT NULL,
+  PRIMARY KEY (`mi_id`),
+  INDEX `d_restaurant_fid_idx` (`mi_restaurant_id` ASC),
+  CONSTRAINT `d_restaurant_fid`
+  FOREIGN KEY (`mi_restaurant_id`)
+  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+  ENGINE = InnoDB
+  AUTO_INCREMENT = 8
+  DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
 -- Table `isa_mrs_project`.`order_items`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `isa_mrs_project`.`order_items` ;
@@ -473,24 +473,31 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
   `oi_state` VARCHAR(45) NOT NULL,
   `oi_order_id` INT(11) NOT NULL,
   `oi_menu_item_id` INT(11) NOT NULL,
-  `oi_amount` INT NOT NULL,
-  `oi_restaurant_id` INT NOT NULL,
-  `oi_version` INT NOT NULL,
+  `oi_amount` INT(11) NOT NULL,
+  `oi_restaurant_id` INT(11) NOT NULL,
+  `oi_version` INT(11) NOT NULL,
+  `oi_employee` INT NULL,
   PRIMARY KEY (`oi_id`),
   INDEX `fk_order_items_client_orders1_idx` (`oi_order_id` ASC),
   INDEX `oi_menu_item_fid_idx` (`oi_menu_item_id` ASC),
+  INDEX `oi_employee_fid_idx` (`oi_employee` ASC),
+  CONSTRAINT `oi_menu_item_fid`
+  FOREIGN KEY (`oi_menu_item_id`)
+  REFERENCES `isa_mrs_project`.`menu_items` (`mi_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `oi_order_fid`
   FOREIGN KEY (`oi_order_id`)
   REFERENCES `isa_mrs_project`.`client_orders` (`co_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `oi_menu_item_fid`
-  FOREIGN KEY (`oi_menu_item_id`)
-  REFERENCES `isa_mrs_project`.`menu_items` (`mi_id`)
+  CONSTRAINT `oi_employee_fid`
+  FOREIGN KEY (`oi_employee`)
+  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
   ENGINE = InnoDB
-  AUTO_INCREMENT = 30
+  AUTO_INCREMENT = 42
   DEFAULT CHARACTER SET = utf8;
 
 

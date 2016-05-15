@@ -3,6 +3,7 @@ package com.bacovakuhinja.service;
 
 import com.bacovakuhinja.model.ClientOrder;
 import com.bacovakuhinja.model.OrderItem;
+import org.springframework.core.annotation.Order;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,4 +22,6 @@ public interface OrderItemService {
     public Collection<OrderItem> findOrderItemsByOrder(Integer orderId);
 
     public Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId);
+
+    public Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId);
 }

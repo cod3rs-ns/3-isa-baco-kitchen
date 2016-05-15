@@ -56,4 +56,8 @@ public class OrderItemServiceImpl implements OrderItemService{
         return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, "CREATED", "food");
     }
 
+    @Override
+    public Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId) {
+        return orderItemRepository.findByEmployee_UserIdAndState(employeeId, "ACCEPTED");
+    }
 }

@@ -2,11 +2,13 @@ angular
     .module('isa-mrs-project')
     .controller('CookProfileController', CookProfileController);
 
-CookProfileController.$inject = ['cookService','passService', '$mdDialog', '$scope'];
+CookProfileController.$inject = ['employeeService', 'cookService','passService', '$mdDialog', '$scope'];
 
-function CookProfileController(cookService, passService, $mdDialog, $scope) {
+function CookProfileController(employeeService, cookService, passService, $mdDialog, $scope) {
     var cookProfileVm = this;
     cookProfileVm.cook = {}
+    cookProfileVm.notNo = -1;
+    cookProfileVm.selectedTab = 0;
 
     activate();
 
@@ -15,6 +17,7 @@ function CookProfileController(cookService, passService, $mdDialog, $scope) {
             .then(function() {
                 getActiveFood(cookProfileVm.cook.restaurantID);
                 connect(cookProfileVm.cook.restaurantID);
+                getAcceptedItems(cookProfileVm.cook.userId);
         });
         
         passService.isPasswordChanged()
@@ -44,24 +47,9 @@ function CookProfileController(cookService, passService, $mdDialog, $scope) {
 
     };
 
-
 	cookProfileVm.waitingMeals = [];
+	cookProfileVm.preparingMeals = [];
 
-
-	cookProfileVm.preparingMeals = [
-      {
-        name: 'Kolač sa borovnicama',
-		img_src: 'images/meals/borovnica.jpg'
-      },
-	  {
-        name: 'Štrudla sa makom',
-		img_src: 'images/meals/mak.jpg'
-      },
-	  {
-        name: 'Čokoladni kolač',
-		img_src: 'images/meals/cokolada.jpg'
-      }
-    ];
 
     cookProfileVm.editProfile = editProfile;
     function editProfile() {
@@ -133,20 +121,23 @@ function CookProfileController(cookService, passService, $mdDialog, $scope) {
     }
 
     function showGreeting(orders) {
+        var num=0;
+
         console.log(orders.new);
         for (var item in orders.new) {
             cookProfileVm.waitingMeals.push(orders.new[item]);
+            num += 1;
         }
 
         for (var item in orders.update) {
             for(var meal in cookProfileVm.waitingMeals){
                 if(orders.update[item].itemId === cookProfileVm.waitingMeals[meal].itemId){
                     cookProfileVm.waitingMeals[meal].amount = orders.update[item].amount;
+                    num += 1;
                     break;
                 }
             }
         }
-
 
         for (var item in orders.remove) {
             console.log(orders.remove);
@@ -158,6 +149,42 @@ function CookProfileController(cookService, passService, $mdDialog, $scope) {
             }
         }
 
+        if (num != 0 ) {
+            if(cookProfileVm.notNo == -1)
+                cookProfileVm.notNo = num;
+            else
+                cookProfileVm.notNo += num;
+        }
         $scope.$apply();
+    }
+
+    cookProfileVm.prepareFood = prepareFood;
+    function prepareFood(itemId){
+        console.log(itemId);
+        employeeService.prepareOrderItem(itemId, cookProfileVm.cook.userId)
+            .then(function (data) {
+                if(data != null){
+                    cookProfileVm.preparingMeals.push(data);
+                }
+            });
+    }
+
+    function getAcceptedItems(eId){
+        console.log(eId);
+        employeeService.getAcceptedItems(eId)
+            .then(function (data) {
+                console.log(data);
+                for(var i in data){
+                    cookProfileVm.preparingMeals.push(data[i]);
+                }
+            });
+    }
+
+    cookProfileVm.clickOnTab = clickOnTab;
+    
+    function clickOnTab() {
+        if (cookProfileVm.selectedTab == 0){
+            cookProfileVm.notNo =-1;
+        }
     }
 }

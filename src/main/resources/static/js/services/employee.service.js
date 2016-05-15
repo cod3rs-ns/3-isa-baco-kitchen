@@ -11,7 +11,9 @@ function employeeService($http) {
         getSchedule: getSchedule,
         createCook: createCook,
         createWaiter: createWaiter,
-        createBartender: createBartender
+        createBartender: createBartender,
+        prepareOrderItem: prepareOrderItem,
+        getAcceptedItems: getAcceptedItems
     };
 
     return service;
@@ -57,4 +59,18 @@ function employeeService($http) {
                 return response.data;
             });
     };
+
+    function prepareOrderItem(itemId, empId){
+        return $http.post('/api/orderItems/i=' + itemId + '/e=' + empId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function getAcceptedItems(empId){
+        return $http.get('api/orderItems/foodForPrepare/e=' + empId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
 }

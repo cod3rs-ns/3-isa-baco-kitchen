@@ -4,6 +4,7 @@ package com.bacovakuhinja.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.persistence.criteria.Fetch;
 import java.io.Serializable;
 
 @Entity
@@ -30,11 +31,17 @@ public class OrderItem implements Serializable{
     @Column(name = "oi_amount")
     private Integer amount;
 
+    @Version
     @Column(name = "oi_version")
     private Integer version = 0;
 
     @Column(name = "oi_restaurant_id")
     private Integer restaurantId;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "oi_employee")
+    private Employee employee;
 
     public Integer getItemId() {
         return itemId;
@@ -90,5 +97,13 @@ public class OrderItem implements Serializable{
 
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 }
