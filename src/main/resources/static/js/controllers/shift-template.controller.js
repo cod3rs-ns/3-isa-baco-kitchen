@@ -6,77 +6,95 @@ ShiftTemplateController.$inject = ['shiftTemplateService', '$timeout'];
 
 function ShiftTemplateController(shiftTemplateService, $timeout) {
     var shiftVm = this;
-    shiftVm.shifts = [];
-    shiftVm.newShift = {};
-    shiftVm.addNewShift = addNewShift;
-    shiftVm.deleteShift = deleteShift;
-    shiftVm.editShift = editShift;
-    shiftVm.saveShift = saveShift;
-    shiftVm.cancelChanges = cancelChanges;
+    shiftVm.shiftTemplates = [];
+    shiftVm.activeShiftTemplate = {};
     shiftVm.backup =  {};
     shiftVm.editState = false;
     shiftVm.inEditProcess = {};
 
-    function addNewShift() {
-        shiftVm.shifts.push(shiftVm.newShift);
-        initDefaultShift();
+    // methods
+    shiftVm.createShiftTemplate = createShiftTemplate;
+    shiftVm.deleteShiftTemplate = deleteShiftTemplate;
+    shiftVm.initEditMode = initEditMode;
+    shiftVm.updateShiftTemplate = updateShiftTemplate;
+    shiftVm.cancelChanges = cancelChanges;
+
+    activate();
+
+    function activate() {
+        initDefaultShiftTemplate();
+        findShiftTemplatesByRestaurant();
     };
 
-    function deleteShift(id) {
-        var del_idx = -1;
-        for (var i = 0; i < shiftVm.shifts.length; i++) {
-            if (shiftVm.shifts[i].shiftId == id) {
-                del_idx = i;
-                break;
-            };
-        };
-        shiftVm.shifts.splice(del_idx, 1);
+    function findShiftTemplatesByRestaurant() {
+        // TODO get actual restaurant no
+        shiftTemplateService.findShiftTemplatesByRestaurant(2)
+            .then(function(data) {
+                shiftVm.shiftTemplates = data;
+            });
     };
 
-    function editShift(shift) {
-        shiftVm.backup = angular.copy(shift);
-        shiftVm.newShift = angular.copy(shift);
-        shiftVm.inEditProcess = shift;
-        shiftVm.editState = true;
-    };
-
-    function saveShift() {
-        shiftVm.inEditProcess.startHour = shiftVm.newShift.startHour;
-        shiftVm.inEditProcess.endHour = shiftVm.newShift.endHour;
-        shiftVm.inEditProcess.startMinute = shiftVm.newShift.startMinute;
-        shiftVm.inEditProcess.endMinute = shiftVm.newShift.endMinute;
-        shiftVm.inEditProcess.name = shiftVm.newShift.name;
-
-        initDefaultShift();
-        shiftVm.editState = false;
-    };
-
-    function cancelChanges() {
-        shiftVm.editState = false;
-        initDefaultShift();
-    };
-
-    init();
-
-    function initDefaultShift() {
-        shiftVm.newShift = {
+    function initDefaultShiftTemplate() {
+        shiftVm.activeShiftTemplate = {
             shiftId: null,
-            startHour: 0,
-            endHour: 24,
-            startMinute: 0,
-            endMinute: 0,
+            startHours: 0,
+            endHours: 24,
+            startMinutes: 0,
+            endMinutes: 0,
             name: '',
             restaurantId: 2
         };
     };
 
-    function init() {
-        initDefaultShift();
-        shiftTemplateService.findShiftTemplatesByRestaurant(2)
+    function createShiftTemplate() {
+        shiftTemplateService.createShiftTemplate(shiftVm.activeShiftTemplate)
             .then(function(data) {
-                shiftVm.shifts = data;
+                console.log(data);
+                shiftVm.shiftTemplates.push(data);
+                initDefaultShiftTemplate();
             });
     };
 
+    function deleteShiftTemplate(id) {
+        var del_idx = -1;
+        for (var i = 0; i < shiftVm.shiftTemplates.length; i++) {
+            if (shiftVm.shiftTemplates[i].shiftId == id) {
+                del_idx = i;
+                break;
+            };
+        };
+        shiftVm.shiftTemplates.splice(del_idx, 1);
+        shiftTemplateService.deleteShiftTemplate(id)
+            .then(function(data){
+                console.log('Deleted shift template.');
+            });
+    };
 
+    function initEditMode(shift) {
+        shiftVm.backup = angular.copy(shift);
+        shiftVm.activeShiftTemplate = angular.copy(shift);
+        shiftVm.inEditProcess = shift;
+        shiftVm.editState = true;
+    };
+
+    function updateShiftTemplate() {
+        shiftVm.inEditProcess.startHours = shiftVm.activeShiftTemplate.startHours;
+        shiftVm.inEditProcess.endHours = shiftVm.activeShiftTemplate.endHours;
+        shiftVm.inEditProcess.startMinutes = shiftVm.activeShiftTemplate.startMinutes;
+        shiftVm.inEditProcess.endMinutes = shiftVm.activeShiftTemplate.endMinutes;
+        shiftVm.inEditProcess.name = shiftVm.activeShiftTemplate.name;
+        shiftTemplateService.updateShiftTemplate(shiftVm.inEditProcess)
+            .then(function(data) {
+                console.log(data);
+            });
+        initDefaultShiftTemplate();
+        shiftVm.editState = false;
+    };
+
+    function cancelChanges() {
+        shiftVm.editState = false;
+        shiftVm.backup = {};
+        shiftVm.inEditProcess = {};
+        initDefaultShiftTemplate();
+    };
 }

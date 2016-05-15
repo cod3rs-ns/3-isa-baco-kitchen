@@ -359,11 +359,11 @@
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	    					<input ng-model="shiftVm.newShift.startHour" type="number" step="1">
+	    					<input ng-model="shiftVm.activeShiftTemplate.startHours" type="number" step="1">
 	    				</md-input-container>
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	    					<input ng-model="shiftVm.newShift.startMinute" type="number" step="1">
+	    					<input ng-model="shiftVm.activeShiftTemplate.startMinutes" type="number" step="1">
 	    				</md-input-container>
 
 					</div>
@@ -371,28 +371,28 @@
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	    					<input ng-model="shiftVm.newShift.endHour" type="number" step="1">
+	    					<input ng-model="shiftVm.activeShiftTemplate.endHours" type="number" step="1">
 	    				</md-input-container>
 
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	    					<input ng-model="shiftVm.newShift.endMinute" type="number" step="1">
+	    					<input ng-model="shiftVm.activeShiftTemplate.endMinutes" type="number" step="1">
 	    				</md-input-container>
 					</div>
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>Naziv smene</label>
-	    					<input ng-model="shiftVm.newShift.name" type="text">
+	    					<input ng-model="shiftVm.activeShiftTemplate.name" type="text">
 	    				</md-input-container>
 					</div>
 					<div layout="row">
-						<md-button ng-hide="shiftVm.editState" ng-click="shiftVm.addNewShift()">
+						<md-button ng-hide="shiftVm.editState" ng-click="shiftVm.createShiftTemplate();">
 							Dodaj smenu
 						</md-button>
-						<md-button ng-show="shiftVm.editState" class="md-primary" ng-click="shiftVm.saveShift()">
+						<md-button ng-show="shiftVm.editState" class="md-primary" ng-click="shiftVm.updateShiftTemplate();">
 							Sačuvaj izmene
 						</md-button>
-						<md-button ng-show="shiftVm.editState" ng-click="shiftVm.cancelChanges()">
+						<md-button ng-show="shiftVm.editState" ng-click="shiftVm.cancelChanges();">
 							Otkaži
 						</md-button>
 					</div>
@@ -403,13 +403,13 @@
 				<div flex="50">
 					<md-list ng-cloak>
 						<md-subheader class="md-no-sticky">Prikaz postojećih smena</md-subheader>
-						<md-list-item ng-repeat="shiftTemplate in shiftVm.shifts">
+						<md-list-item ng-repeat="shiftTemplate in shiftVm.shiftTemplates">
     						<p>{{shiftTemplate.name + 'početak:' + shiftTemplate.startHours + 'č ' + shiftTemplate.startMinutes + 'min kraj:'+
 								shiftTemplate.endHours + 'č ' + shiftTemplate.endMinutes + 'min'}}</p>
-							<md-button ng-click="shiftVm.editShift(shiftTemplate)">
+							<md-button ng-click="shiftVm.initEditMode(shiftTemplate)">
 								Izmeni
 							</md-button>
-							<md-button ng-click="shiftVm.deleteShift(shiftTemplate.shiftId)">
+							<md-button ng-click="shiftVm.deleteShiftTemplate(shiftTemplate.shiftId)">
 								Obriši
 							</md-button>
 
