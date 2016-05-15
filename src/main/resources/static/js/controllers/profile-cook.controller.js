@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('CookProfileController', CookProfileController);
 
-CookProfileController.$inject = ['cookService','passService', '$mdDialog'];
+CookProfileController.$inject = ['cookService','passService', '$mdDialog', '$scope'];
 
-function CookProfileController(cookService, passService, $mdDialog) {
+function CookProfileController(cookService, passService, $mdDialog, $scope) {
     var cookProfileVm = this;
     cookProfileVm.cook = {}
 
@@ -132,8 +132,32 @@ function CookProfileController(cookService, passService, $mdDialog) {
         console.log("Disconnected");
     }
 
-    function showGreeting(message) {
-        console.log("message");
-        console.log(message);
+    function showGreeting(orders) {
+        console.log(orders.new);
+        for (var item in orders.new) {
+            cookProfileVm.waitingMeals.push(orders.new[item]);
+        }
+
+        for (var item in orders.update) {
+            for(var meal in cookProfileVm.waitingMeals){
+                if(orders.update[item].itemId === cookProfileVm.waitingMeals[meal].itemId){
+                    cookProfileVm.waitingMeals[meal].amount = orders.update[item].amount;
+                    break;
+                }
+            }
+        }
+
+
+        for (var item in orders.remove) {
+            console.log(orders.remove);
+            for(var meal in cookProfileVm.waitingMeals){
+                if(orders.remove[item].itemId === cookProfileVm.waitingMeals[meal].itemId){
+                    cookProfileVm.waitingMeals.splice(meal, 1);
+                    break;
+                }
+            }
+        }
+
+        $scope.$apply();
     }
 }
