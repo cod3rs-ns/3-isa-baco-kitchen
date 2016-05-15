@@ -5,9 +5,6 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
--- -----------------------------------------------------
--- -----------------------------------------------------
 -- Schema isa_mrs_project
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `isa_mrs_project` ;
@@ -28,14 +25,14 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`users` (
   `u_fname` VARCHAR(45) NOT NULL,
   `u_lname` VARCHAR(45) NOT NULL,
   `u_email` VARCHAR(45) NOT NULL,
-  `u_image` VARCHAR(100) NOT NULL,
+  `u_image` VARCHAR(200) NOT NULL,
   `u_password` VARCHAR(45) NOT NULL,
   `u_type` VARCHAR(20) NOT NULL,
   `u_verified` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`u_id`))
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 22
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 22
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -48,12 +45,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`sys_managers` (
   `sm_info` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`sm_id`),
   CONSTRAINT `sm_fid`
-  FOREIGN KEY (`sm_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`sm_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -68,18 +65,19 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
   `r_type` VARCHAR(45) NOT NULL,
   `r_time_start` INT(11) NOT NULL,
   `r_time_end` INT(11) NOT NULL,
-  `r_sm_id` INT(11) NULL DEFAULT NULL,
+  `r_sm_id` INT(11) NULL,
   `r_address` VARCHAR(100) NOT NULL,
+  `r_image` VARCHAR(100) NULL,
   PRIMARY KEY (`r_id`),
   INDEX `r_sm_fid_idx` (`r_sm_id` ASC),
   CONSTRAINT `r_sm_fid`
-  FOREIGN KEY (`r_sm_id`)
-  REFERENCES `isa_mrs_project`.`sys_managers` (`sm_id`)
+    FOREIGN KEY (`r_sm_id`)
+    REFERENCES `isa_mrs_project`.`sys_managers` (`sm_id`)
     ON DELETE SET NULL
     ON UPDATE SET NULL)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 7
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -96,17 +94,17 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`employees` (
   PRIMARY KEY (`e_id`),
   INDEX `e_restaurant_fid_idx` (`e_restaurant` ASC),
   CONSTRAINT `e_fid`
-  FOREIGN KEY (`e_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`e_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `e_restaurant_fid`
-  FOREIGN KEY (`e_restaurant`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    FOREIGN KEY (`e_restaurant`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -118,12 +116,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bartenders` (
   `b_id` INT(11) NOT NULL,
   PRIMARY KEY (`b_id`),
   CONSTRAINT `b_fid`
-  FOREIGN KEY (`b_id`)
-  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    FOREIGN KEY (`b_id`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -135,12 +133,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`waiters` (
   `w_id` INT(11) NOT NULL,
   PRIMARY KEY (`w_id`),
   CONSTRAINT `w_fid`
-  FOREIGN KEY (`w_id`)
-  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    FOREIGN KEY (`w_id`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -156,12 +154,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bills` (
   PRIMARY KEY (`bl_id`),
   INDEX `fk_bills_waiters1_idx` (`bl_waiter_id` ASC),
   CONSTRAINT `bl_waiter_fid`
-  FOREIGN KEY (`bl_waiter_id`)
-  REFERENCES `isa_mrs_project`.`waiters` (`w_id`)
+    FOREIGN KEY (`bl_waiter_id`)
+    REFERENCES `isa_mrs_project`.`waiters` (`w_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -174,9 +172,9 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservations` (
   `rs_duration` DATETIME NOT NULL,
   `rs_length` INT(11) NOT NULL,
   PRIMARY KEY (`rs_id`))
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 2
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -193,13 +191,13 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
   PRIMARY KEY (`rr_id`),
   INDEX `tr_restaurant_fid_idx` (`rr_restaurant_id` ASC),
   CONSTRAINT `rr_restaurant_fid`
-  FOREIGN KEY (`rr_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    FOREIGN KEY (`rr_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 3
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 3
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -219,13 +217,13 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   PRIMARY KEY (`rt_id`),
   INDEX `rt_region_fid_idx` (`rt_region_id` ASC),
   CONSTRAINT `rt_region_fid`
-  FOREIGN KEY (`rt_region_id`)
-  REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
+    FOREIGN KEY (`rt_region_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 7
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 7
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -245,23 +243,23 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),
   INDEX `fk_client_orders_bills1_idx` (`co_bill_id` ASC),
   CONSTRAINT `co_bill_fid`
-  FOREIGN KEY (`co_bill_id`)
-  REFERENCES `isa_mrs_project`.`bills` (`bl_id`)
+    FOREIGN KEY (`co_bill_id`)
+    REFERENCES `isa_mrs_project`.`bills` (`bl_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `co_reservation_fid`
-  FOREIGN KEY (`co_reservation_id`)
-  REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
+    FOREIGN KEY (`co_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `co_table_fid`
-  FOREIGN KEY (`co_table_id`)
-  REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
+    FOREIGN KEY (`co_table_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 8
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -273,96 +271,50 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`cooks` (
   `c_id` INT(11) NOT NULL,
   PRIMARY KEY (`c_id`),
   CONSTRAINT `c_id`
-  FOREIGN KEY (`c_id`)
-  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    FOREIGN KEY (`c_id`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `isa_mrs_project`.`shifts`
+-- Table `isa_mrs_project`.`daily_schedules`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`shifts` ;
+DROP TABLE IF EXISTS `isa_mrs_project`.`daily_schedules` ;
 
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`shifts` (
-  `sh_id` INT(11) NOT NULL,
-  `sh_name` VARCHAR(45) NOT NULL,
-  `sh_start` INT(11) NOT NULL,
-  `sh_end` INT(11) NOT NULL,
-  `sh_restaurant_id` INT(11) NOT NULL,
-  PRIMARY KEY (`sh_id`),
-  INDEX `sh_restaurant_fid_idx` (`sh_restaurant_id` ASC),
-  CONSTRAINT `sh_restaurant_fid`
-  FOREIGN KEY (`sh_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `isa_mrs_project`.`work_periods`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`work_periods` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`work_periods` (
-  `wp_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `wp_start` DATETIME NOT NULL,
-  `wp_end` DATETIME NOT NULL,
-  `wp_restaurant_id` INT(11) NOT NULL,
-  PRIMARY KEY (`wp_id`),
-  INDEX `wp_restaurant_fid_idx` (`wp_restaurant_id` ASC),
-  CONSTRAINT `wp_restaurant_fid`
-  FOREIGN KEY (`wp_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
-
-
--- -----------------------------------------------------
--- Table `isa_mrs_project`.`day_schedules`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `isa_mrs_project`.`day_schedules` ;
-
-CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`day_schedules` (
-  `ds_id` INT(11) NOT NULL,
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`daily_schedules` (
+  `ds_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ds_day` DATETIME NOT NULL,
-  `ds_shift_id` INT(11) NOT NULL,
-  `ds_work_period_id` INT(11) NOT NULL,
-  `ds_region_id` INT(11) NOT NULL,
   `ds_employee_id` INT(11) NOT NULL,
+  `ds_region_id` INT(11) NOT NULL,
+  `ds_restaurant_id` INT(11) NOT NULL,
+  `ds_start_h` INT(11) NOT NULL,
+  `ds_start_m` INT(11) NOT NULL,
+  `ds_end_h` INT(11) NOT NULL,
+  `ds_end_m` INT(11) NOT NULL,
   PRIMARY KEY (`ds_id`),
-  INDEX `ds_work_period_id_idx` (`ds_work_period_id` ASC),
-  INDEX `ds_shift_fid_idx` (`ds_shift_id` ASC),
   INDEX `ds_table_region_fid_idx` (`ds_region_id` ASC),
   INDEX `ds_employee_fid_idx` (`ds_employee_id` ASC),
+  INDEX `ds_restaurant_fid_idx` (`ds_restaurant_id` ASC),
   CONSTRAINT `ds_employee_fid`
-  FOREIGN KEY (`ds_employee_id`)
-  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    FOREIGN KEY (`ds_employee_id`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
   CONSTRAINT `ds_region_fid`
-  FOREIGN KEY (`ds_region_id`)
-  REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
+    FOREIGN KEY (`ds_region_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_regions` (`rr_id`)
     ON DELETE CASCADE
     ON UPDATE NO ACTION,
-  CONSTRAINT `ds_shift_fid`
-  FOREIGN KEY (`ds_shift_id`)
-  REFERENCES `isa_mrs_project`.`shifts` (`sh_id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `ds_work_period_fid`
-  FOREIGN KEY (`ds_work_period_id`)
-  REFERENCES `isa_mrs_project`.`work_periods` (`wp_id`)
-    ON DELETE CASCADE
+  CONSTRAINT `ds_restaurant_fid`
+    FOREIGN KEY (`ds_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -375,12 +327,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`guests` (
   `g_info` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`g_id`),
   CONSTRAINT `g_fid`
-  FOREIGN KEY (`g_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`g_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -397,17 +349,17 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`frienships` (
   INDEX `fs_firstid_idx` (`fs_first` ASC),
   INDEX `fs_secondid_idx` (`fs_second` ASC),
   CONSTRAINT `fs_firstid`
-  FOREIGN KEY (`fs_first`)
-  REFERENCES `isa_mrs_project`.`guests` (`g_id`)
+    FOREIGN KEY (`fs_first`)
+    REFERENCES `isa_mrs_project`.`guests` (`g_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fs_secondid`
-  FOREIGN KEY (`fs_second`)
-  REFERENCES `isa_mrs_project`.`guests` (`g_id`)
+    FOREIGN KEY (`fs_second`)
+    REFERENCES `isa_mrs_project`.`guests` (`g_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -424,17 +376,17 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`guests_on_reservations` (
   INDEX `gos_guest_fid_idx` (`gos_guest_id` ASC),
   INDEX `gos_reservation_fid_idx` (`gos_reservation_id` ASC),
   CONSTRAINT `gos_guest_fid`
-  FOREIGN KEY (`gos_guest_id`)
-  REFERENCES `isa_mrs_project`.`guests` (`g_id`)
+    FOREIGN KEY (`gos_guest_id`)
+    REFERENCES `isa_mrs_project`.`guests` (`g_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `gos_reservation_fid`
-  FOREIGN KEY (`gos_reservation_id`)
-  REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
+    FOREIGN KEY (`gos_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -454,13 +406,13 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
   PRIMARY KEY (`mi_id`),
   INDEX `d_restaurant_fid_idx` (`mi_restaurant_id` ASC),
   CONSTRAINT `d_restaurant_fid`
-  FOREIGN KEY (`mi_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    FOREIGN KEY (`mi_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 8
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 8
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -476,29 +428,29 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
   `oi_amount` INT(11) NOT NULL,
   `oi_restaurant_id` INT(11) NOT NULL,
   `oi_version` INT(11) NOT NULL,
-  `oi_employee` INT NULL,
+  `oi_employee` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`oi_id`),
   INDEX `fk_order_items_client_orders1_idx` (`oi_order_id` ASC),
   INDEX `oi_menu_item_fid_idx` (`oi_menu_item_id` ASC),
   INDEX `oi_employee_fid_idx` (`oi_employee` ASC),
+  CONSTRAINT `oi_employee_fid`
+    FOREIGN KEY (`oi_employee`)
+    REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
   CONSTRAINT `oi_menu_item_fid`
-  FOREIGN KEY (`oi_menu_item_id`)
-  REFERENCES `isa_mrs_project`.`menu_items` (`mi_id`)
+    FOREIGN KEY (`oi_menu_item_id`)
+    REFERENCES `isa_mrs_project`.`menu_items` (`mi_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `oi_order_fid`
-  FOREIGN KEY (`oi_order_id`)
-  REFERENCES `isa_mrs_project`.`client_orders` (`co_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `oi_employee_fid`
-  FOREIGN KEY (`oi_employee`)
-  REFERENCES `isa_mrs_project`.`employees` (`e_id`)
+    FOREIGN KEY (`oi_order_id`)
+    REFERENCES `isa_mrs_project`.`client_orders` (`co_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 42
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 42
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -514,17 +466,17 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservation_tables` (
   INDEX `rt_reservation_fid_idx` (`rt_reservation_id` ASC),
   INDEX `rt_table_fid_idx` (`rt_table_id` ASC),
   CONSTRAINT `rt_reservation_fid`
-  FOREIGN KEY (`rt_reservation_id`)
-  REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
+    FOREIGN KEY (`rt_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `rt_table_fid`
-  FOREIGN KEY (`rt_table_id`)
-  REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
+    FOREIGN KEY (`rt_table_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_tables` (`rt_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -539,17 +491,17 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_managers` (
   PRIMARY KEY (`rm_id`),
   INDEX `fk_restaurant_managers_restaurants1_idx` (`rm_restaurant_id` ASC),
   CONSTRAINT `rm_fid`
-  FOREIGN KEY (`rm_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`rm_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `rm_restaurants_rid`
-  FOREIGN KEY (`rm_restaurant_id`)
-  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    FOREIGN KEY (`rm_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -562,12 +514,12 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_providers` (
   `rp_info` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`rp_id`),
   CONSTRAINT `rp_fid`
-  FOREIGN KEY (`rp_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`rp_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -587,18 +539,42 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reviews` (
   INDEX `rv_guest_fid_idx` (`rv_guest_id` ASC),
   INDEX `rv_reservation_fid_idx` (`rv_reservation_id` ASC),
   CONSTRAINT `rv_guest_fid`
-  FOREIGN KEY (`rv_guest_id`)
-  REFERENCES `isa_mrs_project`.`guests` (`g_id`)
+    FOREIGN KEY (`rv_guest_id`)
+    REFERENCES `isa_mrs_project`.`guests` (`g_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `rv_reservation_fid`
-  FOREIGN KEY (`rv_reservation_id`)
-  REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
+    FOREIGN KEY (`rv_reservation_id`)
+    REFERENCES `isa_mrs_project`.`reservations` (`rs_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 4
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`shift_templates`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`shift_templates` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`shift_templates` (
+  `sh_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `sh_name` VARCHAR(45) NOT NULL,
+  `sh_start_h` INT(11) NOT NULL,
+  `sh_start_m` INT(11) NOT NULL,
+  `sh_end_h` INT(11) NOT NULL,
+  `sh_end_m` INT(11) NOT NULL,
+  `sh_restaurant_id` INT(11) NOT NULL,
+  PRIMARY KEY (`sh_id`),
+  INDEX `sh_restaurant_fid_idx` (`sh_restaurant_id` ASC),
+  CONSTRAINT `sh_restaurant_fid`
+    FOREIGN KEY (`sh_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
@@ -614,12 +590,44 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`verification_tokens` (
   PRIMARY KEY (`vt_id`),
   INDEX `fk_verification_tokens_users1_idx` (`vt_user_id` ASC),
   CONSTRAINT `fk_verification_tokens_users1`
-  FOREIGN KEY (`vt_user_id`)
-  REFERENCES `isa_mrs_project`.`users` (`u_id`)
+    FOREIGN KEY (`vt_user_id`)
+    REFERENCES `isa_mrs_project`.`users` (`u_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-  ENGINE = InnoDB
-  DEFAULT CHARACTER SET = utf8;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`working_times`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`working_times` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`working_times` (
+  `wt_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `wt_reg_start_h` INT(11) NOT NULL,
+  `wt_reg_start_m` INT(11) NOT NULL,
+  `wt_reg_end_h` INT(11) NOT NULL,
+  `wt_reg_end_m` INT(11) NOT NULL,
+  `wt_sat_start_h` INT(11) NULL,
+  `wt_sat_start_m` INT(11) NULL,
+  `wt_sat_end_h` INT(11) NULL,
+  `wt_sat_end_m` INT(11) NULL,
+  `wt_sun_start_h` INT(11) NULL,
+  `wt_sun_start_m` INT(11) NULL,
+  `wt_sun_end_h` INT(11) NULL,
+  `wt_sun_end_m` INT(11) NULL,
+  `wt_working_on_sat` TINYINT(1) NOT NULL,
+  `wt_working_on_sun` TINYINT(1) NOT NULL,
+  `wt_restaurant_id` INT(11) NOT NULL,
+  PRIMARY KEY (`wt_id`),
+  INDEX `wt_restaurant_fid_idx` (`wt_restaurant_id` ASC),
+  CONSTRAINT `wt_restaurant_fid`
+    FOREIGN KEY (`wt_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

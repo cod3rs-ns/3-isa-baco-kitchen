@@ -31,6 +31,13 @@ INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type
 INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`) VALUES ('5', 'OSSA', 'Restoran Orfei vama na usluzi.', 'Orfei ima baštu. Dođite u baštu.', '7', '21', '5', 'Narodnog Fronta 21');
 INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`) VALUES ('6', 'Nevermind', 'Studenti na prvom mestu.', 'Studentski, studentski...', '6', '18', '5', 'Narodnog Fronta 21');
 
+INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_sat_start_h`, `wt_sat_start_m`, `wt_sat_end_h`, `wt_sat_end_m`, `wt_sun_start_h`, `wt_sun_start_m`, `wt_sun_end_h`, `wt_sun_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_restaurant_id`) VALUES ('1', '7', '0', '21', '0', '8', '30', '22', '30', '9', '0', '23', '0', '1', '1', '1');
+INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_sat_start_h`, `wt_sat_start_m`, `wt_sat_end_h`, `wt_sat_end_m`, `wt_sun_start_h`, `wt_sun_start_m`, `wt_sun_end_h`, `wt_sun_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_restaurant_id`) VALUES ('2', '7', '0', '22', '30', '9', '0', '21', '0', '9', '0', '21', '0', '1', '1', '2');
+INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_restaurant_id`) VALUES ('3', '7', '30', '21', '30', '0', '0', '3');
+
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('1', 'Prva smena', '7', '0', '14', '0', '2');
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('2', 'Druga smena', '14', '0', '21', '0', '2');
+
 INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('1', 	'Ramos biography.');
 INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('2', 	'Isco biography.');
 INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('9', 	'Some biography.');
