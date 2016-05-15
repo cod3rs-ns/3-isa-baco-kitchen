@@ -3,7 +3,6 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Employee;
 import com.bacovakuhinja.model.User;
-import com.bacovakuhinja.model.WorkPeriod;
 import com.bacovakuhinja.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,7 +63,8 @@ public class EmployeeController {
         return new ResponseEntity <Employee>(updatedEmp, HttpStatus.OK);
     }
 
-
+    // TODO change after implementation of new TimeSchedule system
+    /*
     @Authorization()
     @RequestMapping(
             value = "/api/employee/schedule",
@@ -90,4 +90,5 @@ public class EmployeeController {
         schedule.add(w);
         return new ResponseEntity <ArrayList<WorkPeriod>>(schedule, HttpStatus.OK);
     }
+    */
 }

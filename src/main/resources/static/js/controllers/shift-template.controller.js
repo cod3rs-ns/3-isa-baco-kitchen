@@ -1,10 +1,10 @@
 angular
     .module('isa-mrs-project')
-    .controller('RestaurantShiftController', RestaurantShiftController);
+    .controller('ShiftTemplateController', ShiftTemplateController);
 
-RestaurantShiftController.$inject = ['$timeout'];
+ShiftTemplateController.$inject = ['shiftTemplateService', '$timeout'];
 
-function RestaurantShiftController($timeout) {
+function ShiftTemplateController(shiftTemplateService, $timeout) {
     var shiftVm = this;
     shiftVm.shifts = [];
     shiftVm.newShift = {};
@@ -72,37 +72,10 @@ function RestaurantShiftController($timeout) {
 
     function init() {
         initDefaultShift();
-        var shift = {
-            shiftId: 1,
-            startHour: 7,
-            endHour: 14,
-            startMinute: 30,
-            endMinute: 15,
-            name: 'Prva smena',
-            restaurantId: 2
-        };
-        var shift2 = {
-            shiftId: 2,
-            startHour: 7,
-            endHour: 14,
-            startMinute: 30,
-            endMinute: 15,
-            name: 'Prva smena',
-            restaurantId: 2
-        };
-        var shift3 = {
-            shiftId: 3,
-            startHour: 7,
-            endHour: 14,
-            startMinute: 30,
-            endMinute: 15,
-            name: 'Prva smena',
-            restaurantId: 2
-        };
-
-        shiftVm.shifts.push(shift);
-        shiftVm.shifts.push(shift2);
-        shiftVm.shifts.push(shift3);
+        shiftTemplateService.findShiftTemplatesByRestaurant(2)
+            .then(function(data) {
+                shiftVm.shifts = data;
+            });
     };
 
 

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "day_schedules")
+@Table(name = "daily_schedules")
 public class DaySchedule {
 
     @Id
@@ -15,13 +15,6 @@ public class DaySchedule {
     @Column(name = "ds_day")
     private Date day;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ds_shift_id")
-    private Shift shift;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ds_work_period_id")
-    private WorkPeriod workPeriod;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "ds_region_id")
@@ -48,22 +41,6 @@ public class DaySchedule {
 
     public void setDay(Date day) {
         this.day = day;
-    }
-
-    public Shift getShift() {
-        return shift;
-    }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
-
-    public WorkPeriod getWorkPeriod() {
-        return workPeriod;
-    }
-
-    public void setWorkPeriod(WorkPeriod workPeriod) {
-        this.workPeriod = workPeriod;
     }
 
     public RestaurantRegion getRegion() {

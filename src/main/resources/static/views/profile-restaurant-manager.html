@@ -352,7 +352,7 @@
   	    </md-content>
       </md-tab>
 	  <md-tab label="Definisanje smena" >
-		  <md-content ng-controller="RestaurantShiftController as shiftVm">
+		  <md-content ng-controller="ShiftTemplateController as shiftVm">
 			  <div layout="row">
 			  	<div flex-gt-xs="50"layout="column">
 					<label>Početak smene</label>
@@ -403,13 +403,13 @@
 				<div flex="50">
 					<md-list ng-cloak>
 						<md-subheader class="md-no-sticky">Prikaz postojećih smena</md-subheader>
-						<md-list-item ng-repeat="shift in shiftVm.shifts">
-    						<p>{{shift.name + 'start:' + shift.startHour + ' ' + shift.startMinute + 'h end:'+
-								shift.endHour + ' ' + shift.endMinute + 'h'}}</p>
-							<md-button ng-click="shiftVm.editShift(shift)">
+						<md-list-item ng-repeat="shiftTemplate in shiftVm.shifts">
+    						<p>{{shiftTemplate.name + 'početak:' + shiftTemplate.startHours + 'č ' + shiftTemplate.startMinutes + 'min kraj:'+
+								shiftTemplate.endHours + 'č ' + shiftTemplate.endMinutes + 'min'}}</p>
+							<md-button ng-click="shiftVm.editShift(shiftTemplate)">
 								Izmeni
 							</md-button>
-							<md-button ng-click="shiftVm.deleteShift(shift.shiftId)">
+							<md-button ng-click="shiftVm.deleteShift(shiftTemplate.shiftId)">
 								Obriši
 							</md-button>
 
