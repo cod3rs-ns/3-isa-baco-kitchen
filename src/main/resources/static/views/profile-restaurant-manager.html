@@ -419,9 +419,112 @@
 				</div>
 
 			  </div>
+    	</md-content>
+      </md-tab>
+	  <md-tab label="Radno vreme" >
+		  <md-content ng-controller="WorkingTimeController as workingTimeVm">
+			  <div layout="row" style="margin-left: 5px;">
+				<div flex-gt-xs="33" layout="column">
+					<md-switch ng-disabled="workingTimeVm.editMode" ng-change="workingTimeVm.initEditMode();"class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.editMode">
+	    				Izmenjivo
+	    			</md-switch>
+					<label>Početak radnog vremena (radni dani)</label>
+					<div layout="row">
+						<md-input-container class="md-block">
+							<label>časovi</label>
+	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartHours" type="number" step="1">
+	    				</md-input-container>
+						<md-input-container class="md-block">
+							<label>minuti</label>
+	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartMinutes" type="number" step="1">
+	    				</md-input-container>
+					</div>
 
+					<label>Kraj radnog vremena (radni dani)</label>
+					<div layout="row">
+						<md-input-container class="md-block">
+							<label>časovi</label>
+	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndHours" type="number" step="1">
+	    				</md-input-container>
 
+						<md-input-container class="md-block">
+							<label>minuti</label>
+	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndMinutes" type="number" step="1">
+	    				</md-input-container>
+					</div>
+					<div layout="row">
+						<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-primary" ng-click="workingTimeVm.updateWorkingTime();">
+							Sačuvaj
+						</md-button>
+						<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-default" ng-click="workingTimeVm.cancelChanges();">
+							Otkaži
+						</md-button>
+					</div>
+				</div>
+				<div flex-gt-xs="33" layout="column">
+					<md-switch  ng-disabled="!workingTimeVm.editMode" class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.wtime.workingOnSat">
+	    				Restoran otvoren subotom
+	    			</md-switch>
+					<div ng-show="workingTimeVm.wtime.workingOnSat">
+						<label>Početak radnog vremena (subota)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartHours" type="number" step="1">
+		    				</md-input-container>
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartMinutes" type="number" step="1">
+		    				</md-input-container>
+						</div>
 
+						<label>Kraj radnog vremena (subota)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndHours" type="number" step="1">
+		    				</md-input-container>
+
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndMinutes" type="number" step="1">
+		    				</md-input-container>
+						</div>
+					</div>
+				</div>
+				<div flex-gt-xs="33"layout="column">
+					<md-switch ng-disabled="!workingTimeVm.editMode" md-no-ink class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.wtime.workingOnSun">
+	    				Restoran otvoren nedeljom
+	    			</md-switch>
+					<div ng-show="workingTimeVm.wtime.workingOnSun">
+						<label>Početak radnog vremena (nedelja)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartHours" type="number" step="1">
+		    				</md-input-container>
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartMinutes" type="number" step="1">
+		    				</md-input-container>
+						</div>
+
+						<label>Kraj radnog vremena (nedelja)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndHours" type="number" step="1">
+		    				</md-input-container>
+
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndMinutes" type="number" step="1">
+		    				</md-input-container>
+						</div>
+					</div>
+				</div>
+
+			  </div>
 
   	    </md-content>
       </md-tab>
