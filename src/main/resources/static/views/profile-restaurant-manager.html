@@ -422,21 +422,36 @@
     	</md-content>
       </md-tab>
 	  <md-tab label="Radno vreme" >
+		  <form name="workTime">
 		  <md-content ng-controller="WorkingTimeController as workingTimeVm">
 			  <div layout="row" style="margin-left: 5px;">
+				<!-- Restaurant working time on regular days -->
 				<div flex-gt-xs="33" layout="column">
-					<md-switch ng-disabled="workingTimeVm.editMode" ng-change="workingTimeVm.initEditMode();"class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.editMode">
+					<md-switch ng-disabled="workingTimeVm.editMode" ng-change="workingTimeVm.initEditMode();" class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.editMode">
 	    				Izmenjivo
 	    			</md-switch>
+
 					<label>Početak radnog vremena (radni dani)</label>
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartHours" type="number" step="1">
+	    					<input 	name="regStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartHours"
+									type="number" step="1" min="0" max="24" required>
+							<div ng-messages="workTime.regStartHours.$error">
+	                            <div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 24.</div>
+	                        </div>
 	    				</md-input-container>
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartMinutes" type="number" step="1">
+	    					<input 	name="regStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartMinutes"
+									type="number" step="1" min="0" max="60" required>
+							<div ng-messages="workTime.regStartMinutes.$error">
+	                            <div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 60.</div>
+	                        </div>
 	    				</md-input-container>
 					</div>
 
@@ -444,16 +459,29 @@
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndHours" type="number" step="1">
+	    					<input  name="regEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndHours"
+									type="number" step="1" min="0" max="24" required>
+							<div ng-messages="workTime.regEndHours.$error">
+			                    <div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 24.</div>
+			                </div>
 	    				</md-input-container>
-
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndMinutes" type="number" step="1">
+	    					<input 	name="regEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndMinutes"
+									type="number" step="1" min="0" max="60" required>
+							<div ng-messages="workTime.regEndMinutes.$error">
+			                    <div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 60.</div>
+			                </div>
 	    				</md-input-container>
 					</div>
+					<!-- Actions that can be perfomed -->
 					<div layout="row">
-						<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-primary" ng-click="workingTimeVm.updateWorkingTime();">
+						<md-button 	ng-hide="!workingTimeVm.editMode" class="md-raised md-primary"
+									ng-click="workingTimeVm.updateWorkingTime();" ng-disabled="!workTime.$valid">
 							Sačuvaj
 						</md-button>
 						<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-default" ng-click="workingTimeVm.cancelChanges();">
@@ -461,8 +489,11 @@
 						</md-button>
 					</div>
 				</div>
+
+				<!-- Restaurant working time on Saturdays -->
 				<div flex-gt-xs="33" layout="column">
-					<md-switch  ng-disabled="!workingTimeVm.editMode" class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.wtime.workingOnSat">
+					<md-switch  ng-disabled="!workingTimeVm.editMode" class="md-primary" aria-label="Switch working on Saturdays."
+								ng-model="workingTimeVm.wtime.workingOnSat">
 	    				Restoran otvoren subotom
 	    			</md-switch>
 					<div ng-show="workingTimeVm.wtime.workingOnSat">
@@ -470,11 +501,23 @@
 						<div layout="row">
 							<md-input-container class="md-block">
 								<label>časovi</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartHours" type="number" step="1">
+		    					<input 	name="satStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartHours"
+										type="number" step="1" min="0" max="24" ng-required="workingTimeVm.wtime.workingOnSat">
+								<div ng-messages="workTime.satStartHours.$error">
+				                    <div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+				                </div>
 		    				</md-input-container>
 							<md-input-container class="md-block">
 								<label>minuti</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartMinutes" type="number" step="1">
+		    					<input 	name="satStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartMinutes"
+										type="number" step="1" min="0" max="60" ng-required="workingTimeVm.wtime.workingOnSat">
+								<div ng-messages="workTime.satStartMinutes.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+				                </div>
 		    				</md-input-container>
 						</div>
 
@@ -482,18 +525,31 @@
 						<div layout="row">
 							<md-input-container class="md-block">
 								<label>časovi</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndHours" type="number" step="1">
+		    					<input 	name="satEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndHours"
+										type="number" step="1" min="0" max="24" ng-required="workingTimeVm.wtime.workingOnSat">
+								<div ng-messages="workTime.satEndHours.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+				                </div>
 		    				</md-input-container>
-
 							<md-input-container class="md-block">
 								<label>minuti</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndMinutes" type="number" step="1">
+		    					<input 	name="satEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndMinutes"
+										type="number" step="1" min="0" max="60" ng-required="workingTimeVm.wtime.workingOnSat">
+								<div ng-messages="workTime.satEndMinutes.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+				                </div>
 		    				</md-input-container>
 						</div>
 					</div>
 				</div>
-				<div flex-gt-xs="33"layout="column">
-					<md-switch ng-disabled="!workingTimeVm.editMode" md-no-ink class="md-primary" aria-label="Switch No Ink" ng-model="workingTimeVm.wtime.workingOnSun">
+
+				<!-- Restaurant working time on Sundays -->
+				<div flex-gt-xs="33" layout="column">
+					<md-switch ng-disabled="!workingTimeVm.editMode" md-no-ink class="md-primary" aria-label="Switch working on Sundays." ng-model="workingTimeVm.wtime.workingOnSun">
 	    				Restoran otvoren nedeljom
 	    			</md-switch>
 					<div ng-show="workingTimeVm.wtime.workingOnSun">
@@ -501,11 +557,23 @@
 						<div layout="row">
 							<md-input-container class="md-block">
 								<label>časovi</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartHours" type="number" step="1">
+		    					<input 	name="sunStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartHours"
+										type="number" step="1" min="0" max="24" ng-required="workingTimeVm.wtime.workingOnSun">
+								<div ng-messages="workTime.sunStartHours.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+				                </div>
 		    				</md-input-container>
 							<md-input-container class="md-block">
 								<label>minuti</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartMinutes" type="number" step="1">
+		    					<input 	name="sunStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartMinutes"
+										type="number" step="1" min="0" max="60" ng-required="workingTimeVm.wtime.workingOnSun">
+								<div ng-messages="workTime.sunStartMinutes.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+				                </div>
 		    				</md-input-container>
 						</div>
 
@@ -513,12 +581,24 @@
 						<div layout="row">
 							<md-input-container class="md-block">
 								<label>časovi</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndHours" type="number" step="1">
+		    					<input 	name="sunEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndHours"
+										type="number" step="1" min="0" max="24" ng-required="workingTimeVm.wtime.workingOnSun">
+								<div ng-messages="workTime.sunEndHours.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+				                </div>
 		    				</md-input-container>
 
 							<md-input-container class="md-block">
 								<label>minuti</label>
-		    					<input ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndMinutes" type="number" step="1">
+		    					<input 	name="sunEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndMinutes"
+										type="number" step="1" min="0" max="60" ng-required="workingTimeVm.wtime.workingOnSun">
+								<div ng-messages="workTime.sunEndMinutes.$error">
+				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+				                </div>
 		    				</md-input-container>
 						</div>
 					</div>
@@ -527,6 +607,7 @@
 			  </div>
 
   	    </md-content>
+	</form>
       </md-tab>
     </md-tabs>
   </md-content>
