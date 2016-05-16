@@ -65,7 +65,6 @@ public class OrderItemsController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<OrderItem>> getAcceptedItemsByEmployee(@PathVariable("e_id") Integer employeeId) {
-        System.out.println(employeeId);
         Collection<OrderItem> items = orderItemService.findAcceptedItemsByEmployee(employeeId);
         return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
