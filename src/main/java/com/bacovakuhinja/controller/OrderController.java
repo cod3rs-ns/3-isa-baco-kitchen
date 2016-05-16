@@ -75,6 +75,8 @@ public class OrderController {
         //notify for new items
         HashMap<String, ArrayList<OrderItem>> foodMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> foodList = new ArrayList<OrderItem>();
+        HashMap<String, ArrayList<OrderItem>> drinkMap = new HashMap<String, ArrayList<OrderItem>>();
+        ArrayList<OrderItem> drinkList = new ArrayList<OrderItem>();
 
         for (Iterator<OrderItem> it = order.getItems().iterator(); it.hasNext(); ) {
             OrderItem i = it.next();
@@ -84,10 +86,14 @@ public class OrderController {
             OrderItem nItem = orderItemService.create(i);
             if (nItem.getMenuItem().getType().equals("food"))
                 foodList.add(nItem);
+            else
+                drinkList.add(nItem);
         }
 
         foodMap.put("new", foodList);
+        drinkMap.put("new", drinkList);
         this.template.convertAndSend("/subscribe/ActiveFood/" + restaurantId, foodMap);
+        this.template.convertAndSend("/subscribe/ActiveDrink/" + restaurantId, drinkMap);
 
         return newOrder;
     }

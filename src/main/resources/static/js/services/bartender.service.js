@@ -8,7 +8,8 @@ function bartenderService($http){
     var service = {
         getBartender: getBartender,
         updateBartender: updateBartender,
-        getLoggedBartender: getLoggedBartender
+        getLoggedBartender: getLoggedBartender,
+        getActiveDrinks: getActiveDrinks
     };
 
     return service;
@@ -29,6 +30,13 @@ function bartenderService($http){
 
     function getLoggedBartender() {
         return $http.get('api/bartender')
+            .then(function(response){
+                return response.data;
+            });
+    };
+
+    function getActiveDrinks(restaurantId){
+        return $http.get('api/orderItems/activeDrinks/r=' + restaurantId)
             .then(function(response){
                 return response.data;
             });

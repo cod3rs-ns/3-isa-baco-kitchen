@@ -83,10 +83,9 @@
 						<div layout="row" layout-wrap>
 							<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals" layout-wrap>
 
-								<md-card ng-animate="'highlight'"  class="order-item">
-									<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
-
+								<md-card class="order-item">
 									<md-card-content>
+										<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
 										<h4>{{meal.menuItem.name}}</h4>
 										<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
 										<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
@@ -97,7 +96,6 @@
 										<md-button class="md-raised md-primary" ng-click="cookProfileVm.prepareFood(meal.itemId);">Prihvati</md-button>
 									</md-card-actions>
 								</md-card>
-
 							</div>
 						</div>
 					</md-content>
@@ -113,9 +111,8 @@
 						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
 
 							<md-card class="order-item">
-								<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
-								
 								<md-card-content>
+									<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
 									<h4>{{meal.menuItem.name}}</h4>
 									<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
 									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>

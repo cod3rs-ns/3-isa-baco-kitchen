@@ -61,14 +61,23 @@ public class OrderItemsController {
     }
 
     @RequestMapping(
-            value = "api/orderItems/foodForPrepare/e={e_id}",
+            value = "api/orderItems/itemsForPrepare/e={e_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<OrderItem>> getAcceptedItemsByEmployee(@PathVariable("e_id") Integer employeeId) {
+        System.out.println(employeeId);
         Collection<OrderItem> items = orderItemService.findAcceptedItemsByEmployee(employeeId);
         return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "api/orderItems/activeDrinks/r={r_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<OrderItem>> getActiveDrinkByRestaurant(@PathVariable("r_id") Integer restaurantId) {
+        Collection<OrderItem> items = orderItemService.findActiveDrinksByRestaurant(restaurantId);
+        return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
+    }
 
     @RequestMapping(
             value = "/api/orderItems/i={itemId}/e={employeeId}",
@@ -88,6 +97,9 @@ public class OrderItemsController {
 
         if(item.getMenuItem().getType().equals("food")){
             this.template.convertAndSend("/subscribe/ActiveFood/" + emp.getRestaurantID(), itemMap);
+        }
+        else{
+            this.template.convertAndSend("/subscribe/ActiveDrink/" + emp.getRestaurantID(), itemMap);
         }
 
         return new ResponseEntity <OrderItem>(updatedItem, HttpStatus.OK);

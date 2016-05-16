@@ -73,29 +73,34 @@
 
 <div ng-cloak>
 	<md-content>
-		<md-tabs class="md-primary" md-dynamic-height md-border-bottom>
-			<md-tab label="Pristigla pića">
-				<md-content class="md-padding">
-					<div layout="row" layout-wrap>
-						<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
+		<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="barmanProfileVm.clickOnTab();" md-selected="barmanProfileVm.selectedTab">
+			<md-tab>
+				<md-tab-label>
+					Pristigla pića&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="barmanProfileVm.notNo!=-1">{{barmanProfileVm.notNo}}</span>
+				</md-tab-label>
+				<md-tab-body>
+					<md-content class="md-padding">
+						<div layout="row" layout-wrap>
+							<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
 
-							<md-card class="order-item">
-								<img ng-src="{{drink.img_src}}" class="md-card-image order-img">
-								
-								<md-card-content>
-									<h4>{{drink.name}}</h4>
-									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
-								</md-card-content>
-								
-								<md-card-actions class="order-btns" layout="row" layout-align="center end">
-									<md-button class="md-raised">Detalji</md-button>
-									<md-button class="md-raised md-primary">Prihvati</md-button>
-								</md-card-actions>
-							</md-card>
-							
-						</div>			
-					</div>
-				</md-content>
+								<md-card class="order-item">
+									<md-card-content>
+										<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">
+										<h4>{{drink.menuItem.name}}</h4>
+										<p><md-icon class="material-icons">local_bar</md-icon> količina:{{drink.amount}}</p>
+										<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+									</md-card-content>
+
+									<md-card-actions class="order-btns" layout="row" layout-align="center end">
+										<md-button class="md-raised">Detalji</md-button>
+										<md-button class="md-raised md-primary" ng-click="barmanProfileVm.prepareDrink(drink.itemId);">Prihvati</md-button>
+									</md-card-actions>
+								</md-card>
+
+							</div>
+						</div>
+					</md-content>
+				</md-tab-body>
 			</md-tab>
 			<md-tab label="Pića u izradi">
 				<md-content class="md-padding">
@@ -103,10 +108,10 @@
 						<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks" layout-wrap>
 
 							<md-card class="order-item">
-								<img ng-src="{{drink.img_src}}" class="md-card-image order-img">
-								
 								<md-card-content>
-									<h4>{{drink.name}}</h4>
+									<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">
+									<h4>{{drink.menuItem.name}}</h4>
+									<p><md-icon class="material-icons">local_bar</md-icon> količina:{{drink.amount}}</p>
 									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
