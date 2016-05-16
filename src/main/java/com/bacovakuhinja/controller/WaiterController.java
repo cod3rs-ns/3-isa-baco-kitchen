@@ -3,9 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
-import com.bacovakuhinja.service.DayScheduleService;
-import com.bacovakuhinja.service.EmployeeService;
-import com.bacovakuhinja.service.WaiterService;
+import com.bacovakuhinja.service.*;
 import com.bacovakuhinja.service.impl.WaiterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +23,10 @@ public class WaiterController {
     private WaiterService waiterService;
 
     @Autowired
-    private DayScheduleService dayScheduleService;
+    private RestaurantTableService restaurantTableService;
+
+    @Autowired
+    private RestaurantService restaurantService;
 
     @RequestMapping(
             value = "/api/waiters",
@@ -64,17 +65,21 @@ public class WaiterController {
             value = "/api/waiter/tables",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <ArrayList<RestaurantTable>> getTables(final HttpServletRequest request) {
+    public ResponseEntity <Collection<RestaurantTable>> getTables(final HttpServletRequest request) {
         User user = (User) request.getAttribute("loggedUser");
         Waiter waiter = waiterService.findOne(user.getUserId());
 
+        /*
+        Restaurant restaurant = restaurantService.findOne(waiter.getRestaurantID());
+        Collection<RestaurantTable> tables = restaurantTableService.findAllByRestaurant(restaurant.getRestaurantId());
+        */
         //TODO get real tables from database
         RestaurantTable t = new RestaurantTable();
         t.setTableId(1);
 
-        ArrayList<RestaurantTable> tables = new ArrayList<RestaurantTable>();
+        Collection<RestaurantTable> tables = new ArrayList<RestaurantTable>();
         tables.add(t);
-        return new ResponseEntity <ArrayList<RestaurantTable>>(tables, HttpStatus.OK);
+        return new ResponseEntity <Collection<RestaurantTable>>(tables, HttpStatus.OK);
     }
 
     @SendEmail

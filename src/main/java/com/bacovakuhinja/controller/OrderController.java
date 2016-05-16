@@ -122,6 +122,12 @@ public class OrderController {
         ArrayList<OrderItem> foodRemove = new ArrayList<OrderItem>();
         ArrayList<OrderItem> foodUpdate = new ArrayList<OrderItem>();
 
+        //notify for new items
+        HashMap<String, ArrayList<OrderItem>> drinksMap = new HashMap<String, ArrayList<OrderItem>>();
+        ArrayList<OrderItem> drinkNew = new ArrayList<OrderItem>();
+        ArrayList<OrderItem> drinkRemove = new ArrayList<OrderItem>();
+        ArrayList<OrderItem> drinkUpdate = new ArrayList<OrderItem>();
+
 
         Set<OrderItem> newItems = new HashSet<OrderItem>();
 
@@ -135,6 +141,8 @@ public class OrderController {
                         oldItem.setAmount(newItem.getAmount());
                         if (oldItem.getMenuItem().getType().equals("food"))
                             foodUpdate.add(oldItem);
+                        else
+                            drinkUpdate.add(oldItem);
                     }
                     newItems.add(oldItem);
                     flag = true;
@@ -150,6 +158,8 @@ public class OrderController {
                 newItems.add(item);
                 if(newItem.getMenuItem().getType().equals("food"))
                     foodNew.add(newItem);
+                else
+                    drinkNew.add(newItem);
             }
         }
 
@@ -161,13 +171,21 @@ public class OrderController {
             OrderItem oi= itOld.next();
             if(oi.getMenuItem().getType().equals("food"))
                 foodRemove.add(oi);
+            else
+                drinkRemove.add(oi);
             orderItemService.delete(oi.getItemId());
         }
 
         foodMap.put("new", foodNew);
         foodMap.put("remove" , foodRemove);
         foodMap.put("update", foodUpdate);
+
+        drinksMap.put("new", drinkNew);
+        drinksMap.put("remove" , drinkRemove);
+        drinksMap.put("update", drinkUpdate);
+
         this.template.convertAndSend("/subscribe/ActiveFood/" + r_id, foodMap);
+        this.template.convertAndSend("/subscribe/ActiveDrink/" + r_id, drinksMap);
 
         return oldOrder;
     }
