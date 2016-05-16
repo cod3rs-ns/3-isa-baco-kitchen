@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('ShiftTemplateController', ShiftTemplateController);
 
-ShiftTemplateController.$inject = ['shiftTemplateService', '$timeout'];
+ShiftTemplateController.$inject = ['shiftTemplateService', '$mdToast'];
 
-function ShiftTemplateController(shiftTemplateService, $timeout) {
+function ShiftTemplateController(shiftTemplateService, $mdToast) {
     var shiftVm = this;
     shiftVm.shiftTemplates = [];
     shiftVm.activeShiftTemplate = {};
@@ -52,6 +52,7 @@ function ShiftTemplateController(shiftTemplateService, $timeout) {
                 console.log(data);
                 shiftVm.shiftTemplates.push(data);
                 initDefaultShiftTemplate();
+                showToast('Templejt smene je uspešno kreiran.')
             });
     };
 
@@ -67,6 +68,7 @@ function ShiftTemplateController(shiftTemplateService, $timeout) {
         shiftTemplateService.deleteShiftTemplate(id)
             .then(function(data){
                 console.log('Deleted shift template.');
+                showToast('Templejt smene je uspešno obrisan.');
             });
     };
 
@@ -86,6 +88,7 @@ function ShiftTemplateController(shiftTemplateService, $timeout) {
         shiftTemplateService.updateShiftTemplate(shiftVm.inEditProcess)
             .then(function(data) {
                 console.log(data);
+                showToast('Templejt smene je uspešno sačuvan.');
             });
         initDefaultShiftTemplate();
         shiftVm.editState = false;
@@ -96,5 +99,14 @@ function ShiftTemplateController(shiftTemplateService, $timeout) {
         shiftVm.backup = {};
         shiftVm.inEditProcess = {};
         initDefaultShiftTemplate();
+        showToast('Sve promene su uspešno poništene.');
+    };
+
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
     };
 }
