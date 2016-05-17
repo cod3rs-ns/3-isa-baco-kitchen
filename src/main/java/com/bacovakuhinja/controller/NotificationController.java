@@ -14,11 +14,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 @Controller
-public class GreetingController {
+public class NotificationController {
 
     @MessageMapping("/connectFood/{r_id}")
     @SendTo("/subscribe/ActiveFood/{r_id}")
     public HashMap<String, ArrayList<OrderItem>> getActiveFood(@DestinationVariable String r_id, HelloMessage message) throws Exception {
+        Thread.sleep(3000);
+        System.out.println(r_id);
+        HashMap<String, ArrayList<OrderItem>> mapa = new HashMap<String, ArrayList<OrderItem>>();
+        return mapa;
+    }
+
+    @MessageMapping("/connectDrink/{r_id}")
+    @SendTo("/subscribe/ActiveDrink/{r_id}")
+    public HashMap<String, ArrayList<OrderItem>> getActiveDrink(@DestinationVariable String r_id) throws Exception {
         Thread.sleep(3000);
         System.out.println(r_id);
         HashMap<String, ArrayList<OrderItem>> mapa = new HashMap<String, ArrayList<OrderItem>>();

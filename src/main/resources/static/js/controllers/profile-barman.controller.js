@@ -2,20 +2,23 @@ angular
     .module('isa-mrs-project')
     .controller('BarmanProfileController', BarmanProfileController);
 
-BarmanProfileController.$inject = ['bartenderService', 'passService', '$mdDialog'];
+BarmanProfileController.$inject = ['employeeService', 'bartenderService', 'passService', '$mdDialog', '$scope'];
 
-function BarmanProfileController(bartenderService, passService, $mdDialog) {
+function BarmanProfileController(employeeService, bartenderService, passService, $mdDialog, $scope) {
     var barmanProfileVm = this;
 
     barmanProfileVm.barman = {};
+    barmanProfileVm.notNo = -1;
+    barmanProfileVm.selectedTab = 0;
 
     activate();
 
     function activate(){
         getBarman().then(function() {
-
+            getActiveDrinks(barmanProfileVm.barman.restaurantID);
+            getAcceptedItems(barmanProfileVm.barman.userId);
+            connect(barmanProfileVm.barman.restaurantID);
         });
-
 
         passService.isPasswordChanged()
             .then(function (data) {
@@ -26,6 +29,14 @@ function BarmanProfileController(bartenderService, passService, $mdDialog) {
 
     };
 
+    function getActiveDrinks(r_id){
+        bartenderService.getActiveDrinks(r_id)
+            .then(function(data){
+                for(var i in data){
+                    barmanProfileVm.waitingDrinks.push(data[i]);
+                }
+            });
+    }
 
     function getBarman(){
         return bartenderService.getLoggedBartender()
@@ -36,29 +47,8 @@ function BarmanProfileController(bartenderService, passService, $mdDialog) {
             });
     };
 
-	
-	barmanProfileVm.waitingDrinks = [
-      {
-        name: 'Sour',
-		img_src: 'images/meals/sour.jpg'
-      },
-	  {
-        name: 'Cosmopolitan',
-		img_src: 'images/meals/cosmopolitan.jpg'
-      }
-    ];
-	
-	
-	barmanProfileVm.preparingDrinks = [
-      {
-        name: 'Martini',
-		img_src: 'images/meals/martini.jpg'
-      },
-	  {
-        name: 'Sour',
-		img_src: 'images/meals/sour.jpg'
-      }
-    ];
+	barmanProfileVm.waitingDrinks = [];
+	barmanProfileVm.preparingDrinks = [];
 
     barmanProfileVm.editProfile = editProfile;
     function editProfile() {
@@ -110,4 +100,91 @@ function BarmanProfileController(bartenderService, passService, $mdDialog) {
             }
         );
     };
+
+    function connect(id) {
+        var socket = new SockJS('/connectDrink');
+        barmanProfileVm.stompClient = Stomp.over(socket);
+        barmanProfileVm.stompClient.connect({}, function(frame) {
+            console.log('Connected: ' + frame);
+            barmanProfileVm.stompClient.subscribe('/subscribe/ActiveDrink/'+ id, function(greeting){
+                showGreeting(JSON.parse(greeting.body));
+            });
+        });
+    }
+
+    function disconnect() {
+        if (barmanProfileVm.stompClient != null) {
+            barmanProfileVm.stompClient.disconnect();
+        }
+        console.log("Disconnected");
+    }
+
+    function showGreeting(orders) {
+        var num=0;
+
+        console.log(orders.new);
+
+        for (var item in orders.new) {
+            barmanProfileVm.waitingDrinks.push(orders.new[item]);
+            num += 1;
+        }
+
+        for (var item in orders.update) {
+            for(var meal in barmanProfileVm.waitingDrinks){
+                if(orders.update[item].itemId === barmanProfileVm.waitingDrinks[meal].itemId){
+                    barmanProfileVm.waitingDrinks[meal].amount = orders.update[item].amount;
+                    num += 1;
+                    break;
+                }
+            }
+        }
+
+        for (var item in orders.remove) {
+            console.log(orders.remove);
+            for(var meal in barmanProfileVm.waitingDrinks){
+                if(orders.remove[item].itemId === barmanProfileVm.waitingDrinks[meal].itemId){
+                    barmanProfileVm.waitingDrinks.splice(meal, 1);
+                    break;
+                }
+            }
+        }
+
+        if (num != 0 ) {
+            if(barmanProfileVm.notNo == -1)
+                barmanProfileVm.notNo = num;
+            else
+                barmanProfileVm.notNo += num;
+        }
+        $scope.$apply();
+    }
+
+    barmanProfileVm.prepareDrink = prepareDrink;
+    function prepareDrink(itemId){
+        console.log(itemId);
+        employeeService.prepareOrderItem(itemId, barmanProfileVm.barman.userId)
+            .then(function (data) {
+                if(data != null){
+                    barmanProfileVm.preparingDrinks.push(data);
+                }
+            });
+    }
+
+    function getAcceptedItems(eId) {
+        employeeService.getAcceptedItems(eId)
+            .then(function (data) {
+                console.log(data);
+                for (var i in data) {
+                    barmanProfileVm.preparingDrinks.push(data[i]);
+                }
+            });
+    }
+
+
+    barmanProfileVm.clickOnTab = clickOnTab;
+
+    function clickOnTab() {
+        if (barmanProfileVm.selectedTab == 0){
+            barmanProfileVm.notNo =-1;
+        }
+    }
 }

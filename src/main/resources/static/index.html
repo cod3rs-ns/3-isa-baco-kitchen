@@ -60,7 +60,7 @@
               Registruj se
             </md-button>
 
-              <div  ng-if="$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
+              <div  ng-hide="!$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
                   <md-fab-speed-dial md-open="tbCtrl.isOpen" md-direction="{{tbCtrl.selectedDirection}}"
                                      ng-class="tbCtrl.selectedMode">
                       <md-fab-trigger>

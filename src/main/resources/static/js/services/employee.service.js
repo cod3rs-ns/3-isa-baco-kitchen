@@ -76,7 +76,7 @@ function employeeService($http) {
     }
 
     function getAcceptedItems(empId){
-        return $http.get('api/orderItems/foodForPrepare/e=' + empId)
+        return $http.get('api/orderItems/itemsForPrepare/e=' + empId)
             .then(function (response) {
                 return response.data;
             });

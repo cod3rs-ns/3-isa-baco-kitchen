@@ -2,8 +2,12 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
-import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.model.RestaurantTable;
+import com.bacovakuhinja.model.User;
+import com.bacovakuhinja.model.Waiter;
 import com.bacovakuhinja.service.DailyScheduleService;
+import com.bacovakuhinja.service.RestaurantService;
+import com.bacovakuhinja.service.RestaurantTableService;
 import com.bacovakuhinja.service.WaiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,12 +28,18 @@ public class WaiterController {
     @Autowired
     private DailyScheduleService DailyScheduleService;
 
+    private RestaurantTableService restaurantTableService;
+
+    @Autowired
+    private RestaurantService restaurantService;
+
+
     @RequestMapping(
             value = "/api/waiters",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<Waiter>> getWaiters() {
-        Collection <Waiter> waiters =  waiterService.findAll();
+    public ResponseEntity <Collection <Waiter>> getWaiters() {
+        Collection <Waiter> waiters = waiterService.findAll();
         return new ResponseEntity <Collection <Waiter>>(waiters, HttpStatus.OK);
     }
 
@@ -61,17 +71,21 @@ public class WaiterController {
             value = "/api/waiter/tables",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <ArrayList<RestaurantTable>> getTables(final HttpServletRequest request) {
+    public ResponseEntity <Collection <RestaurantTable>> getTables(final HttpServletRequest request) {
         User user = (User) request.getAttribute("loggedUser");
         Waiter waiter = waiterService.findOne(user.getUserId());
 
+        /*
+        Restaurant restaurant = restaurantService.findOne(waiter.getRestaurantID());
+        Collection<RestaurantTable> tables = restaurantTableService.findAllByRestaurant(restaurant.getRestaurantId());
+        */
         //TODO get real tables from database
         RestaurantTable t = new RestaurantTable();
         t.setTableId(1);
 
-        ArrayList<RestaurantTable> tables = new ArrayList<RestaurantTable>();
+        Collection <RestaurantTable> tables = new ArrayList <RestaurantTable>();
         tables.add(t);
-        return new ResponseEntity <ArrayList<RestaurantTable>>(tables, HttpStatus.OK);
+        return new ResponseEntity <Collection <RestaurantTable>>(tables, HttpStatus.OK);
     }
 
     @SendEmail
@@ -83,7 +97,7 @@ public class WaiterController {
         waiter.setPassword("generated_password");
         waiter.setVerified("not_verified");
         Waiter created = waiterService.create(waiter);
-        return new ResponseEntity<Waiter>(created, HttpStatus.CREATED);
+        return new ResponseEntity <Waiter>(created, HttpStatus.CREATED);
     }
 
     @RequestMapping(

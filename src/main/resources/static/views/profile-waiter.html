@@ -56,7 +56,7 @@
 		<div layout="column">
 			<div style="padding-right: 12px; padding-left:5px;">
 				<div class="option">
-					<md-button class="action-empl" ng-click="waiterProfileVm.sendName()"> <i class="material-icons md-48">dashboard</i> </md-button>
+					<md-button class="action-empl" ng-click="waiterProfileVm.sendName()" ng-disabled="true"> <i class="material-icons md-48">dashboard</i> </md-button>
 					<h4>Pregled rasporeda stolova</h4>
 				</div>
 				<hr>
@@ -84,16 +84,15 @@
 						<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
 
 							<md-card class="order-item">
-								<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
-								
 								<md-card-content>
+									<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
 									<h4>{{meal.name}}</h4>
 									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
 								<md-card-actions class="order-btns" layout="row" layout-align="center end">
-									<md-button> <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
-									<md-button class="md-raised md-primary">Prihvati</md-button>
+									<md-button > <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
+									<md-button class="md-raised md-primary" ng-disabled="true">Prihvati</md-button>
 								</md-card-actions>
 							</md-card>
 							
@@ -105,8 +104,8 @@
 				
 				<md-content class="md-padding">
 					<md-list flex>
-						<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills" ng-click="null">
-							<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar"/>
+						<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills">
+							<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar">
 							<div class="md-list-item-text" layout="column">
 								<h3>{{ bill.code }}</h3>
 								<h4>{{ bill.total }} RSD</h4>
@@ -155,7 +154,7 @@
 							</div>
 							<div id="inside-img">
 								<div id="center-vert" layout="column">
-									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1">Izdaj račun</md-button>
+									<md-button class="md-raised md-primary" ng-disabled="true">Izdaj račun</md-button>
 									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
 								</div>
 							</div>
