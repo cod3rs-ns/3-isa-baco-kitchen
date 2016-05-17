@@ -7,6 +7,7 @@ import com.bacovakuhinja.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -16,7 +17,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Override
-    public Collection<Employee> findAll() {
+    public Collection <Employee> findAll() {
         return employeeRepository.findAll();
     }
 
@@ -41,5 +42,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void delete(Integer eId) {
         employeeRepository.delete(eId);
+    }
+
+    @Override
+    public Collection <Employee> findByRestaurant(Integer restaurantId) {
+        Collection <Employee> allEmployees = employeeRepository.findAll();
+        Collection <Employee> restaurantEmployees = new ArrayList <Employee>();
+        for (Employee employee : allEmployees) {
+            if (employee.getRestaurantID() == restaurantId) {
+                restaurantEmployees.add(employee);
+            }
+        }
+        return restaurantEmployees;
     }
 }

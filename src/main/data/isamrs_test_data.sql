@@ -96,3 +96,8 @@ INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`, `rs_duration`, `rs_length
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('1', 'Neki komentar...', '4', '3', '3', '1', '1');
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('2', 'Drugi komentar...', '4', '3', '3', '1', '1');
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('3', 'Treci komentar...', '4', '3', '5', '1', '1');
+
+
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('1', '2016-05-17', '6', '1', '2', '7', '30', '14', '0');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('2', '2016-05-17', '7', '1', '2', '7', '30', '14', '0');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('3', '2016-05-17', '8', '1', '2', '7', '30', '14', '0');

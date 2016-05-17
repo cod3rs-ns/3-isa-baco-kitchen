@@ -3,10 +3,8 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
-import com.bacovakuhinja.service.DayScheduleService;
-import com.bacovakuhinja.service.EmployeeService;
+import com.bacovakuhinja.service.DailyScheduleService;
 import com.bacovakuhinja.service.WaiterService;
-import com.bacovakuhinja.service.impl.WaiterServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 public class WaiterController {
@@ -25,7 +22,7 @@ public class WaiterController {
     private WaiterService waiterService;
 
     @Autowired
-    private DayScheduleService dayScheduleService;
+    private DailyScheduleService DailyScheduleService;
 
     @RequestMapping(
             value = "/api/waiters",

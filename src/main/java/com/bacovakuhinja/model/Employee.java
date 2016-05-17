@@ -1,25 +1,22 @@
 package com.bacovakuhinja.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.Date;
 
-
 @Entity
 @Table(name = "employees")
 @PrimaryKeyJoinColumn(name = "e_id")
-public class Employee extends User{
-    @Column(name="e_bday")
+public class Employee extends User {
+    @Column(name = "e_bday")
     private Date birthday;
 
-    @Column(name="e_dress_size")
+    @Column(name = "e_dress_size")
     private String dressSize;
 
-    @Column(name="e_shoes_size")
+    @Column(name = "e_shoes_size")
     private String shoesSize;
 
     @Column(name = "e_restaurant")
@@ -58,7 +55,7 @@ public class Employee extends User{
         this.restaurantID = restaurantID;
     }
 
-    public void update(Employee newEmployee){
+    public void update(Employee newEmployee) {
         this.setFirstName(newEmployee.getFirstName());
         this.setLastName(newEmployee.getLastName());
         this.setBirthday(newEmployee.getBirthday());
