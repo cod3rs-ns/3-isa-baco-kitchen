@@ -288,7 +288,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`daily_schedules` (
   `ds_id` INT(11) NOT NULL AUTO_INCREMENT,
   `ds_day` DATETIME NOT NULL,
   `ds_employee_id` INT(11) NOT NULL,
-  `ds_region_id` INT(11) NOT NULL,
+  `ds_region_id` INT(11) NULL,
   `ds_restaurant_id` INT(11) NOT NULL,
   `ds_start_h` INT(11) NOT NULL,
   `ds_start_m` INT(11) NOT NULL,

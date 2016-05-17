@@ -48,9 +48,15 @@ public class DailyScheduleController {
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <DailySchedule> createDailySchedule(@RequestBody DailySchedule dailySchedule, @PathVariable("rest_id") Integer restaurantId, @PathVariable("emp_id") Integer employeeId,
+    public ResponseEntity <DailySchedule> createDailySchedule(@RequestBody DailySchedule dailySchedule,
+                                                              @PathVariable("rest_id") Integer restaurantId,
+                                                              @PathVariable("emp_id") Integer employeeId,
                                                               @PathVariable("reg_id") Integer regionId) {
-        dailySchedule.setRegion(regionService.findOne(regionId));
+        if(regionId == -1){
+            dailySchedule.setRegion(null);
+        }else {
+            dailySchedule.setRegion(regionService.findOne(regionId));
+        }
         dailySchedule.setEmployee(employeeService.findOne(employeeId));
         dailySchedule.setRestaurantId(restaurantId);
         DailySchedule created = dailyScheduleService.create(dailySchedule);

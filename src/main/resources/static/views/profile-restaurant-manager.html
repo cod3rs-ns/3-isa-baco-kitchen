@@ -267,67 +267,121 @@
       </md-tab>
 	  <md-tab label="Definisanje rasporeda" >
 		  <md-content ng-controller="RestaurantScheduleController as scheduleVm">
-			  <div class="btn-group" layout="row">
-    	            <md-toolbar layout="row" class="md-hue-3">
-    	                <div class="md-toolbar-tools">
-    	                    <h2 style="text-align: center">{{ scheduleVm.calendarTitle }}</h2>
-    	                    <span flex></span>
-    	                    <md-button ng-click="scheduleVm.changeToDay()">
-    	                        Dan
-    	                    </md-button>
-    	                    <md-button ng-click="scheduleVm.changeToMonth()">
-    	                        Mjesec
-    	                    </md-button>
-    	                </div>
-    	            </md-toolbar>
-    	        </div>
-			  <div id="calendar" layout="row">
-			  	<div flex-gt-sm="20" layout="column">
+
+			<div id="calendar" layout="row">
+				<div flex-gt-sm="20" layout="column" style="margin:15px;">
+					<md-toolbar class="md-theme-light">
+						<h2 class="md-toolbar-tools">
+							<span>Forma za definisanje rasporeda rada</span>
+						</h2>
+					</md-toolbar>
+					<form name="scheduleForm">
 					<label>Početak smene</label>
 					<div layout="row">
-
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	      					<input ng-model="scheduleVm.testDate.sh" type="number" step="1">
+	    					<input 	name="scheduleStartHours" ng-model="scheduleVm.testDate.sh"
+									type="number" step="1" min="0" max="24" required
+									ng-disabled="!scheduleVm.selectedDate">
+							<div ng-messages="scheduleForm.scheduleStartHours.$error">
+								<div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 24.</div>
+							</div>
 	    				</md-input-container>
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	      					<input ng-model="scheduleVm.testDate.sm" type="number" step="1">
+	    					<input 	name="scheduleStartMinutes" ng-model="scheduleVm.testDate.sm"
+									type="number" step="1" min="0" max="60" required
+									ng-disabled="!scheduleVm.selectedDate">
+							<div ng-messages="scheduleForm.scheduleStartMinutes.$error">
+								<div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 60.</div>
+							</div>
 	    				</md-input-container>
-
 					</div>
 					<label>Kraj smene</label>
 					<div layout="row">
 						<md-input-container class="md-block">
 							<label>časovi</label>
-	      					<input ng-model="scheduleVm.testDate.eh" type="number" step="1">
+	    					<input 	name="scheduleEndHours" ng-model="scheduleVm.testDate.eh"
+									type="number" step="1" min="0" max="24" required
+									ng-disabled="!scheduleVm.selectedDate">
+							<div ng-messages="scheduleForm.scheduleEndHours.$error">
+								<div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 24.</div>
+							</div>
 	    				</md-input-container>
-
 						<md-input-container class="md-block">
 							<label>minuti</label>
-	      					<input ng-model="scheduleVm.testDate.em" type="number" step="1">
+	    					<input 	name="scheduleEndMinutes" ng-model="scheduleVm.testDate.em"
+									type="number" step="1" min="0" max="60" required
+									ng-disabled="!scheduleVm.selectedDate">
+							<div ng-messages="scheduleForm.scheduleEndMinutes.$error">
+								<div ng-message="required">Ovo polje je obavezno.</div>
+								<div ng-message="min">Vrednost mora biti veća od 0.</div>
+								<div ng-message="max">Vrednost mora biti manja od 60.</div>
+							</div>
 	    				</md-input-container>
 
 					</div>
+					<div ng-hide="scheduleVm.selectedDate">
+						<p style="color:red;">Izaberite datum u kalendarskom prikazu</p>
+					</div>
+
 					<div layout="row">
-						<md-select placeholder="Assign to user" ng-model="user" md-on-open="scheduleVm.loadEmployees()" style="min-width: 100px;"
-						ng-model="scheduleVm.newEvent.title">
-      						<md-option ng-value="user.firstName" ng-repeat="user in scheduleVm.employees"
-										>{{user.firstName + ' ' + user.lastName}}</md-option>
+						<md-select 	placeholder="Izaberite zaposlenog" md-on-open="scheduleVm.loadEmployees()"
+									ng-model="scheduleVm.testDate.employee" ng-disabled="!scheduleVm.selectedDate"
+									name="scheduleEmployee" flex required>
+      						<md-option ng-value="employee" ng-repeat="employee in scheduleVm.employees"
+									ng-click="scheduleVm.onSelectedEmployee(employee)">
+									{{employee.firstName + ' ' + employee.lastName}}
+							</md-option>
+
+    					</md-select>
+						<div ng-messages="scheduleForm.scheduleEmployee.$error">
+							<div ng-message="required">Morate izabrati zaposlenog.</div>
+						</div>
+					</div>
+					<div layout="row">
+						<md-select 	placeholder="Izaberite region" md-on-open="scheduleVm.loadRegions()"
+									ng-model="scheduleVm.testDate.region" ng-disabled="!scheduleVm.selectedDate"
+									ng-hide="!scheduleVm.isWaiterSelected" ng-required="scheduleVm.isWaiterSelected"
+									name="scheduleRegion" flex>
+     					<md-option ng-value="region" ng-repeat="region in scheduleVm.regions"
+										>{{region.name}}</md-option>
 
     					</md-select>
 					</div>
 					<div layout="row">
-						<md-button ng-click="scheduleVm.addNewEvent()">
-							Dodaj radno vreme
+						<md-button ng-disabled="!scheduleForm.$valid" ng-click="scheduleVm.addNewEvent()" class="md-raised md-primary">
+							Kreiraj raspored
 						</md-button>
 					</div>
-
+				</form>
 
 			  	</div>
 
 			  	<div flex-gt-sm="80" layout="column" class="main-content">
-
+					<div class="btn-group" layout="row">
+	      	            <md-toolbar layout="row">
+	      	                <div class="md-toolbar-tools">
+	      	                    <h2 style="text-align: center">{{ scheduleVm.calendarTitle }}</h2>
+	      	                    <span flex></span>
+	      	                    <md-button ng-click="scheduleVm.changeToDay()">
+	      	                        Dnevni prikaz
+	      	                    </md-button>
+								<md-button ng-click="scheduleVm.changeToWeek()">
+									Sedmični prikaz
+								</md-button>
+	      	                    <md-button ng-click="scheduleVm.changeToMonth()">
+	      	                        Mesečni prikaz
+	      	                    </md-button>
+	      	                </div>
+	      	            </md-toolbar>
+	      	        </div>
 					<mwl-calendar
 	  					  view="scheduleVm.calendarView"
 	  					  current-day="scheduleVm.calendarDate"
@@ -340,14 +394,12 @@
 	  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
 	  					  on-edit-event-click="eventEdited(calendarEvent)"
 	  					  on-delete-event-click="eventDeleted(calendarEvent)"
-	  					  cell-is-open="true">
+	  					  cell-is-open="true"
+						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)">>
 	  			  </mwl-calendar>
 
-			  	</div>
+				</div>
 			  </div>
-
-
-
 
   	    </md-content>
       </md-tab>
