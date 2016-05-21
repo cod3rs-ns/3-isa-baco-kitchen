@@ -101,3 +101,10 @@ INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv
 INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('1', '2016-05-17', '6', '1', '2', '7', '30', '14', '0');
 INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('2', '2016-05-17', '7', '1', '2', '7', '30', '14', '0');
 INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`) VALUES ('3', '2016-05-17', '8', '1', '2', '7', '30', '14', '0');
+
+
+INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('1', '1', '10', 'accepted');
+INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('2', '1', '11', 'accepted');
+INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('3', '1', '13', 'accepted');
+INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('4', '10', '13', 'accepted');
+INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('5', '10', '19', 'accepted');

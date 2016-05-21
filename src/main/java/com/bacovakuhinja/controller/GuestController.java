@@ -76,6 +76,11 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<User>> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
+        if (id == -1) {
+            Guest user = (Guest) request.getAttribute("loggedUser");
+            id = user.getGuestId();
+        }
+        
         Collection<User> friends = friendshipService.getFriendsByGuestID(id);
 
         return new ResponseEntity<Collection<User>>(friends, HttpStatus.OK);
