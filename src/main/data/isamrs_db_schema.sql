@@ -630,6 +630,62 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`working_times` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`provider_responses`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`provider_responses` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`provider_responses` (
+  `pr_id` INT(11) NOT NULL,
+  `pr_price` DOUBLE NOT NULL,
+  `pr_info` VARCHAR(50) NULL,
+  `pr_status` VARCHAR(20) NOT NULL,
+  `pr_provider_id` INT(11) NOT NULL,
+  `pr_offer_id` INT(11) NOT NULL,
+  PRIMARY KEY (`pr_id`),
+  INDEX `pr_provider_fid_idx` (`pr_provider_id` ASC),
+  INDEX `pr_offer_fid_idx` (`pr_offer_id` ASC),
+  CONSTRAINT `pr_provider_fid`
+    FOREIGN KEY (`pr_provider_id`)
+    REFERENCES `isa_mrs_project`.`restaurant_providers` (`rp_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `pr_offer_fid`
+    FOREIGN KEY (`pr_offer_id`)
+    REFERENCES `isa_mrs_project`.`offer_requests` (`or_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `isa_mrs_project`.`offer_requests`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `isa_mrs_project`.`offer_requests` ;
+
+CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`offer_requests` (
+  `or_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `or_offer` VARCHAR(500) NOT NULL,
+  `or_deadline` VARCHAR(45) NOT NULL,
+  `or_status` VARCHAR(20) NOT NULL,
+  `or_restaurant_id` INT(11) NOT NULL,
+  `or_accepted_offer_id` INT(11) NULL,
+  PRIMARY KEY (`or_id`),
+  INDEX `or_restaurant_fid_idx` (`or_restaurant_id` ASC),
+  INDEX `or_accepted_offer_fid_idx` (`or_accepted_offer_id` ASC),
+  CONSTRAINT `or_restaurant_fid`
+    FOREIGN KEY (`or_restaurant_id`)
+    REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `or_accepted_offer_fid`
+    FOREIGN KEY (`or_accepted_offer_id`)
+    REFERENCES `isa_mrs_project`.`provider_responses` (`pr_id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
