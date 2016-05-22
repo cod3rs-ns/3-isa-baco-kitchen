@@ -7,7 +7,8 @@ reservationService.$inject = ['$http'];
 function reservationService($http) {
     var service = {
         addReservation: addReservation,
-        removeReservation: removeReservation
+        removeReservation: removeReservation,
+        inviteFriend: inviteFriend
     };
 
     return service;
@@ -23,6 +24,13 @@ function reservationService($http) {
         return $http.delete('api/reservation/' + reservationId)
         .then(function(response) {
             return response.data;
+        });
+    };
+    
+    function inviteFriend(reservationId, friendEmail) {
+        return $http.head('api/reservation/invite?reservation=' + reservationId + '&friend=' + friendEmail)
+        .then(function(response) {
+
         });
     };
 }

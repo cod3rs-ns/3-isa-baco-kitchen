@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', '$mdDialog', '$routeParams'];
+RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, $mdDialog, $routeParams, SingleDrinkController){
+function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
@@ -20,6 +20,12 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
       comment: ''
     };
     
+    restaurantVm.DateTime = {};
+    restaurantVm.reservation = {
+      restaurant: null,
+      reservationDateTime: null,
+      length: 0
+    };
     restaurantVm.reservationTables = [];
     restaurantVm.currentUserFriends = [];
     
@@ -189,14 +195,37 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function inviteFriend(friendId) {
+        var friendEmail = "";
+      
         for (var friend in restaurantVm.currentUserFriends) {
             if (restaurantVm.currentUserFriends[friend].userId == friendId) {
+                friendEmail = restaurantVm.currentUserFriends[friend].email;
                 restaurantVm.currentUserFriends[friend].invited = true;
+                restaurantVm.currentUserFriends.splice(friend, 1);
             }
         }
+        
+        return reservationService.inviteFriend(restaurantVm.reservation.reservationId, friendEmail)
+          .then(function(data) {
+            
+          });
     };
     
     function saveReservation() {
-        alert('Make reservation');
+      restaurantVm.reservation.restaurant = restaurantVm.restaurant;
+      restaurantVm.reservation.reservationDateTime = new Date(
+        restaurantVm.DateTime.date.getFullYear(),
+        restaurantVm.DateTime.date.getMonth(),
+        restaurantVm.DateTime.date.getDate(),
+        restaurantVm.DateTime.hours,
+        restaurantVm.DateTime.mins,
+        0,
+        0
+      );
+
+      return reservationService.addReservation(restaurantVm.reservation)
+          .then(function(data) {
+              restaurantVm.reservation = data;
+          });
     };
 }

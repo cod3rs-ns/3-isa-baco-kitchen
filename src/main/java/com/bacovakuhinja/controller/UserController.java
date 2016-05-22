@@ -119,7 +119,6 @@ public class UserController {
         return null;
     }
 
-    @SendEmail
     @RequestMapping(
             value    = "api/user/register",
             method   = RequestMethod.POST,

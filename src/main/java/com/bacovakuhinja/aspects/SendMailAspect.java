@@ -77,7 +77,7 @@ public class SendMailAspect {
         //sendMail(user.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
-    private void sendMail(String address, String subject, String message) throws MessagingException {
+    public static void sendMail(String address, String subject, String message) throws MessagingException {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setDefaultEncoding("UTF-8");
 

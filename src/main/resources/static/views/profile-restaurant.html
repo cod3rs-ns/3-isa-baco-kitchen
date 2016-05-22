@@ -179,25 +179,25 @@
             <div>
               <!--md-datepicker ng-model="myDate" md-placeholder="Enter date"
                 md-min-date="minDate" md-max-date="maxDate"></md-datepicker-->
-              <md-datepicker ng-model="myDate" 
+              <md-datepicker ng-model="restaurantVm.DateTime.date"
                 md-placeholder="Odaberi datum rezervacije"></md-datepicker>
               
                 <div layout="row">
       						<md-input-container class="md-block">
       							<label>časovi</label>
-      	    					<input 	name="scheduleStartHours" ng-model="scheduleVm.testDate.sh"
+      	    					<input 	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
       									type="number" step="1" min="0" max="23" required />
       	    			</md-input-container>
       						<md-input-container class="md-block">
       							<label>minuti</label>
-      	    					<input name="scheduleStartMinutes" ng-model="scheduleVm.testDate.sm"
-      									type="number" step="1" min="0" max="59" required />
+      	    					<input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
+      									type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
       	    			</md-input-container>
       					</div>
                 
               <md-input-container class="md-block">
                 <label>Trajanje</label>
-                <input required type="number" step="0.5" name="duration" ng-model="test3" min="0" max="4" />
+                <input required type="number" step="1" name="duration" ng-model="restaurantVm.reservation.length" min="1" max="6" />
               </md-input-container>
             </div>
             <md-button wz-next>Nastavite...</md-button>

@@ -4,10 +4,12 @@ import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.repository.ReservationRepository;
 import com.bacovakuhinja.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Service
 public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
@@ -16,6 +18,11 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Collection<Reservation> findAll() {
         return reservationRepository.findAll();
+    }
+
+    @Override
+    public Reservation findOne(Integer reservationId) {
+        return reservationRepository.findOne(reservationId);
     }
 
     @Override
