@@ -294,6 +294,8 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`daily_schedules` (
   `ds_start_m` INT(11) NOT NULL,
   `ds_end_h` INT(11) NOT NULL,
   `ds_end_m` INT(11) NOT NULL,
+  `ds_merged_start` DATETIME NULL,
+  `ds_merged_end` DATETIME NULL,
   PRIMARY KEY (`ds_id`),
   INDEX `ds_table_region_fid_idx` (`ds_region_id` ASC),
   INDEX `ds_employee_fid_idx` (`ds_employee_id` ASC),
