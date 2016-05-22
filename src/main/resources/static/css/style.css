@@ -258,3 +258,6 @@ ul.rating {
   color: #333;
 }
 
+md-dialog-content.reservation-dialog {
+    padding: 4px 24px;
+}

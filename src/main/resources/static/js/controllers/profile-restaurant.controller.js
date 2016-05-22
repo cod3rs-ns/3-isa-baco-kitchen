@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$routeParams'];
+RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $routeParams, SingleDrinkController){
+function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
@@ -34,6 +34,10 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.selectTable = selectTable;
     restaurantVm.saveReservation = saveReservation;
+    restaurantVm.showToast = showToast;
+    restaurantVm.cancel = cancel;
+    restaurantVm.showReservationDialog = showReservationDialog;
+    restaurantVm.finishReservation = finishReservation;
 
     activate();
 
@@ -195,19 +199,19 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function inviteFriend(friendId) {
-        var friendEmail = "";
+        var invitedFriend = null;
       
         for (var friend in restaurantVm.currentUserFriends) {
             if (restaurantVm.currentUserFriends[friend].userId == friendId) {
-                friendEmail = restaurantVm.currentUserFriends[friend].email;
+                invitedFriend = restaurantVm.currentUserFriends[friend];
                 restaurantVm.currentUserFriends[friend].invited = true;
                 restaurantVm.currentUserFriends.splice(friend, 1);
             }
         }
         
-        return reservationService.inviteFriend(restaurantVm.reservation.reservationId, friendEmail)
-          .then(function(data) {
-            
+        return reservationService.inviteFriend(restaurantVm.reservation.reservationId, invitedFriend.email)
+          .then(function(data) { 
+            showToast('Poziv je poslat za ' + invitedFriend.firstName + ' ' + invitedFriend.lastName + '.');
           });
     };
     
@@ -227,5 +231,33 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
           .then(function(data) {
               restaurantVm.reservation = data;
           });
+    };
+    
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+    
+    function cancel() {
+        $mdDialog.cancel();
+    };
+    
+    function showReservationDialog() {
+      $mdDialog.show({
+          controller: 'RestaurantProfileController',
+          controllerAs: 'restaurantVm',
+          templateUrl: '/views/dialogs/reservation-form-tmpl.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          fullscreen: false
+      });
+    };
+    
+    function finishReservation() {
+        alert('Reservation finished');
+        $mdDialog.cancel();
     };
 }
