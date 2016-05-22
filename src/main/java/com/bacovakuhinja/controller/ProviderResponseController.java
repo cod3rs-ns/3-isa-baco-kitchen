@@ -1,8 +1,6 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
-import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,7 +20,7 @@ public class ProviderResponseController {
             value = "/api/provider_responses",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<ProviderResponse>> getProviderResponses() {
+    public ResponseEntity <Collection <ProviderResponse>> getProviderResponses() {
         Collection <ProviderResponse> responses = responseService.findAll();
         return new ResponseEntity <Collection <ProviderResponse>>(responses, HttpStatus.OK);
     }
@@ -83,4 +81,5 @@ public class ProviderResponseController {
         Collection <ProviderResponse> providerResponses = responseService.findAllByProvider(id);
         return new ResponseEntity <Collection <ProviderResponse>>(providerResponses, HttpStatus.OK);
     }
+
 }
