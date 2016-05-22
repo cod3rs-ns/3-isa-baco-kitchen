@@ -18,7 +18,7 @@ import java.util.Collection;
 public class RestaurantProviderController {
 
     @Autowired
-    private RestaurantProviderService providerService;
+private RestaurantProviderService providerService;
 
     @RequestMapping(
             value = "/api/providers",

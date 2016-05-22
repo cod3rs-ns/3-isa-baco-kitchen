@@ -25,7 +25,7 @@ public class OfferRequest {
     private String status;
 
     @Column(name = "or_accepted_offer_id")
-    private String acceptedResponse;
+    private Integer acceptedResponse;
 
     public OfferRequest() {
     }
@@ -70,11 +70,11 @@ public class OfferRequest {
         this.status = status;
     }
 
-    public String getAcceptedResponse() {
+    public Integer getAcceptedResponse() {
         return acceptedResponse;
     }
 
-    public void setAcceptedResponse(String acceptedResponse) {
+    public void setAcceptedResponse(Integer acceptedResponse) {
         this.acceptedResponse = acceptedResponse;
     }
 

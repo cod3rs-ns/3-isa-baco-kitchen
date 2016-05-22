@@ -666,7 +666,7 @@ DROP TABLE IF EXISTS `isa_mrs_project`.`offer_requests` ;
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`offer_requests` (
   `or_id` INT(11) NOT NULL AUTO_INCREMENT,
   `or_offer` VARCHAR(500) NOT NULL,
-  `or_deadline` VARCHAR(45) NOT NULL,
+  `or_deadline` DATETIME NOT NULL,
   `or_status` VARCHAR(20) NOT NULL,
   `or_restaurant_id` INT(11) NOT NULL,
   `or_accepted_offer_id` INT(11) NULL,

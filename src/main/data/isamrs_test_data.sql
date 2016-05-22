@@ -108,3 +108,8 @@ INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `f
 INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('3', '1', '13', 'accepted');
 INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('4', '10', '13', 'accepted');
 INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `fs_status`) VALUES ('5', '10', '19', 'accepted');
+
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('1', 'Potrebno je toga i toga...', '2016-06-15 08:49:43', 'created', '2', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('2', 'Potrebno je nama toga i toga... ', '2016-06-16 08:49:43', 'created', '2', null);
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('1', '1000', 'info', 'active', '4', '1');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('2', '1000', 'info', 'active', '4', '2');
