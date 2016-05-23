@@ -107,7 +107,9 @@
 				</md-tab-label>
 				<md-tab-body>
 				<md-content class="md-padding">
-					<div layout="row" layout-wrap>
+					<p ng-show="cookProfileVm.preparingMeals.length == 0;"> Nema prihvaćenih jela za izradu. </p>
+
+					<div layout="row" ng-show="cookProfileVm.preparingMeals.length !== 0" layout-wrap>
 						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
 
 							<md-card class="order-item">

@@ -65,4 +65,9 @@ public class OrderItemServiceImpl implements OrderItemService{
     public Collection<OrderItem> findActiveDrinksByRestaurant(Integer restaurantId) {
         return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, "CREATED", "drink");
     }
+
+    @Override
+    public Collection<OrderItem> findFinishedItemsByRegion(Integer regionId) {
+        return orderItemRepository.findByStateAndOrder_Table_Region_RegionId("FINISHED", regionId);
+    }
 }

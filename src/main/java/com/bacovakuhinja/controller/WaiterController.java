@@ -26,7 +26,7 @@ public class WaiterController {
     private WaiterService waiterService;
 
     @Autowired
-    private DailyScheduleService DailyScheduleService;
+    private DailyScheduleService dailyScheduleService;
 
     private RestaurantTableService restaurantTableService;
 
@@ -112,5 +112,4 @@ public class WaiterController {
         }
         return new ResponseEntity <Waiter>(updatedWaiter, HttpStatus.OK);
     }
-
 }

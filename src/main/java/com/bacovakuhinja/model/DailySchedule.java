@@ -21,7 +21,6 @@ public class DailySchedule {
     @JoinColumn(name = "ds_region_id")
     private RestaurantRegion region;
 
-
     @ManyToOne
     @JoinColumn(name = "ds_employee_id")
     private Employee employee;

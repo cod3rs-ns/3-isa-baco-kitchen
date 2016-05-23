@@ -1,12 +1,7 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.model.ClientOrder;
-import com.bacovakuhinja.model.Employee;
-import com.bacovakuhinja.model.OrderItem;
-import com.bacovakuhinja.model.RestaurantTable;
-import com.bacovakuhinja.service.ClientOrderService;
-import com.bacovakuhinja.service.EmployeeService;
-import com.bacovakuhinja.service.OrderItemService;
+import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.service.*;
 import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +31,8 @@ public class OrderItemsController {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private DailyScheduleService dailyScheduleService;
 
     @Autowired
     private SimpMessagingTemplate template;
@@ -104,4 +101,30 @@ public class OrderItemsController {
         return new ResponseEntity <OrderItem>(updatedItem, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/api/orderItems/i={itemId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> finishOrderItem(@PathVariable("itemId") Integer itemId) {
+        OrderItem item = orderItemService.findOne(itemId);
+        if (item != null) {
+            item.setState("FINISHED");
+            OrderItem updatedItem = orderItemService.update(item);
+            Integer regionId = updatedItem.getOrder().getTable().getRegion().getRegionId();
+            System.out.println(regionId);
+            DailySchedule schedules = dailyScheduleService.findScheduleByTableForNow(regionId);
+            User e = schedules.getEmployee();
+            System.out.println("user" + e.getUserId());
+            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        }
+        return null;
+    }
+
+    @RequestMapping(
+            value = "/api/orderItems/finished/r={regionId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<OrderItem>> finishedOrderItem(@PathVariable("regionId") Integer regionId) {
+        return new ResponseEntity<Collection<OrderItem>> (orderItemService.findFinishedItemsByRegion(regionId), HttpStatus.OK );
+    }
 }

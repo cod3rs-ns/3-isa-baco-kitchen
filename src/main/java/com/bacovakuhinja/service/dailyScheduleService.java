@@ -2,6 +2,7 @@ package com.bacovakuhinja.service;
 
 import com.bacovakuhinja.model.DailySchedule;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -24,4 +25,6 @@ public interface DailyScheduleService {
     public Collection <DailySchedule> findByRestaurantRegion(Integer regionId);
 
     public Collection <DailySchedule> findByDay(Date day);
+
+    public DailySchedule findScheduleByTableForNow(Integer regionId);
 }

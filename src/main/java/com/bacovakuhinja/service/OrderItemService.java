@@ -26,4 +26,6 @@ public interface OrderItemService {
     public Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId);
 
     public Collection<OrderItem> findActiveDrinksByRestaurant(Integer restaurantId);
+
+    public Collection<OrderItem> findFinishedItemsByRegion(Integer regionId);
 }
