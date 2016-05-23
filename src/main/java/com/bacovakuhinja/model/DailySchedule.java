@@ -1,7 +1,5 @@
 package com.bacovakuhinja.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -39,6 +37,12 @@ public class DailySchedule {
 
     @Column(name = "ds_end_m")
     private Integer endMinutes;
+
+    @Column(name = "ds_merged_start")
+    private Date mergedStart;
+
+    @Column(name = "ds_merged_end")
+    private Date mergedEnd;
 
     public DailySchedule() {
     }
@@ -113,5 +117,21 @@ public class DailySchedule {
 
     public void setEndMinutes(Integer endMinutes) {
         this.endMinutes = endMinutes;
+    }
+
+    public Date getMergedStart() {
+        return mergedStart;
+    }
+
+    public void setMergedStart(Date mergedStart) {
+        this.mergedStart = mergedStart;
+    }
+
+    public Date getMergedEnd() {
+        return mergedEnd;
+    }
+
+    public void setMergedEnd(Date mergedEnd) {
+        this.mergedEnd = mergedEnd;
     }
 }
