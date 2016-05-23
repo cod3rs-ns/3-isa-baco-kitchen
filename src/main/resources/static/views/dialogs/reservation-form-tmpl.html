@@ -13,34 +13,35 @@
         <wizard on-finish="restaurantVm.finishReservation()"> 
           <wz-step wz-title="Odaberi vrijeme">
               <h1>Kada želite da rezervišete?</h1>
-              <div>
-                <!--md-datepicker ng-model="myDate" md-placeholder="Enter date"
-                  md-min-date="minDate" md-max-date="maxDate"></md-datepicker-->
-                <md-datepicker ng-model="restaurantVm.DateTime.date"
-                  md-placeholder="Odaberi datum rezervacije"></md-datepicker>
+              <p> Odaberite datum kada želite da rezervišete. Nakon toga, unesite vrijeme početka Vaše rezervacije, kao i koliko sati želite da ostanete na rezervaciji. </p>
+              <form name="reservationForm1">
+
+                  <md-datepicker ng-model="restaurantVm.DateTime.date" style="background-color: white;"
+                    md-placeholder="Odaberi datum" required></md-datepicker>
                 
-                  <div layout="row">
-                    <md-input-container class="md-block">
-                      <label>časovi</label>
-                        <input 	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
-                          type="number" step="1" min="0" max="23" required />
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                      <label>minuti</label>
-                        <input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
-                          type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
-                    </md-input-container>
-                  </div>
-                  
+                <md-input-container class="md-block">
+                    <md-icon ng-style="{color: #aaa;}" aria-label="Time" class="material-icons">alarm</md-icon>
+                    <label>časovi</label>
+                    <input 	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
+                      type="number" step="1" min="0" max="23" required />
+                  </md-input-container>
+                  <md-input-container class="md-block">
+                    <label>minuti</label>
+                    <md-icon ng-style="{color: #aaa;}" aria-label="Time" class="material-icons">alarm</md-icon>
+                      <input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
+                        type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
+                  </md-input-container>
+                
                 <md-input-container class="md-block">
                   <label>Trajanje</label>
                   <input required type="number" step="1" name="duration" ng-model="restaurantVm.reservation.length" min="1" max="6" />
                 </md-input-container>
-              </div>
+                
               <md-dialog-actions layout="row">
                   <span flex></span>
-                  <md-button wz-next>Nastavite...</md-button>
+                  <md-button ng-disabled="!reservationForm1.$valid" wz-next>Nastavite...</md-button>
               </md-dialog-actions>
+            </form>
           </wz-step>
           <wz-step wz-title="Odaberi stolove">
               <h1>Koje stolove želite da rezervišete?</h1>
