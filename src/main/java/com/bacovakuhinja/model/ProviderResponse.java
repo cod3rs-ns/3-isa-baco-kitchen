@@ -20,11 +20,13 @@ public class ProviderResponse {
     @Column(name = "pr_status")
     private String status;
 
-    @Column(name = "pr_provider_id")
-    private Integer providerId;
+    @ManyToOne
+    @JoinColumn(name = "pr_provider_id")
+    private RestaurantProvider provider;
 
-    @Column(name = "pr_offer_id")
-    private Integer offerId;
+    @ManyToOne
+    @JoinColumn(name = "pr_offer_id")
+    private OfferRequest offer;
 
     public ProviderResponse() {
     }
@@ -61,20 +63,19 @@ public class ProviderResponse {
         this.status = status;
     }
 
-    public Integer getProviderId() {
-        return providerId;
+    public RestaurantProvider getProvider() {
+        return provider;
     }
 
-    public void setProviderId(Integer providerId) {
-        this.providerId = providerId;
+    public void setProvider(RestaurantProvider provider) {
+        this.provider = provider;
     }
 
-    public Integer getOfferId() {
-        return offerId;
+    public OfferRequest getOffer() {
+        return offer;
     }
 
-    public void setOfferId(Integer offerId) {
-        this.offerId = offerId;
+    public void setOffer(OfferRequest offer) {
+        this.offer = offer;
     }
-
 }

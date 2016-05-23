@@ -11,7 +11,9 @@ function offerRequestService($http) {
         updateOfferRequest: updateOfferRequest,
         deleteOfferRequest: deleteOfferRequest,
         createOfferRequest: createOfferRequest,
-        getOfferRequestsByRestaurant: getOfferRequestsByRestaurant
+        getOfferRequestsByRestaurant: getOfferRequestsByRestaurant,
+        acceptProviderResponse: acceptProviderResponse,
+        rejectProviderResponse: rejectProviderResponse
     };
     return service;
 
@@ -57,4 +59,17 @@ function offerRequestService($http) {
         });
     };
 
+    function acceptProviderResponse(offer_id, response_id) {
+        return $http.get('api/offers_a/offer=' + offer_id +'&accept=' + response_id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+
+    function rejectProviderResponse(offer_id, response_id) {
+        return $http.get('api/offers_n/offer=' + offer_id +'&reject=' + response_id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
 }

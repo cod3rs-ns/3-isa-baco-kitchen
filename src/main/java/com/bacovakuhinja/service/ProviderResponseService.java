@@ -1,23 +1,27 @@
 package com.bacovakuhinja.service;
 
+import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
+import com.bacovakuhinja.model.RestaurantProvider;
 
 import java.util.Collection;
 
 public interface ProviderResponseService {
 
-    public Collection<ProviderResponse> findAll();
+    Collection<ProviderResponse> findAll();
 
-    public ProviderResponse findOne(Integer id);
+    ProviderResponse findOne(Integer id);
 
-    public ProviderResponse create(ProviderResponse providerResponse);
+    ProviderResponse create(ProviderResponse providerResponse);
 
-    public ProviderResponse update(ProviderResponse providerResponse);
+    ProviderResponse update(ProviderResponse providerResponse);
 
-    public void delete(Integer id);
+    void delete(Integer id);
 
-    public Collection <ProviderResponse> findAllByProvider(Integer providerId);
+    Collection <ProviderResponse> findAllByProvider(RestaurantProvider provider);
 
-    public Collection <ProviderResponse> findAllByOffer(Integer offerId);
+    Collection <ProviderResponse> findAllByOffer(OfferRequest offer);
+
+    Collection<ProviderResponse> updateAll(Collection<ProviderResponse> responses);
 
 }

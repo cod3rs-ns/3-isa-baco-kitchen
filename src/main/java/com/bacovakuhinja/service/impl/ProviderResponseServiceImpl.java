@@ -1,6 +1,9 @@
 package com.bacovakuhinja.service.impl;
 
+import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
+import com.bacovakuhinja.model.Restaurant;
+import com.bacovakuhinja.model.RestaurantProvider;
 import com.bacovakuhinja.repository.ProviderResponseRepository;
 import com.bacovakuhinja.service.ProviderResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +45,17 @@ public class ProviderResponseServiceImpl implements ProviderResponseService {
     }
 
     @Override
-    public Collection <ProviderResponse> findAllByProvider(Integer providerId) {
-        return responseRepository.findByProviderId(providerId);
+    public Collection <ProviderResponse> findAllByProvider(RestaurantProvider provider) {
+        return responseRepository.findByProvider(provider);
     }
 
     @Override
-    public Collection <ProviderResponse> findAllByOffer(Integer offerId) {
-       return responseRepository.findByOfferId(offerId);
+    public Collection <ProviderResponse> findAllByOffer(OfferRequest offerRequest) {
+       return responseRepository.findByOffer(offerRequest);
+    }
+
+    @Override
+    public Collection <ProviderResponse> updateAll(Collection <ProviderResponse> responses) {
+        return responseRepository.save(responses);
     }
 }

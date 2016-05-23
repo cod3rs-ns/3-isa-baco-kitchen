@@ -10,6 +10,8 @@ function SingleOfferController(offerRequestService, providerResponseService, $md
     singleOfferVm.responses = [];
 
     singleOfferVm.cancel = cancel;
+    singleOfferVm.acceptResponse = acceptResponse;
+    singleOfferVm.rejectResponse = rejectResponse;
 
     activate();
 
@@ -37,5 +39,25 @@ function SingleOfferController(offerRequestService, providerResponseService, $md
 
     function cancel() {
         $mdDialog.cancel();
+    };
+
+    function acceptResponse(response_id) {
+        offerRequestService.acceptProviderResponse(singleOfferVm.offer.offerId, response_id)
+            .then(function(data) {
+                console.log(data);
+                singleOfferVm.offer = data;
+                singleOfferVm.responses = getProviderResponses();
+                console.log("------------");
+                console.log(singleOfferVm.offer);
+                console.log(singleOfferVm.responses);
+            });
+    };
+
+    function rejectResponse(response_id) {
+        offerRequestService.rejectProviderResponse(singleOfferVm.offer.offerId, response_id)
+            .then(function(data) {
+                console.log(data);
+                singleOfferVm.offer = data;
+            });
     };
 }

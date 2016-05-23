@@ -16,18 +16,26 @@
                     <md-list-item class="md-3-line" ng-repeat="response in singleOfferVm.responses">
                         <div class="md-list-item-text">
                             <h3>{{'Ponuda #' + response.responseId}}</h3>
-                            <p>{{response.provider_name}}</p>
+                            <p>{{response.provider.firstName + ' ' + response.provider.lastName}}</p>
                             <p>{{response.price + ' RSD'}}</p>
+                            <p style="color:green;" ng-show="response.status == 'accepted'">
+                                prihvaćena
+                            </p>
+                            <p style="color:red;" ng-show="response.status == 'rejected'">
+                                odbijena
+                            </p>
                         </div>
                         <md-button  class="md-fab md-mini md-primary md-raised md-secondary"
-                                    ng-click="shiftVm.initEditMode(shiftTemplate);">
+                                    ng-click="singleOfferVm.acceptResponse(response.responseId);"
+                                    ng-disabled="response.status=='rejected'">
                             <i class="material-icons md-24">done</i>
                             <md-tooltip md-direction="top">
                                 Prihvati
                             </md-tooltip>
                         </md-button>
                         <md-button  class="md-fab md-mini md-accent md-raised md-secondary"
-                                    ng-click="shiftVm.initEditMode(shiftTemplate);">
+                                    ng-click="singleOfferVm.rejectResponse(response.responseId);response.status='rejected';"
+                                    ng-disabled="response.status=='rejected'">
                             <i class="material-icons md-24">clear</i>
                             <md-tooltip md-direction="top">
                                 Odbij

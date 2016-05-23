@@ -1,7 +1,10 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.SendProvidersMail;
 import com.bacovakuhinja.model.OfferRequest;
+import com.bacovakuhinja.model.ProviderResponse;
 import com.bacovakuhinja.service.OfferRequestService;
+import com.bacovakuhinja.service.ProviderResponseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +18,9 @@ public class OfferRequestController {
 
     @Autowired
     private OfferRequestService offerRequestService;
+
+    @Autowired
+    private ProviderResponseService providerResponseService;
 
     @RequestMapping(
             value = "/api/offers",
@@ -73,4 +79,41 @@ public class OfferRequestController {
         return new ResponseEntity <Collection <OfferRequest>>(offerRequests, HttpStatus.OK);
     }
 
+
+    @SendProvidersMail
+    @RequestMapping(
+            value = "api/offers_a/offer={offer_id}&accept={response_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <OfferRequest> acceptOfferResponse(@PathVariable("offer_id") Integer offerId, @PathVariable("response_id") Integer responseId) {
+        OfferRequest offer = offerRequestService.findOne(offerId);
+        Collection <ProviderResponse> responses = providerResponseService.findAllByOffer(offer);
+        for (ProviderResponse response : responses) {
+            if (response.getResponseId() == responseId) {
+                response.setStatus("accepted");
+                offer.setAcceptedResponse(response.getResponseId());
+                offer.setStatus("closed");
+
+            } else {
+                response.setStatus("rejected");
+
+            }
+        }
+        providerResponseService.updateAll(responses);
+        offer = offerRequestService.update(offer);
+        return new ResponseEntity <OfferRequest>(offer, HttpStatus.OK);
+    }
+
+    @SendProvidersMail
+    @RequestMapping(
+            value = "api/offers_n/offer={offer_id}&reject={response_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <OfferRequest> rejectOfferResponse(@PathVariable("offer_id") Integer offerId, @PathVariable("response_id") Integer responseId) {
+        OfferRequest offer = offerRequestService.findOne(offerId);
+        ProviderResponse response = providerResponseService.findOne(responseId);
+        response.setStatus("rejected");
+        providerResponseService.update(response);
+        return new ResponseEntity <OfferRequest>(offer, HttpStatus.OK);
+    }
 }

@@ -1,7 +1,10 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.ProviderResponse;
+import com.bacovakuhinja.model.RestaurantProvider;
+import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
+import com.bacovakuhinja.service.RestaurantProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,6 +18,12 @@ public class ProviderResponseController {
 
     @Autowired
     private ProviderResponseService responseService;
+
+    @Autowired
+    private OfferRequestService offerRequestService;
+
+    @Autowired
+    private RestaurantProviderService providerService;
 
     @RequestMapping(
             value = "/api/provider_responses",
@@ -69,7 +78,7 @@ public class ProviderResponseController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <ProviderResponse>> getResponsesByOffer(@PathVariable("offer_id") Integer id) {
-        Collection <ProviderResponse> providerResponses = responseService.findAllByOffer(id);
+        Collection <ProviderResponse> providerResponses = responseService.findAllByOffer(offerRequestService.findOne(id));
         return new ResponseEntity <Collection <ProviderResponse>>(providerResponses, HttpStatus.OK);
     }
 
@@ -78,7 +87,8 @@ public class ProviderResponseController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <ProviderResponse>> getResponsesByProvider(@PathVariable("provider_id") Integer id) {
-        Collection <ProviderResponse> providerResponses = responseService.findAllByProvider(id);
+        RestaurantProvider provider = providerService.findOne(id);
+        Collection <ProviderResponse> providerResponses = responseService.findAllByProvider(provider);
         return new ResponseEntity <Collection <ProviderResponse>>(providerResponses, HttpStatus.OK);
     }
 
