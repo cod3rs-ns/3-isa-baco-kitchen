@@ -638,7 +638,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`provider_responses` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`provider_responses` (
-  `pr_id` INT(11) NOT NULL,
+  `pr_id` INT(11) NOT NULL AUTO_INCREMENT,
   `pr_price` DOUBLE NOT NULL,
   `pr_info` VARCHAR(50) NULL,
   `pr_status` VARCHAR(20) NOT NULL,

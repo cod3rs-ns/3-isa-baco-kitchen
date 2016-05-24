@@ -1,0 +1,57 @@
+<md-dialog flex="50" aria-label="Ponuda" ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 ng-hide="responseVm.editState">Pošalji ponudu</h2>
+            <h2 ng-hide="!responseVm.editState">Izmeni ponudu</h2>
+            <span flex></span>
+
+            <md-button class="md-icon-button" ng-click="responseVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <md-content layout-padding>
+                <form name="responseForm">
+                    <md-input-container class="md-block" flex>
+                        <label>Cena</label>
+                        <input required type="number" step="any" name="price" ng-model="responseVm.response.price" min="1"/>
+                        <div ng-messages="responseForm.price.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">
+                                Ovo polje je obavezno.
+                            </div>
+                            <div ng-message="min">
+                                Sadržaj polja mora biti pozitivan.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Dodatne informacije</label>
+                        <input md-maxlength="50" required md-no-asterisk name="info" ng-model="responseVm.response.info">
+                        <div ng-messages="responseForm.info.$error">
+                            <div ng-message="md-maxlength">Dodatne informacije moraju biti kraće od 50 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-hide="!responseVm.editState" ng-disabled="!responseForm.$valid" class="md-raised md-primary" ng-click="responseVm.updateResponse()" md-autofocus>
+            Potvrdi izmenu
+        </md-button>
+        <md-button ng-hide="responseVm.editState" ng-disabled="!responseForm.$valid" class="md-raised md-primary" ng-click="responseVm.sendResponse()" md-autofocus>
+            Pošalji ponudu
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="responseVm.cancel()">
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>
