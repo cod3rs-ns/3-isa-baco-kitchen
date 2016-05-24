@@ -74,10 +74,10 @@
               </div>
               <md-dialog-actions layout="row">
                   <span flex></span>
-                  <md-button wz-next ng-click="restaurantVm.saveReservation();">Nastavite...</md-button>
+                  <md-button id="tableButton" wz-next ng-click="restaurantVm.saveReservation();">Nastavite...</md-button>
               </md-dialog-actions>
           </wz-step>
-          <wz-step wz-title="Pozovi prijatelje" canenter="restaurantVm.reservationOkay">
+          <wz-step wz-title="Pozovi prijatelje">
               <h1>Koga želite da pozovete od prijatelja?</h1>
               <md-list>
                 <md-list-item ng-repeat="friend in restaurantVm.currentUserFriends">

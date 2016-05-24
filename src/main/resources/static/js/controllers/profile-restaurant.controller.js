@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
+RestaurantProfileController.$inject = ['$document', 'restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
+function RestaurantProfileController($document, restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
@@ -288,8 +288,12 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function finishReservation() {
-        // alert('Reservation finished');
-        $mdDialog.cancel();
+        if (restaurantVm.ok) {
+          $mdDialog.cancel();
+        }
+        else {
+          showToast('Vratite se na prethodni korak.');
+        }
     };
     
     function continueReservation() {
