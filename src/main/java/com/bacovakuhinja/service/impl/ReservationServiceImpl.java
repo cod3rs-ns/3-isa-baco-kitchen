@@ -1,7 +1,10 @@
 package com.bacovakuhinja.service.impl;
 
 import com.bacovakuhinja.model.Reservation;
+import com.bacovakuhinja.model.ReservationGuest;
+import com.bacovakuhinja.repository.ReservationGuestRepository;
 import com.bacovakuhinja.repository.ReservationRepository;
+import com.bacovakuhinja.service.ReservationGuestService;
 import com.bacovakuhinja.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,12 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     ReservationRepository reservationRepository;
 
+    @Autowired
+    ReservationGuestRepository reservationGuestRepository;
+
+    @Autowired
+    ReservationGuestService reservationGuestService;
+
     @Override
     public Collection<Reservation> findAll() {
         return reservationRepository.findAll();
@@ -26,6 +35,24 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation findOne(Integer reservationId) {
         return reservationRepository.findOne(reservationId);
+    }
+
+    @Override
+    public Collection<Reservation> findByOwnerId(Integer ownerId) {
+        Collection<Reservation> reservations = new ArrayList<Reservation>();
+
+        Date now = new Date();
+        for (Reservation reservation : findAll()) {
+            // reservation.getRestaurant();
+            /*System.out.println("---------");
+            System.out.println(reservationGuestService.isOwner(reservation.getReservationId(), ownerId));
+            System.out.println(reservation.getReservationDateTime());
+            System.out.println(now);*/
+            if (reservationGuestService.isOwner(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().after(now))
+                reservations.add(reservation);
+        }
+
+        return reservations;
     }
 
     @Override

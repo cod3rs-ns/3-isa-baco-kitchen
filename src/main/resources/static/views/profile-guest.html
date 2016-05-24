@@ -104,7 +104,7 @@
   					<div layout="row" layout-wrap>
   						<div class='md-padding' style="background-color: #eee" layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
   							<md-card>
-  								<img ng-src="{{visit.img_src}}" class="md-card-image" style="width: 196px">
+  								<img ng-src="{{visit.restaurant.imageSrc}}" class="md-card-image" style="width: 196px">
   								
   								<md-card-content>
   									<h4>{{visit.name}}</h4>
@@ -139,29 +139,28 @@
         <md-tab label="Aktivne rezervacije">
           <md-content class="md-padding">
             <div layout="row" layout-wrap>
-  						<div class='md-padding' layout="row" ng-repeat="reservation in guestProfileVm.reservations" layout-wrap>
+  						<div class='md-padding' layout="row" ng-repeat="reservation in guestProfileVm.activeReservations" layout-wrap>
                 <md-card>
                   <md-card-title>
                     <md-card-title-text>
-                      <span class="md-headline">{{ reservation.name }}</span>
-                      <span class="md-subhead">{{ reservation.type }}</span>
+                      <span class="md-headline">Rez</span>
+                      <span class="md-subhead">Tip</span>
                     </md-card-title-text>
                   </md-card-title>
-                  <img ng-src="{{ reservation.img_src }}" class="md-card-image reservation" alt="Washed Out">
+                  <img src="http://www.tastealanya.com/wp-content/uploads/2014/03/reserved.jpg" class="md-card-image reservation" alt="Washed Out">
                   
                   <div class="reservation-item">
-                    <i class="material-icons">today</i> {{ reservation.date}}
+                    <i class="material-icons">today</i> {{ reservation.reservationDateTime}}
                   </div>
                   <div class="reservation-item">
-                    <i class="material-icons">schedule</i> {{ reservation.time }}
+                    <i class="material-icons">schedule</i> {{ reservation.reservationDateTime }}
                   </div>
                   <div class="reservation-item">
-                    <i class="material-icons">people</i> {{ reservation.guests}}
+                    <i class="material-icons">people</i> 1
                   </div>
                   
                   <md-card-actions layout="row" layout-align="end center">
-                    <md-button>Action 1</md-button>
-                    <md-button>Action 2</md-button>
+                    <md-button ng-click="guestProfileVm.cancelReservation(reservation.reservationId);">Otkaži rezervaciju</md-button>
                   </md-card-actions>
                 </md-card>
   							

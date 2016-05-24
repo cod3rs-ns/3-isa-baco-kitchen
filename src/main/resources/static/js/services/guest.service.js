@@ -16,7 +16,9 @@ function guestService($http) {
         addFriend: addFriend,
         removeFriend: removeFriend,
         isFriend: isFriend,
-        getSearchResult: getSearchResult
+        getSearchResult: getSearchResult,
+        getVisits: getVisits,
+        getReservations: getReservations
     };
 
     return service;
@@ -94,6 +96,20 @@ function guestService($http) {
     function getSearchResult(query) {
         return $http.get('api/guest/users?query=' + query)
         .then(function(response) {
+            return response.data;
+        });
+    };
+    
+    function getReservations(id) {
+        return $http.get('api/guest/reservations/' + id).
+        then (function(response) {
+            return response.data;
+        });
+    };
+    
+    function getVisits(id) {
+        return $http.get('api/guest/visits/' + id).
+        then (function(response) {
             return response.data;
         });
     };

@@ -11,6 +11,8 @@ public interface ReservationService {
 
     public Reservation findOne(Integer reservationId);
 
+    public Collection<Reservation> findByOwnerId(Integer ownerId);
+
     public Collection<Reservation> findByRestaurantId(Integer restaurantId);
 
     public Collection<Reservation> findByRestaurantIdAndTime(Integer restaurantId, Date datetime, Integer length);
