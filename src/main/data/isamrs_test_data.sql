@@ -20,7 +20,10 @@ INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, 
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('20', 	'Boban', 		'Bajković', 					'bb@bacovakuhinja.rs', 	'http://www.utakmica.rs/images/fudbaleri/28-bajkovic-boban.png', 	'lestersiti', 'guest', 		'verified');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('21', 	'Boban', 		'Bajković', 					'bar@bacovakuhinja.rs', 	'http://www.utakmica.rs/images/fudbaleri/28-bajkovic-boban.png', 	'lestersiti', 'bartender', 		'verified');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('22', 	'Paul', 		'Pogba',						'ppc@bacovakuhinja.rs', 	'http://img.uefa.com/imgml/TP/players/1/2016/324x324/250015808.jpg', 	'lestersiti', 'cook', 		'verified');
-
+#providers
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('23', 	'Jose', 		'Mourinho', 					'st.keky@gmail.com', 	'images/restaurant-provider.jpg', 'lestersiti', 'restaurant_provider', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('24', 	'Sir Alex', 	'Ferguson', 					'st.keky+1@gmail.com', 	'images/restaurant-provider.jpg', 'lestersiti', 'restaurant_provider', 'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('25', 	'Claudio', 		'Ranieri', 						'st.keky+2@gmail.com', 	'images/restaurant-provider.jpg', 'lestersiti', 'restaurant_provider', 'verified');
 
 INSERT INTO `isa_mrs_project`.`sys_managers` (`sm_id`, `sm_info`) VALUES ('5', 'Zidane biography.');
 
@@ -56,7 +59,9 @@ INSERT INTO `isa_mrs_project`.`guests` (`g_id`, `g_info`) VALUES ('20', 'Some bi
 
 INSERT INTO `isa_mrs_project`.`restaurant_managers` (`rm_id`, `rm_info`, `rm_restaurant_id`) VALUES ('3', 'Vardy biography.', '2');
 INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('4', 'Becks biography.');
-
+INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('23', 'Mourinho biography.');
+INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('24', 'Sir Alex biography.');
+INSERT INTO `isa_mrs_project`.`restaurant_providers` (`rp_id`, `rp_info`) VALUES ('25', 'Ranieri biography.');
 
 INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`, `e_restaurant`) VALUES ('6', '1988-06-15', 'L', '42b', '2');
 INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_shoes_size`, `e_restaurant`) VALUES ('7', '1988-07-15', 'XXL', '43b', '2');
@@ -84,14 +89,14 @@ INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_p
 INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_color`, `rr_restaurant_id`, `rr_region_no`) VALUES ('1', 'basta', '#283593', '2', '1');
 INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_color`, `rr_restaurant_id`, `rr_region_no`) VALUES ('2', 'prostorija_1', '#00695C', '2', '2');
 
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('1', '60', '50', '40', '130', '4', '1', '1');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('2', '220', '50', '90', '70', '4', '1', '2');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('3', '330', '110', '160', '80', '6', '1', '3');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('4', '150', '380', '40', '40', '2', '1', '4');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('5', '380', '520', '40', '40', '2', '2', '5');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('6', '500', '520', '40', '40', '2', '2', '6');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('1', '7', '4', '40', '130', '4', '1', '1');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('2', '59', '6', '63', '44', '4', '1', '2');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('3', '138', '6', '79', '43', '6', '1', '3');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('4', '60', '66', '40', '40', '2', '1', '4');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('5', '229', '66', '40', '40', '2', '2', '5');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('6', '229', '119', '40', '40', '2', '2', '6');
 
-INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`, `rs_duration`, `rs_length`) VALUES ('1', '2014-04-02 08:49:43', '5');
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`, `rs_restaurant_id`, `rs_duration`, `rs_length`) VALUES ('1', '1', '2014-04-02 08:49:43', '5');
 
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('1', 'Neki komentar...', '4', '3', '3', '1', '1');
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`, `rv_info`, `rv_food_rate`, `rv_service_rate`, `rv_restaurant_rate`, `rv_guest_id`, `rv_reservation_id`) VALUES ('2', 'Drugi komentar...', '4', '3', '3', '1', '1');
@@ -112,4 +117,6 @@ INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`, `fs_first`, `fs_second`, `f
 INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('1', 'Potrebno je toga i toga...', '2016-06-15 08:49:43', 'created', '2', null);
 INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('2', 'Potrebno je nama toga i toga... ', '2016-06-16 08:49:43', 'created', '2', null);
 INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('1', '1000', 'info', 'active', '4', '1');
-INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('2', '1000', 'info', 'active', '4', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('3', '1000', 'info', 'active', '23', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('4', '1000', 'info', 'active', '24', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('5', '1000', 'info', 'active', '25', '2');

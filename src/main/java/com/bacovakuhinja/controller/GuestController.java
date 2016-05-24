@@ -2,9 +2,11 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.Guest;
+import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.FriendshipService;
 import com.bacovakuhinja.service.GuestService;
+import com.bacovakuhinja.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,11 +19,16 @@ import java.util.Collection;
 @RestController
 public class GuestController {
 
+    private static final String OWNER = "owner";
+
     @Autowired
     GuestService guestService;
 
     @Autowired
     FriendshipService friendshipService;
+
+    @Autowired
+    ReservationService reservationService;
 
     @Authorization(value = "guest")
     @RequestMapping (
@@ -145,5 +152,20 @@ public class GuestController {
         Collection<User> result = guestService.getUsers(query.toLowerCase());
 
         return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);}
+
+
+    @RequestMapping (
+            value    = "api/guest/reservations/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Reservation>> getReservations(@PathVariable Integer id) {
+
+        Collection<Reservation> result = reservationService.findByOwnerId(id);
+
+        System.out.println(result.size());
+
+        return new ResponseEntity<Collection<Reservation>>(result, HttpStatus.OK);
+    }
 
 }

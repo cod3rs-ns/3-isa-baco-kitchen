@@ -369,6 +369,35 @@
 	      	            <md-toolbar layout="row">
 	      	                <div class="md-toolbar-tools">
 	      	                    <h2 style="text-align: center">{{ scheduleVm.calendarTitle }}</h2>
+
+								<md-button  class="md-fab md-mini md-raised md-secondary"
+											mwl-date-modifier
+		  						          	date="scheduleVm.calendarDate"
+		  						          	decrement="scheduleVm.calendarView">
+									<i class="material-icons md-24">keyboard_arrow_left</i>
+									<md-tooltip md-direction="top">
+										Prethodni
+									</md-tooltip>
+								</md-button>
+								<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
+											mwl-date-modifier
+		  						          	date="scheduleVm.calendarDate"
+		  						          	set-to-today>
+									<i class="material-icons md-24">today</i>
+									<md-tooltip md-direction="top">
+										Danas
+									</md-tooltip>
+								</md-button>
+								<md-button  class="md-fab md-mini md-raised md-secondary"
+											mwl-date-modifier
+											date="scheduleVm.calendarDate"
+		  						          	increment="scheduleVm.calendarView">
+									<i class="material-icons md-24">keyboard_arrow_right</i>
+									<md-tooltip md-direction="top">
+										Sledeći
+									</md-tooltip>
+								</md-button>
+
 	      	                    <span flex></span>
 	      	                    <md-button ng-click="scheduleVm.changeToDay()">
 	      	                        Dnevni prikaz
@@ -387,15 +416,17 @@
 	  					  current-day="scheduleVm.calendarDate"
 	  					  events="scheduleVm.events"
 	  					  view-title="scheduleVm.calendarTitle"
-	  					  view-date="vm.viewDate"
+	  					  view-date="scheduleVm.viewDate"
 	  					  on-event-click="eventClicked(calendarEvent)"
-	  					  on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+	  					  on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd; scheduleVm.eventTimesChanged(calendarEvent);"
 	  					  edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
 	  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
 	  					  on-edit-event-click="eventEdited(calendarEvent)"
 	  					  on-delete-event-click="eventDeleted(calendarEvent)"
 	  					  cell-is-open="true"
-						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)">>
+						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
+						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)">
+
 	  			  </mwl-calendar>
 
 				</div>
@@ -717,6 +748,70 @@
 		</md-content>
 
       </md-tab>
+
+	  <!-- Tab that defines Restaurant Working time -->
+	<md-tab label="Porudžbine" >
+		<md-content ng-controller="OfferController as offerVm">
+			<div layout="row">
+				<div flex-gt-xs="50" layout="column"  style="margin:15px;">
+					<md-toolbar class="md-theme-light">
+						<h2 class="md-toolbar-tools">
+							<span>Nova porudžbina</span>
+						</h2>
+					</md-toolbar>
+					<form name="offerForm" style="margin:15px;" ng-cloak>
+						<md-input-container class="md-block" flex>
+							<label>Sadržaj porudžbine</label>
+							<textarea md-maxlength="255" name="offerContent" ng-model="offerVm.activeOffer.offer" columns="1" rows="5" md-select-on-focus required></textarea>
+							<div ng-messages="offerForm.offerContent.$error" class="validation-messages">
+								<div ng-message="md-maxlength">Sadržaj porudžbine mora imati manje od 255 karaktera.</div>
+								<div ng-message="required">Ovo polje je neophodno</div>
+							</div>
+						</md-input-container>
+
+						<md-datepicker  id="offerDeadline" name="offerDeadline" data-ng-model="offerVm.activeOffer.deadline"
+						 				md-min-date="offerVm.minDate" md-placeholder="Krajnji rok" ng-required="true"></md-datepicker>
+						<div ng-messages="offerForm.offerDeadline.$error" class="validation-messages">
+							<div ng-message="required">Ovo polje je neophodno.</div>
+							<div ng-message="mindate">Datum nije validan.</div>
+						</div>
+					</form>
+					<!-- Actions that can be perfomed -->
+					<div layout="row">
+						<md-button 	class="md-raised md-primary"
+									ng-click="offerVm.createNewOffer();" ng-disabled="!offerForm.$valid">
+							Objavi porudžbinu
+						</md-button>
+					</div>
+				</div>
+				<div flex="50" style="margin:15px;">
+					<md-toolbar class="md-theme-light">
+						<h2 class="md-toolbar-tools">
+							<span>Porudžbine</span>
+						</h2>
+					</md-toolbar>
+					<md-list ng-cloak>
+						<md-list-item class="md-3-line" ng-repeat="offer in offerVm.offers">
+							<div class="md-list-item-text">
+								<h3>{{'Porudžbina #' + offer.offerId}}</h3>
+								<p>{{offer.offer}}</p>
+								<p>{{'status: ' + offer.status}}</p>
+							</div>
+							<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
+										ng-click="offerVm.showPickDialog(offer);">
+								<i class="material-icons md-24">search</i>
+								<md-tooltip md-direction="top">
+									Pregledaj pristigle ponude
+								</md-tooltip>
+							</md-button>
+							<md-divider ng-if="!$last"></md-divider>
+						</md-list-item>
+
+					</md-list>
+				</div>
+			</div>
+		</md-content>
+    </md-tab>
     </md-tabs>
   </md-content>
 

@@ -169,9 +169,16 @@ DROP TABLE IF EXISTS `isa_mrs_project`.`reservations` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservations` (
   `rs_id` INT(11) NOT NULL AUTO_INCREMENT,
+  `rs_restaurant_id` INT(11) NOT NULL,
   `rs_duration` DATETIME NOT NULL,
   `rs_length` INT(11) NOT NULL,
-  PRIMARY KEY (`rs_id`))
+  PRIMARY KEY (`rs_id`),
+  INDEX `rs_restaurant_fid_idx` (`rs_restaurant_id` ASC),
+  CONSTRAINT `rs_restaurant_fid`
+  FOREIGN KEY (`rs_restaurant_id`)
+  REFERENCES `isa_mrs_project`.`restaurants` (`r_id`)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION)
 ENGINE = InnoDB
 AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
@@ -461,7 +468,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `isa_mrs_project`.`reservation_tables` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservation_tables` (
-  `rt_id` INT(11) NOT NULL,
+  `rt_id` INT(11) NOT NULL AUTO_INCREMENT,
   `rt_reservation_id` INT(11) NOT NULL,
   `rt_table_id` INT(11) NOT NULL,
   PRIMARY KEY (`rt_id`),
@@ -638,7 +645,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `isa_mrs_project`.`provider_responses` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`provider_responses` (
-  `pr_id` INT(11) NOT NULL,
+  `pr_id` INT(11) NOT NULL AUTO_INCREMENT,
   `pr_price` DOUBLE NOT NULL,
   `pr_info` VARCHAR(50) NULL,
   `pr_status` VARCHAR(20) NOT NULL,

@@ -2,14 +2,15 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', '$mdDialog', '$routeParams'];
+RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, $mdDialog, $routeParams, SingleDrinkController){
+function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
     restaurantVm.reviews = [];
     restaurantVm.allTables = [];
+    restaurantVm.freeTables = [];
     restaurantVm.addManagerOption = false;
     restaurantVm.review = {
       // reviewId: 1,
@@ -20,6 +21,12 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
       comment: ''
     };
     
+    restaurantVm.DateTime = {};
+    restaurantVm.reservation = {
+      restaurant: null,
+      reservationDateTime: null,
+      length: 0
+    };
     restaurantVm.reservationTables = [];
     restaurantVm.currentUserFriends = [];
     
@@ -28,6 +35,17 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.selectTable = selectTable;
     restaurantVm.saveReservation = saveReservation;
+    restaurantVm.showToast = showToast;
+    restaurantVm.cancel = cancel;
+    restaurantVm.showReservationDialog = showReservationDialog;
+    restaurantVm.finishReservation = finishReservation;
+    restaurantVm.continueReservation = continueReservation;
+    restaurantVm.ok = false;
+    restaurantVm.reservationOkay = reservationOkay;
+    
+    function reservationOkay() {
+      return restaurantVm.ok;
+    }
 
     activate();
 
@@ -140,44 +158,65 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
         return tableService.getTablesByRestaurant($routeParams.restaurantId)
             .then(function(data) {
                 restaurantVm.allTables = data;
-                
-                for (var table in restaurantVm.allTables) {
-                    restaurantVm.allTables[table].color = '#00ff00';
-                }
                 return restaurantVm.allTables;
             });
     };
     
+    function getFreeTables() {
+        return tableService.getFreeTables(
+          // restaurantVm.reservation.reservationId, 
+          $routeParams.restaurantId,
+          restaurantVm.reservation.reservationDateTime,
+          restaurantVm.reservation.length)
+          .then(function(data) {
+              restaurantVm.freeTables = data;
+              
+              for (var table in restaurantVm.allTables) {
+                  var p = true;
+                  for (var free in restaurantVm.freeTables) {
+                      if (restaurantVm.freeTables[free].tableId == restaurantVm.allTables[table].tableId) {
+                        restaurantVm.allTables[table].color = '#00ff00';
+                        p = false;
+                        break;
+                      }
+                  }
+                  if (p) {
+                    restaurantVm.allTables[table].color = '#ff0000';
+                  }
+              }
+          }); 
+    }
+    
     function selectTable(tableId) {
-        /*for (var table in restaurantVm.allTables) {
-            if (restaurantVm.allTables[table].tableId == tableId){
-                restaurantVm.selectedTable = restaurantVm.allTables[table];
-                if(restaurantVm.selectedTable.color !== '#CDDC39'){
-                    restaurantVm.selectedTable = -1;
-                    restaurantVm.selectedTableOrders.length = 0;
-                }
-                else{
-                    getOrders();
-                }
-                break;
-            }
-        }*/
+        var p = true;
         for (var table in restaurantVm.allTables) {
             if (restaurantVm.allTables[table].tableId == tableId) {
-                if (restaurantVm.allTables[table].color == '#00ff00') {
-                    restaurantVm.reservationTables.push(tableId);
-                    restaurantVm.allTables[table].color = '#ff0000';
-                }
-                else {
-                    for (var rt in restaurantVm.reservationTables) {
-                        if (restaurantVm.reservationTables[rt] == tableId) {
-                            restaurantVm.reservationTables.splice(rt, 1);
-                            break;
-                        }
+                for (var free in restaurantVm.freeTables) {
+                  if (restaurantVm.freeTables[free].tableId == tableId) {
+                    // -------------------
+                    p = false;
+                    if (restaurantVm.allTables[table].color == '#00ff00') {
+                        restaurantVm.reservationTables.push(tableId);
+                        restaurantVm.allTables[table].color = '#ff0000';
                     }
-                    restaurantVm.allTables[table].color = '#00ff00';
+                    else {
+                        for (var rt in restaurantVm.reservationTables) {
+                            if (restaurantVm.reservationTables[rt] == tableId) {
+                                restaurantVm.reservationTables.splice(rt, 1);
+                                break;
+                            }
+                        }
+                        restaurantVm.allTables[table].color = '#00ff00';
+                    }
+                    // -------------------
                 }
+                
+              }
             }
+        }
+        
+        if (p) {
+          showToast('Odabrani sto nije dostupan u ovom terminu!');
         }
     };
     
@@ -189,14 +228,92 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function inviteFriend(friendId) {
+        var invitedFriend = null;
+      
         for (var friend in restaurantVm.currentUserFriends) {
             if (restaurantVm.currentUserFriends[friend].userId == friendId) {
+                invitedFriend = restaurantVm.currentUserFriends[friend];
                 restaurantVm.currentUserFriends[friend].invited = true;
+                restaurantVm.currentUserFriends.splice(friend, 1);
             }
         }
+        
+        return reservationService.inviteFriend(restaurantVm.reservation.reservationId, invitedFriend.email)
+          .then(function(data) { 
+            showToast('Poziv je poslat za ' + invitedFriend.firstName + ' ' + invitedFriend.lastName + '.');
+          });
     };
     
     function saveReservation() {
-        alert('Make reservation');
+      reservationService.saveTables(restaurantVm.reservation.reservationId, restaurantVm.reservationTables)
+          .then(function(data) {
+              if (data.answer == "WRONG_TABLES") {
+                showToast('Neki od stolova su zauzeti u međuvremenu. Odaberite Vaše stolove ponovo.');
+                getFreeTables();
+                restaurantVm.reservationTables = [];
+                restaurantVm.ok = false;
+              }
+              else if (data.answer == "NO_TABLES"){
+                showToast('Morate odabrati bar jedan sto!');
+                restaurantVm.ok = false;
+              }
+              else {
+                showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');
+                restaurantVm.ok = true;
+              }
+          });
+    };
+    
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+    
+    function cancel() {
+        $mdDialog.cancel();
+    };
+    
+    function showReservationDialog() {
+      $mdDialog.show({
+          controller: 'RestaurantProfileController',
+          controllerAs: 'restaurantVm',
+          templateUrl: '/views/dialogs/reservation-form-tmpl.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose: true,
+          fullscreen: false
+      });
+    };
+    
+    function finishReservation() {
+        if (restaurantVm.ok) {
+          $mdDialog.cancel();
+        }
+        else {
+          showToast('Vratite se na prethodni korak.');
+        }
+    };
+    
+    function continueReservation() {
+      restaurantVm.reservation.restaurant = restaurantVm.restaurant;
+      restaurantVm.reservation.reservationDateTime = new Date(
+        restaurantVm.DateTime.date.getFullYear(),
+        restaurantVm.DateTime.date.getMonth(),
+        restaurantVm.DateTime.date.getDate(),
+        restaurantVm.DateTime.hours,
+        restaurantVm.DateTime.mins,
+        0,
+        0
+      );
+
+      return reservationService.addReservation(restaurantVm.reservation)
+          .then(function(data) {
+              restaurantVm.reservation = data;
+              
+              getFreeTables().then(function() {
+              });
+          });
     };
 }
