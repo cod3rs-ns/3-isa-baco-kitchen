@@ -209,7 +209,7 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
             .resizable({
                 preserveAspectRatio: false,
                 // define on which edges should table be resizable
-                edges: { left: false, right: true, bottom: true, top: false }
+                edges: { left: true, right: true, bottom: true, top: true }
             })
             .on('resizemove', resizeListener)
             .on('tap', colorSwitchListener)
@@ -292,31 +292,25 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     // Function that saves current positon of the element after dragging
     function dragMoveListener(event) {
         var target = event.target;
-        // keep the dragged position in the data-x/data-y attributes
-        //var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        //var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
+        // parent canvas size
         var parentWidth = target.parentElement.offsetWidth;
         var parentHeight = target.parentElement.offsetHeight;
 
-        var width = parseFloat(target.getAttribute('width'));
-        var height = parseFloat(target.getAttribute('height'));
-        console.log(width);
-        console.log(height);
         var oldPx = parseFloat(target.getAttribute('data-x')) || 0;
         var oldPy = parseFloat(target.getAttribute('data-y')) || 0;
-        var newX = ((event.dx) / parentWidth) * 100 + oldPx;
-        var newY = ((event.dy) / parentHeight) * 100 + oldPy;
+        var newX = (event.dx / parentWidth) * 100 + oldPx;
+        var newY = (event.dy / parentHeight) * 100 + oldPy;
 
-        //target.style = 'top:' + newY +'%;left:' + newX + '%;';
+        var width = parseFloat(target.getAttribute('width'));
+        var height = parseFloat(target.getAttribute('height'));
+        // neccesary for automatic update :) lost 30 minutes because of this
+        target.style = 'top:' + newY + '%;left:' + newX + '%;height:' + height +'%;width:'+ width + '%;';
         // update the posiion attributes
         target.setAttribute('data-x', newX);
         target.setAttribute('data-y', newY);
         var currentTable = tablesVm.findTable(target.getAttribute('id'));
         currentTable.datax = newX;
         currentTable.datay = newY;
-
-
     };
 
     // Function that saves current size of element after resizing
@@ -324,26 +318,33 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
         var target = event.target;
         var x = (parseFloat(target.getAttribute('data-x')) || 0);
         var y = (parseFloat(target.getAttribute('data-y')) || 0);
+
+        // parent canvas size
+        var parentWidth = target.parentElement.offsetWidth;
+        var parentHeight = target.parentElement.offsetHeight;
+
         var currentTable = tablesVm.findTable(target.getAttribute('id'));
-        console.log(currentTable);
-        // update the element's style
-        target.style.width  = event.rect.width + 'px';
-        target.style.height = event.rect.height + 'px';
+
+        var newWidth = (event.rect.width / parentWidth) * 100;
+        var newHeight = (event.rect.width / parentWidth) * 100;
+
+        // update the element's style, neccesary for automatic view update
+        target.style.width  = newWidth + '%';
+        target.style.height = newHeight + '%';
 
         // update model
-        currentTable.height = event.rect.height;
-        currentTable.width =  event.rect.width;
+        currentTable.height = newHeight;
+        currentTable.width =  newWidth;
 
         // translate when resizing from top or left edges
-        x += event.deltaRect.left;
-        y += event.deltaRect.top;
+        x += (event.deltaRect.left / parentWidth) * 100 ;
+        y += (event.deltaRect.top / parentWidth) *100;
 
-        target.style.webkitTransform =
-        target.style.transform = 'translate(' + x + 'px,' + y + 'px)';
 
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
-
+        // neccesary for automatic update :) lost 30 minutes because of this
+        target.style = 'top:' + y + '%;left:' + x + '%;height:' + newHeight +'%;width:'+ newWidth + '%;';
         currentTable.datax = x;
         currentTable.datay = y;
 

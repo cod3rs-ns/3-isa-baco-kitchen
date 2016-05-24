@@ -137,7 +137,7 @@
 
 	  <md-tab label="Raspored stolova">
         <md-content layout="row" class="md-padding" ng-controller="TablesController as tablesVm">
-            <div  layout="column" id="canvas" class="restaurant-canvas" >
+            <div  layout="column" id="canvas" class="restaurant-canvas" style="height:600px; width:600px;" >
 				<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
 						name="{{table.tableId != null ? table.tableId : table.tempId}}"
 						data-x="{{table.datax}}"
