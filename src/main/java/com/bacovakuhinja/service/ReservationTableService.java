@@ -9,4 +9,6 @@ public interface ReservationTableService {
     public Collection<ReservationTable> findAll();
 
     public Collection<ReservationTable> findAllByReservationId(Integer reservationId);
+
+    public ReservationTable save(ReservationTable table);
 }

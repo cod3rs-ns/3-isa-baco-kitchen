@@ -13,7 +13,8 @@ function tableService($http){
         createTable: createTable,
         getTablesByRestaurant: getTablesByRestaurant,
         getTablesByRegion: getTablesByRegion,
-        getNextId: getNextId
+        getNextId: getNextId,
+        getFreeTables: getFreeTables
     };
 
     return service;
@@ -69,5 +70,12 @@ function tableService($http){
 
     function getTablesByRegion(region_id){
     };
+    
+    function getFreeTables(restaurant_id, datetime, length) {
+        return $http.get('api/reservation/free?id=' + restaurant_id + '&dt=' + datetime + '&len=' + length)
+        .then(function(response) {
+            return response.data;
+        });
+    }
 
 }

@@ -466,7 +466,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `isa_mrs_project`.`reservation_tables` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservation_tables` (
-  `rt_id` INT(11) NOT NULL,
+  `rt_id` INT(11) NOT NULL AUTO_INCREMENT,
   `rt_reservation_id` INT(11) NOT NULL,
   `rt_table_id` INT(11) NOT NULL,
   PRIMARY KEY (`rt_id`),

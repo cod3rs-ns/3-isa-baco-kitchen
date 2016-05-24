@@ -8,7 +8,8 @@ function reservationService($http) {
     var service = {
         addReservation: addReservation,
         removeReservation: removeReservation,
-        inviteFriend: inviteFriend
+        inviteFriend: inviteFriend,
+        saveTables: saveTables
     };
 
     return service;
@@ -31,6 +32,13 @@ function reservationService($http) {
         return $http.head('api/reservation/invite?reservation=' + reservationId + '&friend=' + friendEmail)
         .then(function(response) {
 
+        });
+    };
+    
+    function saveTables(reservationId, tables) {
+        return $http.post('/api/reservation/tables?reservation=' + reservationId, tables)
+        .then(function(response) {
+          
         });
     };
 }

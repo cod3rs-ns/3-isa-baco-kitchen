@@ -32,4 +32,9 @@ public class ReservationTableServiceImpl implements ReservationTableService {
 
         return reservationTables;
     }
+
+    @Override
+    public ReservationTable save(ReservationTable table) {
+        return reservationTableRepository.save(table);
+    }
 }

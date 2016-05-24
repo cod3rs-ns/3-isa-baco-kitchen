@@ -10,6 +10,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.restaurant = {};
     restaurantVm.reviews = [];
     restaurantVm.allTables = [];
+    restaurantVm.freeTables = [];
     restaurantVm.addManagerOption = false;
     restaurantVm.review = {
       // reviewId: 1,
@@ -38,6 +39,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.cancel = cancel;
     restaurantVm.showReservationDialog = showReservationDialog;
     restaurantVm.finishReservation = finishReservation;
+    restaurantVm.continueReservation = continueReservation;
 
     activate();
 
@@ -150,44 +152,65 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
         return tableService.getTablesByRestaurant($routeParams.restaurantId)
             .then(function(data) {
                 restaurantVm.allTables = data;
-                
-                for (var table in restaurantVm.allTables) {
-                    restaurantVm.allTables[table].color = '#00ff00';
-                }
                 return restaurantVm.allTables;
             });
     };
     
+    function getFreeTables() {
+        return tableService.getFreeTables(
+          // restaurantVm.reservation.reservationId, 
+          $routeParams.restaurantId,
+          restaurantVm.reservation.reservationDateTime,
+          restaurantVm.reservation.length)
+          .then(function(data) {
+              restaurantVm.freeTables = data;
+              
+              for (var table in restaurantVm.allTables) {
+                  var p = true;
+                  for (var free in restaurantVm.freeTables) {
+                      if (restaurantVm.freeTables[free].tableId == restaurantVm.allTables[table].tableId) {
+                        restaurantVm.allTables[table].color = '#00ff00';
+                        p = false;
+                        break;
+                      }
+                  }
+                  if (p) {
+                    restaurantVm.allTables[table].color = '#ff0000';
+                  }
+              }
+          }); 
+    }
+    
     function selectTable(tableId) {
-        /*for (var table in restaurantVm.allTables) {
-            if (restaurantVm.allTables[table].tableId == tableId){
-                restaurantVm.selectedTable = restaurantVm.allTables[table];
-                if(restaurantVm.selectedTable.color !== '#CDDC39'){
-                    restaurantVm.selectedTable = -1;
-                    restaurantVm.selectedTableOrders.length = 0;
-                }
-                else{
-                    getOrders();
-                }
-                break;
-            }
-        }*/
+        var p = true;
         for (var table in restaurantVm.allTables) {
             if (restaurantVm.allTables[table].tableId == tableId) {
-                if (restaurantVm.allTables[table].color == '#00ff00') {
-                    restaurantVm.reservationTables.push(tableId);
-                    restaurantVm.allTables[table].color = '#ff0000';
-                }
-                else {
-                    for (var rt in restaurantVm.reservationTables) {
-                        if (restaurantVm.reservationTables[rt] == tableId) {
-                            restaurantVm.reservationTables.splice(rt, 1);
-                            break;
-                        }
+                for (var free in restaurantVm.freeTables) {
+                  if (restaurantVm.freeTables[free].tableId == tableId) {
+                    // -------------------
+                    p = false;
+                    if (restaurantVm.allTables[table].color == '#00ff00') {
+                        restaurantVm.reservationTables.push(tableId);
+                        restaurantVm.allTables[table].color = '#ff0000';
                     }
-                    restaurantVm.allTables[table].color = '#00ff00';
+                    else {
+                        for (var rt in restaurantVm.reservationTables) {
+                            if (restaurantVm.reservationTables[rt] == tableId) {
+                                restaurantVm.reservationTables.splice(rt, 1);
+                                break;
+                            }
+                        }
+                        restaurantVm.allTables[table].color = '#00ff00';
+                    }
+                    // -------------------
                 }
+                
+              }
             }
+        }
+        
+        if (p) {
+          showToast('Odabrani sto nije dostupan u ovom terminu!');
         }
     };
     
@@ -216,20 +239,9 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function saveReservation() {
-      restaurantVm.reservation.restaurant = restaurantVm.restaurant;
-      restaurantVm.reservation.reservationDateTime = new Date(
-        restaurantVm.DateTime.date.getFullYear(),
-        restaurantVm.DateTime.date.getMonth(),
-        restaurantVm.DateTime.date.getDate(),
-        restaurantVm.DateTime.hours,
-        restaurantVm.DateTime.mins,
-        0,
-        0
-      );
-
-      return reservationService.addReservation(restaurantVm.reservation)
+      reservationService.saveTables(restaurantVm.reservation.reservationId, restaurantVm.reservationTables)
           .then(function(data) {
-              restaurantVm.reservation = data;
+              console.log('Reservation tables added.')
           });
     };
     
@@ -259,5 +271,26 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     function finishReservation() {
         alert('Reservation finished');
         $mdDialog.cancel();
+    };
+    
+    function continueReservation() {
+      restaurantVm.reservation.restaurant = restaurantVm.restaurant;
+      restaurantVm.reservation.reservationDateTime = new Date(
+        restaurantVm.DateTime.date.getFullYear(),
+        restaurantVm.DateTime.date.getMonth(),
+        restaurantVm.DateTime.date.getDate(),
+        restaurantVm.DateTime.hours,
+        restaurantVm.DateTime.mins,
+        0,
+        0
+      );
+
+      return reservationService.addReservation(restaurantVm.reservation)
+          .then(function(data) {
+              restaurantVm.reservation = data;
+              
+              getFreeTables().then(function() {
+              });
+          });
     };
 }
