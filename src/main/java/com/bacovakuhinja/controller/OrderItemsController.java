@@ -130,4 +130,15 @@ public class OrderItemsController {
         return new ResponseEntity<Collection<OrderItem>> (orderItemService.findFinishedItemsByRegion(regionId), HttpStatus.OK );
     }
 
+    @RequestMapping(
+            value = "/api/orderItems/deliver/i={itemId}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<OrderItem> deliverOrderItem(@PathVariable("itemId") Integer itemId) {
+        OrderItem item = orderItemService.findOne(itemId);
+        item.setState("DELIVERED");
+        OrderItem updated = orderItemService.update(item);
+        return new ResponseEntity<OrderItem> (updated, HttpStatus.OK );
+    }
+
 }

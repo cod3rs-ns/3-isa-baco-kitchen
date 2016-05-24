@@ -187,4 +187,22 @@ function BarmanProfileController(employeeService, bartenderService, passService,
             barmanProfileVm.notNo =-1;
         }
     }
+
+    barmanProfileVm.finishDrink = finishDrink;
+    function finishDrink(itemId){
+
+        for(var meal in barmanProfileVm.preparingDrinks){
+            if(itemId === barmanProfileVm.preparingDrinks[meal].itemId){
+                barmanProfileVm.preparingDrinks.splice(meal, 1);
+                break;
+            }
+        }
+
+        employeeService.finishOrderItem(itemId)
+            .then(function (data) {
+                if(data != null){
+                    console.log("finish");
+                }
+            });
+    }
 }

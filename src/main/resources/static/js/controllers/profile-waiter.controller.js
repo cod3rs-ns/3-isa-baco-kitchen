@@ -281,4 +281,18 @@ function WaiterProfileController(tableService, waiterService, passService, order
             waiterProfileVm.notNo =-1;
         }
     }
+
+    waiterProfileVm.deliverOrder = deliverOrder;
+    function deliverOrder(orderId) {
+        waiterService.deliverOrder(orderId)
+            .then(function (data) {
+                for(var pos in waiterProfileVm.meals){
+                    if(waiterProfileVm.meals[pos].itemId  === data.itemId){
+                        waiterProfileVm.meals.splice(pos,1);
+                        break;
+                    }
+                }
+            });
+    };
+
 }
