@@ -2,9 +2,6 @@
     /* Almost got crazy because of this :) buahahhaha*/
     position: absolute;
 
-    width: 40px;
-    height: 40px;
-
     margin: 5px;
     font-weight: bold;
     color: white;
@@ -54,8 +51,7 @@
 }
 
 .restaurant-canvas {
-    width: 600px;
-    height: 600px;
+    position: relative;
     margin-top: 20px;
     margin-left: 40px;
     margin-right: 10px;

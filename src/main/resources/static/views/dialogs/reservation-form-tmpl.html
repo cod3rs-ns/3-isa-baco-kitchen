@@ -10,7 +10,7 @@
     </md-toolbar>
 
     <md-dialog-content class="reservation-dialog">
-        <wizard on-finish="restaurantVm.finishReservation()"> 
+        <wizard on-finish="restaurantVm.finishReservation()">
           <wz-step wz-title="Odaberi vrijeme">
               <h1>Kada želite da rezervišete?</h1>
               <p> Odaberite datum kada želite da rezervišete. Nakon toga, unesite vrijeme početka Vaše rezervacije, kao i koliko sati želite da ostanete na rezervaciji. </p>
@@ -18,7 +18,7 @@
 
                   <md-datepicker ng-model="restaurantVm.DateTime.date" style="background-color: white;"
                     md-placeholder="Odaberi datum" required></md-datepicker>
-                
+
                 <md-input-container class="md-block">
                     <md-icon ng-style="{color: #aaa;}" aria-label="Time" class="material-icons">alarm</md-icon>
                     <label>časovi</label>
@@ -31,12 +31,12 @@
                       <input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
                         type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
                   </md-input-container>
-                
+
                 <md-input-container class="md-block">
                   <label>Trajanje</label>
                   <input required type="number" step="1" name="duration" ng-model="restaurantVm.reservation.length" min="1" max="6" />
                 </md-input-container>
-                
+
               <md-dialog-actions layout="row">
                   <span flex></span>
                   <md-button ng-disabled="!reservationForm1.$valid" ng-click="restaurantVm.continueReservation();" wz-next>Nastavite...</md-button>
@@ -45,19 +45,21 @@
           </wz-step>
           <wz-step wz-title="Odaberi stolove">
               <h1>Koje stolove želite da rezervišete?</h1>
-              <div layout="column" id="canvas" class="restaurant-canvas">
+              <div layout="column" id="canvas" class="restaurant-canvas" style="height:600px; widht=600px;">
                 <div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
                     name="{{table.tableId != null ? table.tableId : table.tempId}}"
-                    data-x="{{table.datax + 'px'}}"
-                    data-y="{{table.datay + 'px'}}"
-                    style="	transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
-                        height:{{table.height}};
-                        width:{{table.width}};
-                        background-color: {{table.color}}
+                    data-x="{{table.datax}}"
+                    data-y="{{table.datay}}"
+                    width="{{table.width + '%'}}"
+                    height="{{table.height + '%'}}"
+                    style="	top:{{table.datay + '%'}};
+                            left: {{table.datax + '%'}};
+                            height:{{table.height + '%'}};
+                            width:{{table.width + '%'}};
                         "
                     class="restaurant-table"
                     layout="row"
-                    
+
                     ng-click="restaurantVm.selectTable(table.tableId);"
                     ng-repeat="table in restaurantVm.allTables">
                   <p flex layout="column" layout-align="center center" style="color:white; font-weight:bold;">{{table.tableInRestaurantNo}}</p>

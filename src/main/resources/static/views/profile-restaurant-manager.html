@@ -140,11 +140,14 @@
             <div  layout="column" id="canvas" class="restaurant-canvas" >
 				<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
 						name="{{table.tableId != null ? table.tableId : table.tempId}}"
-						data-x="{{table.datax + 'px'}}"
-						data-y="{{table.datay + 'px'}}"
-						style="	transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
-								height:{{table.height}};
-								width:{{table.width}};
+						data-x="{{table.datax}}"
+						data-y="{{table.datay}}"
+						width="{{table.width + '%'}}"
+						height="{{table.height + '%'}}"
+						style="	top:{{table.datay + '%'}};
+								left: {{table.datax + '%'}};
+								height:{{table.height + '%'}};
+								width:{{table.width + '%'}};
 							  "
 						class="restaurant-table {{tablesVm.tableColors[table.region.regionNo - 1]}}"
 						layout="row"

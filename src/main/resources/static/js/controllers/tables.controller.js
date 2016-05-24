@@ -104,7 +104,7 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
                 .clickOutsideToClose(true)
                 .title('Uputstvo za korišćenje')
                 .textContent(
-                    'Za dodavanje novog stola potrebno je zadržati klik na praznoj površin dok se ne pojavi sto '
+                    'Za dodavanje novog stola potrebno je zadržati klik na praznoj površini dok se ne pojavi sto '
                 +   'Za uklanjanje postojećeg stola potrebno je uraditi dupli klik na njegovoj površini. '
                 +   'Za promenu regiona stola potrebno je kliknuti na sto i boja će mu se promeniti. '
                 +   'Promenom veličine stola menja se i broj ljudi koji mogu da sednu za njega. '
@@ -183,7 +183,13 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
 
     function startInteraction(){
         // Define how should tables behave
+        var container = document.getElementById('canvas');
+
         tablesVm.interactObject = interact('.restaurant-table')
+            .origin({
+                x: container.offsetLeft,
+                y: container.offsetTop
+            })
             .draggable({
                 // enable inertial throwing
                 inertia: false,
@@ -234,8 +240,8 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
             tableId: null,
             datax: event.layerX - 90,
             datay: event.layerY - 140,
-            width: 40,
-            height: 40,
+            width: 7,
+            height: 7,
             positions: 2,
             tempId: 10000 + tablesVm.tables.length,
             isNew: true,
@@ -287,20 +293,29 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     function dragMoveListener(event) {
         var target = event.target;
         // keep the dragged position in the data-x/data-y attributes
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+        //var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        //var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
 
-        // translate the element
-        target.style.webkitTransform =
-        target.style.transform = 'translate(' + x + 'px, ' + y + 'px)';
+        var parentWidth = target.parentElement.offsetWidth;
+        var parentHeight = target.parentElement.offsetHeight;
 
+        var width = parseFloat(target.getAttribute('width'));
+        var height = parseFloat(target.getAttribute('height'));
+        console.log(width);
+        console.log(height);
+        var oldPx = parseFloat(target.getAttribute('data-x')) || 0;
+        var oldPy = parseFloat(target.getAttribute('data-y')) || 0;
+        var newX = ((event.dx) / parentWidth) * 100 + oldPx;
+        var newY = ((event.dy) / parentHeight) * 100 + oldPy;
+
+        //target.style = 'top:' + newY +'%;left:' + newX + '%;';
         // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-
+        target.setAttribute('data-x', newX);
+        target.setAttribute('data-y', newY);
         var currentTable = tablesVm.findTable(target.getAttribute('id'));
-        currentTable.datax = x;
-        currentTable.datay = y;
+        currentTable.datax = newX;
+        currentTable.datay = newY;
+
 
     };
 
