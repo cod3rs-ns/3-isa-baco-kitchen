@@ -369,6 +369,35 @@
 	      	            <md-toolbar layout="row">
 	      	                <div class="md-toolbar-tools">
 	      	                    <h2 style="text-align: center">{{ scheduleVm.calendarTitle }}</h2>
+
+								<md-button  class="md-fab md-mini md-raised md-secondary"
+											mwl-date-modifier
+		  						          	date="scheduleVm.calendarDate"
+		  						          	decrement="scheduleVm.calendarView">
+									<i class="material-icons md-24">keyboard_arrow_left</i>
+									<md-tooltip md-direction="top">
+										Prethodni
+									</md-tooltip>
+								</md-button>
+								<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
+											mwl-date-modifier
+		  						          	date="scheduleVm.calendarDate"
+		  						          	set-to-today>
+									<i class="material-icons md-24">today</i>
+									<md-tooltip md-direction="top">
+										Danas
+									</md-tooltip>
+								</md-button>
+								<md-button  class="md-fab md-mini md-raised md-secondary"
+											mwl-date-modifier
+											date="scheduleVm.calendarDate"
+		  						          	increment="scheduleVm.calendarView">
+									<i class="material-icons md-24">keyboard_arrow_right</i>
+									<md-tooltip md-direction="top">
+										Sledeći
+									</md-tooltip>
+								</md-button>
+
 	      	                    <span flex></span>
 	      	                    <md-button ng-click="scheduleVm.changeToDay()">
 	      	                        Dnevni prikaz
@@ -387,15 +416,17 @@
 	  					  current-day="scheduleVm.calendarDate"
 	  					  events="scheduleVm.events"
 	  					  view-title="scheduleVm.calendarTitle"
-	  					  view-date="vm.viewDate"
+	  					  view-date="scheduleVm.viewDate"
 	  					  on-event-click="eventClicked(calendarEvent)"
-	  					  on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+	  					  on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd; scheduleVm.eventTimesChanged(calendarEvent);"
 	  					  edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
 	  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
 	  					  on-edit-event-click="eventEdited(calendarEvent)"
 	  					  on-delete-event-click="eventDeleted(calendarEvent)"
 	  					  cell-is-open="true"
-						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)">>
+						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
+						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)">
+
 	  			  </mwl-calendar>
 
 				</div>

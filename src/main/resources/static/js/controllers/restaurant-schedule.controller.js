@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantScheduleController', RestaurantScheduleController);
 
-RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast'];
+RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment'];
 
-function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast) {
+function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment) {
     var scheduleVm = this;
     scheduleVm.employees = [];
     scheduleVm.regions = [];
@@ -39,29 +39,34 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
     function initState() {
         scheduleVm.calendarView = 'month';
         scheduleVm.calendarDate = new Date();
-        scheduleVm.viewDate = new Date();
+        scheduleVm.viewDate =  moment().startOf('month').toDate();
         scheduleVm.events = [];
+        scheduleVm.viewChangeEnabled = true;
         scheduleService.getSchedules()
             .then(function(data) {
                 console.log(data);
                 for (var i = 0; i < data.length; i++) {
-                    var test_event = {};
+                    var test_event = data[i];
                     test_event.title = data[i].employee.firstName;
-                    test_event.type = 'success';
-                    test_event.startsAt = new Date(data[i].day);
-                    test_event.endsAt = new Date(data[i].day);
-                    console.log(test_event);
-                    test_event.startsAt.setHours(data[i].startHours);
-                    test_event.startsAt.setMinutes(data[i].startMinutes);
-                    test_event.endsAt.setHours(data[i].endHours);
-                    test_event.endsAt.setMinutes(data[i].endMinutes);
+                    test_event.startsAt = new Date(data[i].mergedStart);
+                    test_event.endsAt = new Date(data[i].mergedEnd);
                     test_event.type = convertTypeToClass(data[i].employee.type);
+                    test_event.draggable = true;
+                    test_event.resizable = true;
                     console.log(test_event);
                     scheduleVm.events.push(test_event);
                 };
             });
 
     };
+
+
+    scheduleVm.viewChangeClicked = viewChangeClicked;
+    function viewChangeClicked(date, nextView) {
+        console.log(date, nextView);
+        return scheduleVm.viewChangeEnabled;
+   };
+
 
     scheduleVm.changeToDay = changeToDay;
     function changeToDay(){
@@ -130,17 +135,24 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        scheduleVm.newEvent.type = convertTypeToClass(d.employee.type);
        console.log(scheduleVm.testDate);
        console.log(scheduleVm.newEvent);
+       scheduleVm.newEvent.mergedStart = scheduleVm.newEvent.startsAt;
+       scheduleVm.newEvent.mergedEnd = scheduleVm.newEvent.endsAt;
+       scheduleVm.draggable = true;
+       scheduleVm.resizable = true;
        scheduleVm.events.push(scheduleVm.newEvent);
+
        var schedule = {
            dailyScheduleId: null,
-           day: scheduleVm.newEvent.startsAt,
+           day: scheduleVm.newEvent.startsAt.getDate(),
            region: null,
            employee: null,
            restaurantId: 2,
            startHours: d.sh,
            startMinutes: d.sm,
            endHours: d.eh,
-           endMinutes: d.em
+           endMinutes: d.em,
+           mergedStart: scheduleVm.newEvent.startsAt,
+           mergedEnd: scheduleVm.newEvent.endsAt
        };
        console.log(schedule);
        var regid = -1;
@@ -154,12 +166,35 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        });
    };
 
+   scheduleVm.eventTimesChanged = eventTimesChanged;
+   function eventTimesChanged(calendarEvent) {
+       console.log(calendarEvent);
+       var t = splitDate(calendarEvent);
+       var regid = -1;
+       if (t.employee.type == 'waiter') {
+           regid = t.region.regionId;
+       }
+       scheduleService.updateSchedule(t, 2, t.employee.userId, regid)
+       showToast('Uspešno ste ažurirali radno vreme radnika.');
+   };
+
    function showToast(toast_message) {
        $mdToast.show({
            hideDelay : 3000,
-           position  : 'top right',
+           position  : 'bottom right',
            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
        });
+   };
+
+   function splitDate(d_event) {
+        d_event.mergedEnd = d_event.endsAt;
+        d_event.mergedStart = d_event.startsAt;
+        // TODO event on two dates
+        d_event.startHours = d_event.startsAt.getHours();
+        d_event.endHours = d_event.endsAt.getHours();
+        d_event.startHours = d_event.startsAt.getMinutes();
+        d_event.endHours = d_event.endsAt.getMinutes();
+        return d_event;
    };
 
    function convertTypeToClass(type) {
