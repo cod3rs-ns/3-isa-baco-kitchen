@@ -94,10 +94,39 @@ public class ReservationController {
     @RequestMapping(
             value    = "/api/reservation/tables",
             method   = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public void addTablesToReservation(@RequestParam(value="reservation") Integer reservationId, @RequestBody ArrayList<Integer> tables) {
+    public ResponseEntity<String> addTablesToReservation(@RequestParam(value="reservation") Integer reservationId, @RequestBody ArrayList<Integer> tables) {
+        if (0 == tables.size())
+            return new ResponseEntity<String>("{ \"answer\": \"NO_TABLES\"}", HttpStatus.OK);
+
         Reservation reservation = reservationService.findOne(reservationId);
+
+        Collection<RestaurantTable> freeTables = tableService.findAllByRestaurant(reservation.getRestaurant().getRestaurantId());
+        Collection<Reservation> similarReservations = reservationService.findByRestaurantIdAndTime(reservation.getRestaurant().getRestaurantId(), reservation.getReservationDateTime(), reservation.getLength());
+
+        for (Reservation res : similarReservations) {
+            Collection<ReservationTable> reservedTables = reservationTableService.findAllByReservationId(res.getReservationId());
+
+            for (ReservationTable reservedTable : reservedTables) {
+                freeTables.remove(reservedTable.getTable());
+            }
+        }
+
+        boolean p;
+        for (Integer tableId : tables) {
+            p = false;
+
+            for (RestaurantTable tbl : freeTables) {
+                if (tbl.getTableId() == tableId) {
+                    p = true;
+                    break;
+                }
+            }
+
+            if (!p) return new ResponseEntity<String>("{ \"answer\": \"WRONG_TABLES\"}", HttpStatus.OK);
+        }
 
         for (Integer tableId : tables) {
             ReservationTable table = new ReservationTable();
@@ -106,6 +135,8 @@ public class ReservationController {
 
             reservationTableService.save(table);
         }
+
+        return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
     }
 
     @RequestMapping(

@@ -38,7 +38,7 @@ function reservationService($http) {
     function saveTables(reservationId, tables) {
         return $http.post('/api/reservation/tables?reservation=' + reservationId, tables)
         .then(function(response) {
-          
+            return response.data;
         });
     };
 }

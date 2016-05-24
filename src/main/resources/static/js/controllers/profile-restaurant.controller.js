@@ -40,6 +40,12 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.showReservationDialog = showReservationDialog;
     restaurantVm.finishReservation = finishReservation;
     restaurantVm.continueReservation = continueReservation;
+    restaurantVm.ok = false;
+    restaurantVm.reservationOkay = reservationOkay;
+    
+    function reservationOkay() {
+      return restaurantVm.ok;
+    }
 
     activate();
 
@@ -241,7 +247,20 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     function saveReservation() {
       reservationService.saveTables(restaurantVm.reservation.reservationId, restaurantVm.reservationTables)
           .then(function(data) {
-              console.log('Reservation tables added.')
+              if (data.answer == "WRONG_TABLES") {
+                showToast('Neki od stolova su zauzeti u međuvremenu. Odaberite Vaše stolove ponovo.');
+                getFreeTables();
+                restaurantVm.reservationTables = [];
+                restaurantVm.ok = false;
+              }
+              else if (data.answer == "NO_TABLES"){
+                showToast('Morate odabrati bar jedan sto!');
+                restaurantVm.ok = false;
+              }
+              else {
+                showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');
+                restaurantVm.ok = true;
+              }
           });
     };
     
@@ -269,7 +288,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function finishReservation() {
-        alert('Reservation finished');
+        // alert('Reservation finished');
         $mdDialog.cancel();
     };
     
