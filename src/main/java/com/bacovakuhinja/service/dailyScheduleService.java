@@ -26,5 +26,7 @@ public interface DailyScheduleService {
 
     public Collection <DailySchedule> findByDay(Date day);
 
-    public DailySchedule findScheduleByTableForNow(Integer regionId);
+    public DailySchedule findScheduleByRegionForNow(Integer regionId);
+
+    public DailySchedule findScheduleByEmployeeForNow(Integer employeeId);
 }

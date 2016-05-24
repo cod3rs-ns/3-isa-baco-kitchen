@@ -47,7 +47,6 @@ public class OrderItemsController {
         return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
 
-
     @RequestMapping(
             value = "api/orderItems/activeFood/r={r_id}",
             method = RequestMethod.GET,
@@ -103,7 +102,7 @@ public class OrderItemsController {
 
     @RequestMapping(
             value = "/api/orderItems/i={itemId}",
-            method = RequestMethod.GET,
+            method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> finishOrderItem(@PathVariable("itemId") Integer itemId) {
         OrderItem item = orderItemService.findOne(itemId);
@@ -112,19 +111,23 @@ public class OrderItemsController {
             OrderItem updatedItem = orderItemService.update(item);
             Integer regionId = updatedItem.getOrder().getTable().getRegion().getRegionId();
             System.out.println(regionId);
-            DailySchedule schedules = dailyScheduleService.findScheduleByTableForNow(regionId);
-            User e = schedules.getEmployee();
-            System.out.println("user" + e.getUserId());
-            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+            DailySchedule schedule = dailyScheduleService.findScheduleByRegionForNow(regionId);
+            Employee e = schedule.getEmployee();
+            if (e != null) {
+                this.template.convertAndSend("/subscribe/finishOrder/" + e.getUserId(), item);
+                return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+            }
         }
         return null;
     }
 
+
     @RequestMapping(
-            value = "/api/orderItems/finished/r={regionId}",
+            value = "/api/orderItems/finished/region={regionId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<OrderItem>> finishedOrderItem(@PathVariable("regionId") Integer regionId) {
         return new ResponseEntity<Collection<OrderItem>> (orderItemService.findFinishedItemsByRegion(regionId), HttpStatus.OK );
     }
+
 }

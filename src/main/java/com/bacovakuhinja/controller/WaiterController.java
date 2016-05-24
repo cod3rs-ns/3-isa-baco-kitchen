@@ -2,13 +2,11 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
+import com.bacovakuhinja.model.RestaurantRegion;
 import com.bacovakuhinja.model.RestaurantTable;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.model.Waiter;
-import com.bacovakuhinja.service.DailyScheduleService;
-import com.bacovakuhinja.service.RestaurantService;
-import com.bacovakuhinja.service.RestaurantTableService;
-import com.bacovakuhinja.service.WaiterService;
+import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,11 +26,11 @@ public class WaiterController {
     @Autowired
     private DailyScheduleService dailyScheduleService;
 
-    private RestaurantTableService restaurantTableService;
-
     @Autowired
     private RestaurantService restaurantService;
 
+    @Autowired
+    private RestaurantRegionService restaurantRegionService;
 
     @RequestMapping(
             value = "/api/waiters",
@@ -66,26 +64,16 @@ public class WaiterController {
     }
 
 
-    @Authorization(value = "waiter")
     @RequestMapping(
-            value = "/api/waiter/tables",
+            value = "/api/waiter/tables/region={regionId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <RestaurantTable>> getTables(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
-        Waiter waiter = waiterService.findOne(user.getUserId());
+    public ResponseEntity <Collection <RestaurantTable>> getTables(@PathVariable("regionId")Integer regionId) {
+        RestaurantRegion region = restaurantRegionService.findOne(regionId);
+        if(region == null)
+            return new ResponseEntity <Collection <RestaurantTable>>(HttpStatus.NOT_FOUND);
 
-        /*
-        Restaurant restaurant = restaurantService.findOne(waiter.getRestaurantID());
-        Collection<RestaurantTable> tables = restaurantTableService.findAllByRestaurant(restaurant.getRestaurantId());
-        */
-        //TODO get real tables from database
-        RestaurantTable t = new RestaurantTable();
-        t.setTableId(1);
-
-        Collection <RestaurantTable> tables = new ArrayList <RestaurantTable>();
-        tables.add(t);
-        return new ResponseEntity <Collection <RestaurantTable>>(tables, HttpStatus.OK);
+        return new ResponseEntity <Collection <RestaurantTable>>(region.getTables(), HttpStatus.OK);
     }
 
     @SendEmail

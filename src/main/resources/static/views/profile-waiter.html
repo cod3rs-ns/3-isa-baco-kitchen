@@ -77,16 +77,22 @@
 
 <div ng-cloak>
 	<md-content>
-		<md-tabs class="md-primary" md-dynamic-height md-border-bottom>
-			<md-tab label="Završene porudžbine">
+		<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="waiterProfileVm.clickOnTab();" md-selected="waiterProfileVm.selectedTab">
+			<md-tab>
+				<md-tab-label>
+					Završene porudžbine&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="waiterProfileVm.notNo!=-1">{{waiterProfileVm.notNo}}</span>
+				</md-tab-label>
+				<md-tab-body>
 				<md-content class="md-padding">
-					<div layout="row" layout-wrap>
+					<p ng-show="waiterProfileVm.meals.length == 0;"> Nema završenih porudžbina. </p>
+
+					<div layout="row" ng-show="waiterProfileVm.meals.length != 0;" layout-wrap>
 						<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
 
 							<md-card class="order-item">
 								<md-card-content>
-									<img ng-src="{{meal.img_src}}" class="md-card-image order-img">
-									<h4>{{meal.name}}</h4>
+									<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
+									<h4>{{meal.menuItem.name}}</h4>
 									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
 								</md-card-content>
 								
@@ -99,6 +105,7 @@
 						</div>			
 					</div>
 				</md-content>
+				</md-tab-body>
 			</md-tab>
 			<md-tab label="Izdati računi">
 				

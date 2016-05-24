@@ -160,7 +160,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
 
     cookProfileVm.prepareFood = prepareFood;
     function prepareFood(itemId){
-        console.log(itemId);
         employeeService.prepareOrderItem(itemId, cookProfileVm.cook.userId)
             .then(function (data) {
                 if(data != null){
@@ -186,5 +185,24 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         if (cookProfileVm.selectedTab == 0){
             cookProfileVm.notNo =-1;
         }
+    }
+
+
+    cookProfileVm.finishFood = finishFood;
+    function finishFood(itemId){
+
+        for(var meal in cookProfileVm.preparingMeals){
+            if(itemId === cookProfileVm.preparingMeals[meal].itemId){
+                cookProfileVm.preparingMeals.splice(meal, 1);
+                break;
+            }
+        }
+
+        employeeService.finishOrderItem(itemId)
+            .then(function (data) {
+                if(data != null){
+                    console.log("finish");
+                }
+            });
     }
 }

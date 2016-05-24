@@ -9,7 +9,9 @@ function waiterService($http){
         getWaiter: getWaiter,
         updateWaiter: updateWaiter,
         getLoggedWaiter: getLoggedWaiter,
-        getTables: getTables
+        getTables: getTables,
+        getWorkingRegion: getWorkingRegion,
+        getFinishedOrders: getFinishedOrders
     };
 
     return service;
@@ -35,11 +37,24 @@ function waiterService($http){
             });
     };
 
-    function getTables(){
-        return $http.get('api/waiter/tables')
+    function getTables(regionId){
+        return $http.get('/api/waiter/tables/region=' + regionId)
             .then(function (response) {
                 return response.data;
             });
     }
 
+    function getWorkingRegion(empId) {
+        return $http.get('/api/employeeRegion/e=' + empId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function getFinishedOrders(regId) {
+        return $http.get('/api/orderItems/finished/region=' + regId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
 }

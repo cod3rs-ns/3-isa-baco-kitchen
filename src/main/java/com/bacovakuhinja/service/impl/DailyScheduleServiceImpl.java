@@ -93,31 +93,18 @@ public class DailyScheduleServiceImpl implements DailyScheduleService {
     }
 
     @Override
-    public DailySchedule findScheduleByTableForNow(Integer regionId) {
+    public DailySchedule findScheduleByRegionForNow(Integer regionId) {
         Calendar now = Calendar.getInstance();
-        now.set(Calendar.HOUR, 10);
-        now.set(Calendar.MINUTE, 20);
-        now.set(Calendar.MILLISECOND, 0);
-
-        int hours = now.get(Calendar.HOUR);
-        int minutes = now.get(Calendar.HOUR);
-        now.set(Calendar.HOUR_OF_DAY, 0);
-        now.set(Calendar.MINUTE, 0);
-        now.set(Calendar.SECOND, 0);
         Date date = now.getTime();
-        System.out.println(date);
-        System.out.println(regionId);
-        ArrayList<DailySchedule> schedules = dayScheduleRepository.findByDayAndRegion_RegionIdAndStartHoursLessThanEqualAndEndHoursGreaterThanEqual(date, regionId, hours, hours);
+        DailySchedule schedule = dayScheduleRepository.findByRegion_RegionIdAndMergedStartLessThanAndMergedEndGreaterThanEqual(regionId, date, date);
+        return schedule;
+    }
 
-        if (schedules.size()==2) {
-            for (DailySchedule schedule : schedules) {
-                if(schedule.getStartMinutes()<minutes && schedule.getEndMinutes() >= minutes)
-                    return schedule;
-            }
-        }
-        else if(schedules.size()==1){
-            return schedules.get(0);
-        }
-        return null;
+    @Override
+    public DailySchedule findScheduleByEmployeeForNow(Integer employeeId) {
+        Calendar now = Calendar.getInstance();
+        Date date = now.getTime();
+        DailySchedule schedule = dayScheduleRepository.findByEmployee_UserIdAndMergedStartLessThanAndMergedEndGreaterThanEqual(employeeId, date, date);
+        return schedule;
     }
 }

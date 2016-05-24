@@ -9,5 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface DayScheduleRepository extends JpaRepository <DailySchedule, Integer> {
-    public ArrayList<DailySchedule> findByDayAndRegion_RegionIdAndStartHoursLessThanEqualAndEndHoursGreaterThanEqual(Date date, Integer region, Integer sh, Integer eh);
+    public DailySchedule findByRegion_RegionIdAndMergedStartLessThanAndMergedEndGreaterThanEqual(Integer regionId, Date dateStart, Date dateEnd);
+
+    public DailySchedule findByEmployee_UserIdAndMergedStartLessThanAndMergedEndGreaterThanEqual(Integer userId, Date dateStart, Date dateEnd);
 }

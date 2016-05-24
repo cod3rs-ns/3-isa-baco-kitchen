@@ -18,7 +18,7 @@ INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, 
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('18', 	'Paul', 		'Pogba',						'pp@bacovakuhinja.rs', 	'http://img.uefa.com/imgml/TP/players/1/2016/324x324/250015808.jpg', 	'lestersiti', 'guest', 		'verified');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('19', 	'Edwin', 		'van der Sar', 					'es@bacovakuhinja.rs', 	'http://www.nadlanu.com/upload/thumbs/archive/Uploads/Logos/Beta-News/20101008_298-ItemID-181023-lrg_670x0.jpg', 	'lestersiti', 'guest', 		'verified');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('20', 	'Boban', 		'Bajković', 					'bb@bacovakuhinja.rs', 	'http://www.utakmica.rs/images/fudbaleri/28-bajkovic-boban.png', 	'lestersiti', 'guest', 		'verified');
-INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('21', 	'Boban', 		'Bajković', 					'aa@bacovakuhinja.rs', 	'http://www.utakmica.rs/images/fudbaleri/28-bajkovic-boban.png', 	'lestersiti', 'cook', 		'verified');
+INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('21', 	'Boban', 		'Bajković', 					'bar@bacovakuhinja.rs', 	'http://www.utakmica.rs/images/fudbaleri/28-bajkovic-boban.png', 	'lestersiti', 'bartender', 		'verified');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`) VALUES ('22', 	'Paul', 		'Pogba',						'ppc@bacovakuhinja.rs', 	'http://img.uefa.com/imgml/TP/players/1/2016/324x324/250015808.jpg', 	'lestersiti', 'cook', 		'verified');
 
 
@@ -68,8 +68,8 @@ INSERT INTO `isa_mrs_project`.`employees` (`e_id`, `e_bday`, `e_dress_size`, `e_
 INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('6');
 INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('7');
 INSERT INTO `isa_mrs_project`.`waiters` (`w_id`) VALUES ('8');
-INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('21');
 INSERT INTO `isa_mrs_project`.`cooks` (`c_id`) VALUES ('22');
+INSERT INTO `isa_mrs_project`.`bartenders` (`b_id`) VALUES ('21');
 
 
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`) VALUES ('1', 'Ukusno.', 'Kolač s borovnicom.', '150', 'food', 'images/meals/borovnica.jpg', '1', 'desert');

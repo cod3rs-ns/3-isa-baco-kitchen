@@ -13,6 +13,7 @@ function employeeService($http) {
         createWaiter: createWaiter,
         createBartender: createBartender,
         prepareOrderItem: prepareOrderItem,
+        finishOrderItem: finishOrderItem,
         getAcceptedItems: getAcceptedItems,
         getEmployees: getEmployees
     };
@@ -77,6 +78,13 @@ function employeeService($http) {
 
     function getAcceptedItems(empId){
         return $http.get('api/orderItems/itemsForPrepare/e=' + empId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function finishOrderItem(itemId) {
+        return $http.put('/api/orderItems/i=' + itemId)
             .then(function (response) {
                 return response.data;
             });

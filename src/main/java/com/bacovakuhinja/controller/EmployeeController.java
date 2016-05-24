@@ -1,8 +1,8 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.model.Employee;
-import com.bacovakuhinja.model.User;
+import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.service.DailyScheduleService;
 import com.bacovakuhinja.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private DailyScheduleService dailyScheduleService;
 
     @RequestMapping(
             value = "/api/employees",
@@ -61,6 +64,19 @@ public class EmployeeController {
             return new ResponseEntity <Employee>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity <Employee>(updatedEmp, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(
+            value = "/api/employeeRegion/e={emp_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <RestaurantRegion> getRegion(@PathVariable("emp_id") Integer empId) {
+        DailySchedule sch = dailyScheduleService.findScheduleByEmployeeForNow(empId);
+        if(sch == null)
+            return new ResponseEntity <RestaurantRegion>(HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity <RestaurantRegion>(sch.getRegion(), HttpStatus.OK);
     }
 
     // TODO change after implementation of new TimeSchedule system

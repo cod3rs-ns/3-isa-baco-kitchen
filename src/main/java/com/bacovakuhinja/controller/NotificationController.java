@@ -33,4 +33,12 @@ public class NotificationController {
         HashMap<String, ArrayList<OrderItem>> mapa = new HashMap<String, ArrayList<OrderItem>>();
         return mapa;
     }
+
+    @MessageMapping("/finishOrder/{waiter_id}")
+    @SendTo("/subscribe/finishOrder/{waiter_id}")
+    public OrderItem getFinishOrder(@DestinationVariable String waiter_id) throws Exception {
+        Thread.sleep(3000);
+        System.out.println(waiter_id);
+        return new OrderItem();
+    }
 }

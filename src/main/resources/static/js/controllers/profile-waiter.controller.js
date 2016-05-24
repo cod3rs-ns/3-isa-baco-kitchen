@@ -2,19 +2,24 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog', '$mdToast'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog', '$mdToast', '$scope'];
 
-function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog, $mdToast) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog, $mdToast, $scope) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
     waiterProfileVm.stompClient = null;
+    waiterProfileVm.workingRegion = null;
+    waiterProfileVm.notNo = -1;
+    waiterProfileVm.selectedTab = 0;
+
 
     activate();
 
     function activate(){
         getWaiter().then(function() {
-            connect(waiterProfileVm.waiter.restaurantID);
+            connect(waiterProfileVm.waiter.userId);
+            getRegion(waiterProfileVm.waiter.userId);
         });
 
         passService.isPasswordChanged()
@@ -23,8 +28,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
                     waiterProfileVm.changePassword(false);
                 }
             });
-
-        getTablesByRestaurant();
 
     };
 
@@ -39,24 +42,22 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
 
-    waiterProfileVm.meals = [
-      {
-        name: 'Kolač sa borovnicama',
-		img_src: 'images/meals/borovnica.jpg'
-      },
-	  {
-        name: 'Štrudla sa makom',
-		img_src: 'images/meals/mak.jpg'
-      },
-	  {
-        name: 'Sour',
-		img_src: 'images/meals/sour.jpg'
-      },
-	  {
-        name: 'Cosmopolitan',
-		img_src: 'images/meals/cosmopolitan.jpg'
-      }
-	];
+    function getRegion(){
+        return waiterService.getWorkingRegion(waiterProfileVm.waiter.userId)
+            .then(function(data) {
+                waiterProfileVm.workingRegion = data;
+                waiterService.getFinishedOrders(waiterProfileVm.workingRegion.regionId)
+                    .then(function (data) {
+                        for(var pos in data){
+                            waiterProfileVm.meals.push(data[pos]);
+                        }
+                    });
+                getTablesByRestaurant(waiterProfileVm.waiter.restaurantID);
+                return data;
+            });
+    };
+
+    waiterProfileVm.meals = [];
 	
 	waiterProfileVm.bills = [
       {
@@ -112,22 +113,19 @@ function WaiterProfileController(tableService, waiterService, passService, order
         );
     };
 
-
     //part for tables
-
     waiterProfileVm.allTables = [];
-    function getTablesByRestaurant() {
-        //TODO SET RESTAURANT ID
-        return tableService.getTablesByRestaurant(2)
+    function getTablesByRestaurant(restaurantId) {
+        return tableService.getTablesByRestaurant(restaurantId)
             .then(function(data) {
-                changeWaitersTables(data);
                 waiterProfileVm.allTables = data;
+                changeWaitersTables(data);
                 return waiterProfileVm.tables;
             });
     };
 
     function changeWaitersTables(tables){
-        waiterService.getTables()
+        waiterService.getTables(waiterProfileVm.workingRegion.regionId)
             .then(function (data) {
                 for (var pos in tables){
                     for(var mypos in data){
@@ -249,11 +247,11 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
     function connect(id) {
-        var socket = new SockJS('/connectFood');
+        var socket = new SockJS('/finishOrder');
         waiterProfileVm.stompClient = Stomp.over(socket);
         waiterProfileVm.stompClient.connect({}, function(frame) {
             console.log('Connected: ' + frame);
-            waiterProfileVm.stompClient.subscribe('/subscribe/ActiveFood/'+ id, function(greeting){
+            waiterProfileVm.stompClient.subscribe('/subscribe/finishOrder/'+ id, function(greeting){
                 showGreeting(JSON.parse(greeting.body));
             });
         });
@@ -266,13 +264,21 @@ function WaiterProfileController(tableService, waiterService, passService, order
         console.log("Disconnected");
     }
 
-    waiterProfileVm.sendName = sendName;
-    function sendName(id) {
-        waiterProfileVm.stompClient.send("/app/connectFood/" + id, {}, JSON.stringify({ 'name': 'Bojan' }));
+    function showGreeting(meal) {
+        waiterProfileVm.meals.push(meal);
+
+        if(waiterProfileVm.notNo == -1)
+            waiterProfileVm.notNo = 1;
+        else
+            waiterProfileVm.notNo += 1;
+
+        $scope.$apply();
     }
 
-    function showGreeting(message) {
-        console.log("message");
-        console.log(message);
+    waiterProfileVm.clickOnTab = clickOnTab;
+    function clickOnTab() {
+        if (waiterProfileVm.selectedTab == 0){
+            waiterProfileVm.notNo =-1;
+        }
     }
 }
