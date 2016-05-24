@@ -43,7 +43,7 @@ public class ProviderResponseController {
         return new ResponseEntity <ProviderResponse>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/provider_responses/",
+    @RequestMapping(value = "/api/provider_responses",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)

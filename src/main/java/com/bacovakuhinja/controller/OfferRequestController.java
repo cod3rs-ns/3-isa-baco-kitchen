@@ -5,13 +5,16 @@ import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
 import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
+import com.bacovakuhinja.service.RestaurantProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class OfferRequestController {
@@ -21,6 +24,9 @@ public class OfferRequestController {
 
     @Autowired
     private ProviderResponseService providerResponseService;
+
+    @Autowired
+    private RestaurantProviderService restaurantProviderService;
 
     @RequestMapping(
             value = "/api/offers",
@@ -116,4 +122,30 @@ public class OfferRequestController {
         providerResponseService.update(response);
         return new ResponseEntity <OfferRequest>(offer, HttpStatus.OK);
     }
+
+    @RequestMapping(
+            value = "api/offers/newp={provider_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection <OfferRequest>> getNewOffersForProvider(@PathVariable("provider_id") Integer id) {
+        Collection <OfferRequest> toRemove = new ArrayList <OfferRequest>();
+        Collection <OfferRequest> allOfferRequests = offerRequestService.findAll();
+        Collection <ProviderResponse> responses = providerResponseService.findAllByProvider(restaurantProviderService.findOne(id));
+        for (ProviderResponse response: responses) {
+            for(OfferRequest offer: allOfferRequests){
+                if(response.getOffer().getOfferId() == offer.getOfferId()){
+                    toRemove.add(offer);
+                    break;
+                }
+            }
+        }
+        System.out.println(toRemove.size());
+        System.out.println(allOfferRequests.size());
+        for (OfferRequest or: toRemove){
+            allOfferRequests.remove(or);
+        }
+        System.out.println(allOfferRequests.size());
+        return new ResponseEntity <Collection <OfferRequest>>(allOfferRequests, HttpStatus.OK);
+    }
+
 }

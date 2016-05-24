@@ -13,7 +13,8 @@ function offerRequestService($http) {
         createOfferRequest: createOfferRequest,
         getOfferRequestsByRestaurant: getOfferRequestsByRestaurant,
         acceptProviderResponse: acceptProviderResponse,
-        rejectProviderResponse: rejectProviderResponse
+        rejectProviderResponse: rejectProviderResponse,
+        getNewOffersForProvider: getNewOffersForProvider
     };
     return service;
 
@@ -68,6 +69,13 @@ function offerRequestService($http) {
 
     function rejectProviderResponse(offer_id, response_id) {
         return $http.get('api/offers_n/offer=' + offer_id +'&reject=' + response_id)
+        .then(function(response) {
+            return response.data;
+        });
+    };
+
+    function getNewOffersForProvider(provider_id) {
+        return $http.get('api/offers/newp=' + provider_id)
         .then(function(response) {
             return response.data;
         });
