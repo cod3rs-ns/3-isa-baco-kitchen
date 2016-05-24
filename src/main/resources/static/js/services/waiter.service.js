@@ -11,7 +11,9 @@ function waiterService($http){
         getLoggedWaiter: getLoggedWaiter,
         getTables: getTables,
         getWorkingRegion: getWorkingRegion,
-        getFinishedOrders: getFinishedOrders
+        getFinishedOrders: getFinishedOrders,
+        deliverOrder: deliverOrder
+
     };
 
     return service;
@@ -53,6 +55,13 @@ function waiterService($http){
 
     function getFinishedOrders(regId) {
         return $http.get('/api/orderItems/finished/region=' + regId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function deliverOrder(itemId){
+        return $http.put('/api/orderItems/deliver/i=' + itemId)
             .then(function (response) {
                 return response.data;
             });
