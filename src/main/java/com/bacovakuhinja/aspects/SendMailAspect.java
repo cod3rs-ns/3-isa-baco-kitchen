@@ -141,7 +141,8 @@ public class SendMailAspect {
 
     }
 
-    private void sendMail(String address, String subject, String message) throws MessagingException {
+    public static void sendMail(String address, String subject, String message) throws MessagingException {
+
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         sender.setDefaultEncoding("UTF-8");
 

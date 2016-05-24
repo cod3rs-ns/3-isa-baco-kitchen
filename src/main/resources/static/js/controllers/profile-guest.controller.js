@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', '$location', 'guestService'];
+GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', 'guestService'];
 
-function GuestProfileController($routeParams, $location, guestService) {
+function GuestProfileController($routeParams, $location, $mdToast, guestService) {
     var guestProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -18,6 +18,8 @@ function GuestProfileController($routeParams, $location, guestService) {
     guestProfileVm.sendRequest = false;
     guestProfileVm.query = "";
     guestProfileVm.queryResult = [];
+    guestProfileVm.activeReservations = [];
+    guestProfileVm.visits = [];
     // Functions 
     guestProfileVm.editProfile = editProfile;
     guestProfileVm.saveChanges = saveChanges;
@@ -28,8 +30,36 @@ function GuestProfileController($routeParams, $location, guestService) {
     guestProfileVm.addFriend = addFriend;
     guestProfileVm.search = search;
     guestProfileVm.to = to;
+    guestProfileVm.cancelReservation = cancelReservation;
+    guestProfileVm.showToast = showToast;
 
     activate();
+    
+    function cancelReservation(id) {
+      
+      var reservation = null;
+      for (var i in guestProfileVm.activeReservations) {
+          if (guestProfileVm.activeReservations[i].reservationId == id) {
+              reservation = guestProfileVm.activeReservations[i];
+              break;
+          }
+      }
+      
+      if (Date.now() + 30*60*1000 < reservation.reservationDateTime) {
+          // FIXME Dodati brisanje rezervacije.
+          for (var i in guestProfileVm.activeReservations) {
+              if (guestProfileVm.activeReservations[i].reservationId == id) {
+                  guestProfileVm.activeReservations.splice(i, 1);
+                  break;
+              }
+          }
+          showToast('Otkazana rezervacija.');
+      }
+      else {
+        showToast('Rezervacija počinje za manje od pola sata. Nije moguće otkazati.');
+        console.log('Ne može se otkazati.');
+      }
+    };
     
     function to(id) {
         $location.path('profile-guest/' + id);
@@ -133,7 +163,11 @@ function GuestProfileController($routeParams, $location, guestService) {
         });
         
         isFriend().then(function() {
-            console.log('Is friend loaded.')
+            console.log('Is friend loaded.');
+        });
+        
+        getReservations().then(function () {
+            console.log('Active reservations loaded.');
         });
     };
 
@@ -162,6 +196,21 @@ function GuestProfileController($routeParams, $location, guestService) {
         return guestService.isFriend($routeParams.guestId).then(function(data) {
             guestProfileVm.isFriend = data;
             return guestProfileVm.isFriend;
+        });
+    };
+    
+    function getReservations() {
+        return guestService.getReservations($routeParams.guestId).then(function(data) {
+            guestProfileVm.activeReservations = data;
+            return guestProfileVm.activeReservations;
+        });
+    };
+    
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'bottom right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
     };
 }

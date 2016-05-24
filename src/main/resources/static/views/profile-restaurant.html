@@ -44,7 +44,7 @@
                 </div>
                 <hr>
                 <div class="option">
-                    <md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
+                    <md-button ng-click="restaurantVm.showReservationDialog();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
                     <h4>Rezerviši</h4>
                 </div>
                 <hr>
@@ -171,80 +171,5 @@
       </md-tab>
 
     </md-tabs>
-    
-    <div>
-      <wizard on-finish="restaurantVm.finishReservation()"> 
-        <wz-step wz-title="Odaberi vrijeme">
-            <h1>Kada želite da rezervišete?</h1>
-            <div>
-              <!--md-datepicker ng-model="myDate" md-placeholder="Enter date"
-                md-min-date="minDate" md-max-date="maxDate"></md-datepicker-->
-              <md-datepicker ng-model="myDate" 
-                md-placeholder="Odaberi datum rezervacije"></md-datepicker>
-              
-                <div layout="row">
-      						<md-input-container class="md-block">
-      							<label>časovi</label>
-      	    					<input 	name="scheduleStartHours" ng-model="scheduleVm.testDate.sh"
-      									type="number" step="1" min="0" max="23" required />
-      	    			</md-input-container>
-      						<md-input-container class="md-block">
-      							<label>minuti</label>
-      	    					<input name="scheduleStartMinutes" ng-model="scheduleVm.testDate.sm"
-      									type="number" step="1" min="0" max="59" required />
-      	    			</md-input-container>
-      					</div>
-                
-              <md-input-container class="md-block">
-                <label>Trajanje</label>
-                <input required type="number" step="0.5" name="duration" ng-model="test3" min="0" max="4" />
-              </md-input-container>
-            </div>
-            <md-button wz-next>Nastavite...</md-button>
-        </wz-step>
-        <wz-step wz-title="Odaberi stolove">
-            <h1>Koje stolove želite da rezervišete?</h1>
-            <div layout="column" id="canvas" class="restaurant-canvas">
-      				<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
-      						name="{{table.tableId != null ? table.tableId : table.tempId}}"
-      						data-x="{{table.datax + 'px'}}"
-      						data-y="{{table.datay + 'px'}}"
-      						style="	transform: translate({{table.datax + 'px'}}, {{table.datay + 'px'}});
-      								height:{{table.height}};
-      								width:{{table.width}};
-                      background-color: {{table.color}}
-      							  "
-                  class="restaurant-table"
-      						layout="row"
-                  
-                  ng-click="restaurantVm.selectTable(table.tableId);"
-                  ng-repeat="table in restaurantVm.allTables">
-      					<p flex layout="column" layout-align="center center" style="color:white; font-weight:bold;">{{table.tableInRestaurantNo}}</p>
-      					<md-tooltip md-direction="bottom">
-      						Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
-      					</md-tooltip>
-      					<md-tooltip md-direction="right">
-      						Pozicija  {{ table.positions }}
-      					</md-tooltip>
-      					<md-tooltip md-direction="left">
-      						Region:  {{ table.region.name }}
-      					</md-tooltip>
-      				</div>
-      			</div>
-            <md-button wz-next ng-click="restaurantVm.saveReservation();">Nastavite...</md-button>
-        </wz-step>
-        <wz-step wz-title="Pozovi prijatelje">
-            <h1>Koga želite da pozovete od prijatelja?</h1>
-            <md-list>
-              <md-list-item ng-repeat="friend in restaurantVm.currentUserFriends">
-                <img alt="{{ friend.firstName }}" ng-src="{{ friend.image }}" class="md-avatar" />
-                <p>{{ friend.firstName + ' ' + friend.lastName }}</p>
-                <md-button ng-hide="friend.invited" ng-click="restaurantVm.inviteFriend(friend.userId);">Pozovi</md-button>
-              </md-list-item>
-            </md-list>
-            <md-button wz-next>Završi rezervaciju</md-button>
-        </wz-step>
-    </wizard>
-    </div>
   </md-content>
 </div>
