@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('TablesController', TablesController);
 
-TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast'];
+TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast', '$window'];
 
-function TablesController(tableService, regionService, $mdDialog, $mdToast) {
+function TablesController(tableService, regionService, $mdDialog, $mdToast, $window) {
     var tablesVm = this;
     // switch of edit or no-edit state
     tablesVm.enabledEdit = false;
@@ -236,12 +236,19 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     }
 
     function addTableListener(event) {
+        var parent = document.getElementById("canvas");
+        console.log(parent);
+        console.log(event);
+        var x = (event.pageX - event.target.offsetLeft)/event.target.offsetWidth*100 + $window.scrollX;
+        var y = (event.pageY - event.target.offsetTop)/event.target.offsetHeight*100 + $window.scrollY;
+        console.log(x);
+        console.log(y);
         tablesVm.newTable = {
             tableId: null,
-            datax: event.layerX - 90,
-            datay: event.layerY - 140,
-            width: 7,
-            height: 7,
+            datax: (event.offsetX )/event.target.offsetWidth*100,
+            datay: (event.offsetY )/event.target.offsetHeight*100,
+            width: 8,
+            height: 8,
             positions: 2,
             tempId: 10000 + tablesVm.tables.length,
             isNew: true,
@@ -340,10 +347,9 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
         x += (event.deltaRect.left / parentWidth) * 100 ;
         y += (event.deltaRect.top / parentWidth) *100;
 
-
         target.setAttribute('data-x', x);
         target.setAttribute('data-y', y);
-        // neccesary for automatic update :) lost 30 minutes because of this
+        // neccesary for automatic update :)
         target.style = 'top:' + y + '%;left:' + x + '%;height:' + newHeight +'%;width:'+ newWidth + '%;';
         currentTable.datax = x;
         currentTable.datay = y;
