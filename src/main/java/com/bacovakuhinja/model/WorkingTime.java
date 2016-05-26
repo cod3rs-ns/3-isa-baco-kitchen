@@ -53,6 +53,15 @@ public class WorkingTime {
     @Column(name = "wt_working_on_sun")
     private boolean workingOnSun;
 
+    @Column(name = "wt_reg_reversed")
+    private boolean regReversed;
+
+    @Column(name = "wt_sat_reversed")
+    private boolean satReversed;
+
+    @Column(name = "wt_sun_reversed")
+    private boolean sunReversed;
+
     @Column(name = "wt_restaurant_id")
     private Integer restaurantId;
 
@@ -177,6 +186,30 @@ public class WorkingTime {
 
     public void setWorkingOnSun(boolean workingOnSun) {
         this.workingOnSun = workingOnSun;
+    }
+
+    public boolean isRegReversed() {
+        return regReversed;
+    }
+
+    public void setRegReversed(boolean regReversed) {
+        this.regReversed = regReversed;
+    }
+
+    public boolean isSatReversed() {
+        return satReversed;
+    }
+
+    public void setSatReversed(boolean satReversed) {
+        this.satReversed = satReversed;
+    }
+
+    public boolean isSunReversed() {
+        return sunReversed;
+    }
+
+    public void setSunReversed(boolean sunReversed) {
+        this.sunReversed = sunReversed;
     }
 
     public Integer getRestaurantId() {

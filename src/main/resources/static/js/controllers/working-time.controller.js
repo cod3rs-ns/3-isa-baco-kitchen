@@ -13,6 +13,11 @@ function WorkingTimeController(workingTimeService, $mdToast) {
     workingTimeVm.initEditMode = initEditMode;
     workingTimeVm.cancelChanges = cancelChanges;
     workingTimeVm.updateWorkingTime = updateWorkingTime;
+    workingTimeVm.validateForm = validateForm;
+    workingTimeVm.regInvalid = false;
+    workingTimeVm.satInvalid = false;
+    workingTimeVm.sunInvalid = false;
+    workingTimeVm.invalidMessage = 'Početak radnog vremena mora biti pre kraja. :)';
 
     activate();
 
@@ -22,6 +27,7 @@ function WorkingTimeController(workingTimeService, $mdToast) {
 
     function findWorkingTimeByRestaurant() {
         // TODO get actual restaurant
+        // TODO init empty working time if
         workingTimeService.findWorkingTimeByRestaurant(2)
             .then(function(data) {
                 console.log(data);
@@ -47,6 +53,7 @@ function WorkingTimeController(workingTimeService, $mdToast) {
             workingTimeVm.wtime.satStartMinutes = null;
             workingTimeVm.wtime.satEndHours = null;
             workingTimeVm.wtime.satEndMinutes = null;
+            workingTimeVm.wtime.satReversed = false;
         };
         // erase old working data on Sunday
         if (workingTimeVm.wtime.workingOnSun == false) {
@@ -54,6 +61,12 @@ function WorkingTimeController(workingTimeService, $mdToast) {
             workingTimeVm.wtime.sunStartMinutes = null;
             workingTimeVm.wtime.sunEndHours = null;
             workingTimeVm.wtime.sunEndMinutes = null;
+            workingTimeVm.wtime.sunReversed = false;
+        };
+        // Validation
+        validateForm();
+        if(workingTimeVm.regInvalid || workingTimeVm.satInvalid ||workingTimeVm.sunInvalid){
+            return;
         };
         workingTimeService.updateWorkingTime(workingTimeVm.wtime)
             .then(function(data) {
@@ -61,6 +74,95 @@ function WorkingTimeController(workingTimeService, $mdToast) {
                 showToast('Radno vreme restorana je uspešno sačuvano.');
             });
         workingTimeVm.editMode = false;
+    };
+
+    function validateForm() {
+
+        var t = workingTimeVm.wtime;
+        console.log(t);
+        var a = moment('2016-7-28', 'YYYY MM DD');
+        var b = moment('2016-7-28', 'YYYY MM DD');
+
+        // ---------- REGULAR DAYS CHECK ---------- //
+        if (workingTimeVm.wtime.regReversed) {
+            b = moment('2016-7-29', 'YYYY MM DD');
+        };
+
+        a.hour(t.regStartHours);
+        a.minute(t.regStartMinutes);
+        b.hour(t.regEndHours);
+        b.minute(t.regEndMinutes);
+
+        if (t.regReversed && t.regStartHours < t.regEndHours) {
+            workingTimeVm.invalidMessage = 'Dvodnevno radno vreme mora da obuhvata 00:00.';
+            workingTimeVm.regInvalid = true;
+            return;
+        };
+        // check if start is before end for regular days
+        if (a.isAfter(b)) {
+            workingTimeVm.invalidMessage = 'Početak radnog vremena mora biti pre kraja. :)';
+            workingTimeVm.regInvalid = true;
+            return;
+        };
+        workingTimeVm.regInvalid = false;
+        // ---------- SATURDAYS CHECK ---------- //
+        if (workingTimeVm.wtime.workingOnSat) {
+            var a = moment('2016-7-28', 'YYYY MM DD');
+            var b = moment('2016-7-28', 'YYYY MM DD');
+            if (workingTimeVm.wtime.satReversed) {
+                b = moment('2016-7-29', 'YYYY MM DD');
+            };
+
+            a.hour(t.satStartHours);
+            a.minute(t.satStartMinutes);
+            b.hour(t.satEndHours);
+            b.minute(t.satEndMinutes);
+            
+            if (t.satReversed && t.satStartHours < t.satEndHours) {
+                workingTimeVm.invalidMessage = 'Dvodnevno radno vreme mora da obuhvata 00:00.';
+                workingTimeVm.satInvalid = true;
+                return;
+            };
+
+            // check if start is before end for regular days
+            if (a.isAfter(b)) {
+                workingTimeVm.invalidMessage = 'Početak radnog vremena mora biti pre kraja. :)';
+                workingTimeVm.satInvalid = true;
+                return;
+            };
+            workingTimeVm.satInvalid = false;
+        };
+
+        // ---------- SUNDAYS CHECK ---------- //
+        if (workingTimeVm.wtime.workingOnSun) {
+            var a = moment('2016-7-28', 'YYYY MM DD');
+            var b = moment('2016-7-28', 'YYYY MM DD');
+            if (workingTimeVm.wtime.sunReversed) {
+                b = moment('2016-7-29', 'YYYY MM DD');
+            };
+
+            a.hour(t.sunStartHours);
+            a.minute(t.sunStartMinutes);
+            b.hour(t.sunEndHours);
+            b.minute(t.sunEndMinutes);
+
+            console.log(t.sunReversed);
+            console.log(t.sunStartHours);
+            console.log(t.sunEndHours);
+            if (t.sunReversed && t.sunStartHours < t.sunEndHours) {
+                workingTimeVm.invalidMessage = 'Dvodnevno radno vreme mora da obuhvata 00:00.';
+                workingTimeVm.sunInvalid = true;
+                return;
+            };
+
+            // check if start is before end for regular days
+            if (a.isAfter(b)) {
+                workingTimeVm.invalidMessage = 'Početak radnog vremena mora biti pre kraja. :)';
+                workingTimeVm.sunInvalid = true;
+                return;
+            };
+            workingTimeVm.sunInvalid = false;
+        };
     };
 
     function showToast(toast_message) {
