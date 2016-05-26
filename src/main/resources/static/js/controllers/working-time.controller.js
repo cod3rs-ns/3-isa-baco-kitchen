@@ -117,7 +117,7 @@ function WorkingTimeController(workingTimeService, $mdToast) {
             a.minute(t.satStartMinutes);
             b.hour(t.satEndHours);
             b.minute(t.satEndMinutes);
-            
+
             if (t.satReversed && t.satStartHours < t.satEndHours) {
                 workingTimeVm.invalidMessage = 'Dvodnevno radno vreme mora da obuhvata 00:00.';
                 workingTimeVm.satInvalid = true;
@@ -162,6 +162,31 @@ function WorkingTimeController(workingTimeService, $mdToast) {
                 return;
             };
             workingTimeVm.sunInvalid = false;
+        };
+
+        // ---------- WorkTime CONTINUOUS CHECK  ---------- //
+        if (t.workingOnSat && t.regReversed) {
+            if (t.regEndHours > t.satStartHours) {
+                workingTimeVm.invalidMessage = 'Radno vreme radnim danima i subotom se preklapa.';
+                workingTimeVm.satInvalid = true;
+                return;
+            };
+        };
+
+        if (t.workingOnSun && t.satReversed) {
+            if (t.satEndHours > t.sunStartHours) {
+                workingTimeVm.invalidMessage = 'Radno vreme subotom i nedeljom se preklapa.';
+                workingTimeVm.sunInvalid = true;
+                return;
+            };
+        };
+
+        if (t.workingOnSun & t.sunReversed) {
+            if (t.sunEndHours > t.regEndHours) {
+                workingTimeVm.invalidMessage = 'Radno vreme nedeljom i radnim danima se preklapa.';
+                workingTimeVm.regInvalid = true;
+                return;
+            };
         };
     };
 
