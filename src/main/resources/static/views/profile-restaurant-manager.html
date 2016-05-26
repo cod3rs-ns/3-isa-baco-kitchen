@@ -279,6 +279,12 @@
 						</h2>
 					</md-toolbar>
 					<form name="scheduleForm">
+						<label>Radno vreme koje se prostire na preko 2 dana</label>
+						<div flex-xs flex="50">
+          					<md-checkbox ng-model="scheduleVm.testDate.reversed" aria-label="Checkbox 1">
+            					Dvodnevno radno vreme
+          					</md-checkbox>
+        				</div>
 					<label>Početak smene</label>
 					<div layout="row">
 						<md-input-container class="md-block">
@@ -357,6 +363,9 @@
 										>{{region.name}}</md-option>
 
     					</md-select>
+					</div>
+					<div layout="row">
+						<p ng-show="scheduleVm.invalidForm" style="color:red;">{{scheduleVm.invalidMessage}}</p>
 					</div>
 					<div layout="row">
 						<md-button ng-disabled="!scheduleForm.$valid" ng-click="scheduleVm.addNewEvent()" class="md-raised md-primary">

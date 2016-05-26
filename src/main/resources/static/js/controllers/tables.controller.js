@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('TablesController', TablesController);
 
-TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast', '$window'];
+TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast'];
 
-function TablesController(tableService, regionService, $mdDialog, $mdToast, $window) {
+function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     var tablesVm = this;
     // switch of edit or no-edit state
     tablesVm.enabledEdit = false;
@@ -236,17 +236,10 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast, $win
     }
 
     function addTableListener(event) {
-        var parent = document.getElementById("canvas");
-        console.log(parent);
-        console.log(event);
-        var x = (event.pageX - event.target.offsetLeft)/event.target.offsetWidth*100 + $window.scrollX;
-        var y = (event.pageY - event.target.offsetTop)/event.target.offsetHeight*100 + $window.scrollY;
-        console.log(x);
-        console.log(y);
         tablesVm.newTable = {
             tableId: null,
-            datax: (event.offsetX )/event.target.offsetWidth*100,
-            datay: (event.offsetY )/event.target.offsetHeight*100,
+            datax: event.offsetX/event.target.offsetWidth*100,
+            datay: event.offsetY/event.target.offsetHeight*100,
             width: 8,
             height: 8,
             positions: 2,
@@ -288,10 +281,8 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast, $win
         }
         event.currentTarget.classList.toggle(to_disable);
         var next = (index+1)%(tablesVm.regionCount);
-        console.log(next);
         event.currentTarget.classList.toggle(tablesVm.tableColors[next]);
         var currentTable = tablesVm.findTable(event.currentTarget.getAttribute('id'));
-        console.log(currentTable);
         currentTable.region = tablesVm.regions[next];
         event.preventDefault();
     };

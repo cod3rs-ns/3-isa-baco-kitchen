@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantScheduleController', RestaurantScheduleController);
 
-RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment'];
+RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment', 'workingTimeService'];
 
-function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment) {
+function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment, workingTimeService) {
     var scheduleVm = this;
     scheduleVm.employees = [];
     scheduleVm.regions = [];
@@ -29,7 +29,8 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
         sm: null,
         em: null,
         employee: null,
-        region: null
+        region: null,
+        reversed: false
     };
 
     scheduleVm.selectedEmployee = false;
@@ -37,6 +38,10 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
     initState();
 
     function initState() {
+        workingTimeService.findWorkingTimeByRestaurant(2).
+            then(function(data) {
+                scheduleVm.restaurantWorkingTime = data;
+            });
         scheduleVm.calendarView = 'month';
         scheduleVm.calendarDate = new Date();
         scheduleVm.viewDate =  moment().startOf('month').toDate();
@@ -120,8 +125,78 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
       }, 500);
   };
 
+    scheduleVm.validateForm = validateForm;
+    function validateForm() {
+        var wt = scheduleVm.restaurantWorkingTime;
+        var t = scheduleVm.testDate;
+        var reversed = scheduleVm.testDate.reversed;
+        var work_day  = 'regular';
+        var a = moment('2016-7-28', 'YYYY MM DD');
+        var wt_a = moment('2016-7-28', 'YYYY MM DD');
+        var b = moment('2016-7-28', 'YYYY MM DD');
+        var wt_b = moment('2016-7-28', 'YYYY MM DD');
+        if (reversed) {
+            b = moment('2016-7-29', 'YYYY MM DD');
+            wt_b = moment('2016-7-29', 'YYYY MM DD');
+        };
+
+
+        a.hour(t.sh);
+        a.minute(t.sm);
+        b.hour(t.eh);
+        b.minute(t.em);
+
+        // check if start is before end
+        if(a.isAfter(b)){
+            scheduleVm.invalidForm = true;
+            scheduleVm.invalidMessage = 'Početak smene mora biti pre kraja.'
+            return;
+        };
+
+        if (work_day == 'regular'){
+            wt_a.hour(wt.regStartHours);
+            wt_a.minute(wt.regStartMinutes);
+            wt_b.hour(wt.regEndHours);
+            wt_b.minute(wt.regEndMinutes);
+        } else if (work_day == 'saturday'){
+            wt_a.hour(wt.satStartHours);
+            wt_a.minute(wt.satStartMinutes);
+            wt_b.hour(wt.satEndHours);
+            wt_b.minute(wt.satEndMinutes);
+        } else if (work_day == 'sunday'){
+            wt_a.hour(wt.sunStartHours);
+            wt_a.minute(wt.sunStartMinutes);
+            wt_b.hour(wt.sunEndHours);
+            wt_b.minute(wt.sunEndMinutes);
+        } else {
+            return;
+        };
+        console.log(a);
+        console.log(b);
+        console.log(wt_a);
+        console.log(wt_b);
+        // Check start
+        if (wt_a.isBefore(a) || wt_a.isAfter(b)) {
+            scheduleVm.invalidForm = true;
+            scheduleVm.invalidMessage = 'Početak smene se ne uklapa u radno vreme restorana.'
+            return;
+        };
+
+        // Check end
+        if(wt_b.isBefore(a) || wt_b.isAfter(b)) {
+            scheduleVm.invalidForm = true;
+            scheduleVm.invalidMessage = 'Kraj smene se ne uklapa u radno vreme restorana.'
+            return;
+        };
+        scheduleVm.invalidForm = false;
+    };
+
    scheduleVm.addNewEvent = addNewEvent;
    function addNewEvent(){
+       scheduleVm.validateForm();
+       if (scheduleVm.invalidForm){
+           return;
+       }
        var d = scheduleVm.testDate;
        //scheduleVm.newEvent.startsAt = new Date(d.y, d.m, d.d, d.sh, d.sm);
        //scheduleVm.newEvent.endsAt = new Date(d.y,d.m,d.d, d.eh, d.em);
