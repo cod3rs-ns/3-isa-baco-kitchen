@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`users` (
   `u_verified` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`u_id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 22
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -76,7 +75,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurants` (
     ON DELETE SET NULL
     ON UPDATE SET NULL)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -180,7 +178,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reservations` (
   ON DELETE CASCADE
   ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -203,7 +200,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_regions` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -229,7 +225,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -265,7 +260,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -420,7 +414,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 8
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -458,7 +451,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`order_items` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 42
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -558,7 +550,6 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`reviews` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -628,6 +619,9 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`working_times` (
   `wt_sun_end_m` INT(11) NULL,
   `wt_working_on_sat` TINYINT(1) NOT NULL,
   `wt_working_on_sun` TINYINT(1) NOT NULL,
+  `wt_reg_reversed` TINYINT(1) NOT NULL,
+  `wt_sat_reversed` TINYINT(1) NULL,
+  `wt_sun_reversed` TINYINT(1) NULL,
   `wt_restaurant_id` INT(11) NOT NULL,
   PRIMARY KEY (`wt_id`),
   INDEX `wt_restaurant_fid_idx` (`wt_restaurant_id` ASC),
