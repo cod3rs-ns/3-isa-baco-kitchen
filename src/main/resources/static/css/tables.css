@@ -14,6 +14,7 @@
 .restaurant-table.default {
     background-color: #283593;
 }
+
 .restaurant-table.first-color {
   background-color: #00695C;
 }
@@ -81,13 +82,23 @@
     border: 1px solid black;
     padding: 5px;
 }
-.event-smart {
+.event-indigo {
     background-color:#283593 !important;
 }
-.dh-event-smart {
+.dh-event-indigo {
     background-color: #3949AB !important;
 }
 
-.event-block {
-    background-color:#283593 !important;
+.event-pink {
+    background-color:#D500F9 !important;
+}
+.dh-event-pink {
+    background-color: #E040FB !important;
+}
+
+.event-teal {
+    background-color:#00695C !important;
+}
+.dh-event-teal {
+    background-color: #00897B !important;
 }

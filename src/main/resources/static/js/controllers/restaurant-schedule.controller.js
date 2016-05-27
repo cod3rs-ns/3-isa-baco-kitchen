@@ -38,6 +38,8 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
     scheduleVm.shifts = [];
     scheduleVm.loadShifts = loadShifts;
     scheduleVm.setShift = setShift;
+    scheduleVm.invalidForm = false;
+    scheduleVm.invalidMessage = '';
 
     initState();
 
@@ -145,72 +147,6 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
                });
       }, 500);
   };
-
-    scheduleVm.validateForm = validateForm;
-    function validateForm() {
-        var wt = scheduleVm.restaurantWorkingTime;
-        var t = scheduleVm.testDate;
-        var reversed = scheduleVm.testDate.reversed;
-        var work_day  = 'regular';
-        var a = moment('2016-7-28', 'YYYY MM DD');
-        var wt_a = moment('2016-7-28', 'YYYY MM DD');
-        var b = moment('2016-7-28', 'YYYY MM DD');
-        var wt_b = moment('2016-7-28', 'YYYY MM DD');
-        if (reversed) {
-            b = moment('2016-7-29', 'YYYY MM DD');
-            wt_b = moment('2016-7-29', 'YYYY MM DD');
-        };
-
-
-        a.hour(t.sh);
-        a.minute(t.sm);
-        b.hour(t.eh);
-        b.minute(t.em);
-
-        // check if start is before end
-        if(a.isAfter(b)){
-            scheduleVm.invalidForm = true;
-            scheduleVm.invalidMessage = 'Početak smene mora biti pre kraja.'
-            return;
-        };
-
-        if (work_day == 'regular'){
-            wt_a.hour(wt.regStartHours);
-            wt_a.minute(wt.regStartMinutes);
-            wt_b.hour(wt.regEndHours);
-            wt_b.minute(wt.regEndMinutes);
-        } else if (work_day == 'saturday'){
-            wt_a.hour(wt.satStartHours);
-            wt_a.minute(wt.satStartMinutes);
-            wt_b.hour(wt.satEndHours);
-            wt_b.minute(wt.satEndMinutes);
-        } else if (work_day == 'sunday'){
-            wt_a.hour(wt.sunStartHours);
-            wt_a.minute(wt.sunStartMinutes);
-            wt_b.hour(wt.sunEndHours);
-            wt_b.minute(wt.sunEndMinutes);
-        } else {
-            return;
-        };
-        console.log(a);
-        console.log(b);
-        console.log(wt_a);
-        console.log(wt_b);
-        // Check start
-        if (wt_a.isBefore(a) || wt_a.isAfter(b)) {
-            scheduleVm.invalidForm = true;
-            scheduleVm.invalidMessage = 'Početak smene se ne uklapa u radno vreme restorana.'
-            return;
-        };
-
-        // Check end
-        if(wt_b.isBefore(a) || wt_b.isAfter(b)) {
-            scheduleVm.invalidForm = true;
-            scheduleVm.invalidMessage = 'Kraj smene se ne uklapa u radno vreme restorana.'
-            return;
-        };
-        scheduleVm.invalidForm = false;
-    };
 
    scheduleVm.addNewEvent = addNewEvent;
    function addNewEvent(){
@@ -362,14 +298,93 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
 
    function convertTypeToClass(type) {
        if (type == 'cook') {
-           return 'smart';
+           return 'teal';
        };
        if (type == 'waiter') {
-           return 'success';
+           return 'pink';
        }
        if (type == 'bartender') {
-           return 'info';
+           return 'indigo';
        }
+   };
+
+   scheduleVm.validateForm = validateForm;
+   function validateForm() {
+       var start = moment(scheduleVm.dateClicked);
+       var end = moment(scheduleVm.dateClicked);
+       start.hours(scheduleVm.testDate.sh);
+       start.minutes(scheduleVm.testDate.sm);
+       end.hours(scheduleVm.testDate.eh);
+       end.minutes(scheduleVm.testDate.em);
+
+       var start_day = start.day(); // Number 1-7 representing day of the week
+       var end_day = end.day();
+       var t = scheduleVm.restaurantWorkingTime;
+
+       if (start_day == 6 && t.workingOnSat == false) {
+           scheduleVm.invalidForm = true;
+           scheduleVm.invalidMessage = 'Restoran ne radi subotom.';
+           return;
+       };
+       if (start_day == 0 && t.workingOnSun == false) {
+           scheduleVm.invalidForm = true;
+           scheduleVm.invalidMessage = 'Restoran ne radi nedeljom.';
+           return;
+       };
+
+       var restaurantStart = angular.copy(start);
+       var restaurantEnd = {};
+
+       if (start_day > 0 && start_day < 6) {
+           restaurantStart.hour(t.regStartHours);
+           restaurantStart.minute(t.regStartMinutes);
+           if (t.regReversed) {
+               restaurantEnd = restaurantStart.clone().add(1, 'd');
+           } else{
+               restaurantEnd = moment(newStart);
+           }
+           restaurantEnd.hour(t.regEndHours);
+           restaurantEnd.minute(t.regEndMinutes);
+       } else if (start_day == 6) {
+           restaurantStart.hour(t.satStartHours);
+           restaurantStart.minute(t.satStartMinutes);
+           if (t.satReversed) {
+               restaurantEnd = restaurantStart.clone().add(1, 'd');
+           } else{
+               restaurantEnd = moment(newStart);
+           }
+           restaurantEnd.hour(t.satEndHours);
+           restaurantEnd.minute(t.satEndMinutes);
+       } else if ( start_day == 0) {
+           restaurantStart.hour(t.sunStartHours);
+           restaurantStart.minute(t.sunStartMinutes);
+           if (t.sunReversed) {
+               restaurantEnd = restaurantStart.clone().add(1, 'd');
+           } else{
+               restaurantEnd = moment(newStart);
+           }
+           restaurantEnd.hour(t.sunEndHours);
+           restaurantEnd.minute(t.sunEndMinutes);
+       } else {
+          // error
+          return;
+       };
+       console.log('------');
+       console.log(restaurantStart.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+       console.log(restaurantEnd.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+
+       if(start.isBefore(restaurantStart) || start.isAfter(restaurantEnd)) {
+           scheduleVm.invalidForm = true;
+           scheduleVm.invalidMessage = 'Početak rasporeda rada zaposlenog se ne uklapa u radno vreme.';
+           return;
+       };
+       if(end.isBefore(restaurantStart) || end.isAfter(restaurantEnd)) {
+           scheduleVm.invalidForm = true;
+           scheduleVm.invalidMessage = 'Kraj rasporeda rada zaposlenog se ne uklapa u radno vreme.';
+           return;
+       };
+
+       scheduleVm.invalidForm = false;
    };
 
 }

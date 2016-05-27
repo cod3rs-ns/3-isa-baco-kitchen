@@ -71,14 +71,13 @@
 <div id="down" style="margin-top:15px"ng-cloak>
   <md-content>
     <md-tabs id="tabs" class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
-        <md-tab label="Informacije o restoranu">
+        <md-tab label="Info">
           <md-content class="md-padding" style="font-size:120%;">
 			  	<!-- NEEDS TO BE CHANGED -->
-                <p><em style="color:grey; font-size:100%;">Naziv: </em> {{rmanagerVm.rmanager.restaurant.name}}</p>
-				<p><em style="color:grey; font-size:100%;">Vrsta: </em> {{rmanagerVm.rmanager.restaurant.type}}</p>
-				<p><em style="color:grey; font-size:100%;">Opis: </em> {{rmanagerVm.rmanager.restaurant.info}}</p>
-				<p><em style="color:grey; font-size:100%;">Radno vreme: </em> {{rmanagerVm.rmanager.restaurant.startTime + 'h - ' + rmanagerVm.rmanager.restaurant.endTime + 'h'}}</p>
-          </md-content>
+                <p><i class="material-icons">business</i> {{rmanagerVm.rmanager.restaurant.name}}</p>
+				<p><i class="material-icons">local_dining</i> {{rmanagerVm.rmanager.restaurant.type}}</p>
+				<p><i class="material-icons">info</i>{{rmanagerVm.rmanager.restaurant.info}}</p>
+				 </md-content>
         </md-tab>
           <md-tab label="Jelovnik">
             <md-content class="md-padding">
@@ -272,7 +271,7 @@
 		  <md-content ng-controller="RestaurantScheduleController as scheduleVm">
 
 			<div id="calendar" layout="row">
-				<div flex-gt-sm="20" layout="column" style="margin:15px;">
+				<div flex-gt-sm="20" layout="column" style="margin:15px; height:480px;" >
 					<md-toolbar class="md-theme-light" layout="column">
 						<h2 class="md-toolbar-tools">
 							<span>Raspored rada</span>
@@ -398,7 +397,7 @@
 					<div class="btn-group" layout="row">
 	      	            <md-toolbar layout="row">
 	      	                <div class="md-toolbar-tools">
-	      	                    <h2 style="text-align: center">{{ scheduleVm.calendarTitle }}</h2>
+	      	                    <h2 style="text-align: center" flex>{{ scheduleVm.calendarTitle }}</h2>
 
 								<md-button  class="md-fab md-mini md-raised md-secondary"
 											mwl-date-modifier
@@ -455,7 +454,8 @@
 	  					  on-delete-event-click="eventDeleted(calendarEvent)"
 	  					  cell-is-open="true"
 						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
-						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)">
+						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)"
+						  >
 
 
 	  			  </mwl-calendar>
