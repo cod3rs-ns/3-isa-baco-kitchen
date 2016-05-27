@@ -112,8 +112,8 @@
 				<md-list ng-cloak>
 					<md-list-item class="md-3-line" ng-repeat="offer in providerVm.newOffers">
 						<div class="md-list-item-text">
-							<h3>{{'Porudžbina #' + offer.offerId}}</h3>
-							<p>{{'rok:'+ offer.deadline}}</p>
+							<h3><strong>{{'Porudžbina #' + offer.offerId}}</strong></h3>
+							<p>rok: {{offer.deadline | date:'dd-MM-yyyy'}}</p>
 						</div>
 						<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
 									ng-click="providerVm.showDetailed(offer);">
@@ -139,8 +139,8 @@
 				  <md-list ng-cloak>
   					<md-list-item class="md-3-line" ng-repeat="response in providerVm.activeResponses">
   						<div class="md-list-item-text">
-  							<h3>{{'Ponuda #' + response.responseId}}</h3>
-  							<p>{{'porudžbina: #' + response.offer.offerId}}</p>
+  							<h3><strong>{{'Ponuda #' + response.responseId}}</strong></h3>
+  							<p><em>{{'porudžbina: #' + response.offer.offerId}}</em></p>
 							<p>{{'ponuđena cena: ' + response.price}} </p>
   						</div>
   						<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
@@ -167,10 +167,10 @@
 				  <md-list ng-cloak>
   					<md-list-item class="md-3-line" ng-repeat="rsp in providerVm.historyResponses">
   						<div class="md-list-item-text">
-							<h3>{{'Ponuda #' + rsp.responseId}}</h3>
+							<h3><strong>{{'Ponuda #' + rsp.responseId}}</strong></h3>
   							<p>{{'porudžbina: #' + rsp.offer.offerId}}</p>
 							<p>{{'ponuđena cena: ' + rsp.price}} </p>
-							<p>{{'status: ' + rsp.status}} </p>
+							<p><em>{{'status: ' + rsp.status}} </em></p>
   						</div>
   						<md-divider ng-if="!$last"></md-divider>
   					</md-list-item>

@@ -2,9 +2,9 @@
   <form>
     <md-toolbar>
       <div class="md-toolbar-tools">
-        <h2>Porudžbina za {{offerRequestVm.offer.restaurant_name}}</h2>
+        <h2>Porudžbina za restoran Orfei</h2>
         <span flex></span>
-        <span class="label label-danger">Rok važenja: {{offerRequestVm.offer.due_date}}</span>
+        <span class="label label-danger">Rok važenja: {{offerRequestVm.offer.deadline | date:'dd-MM-yyyy'}}</span>
         <md-button class="md-icon-button" ng-click="offerRequestVm.cancel()">
           <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
         </md-button>
@@ -12,15 +12,12 @@
     </md-toolbar>
     <md-dialog-content>
       <div class="md-dialog-content">
-        <h2>{{offerRequestVm.offer.offer_name}}</h2>
+        <h2><strong>{{'porudžbina #' + offerRequestVm.offer.offerId}}</strong></h2>
 
         <p class="text-justify">
             </br>
-            <!--{{offerRequestVm.offer.content}}-->
-            Lorem ipsum dolor sit amet, nostrud appetere splendide ad qui. Cu nec tritani numquam, ne vis quando admodum. Tibique scaevola quo eu, cum appareat assueverit te. Cu vix laudem omittam ancillae, ius ad mediocrem mediocritatem. Has mundi volumus te.
-
-            No est amet utroque inciderint, sit ut admodum inciderint. Vidit porro efficiendi quo an, partem disputando te his, vis laoreet consectetuer an. Oblique iuvaret principes mea cu. Eum an amet dicit nemore. Quidam intellegebat vim at, vix at postulant omittantur. Quo eu vero vide. Quo in saepe salutatus, autem copiosae nominati ad sea.
-        </p>
+            {{offerRequestVm.offer.offer}}
+            </p>
 
       </div>
     </md-dialog-content>
