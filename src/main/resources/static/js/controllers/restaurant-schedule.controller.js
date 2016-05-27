@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantScheduleController', RestaurantScheduleController);
 
-RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment', 'workingTimeService', 'shiftTemplateService'];
+RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$scope', '$timeout', '$mdToast', 'moment', 'workingTimeService', 'shiftTemplateService'];
 
-function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment, workingTimeService, shiftTemplateService) {
+function RestaurantScheduleController(employeeService, scheduleService, regionService, $scope, $timeout, $mdToast, moment, workingTimeService, shiftTemplateService) {
     var scheduleVm = this;
     scheduleVm.employees = [];
     scheduleVm.regions = [];
@@ -30,7 +30,8 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
         em: null,
         employee: null,
         region: null,
-        reversed: false
+        reversed: false,
+        shift: null
     };
 
     scheduleVm.selectedEmployee = false;
@@ -194,7 +195,21 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        scheduleService.createSchedule(schedule, 2, d.employee.userId, regid)
        .then(function(data) {
            console.log(data);
-           showToast('Uspešno ste sačuvali raspored radnika.')
+           showToast('Uspešno ste sačuvali raspored radnika.');
+           scheduleVm.testDate = {
+               y: scheduleVm.temp.getFullYear(),
+               m: scheduleVm.temp.getMonth(),
+               d: scheduleVm.temp.getDate(),
+               sh: null,
+               eh: null,
+               sm: null,
+               em: null,
+               employee: null,
+               region: null,
+               reversed: false,
+               shift: null
+           };
+           $scope.scheduleForm.$setUntouched();
        });
    };
 

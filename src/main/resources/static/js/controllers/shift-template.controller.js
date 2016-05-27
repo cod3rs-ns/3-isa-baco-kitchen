@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('ShiftTemplateController', ShiftTemplateController);
 
-ShiftTemplateController.$inject = ['shiftTemplateService', '$mdToast'];
+ShiftTemplateController.$inject = ['shiftTemplateService', '$mdToast', '$scope'];
 
-function ShiftTemplateController(shiftTemplateService, $mdToast) {
+function ShiftTemplateController(shiftTemplateService, $mdToast, $scope) {
     var shiftVm = this;
     shiftVm.shiftTemplates = [];
     shiftVm.activeShiftTemplate = {};
@@ -37,10 +37,10 @@ function ShiftTemplateController(shiftTemplateService, $mdToast) {
     function initDefaultShiftTemplate() {
         shiftVm.activeShiftTemplate = {
             shiftId: null,
-            startHours: 0,
-            endHours: 24,
-            startMinutes: 0,
-            endMinutes: 0,
+            startHours: null,
+            endHours: null,
+            startMinutes: null,
+            endMinutes: null,
             name: '',
             restaurantId: 2
         };
@@ -52,6 +52,7 @@ function ShiftTemplateController(shiftTemplateService, $mdToast) {
                 console.log(data);
                 shiftVm.shiftTemplates.push(data);
                 initDefaultShiftTemplate();
+                $scope.shiftTemplateForm.$setUntouched();
                 showToast('Templejt smene je uspešno kreiran.')
             });
     };
@@ -91,6 +92,7 @@ function ShiftTemplateController(shiftTemplateService, $mdToast) {
                 showToast('Templejt smene je uspešno sačuvan.');
             });
         initDefaultShiftTemplate();
+        $scope.shiftTemplateForm.$setUntouched();
         shiftVm.editState = false;
     };
 

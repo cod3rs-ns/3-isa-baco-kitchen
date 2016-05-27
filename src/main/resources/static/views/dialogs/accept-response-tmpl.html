@@ -15,14 +15,14 @@
                 <md-list ng-cloak>
                     <md-list-item class="md-3-line" ng-repeat="response in singleOfferVm.responses">
                         <div class="md-list-item-text">
-                            <h3>{{'Ponuda #' + response.responseId}}</h3>
+                            <h3><strong>{{'Ponuda #' + response.responseId}}</strong></h3>
                             <p>{{response.provider.firstName + ' ' + response.provider.lastName}}</p>
                             <p>{{response.price + ' RSD'}}</p>
                             <p style="color:green;" ng-show="response.status == 'accepted'">
-                                prihvaćena
+                                <em>prihvaćena</em>
                             </p>
                             <p style="color:red;" ng-show="response.status == 'rejected'">
-                                odbijena
+                                <em>odbijena</em>
                             </p>
                         </div>
                         <md-button  class="md-fab md-mini md-primary md-raised md-secondary"
