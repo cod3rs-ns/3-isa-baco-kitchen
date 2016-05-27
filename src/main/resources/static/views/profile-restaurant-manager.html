@@ -273,18 +273,61 @@
 
 			<div id="calendar" layout="row">
 				<div flex-gt-sm="20" layout="column" style="margin:15px;">
-					<md-toolbar class="md-theme-light">
+					<md-toolbar class="md-theme-light" layout="column">
 						<h2 class="md-toolbar-tools">
-							<span>Forma za definisanje rasporeda rada</span>
+							<span>Raspored rada</span>
+
+
+						<md-button class="md-icon-button" aria-label="Info">
+        					<md-tooltip md-direction="bottom">
+        						Izaberite unapred definisanu smenu ili unesite proizvoljno vreme.
+        					</md-tooltip>
+        					<md-icon aria-label="Password change" class="material-icons">help</md-icon>
+        					</md-icon>
+    					</md-button>
 						</h2>
 					</md-toolbar>
-					<form name="scheduleForm">
-						<label>Radno vreme koje se prostire na preko 2 dana</label>
-						<div flex-xs flex="50">
-          					<md-checkbox ng-model="scheduleVm.testDate.reversed" aria-label="Checkbox 1">
-            					Dvodnevno radno vreme
-          					</md-checkbox>
-        				</div>
+					<form name="scheduleForm" flex>
+						<md-input-container class="md-block">
+							<label>Smena</label>
+							<md-select 	placeholder="Izaberite smenu" md-on-open="scheduleVm.loadShifts()"
+										ng-disabled="!scheduleVm.selectedDate" ng-model="scheduleVm.shift"
+										name="scheduleEmployee" flex>
+								<md-option ng-value="employee" ng-repeat="shift in scheduleVm.shifts"
+										ng-click="scheduleVm.setShift(shift)">
+										{{shift.name}}
+								</md-option>
+							</md-select>
+						</md-input-container>
+
+						<md-input-container class="md-block">
+							<label>Zaposleni</label>
+							<md-select 	placeholder="Izaberite zaposlenog" md-on-open="scheduleVm.loadEmployees()"
+										ng-model="scheduleVm.testDate.employee" ng-disabled="!scheduleVm.selectedDate"
+										name="scheduleEmployee" flex required>
+	    						<md-option ng-value="employee" ng-repeat="employee in scheduleVm.employees"
+										ng-click="scheduleVm.onSelectedEmployee(employee)">
+										{{employee.firstName + ' ' + employee.lastName}}
+								</md-option>
+	    					</md-select>
+							<div ng-messages="scheduleForm.scheduleEmployee.$error" ng-if="scheduleForm.$dirty" class="errors">
+								<div ng-message="required">Morate izabrati zaposlenog.</div>
+							</div>
+						</md-input-container>
+						<md-input-container class="md-block">
+							<label>Region</label>
+							<md-select 	placeholder="Izaberite region" md-on-open="scheduleVm.loadRegions()"
+										ng-model="scheduleVm.testDate.region" ng-disabled="!scheduleVm.selectedDate"
+										ng-hide="!scheduleVm.isWaiterSelected" ng-required="scheduleVm.isWaiterSelected"
+										name="scheduleRegion" flex>
+	    					<md-option ng-value="region" ng-repeat="region in scheduleVm.regions"
+											>{{region.name}}</md-option>
+	    					</md-select>
+							<div ng-messages="scheduleForm.scheduleRegion.$error" ng-if="scheduleForm.$dirty" class="errors">
+								<div ng-message="required">Morate izabrati region.</div>
+							</div>
+						</md-input-container>
+
 					<label>Početak smene</label>
 					<div layout="row">
 						<md-input-container class="md-block">
@@ -338,31 +381,6 @@
 					</div>
 					<div ng-hide="scheduleVm.selectedDate">
 						<p style="color:red;">Izaberite datum u kalendarskom prikazu</p>
-					</div>
-
-					<div layout="row">
-						<md-select 	placeholder="Izaberite zaposlenog" md-on-open="scheduleVm.loadEmployees()"
-									ng-model="scheduleVm.testDate.employee" ng-disabled="!scheduleVm.selectedDate"
-									name="scheduleEmployee" flex required>
-      						<md-option ng-value="employee" ng-repeat="employee in scheduleVm.employees"
-									ng-click="scheduleVm.onSelectedEmployee(employee)">
-									{{employee.firstName + ' ' + employee.lastName}}
-							</md-option>
-
-    					</md-select>
-						<div ng-messages="scheduleForm.scheduleEmployee.$error">
-							<div ng-message="required">Morate izabrati zaposlenog.</div>
-						</div>
-					</div>
-					<div layout="row">
-						<md-select 	placeholder="Izaberite region" md-on-open="scheduleVm.loadRegions()"
-									ng-model="scheduleVm.testDate.region" ng-disabled="!scheduleVm.selectedDate"
-									ng-hide="!scheduleVm.isWaiterSelected" ng-required="scheduleVm.isWaiterSelected"
-									name="scheduleRegion" flex>
-     					<md-option ng-value="region" ng-repeat="region in scheduleVm.regions"
-										>{{region.name}}</md-option>
-
-    					</md-select>
 					</div>
 					<div layout="row">
 						<p ng-show="scheduleVm.invalidForm" style="color:red;">{{scheduleVm.invalidMessage}}</p>
@@ -430,7 +448,7 @@
 	  					  view-title="scheduleVm.calendarTitle"
 	  					  view-date="scheduleVm.viewDate"
 	  					  on-event-click="eventClicked(calendarEvent)"
-	  					  on-event-times-changed="calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd; scheduleVm.eventTimesChanged(calendarEvent);"
+	  					  on-event-times-changed="scheduleVm.eventTimesChanged(calendarEvent, calendarNewEventStart, calendarNewEventEnd);"
 	  					  edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
 	  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
 	  					  on-edit-event-click="eventEdited(calendarEvent)"
@@ -438,6 +456,7 @@
 	  					  cell-is-open="true"
 						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
 						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)">
+
 
 	  			  </mwl-calendar>
 
@@ -474,7 +493,7 @@
 								<md-input-container class="md-block" flex>
 									<label>časovi</label>
 			    					<input 	name="shiftStartHours" ng-model="shiftVm.activeShiftTemplate.startHours"
-											type="number" step="1" min="0" max="24" required="">
+											type="number" step="1" min="0" max="23" required="">
 									<div ng-messages="shiftTemplateForm.shiftStartHours.$error">
 										<div ng-message="required">Ovo polje je obavezno.</div>
 										<div ng-message="min">Vrednost mora biti veća od 0.</div>
@@ -484,7 +503,7 @@
 								<md-input-container class="md-block" flex>
 									<label>minuti</label>
 			    					<input 	name="shiftStartMinutes" ng-model="shiftVm.activeShiftTemplate.startMinutes"
-											type="number" step="1" min="0" max="60" required>
+											type="number" step="1" min="0" max="59" required>
 									<div ng-messages="shiftTemplateForm.shiftStartMinutes.$error">
 										<div ng-message="required">Ovo polje je obavezno.</div>
 										<div ng-message="min">Vrednost mora biti veća od 0.</div>
@@ -498,7 +517,7 @@
 								<md-input-container class="md-block" flex>
 									<label>časovi</label>
 			    					<input 	name="shiftEndHours" ng-model="shiftVm.activeShiftTemplate.endHours"
-											type="number" step="1" min="0" max="24" required>
+											type="number" step="1" min="0" max="23" required>
 									<div ng-messages="shiftTemplateForm.shiftEndHours.$error">
 										<div ng-message="required">Ovo polje je obavezno.</div>
 										<div ng-message="min">Vrednost mora biti veća od 0.</div>
@@ -508,7 +527,7 @@
 								<md-input-container class="md-block" flex>
 									<label>minuti</label>
 			    					<input 	name="shiftEndMinutes" ng-model="shiftVm.activeShiftTemplate.endMinutes"
-											type="number" step="1" min="0" max="60" required>
+											type="number" step="1" min="0" max="59" required>
 									<div ng-messages="shiftTemplateForm.shiftEndMinutes.$error">
 										<div ng-message="required">Ovo polje je obavezno.</div>
 										<div ng-message="min">Vrednost mora biti veća od 0.</div>

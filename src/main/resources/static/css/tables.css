@@ -81,3 +81,13 @@
     border: 1px solid black;
     padding: 5px;
 }
+.event-smart {
+    background-color:#283593 !important;
+}
+.dh-event-smart {
+    background-color: #3949AB !important;
+}
+
+.event-block {
+    background-color:#283593 !important;
+}

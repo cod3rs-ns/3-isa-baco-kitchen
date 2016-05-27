@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantScheduleController', RestaurantScheduleController);
 
-RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment', 'workingTimeService'];
+RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$timeout', '$mdToast', 'moment', 'workingTimeService', 'shiftTemplateService'];
 
-function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment, workingTimeService) {
+function RestaurantScheduleController(employeeService, scheduleService, regionService, $timeout, $mdToast, moment, workingTimeService, shiftTemplateService) {
     var scheduleVm = this;
     scheduleVm.employees = [];
     scheduleVm.regions = [];
@@ -35,6 +35,10 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
 
     scheduleVm.selectedEmployee = false;
     scheduleVm.isWaiterSelected = false;
+    scheduleVm.shifts = [];
+    scheduleVm.loadShifts = loadShifts;
+    scheduleVm.setShift = setShift;
+
     initState();
 
     function initState() {
@@ -64,6 +68,23 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
             });
 
     };
+
+    function loadShifts() {
+        return $timeout(function() {
+            // TODO 2 change to actual restaurant
+            shiftTemplateService.findShiftTemplatesByRestaurant(2)
+                .then(function(data) {
+                    scheduleVm.shifts = data;
+                });
+       }, 500);
+   };
+
+   function setShift(shift) {
+       scheduleVm.testDate.sh = shift.startHours;
+       scheduleVm.testDate.sm = shift.startMinutes;
+       scheduleVm.testDate.eh = shift.endHours;
+       scheduleVm.testDate.em = shift.endMinutes;
+   };
 
 
     scheduleVm.viewChangeClicked = viewChangeClicked;
@@ -242,7 +263,74 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
    };
 
    scheduleVm.eventTimesChanged = eventTimesChanged;
-   function eventTimesChanged(calendarEvent) {
+   function eventTimesChanged(calendarEvent, newStart, newEnd) {
+        var start = moment(newStart);
+        var end = moment(newEnd);
+        var start_day = start.day(); // Number 1-7 representing day of the week
+        var end_day = end.day();
+        var t = scheduleVm.restaurantWorkingTime;
+
+        if (start_day == 6 && t.workingOnSat == false) {
+            showToast('Restoran ne radi subotom.');
+            return;
+        };
+        if (start_day == 0 && t.workingOnSun == false) {
+            showToast('Restoran ne radi nedeljom.')
+            return;
+        };
+
+        var restaurantStart = angular.copy(start);
+        var restaurantEnd = {};
+
+        if (start_day > 0 && start_day < 6) {
+            restaurantStart.hour(t.regStartHours);
+            restaurantStart.minute(t.regStartMinutes);
+            if (t.regReversed) {
+                restaurantEnd = restaurantStart.clone().add(1, 'd');
+            } else{
+                restaurantEnd = moment(newStart);
+            }
+            restaurantEnd.hour(t.regEndHours);
+            restaurantEnd.minute(t.regEndMinutes);
+        } else if (start_day == 6) {
+            restaurantStart.hour(t.satStartHours);
+            restaurantStart.minute(t.satStartMinutes);
+            if (t.satReversed) {
+                restaurantEnd = restaurantStart.clone().add(1, 'd');
+            } else{
+                restaurantEnd = moment(newStart);
+            }
+            restaurantEnd.hour(t.satEndHours);
+            restaurantEnd.minute(t.satEndMinutes);
+        } else if ( start_day == 0) {
+            restaurantStart.hour(t.sunStartHours);
+            restaurantStart.minute(t.sunStartMinutes);
+            if (t.sunReversed) {
+                restaurantEnd = restaurantStart.clone().add(1, 'd');
+            } else{
+                restaurantEnd = moment(newStart);
+            }
+            restaurantEnd.hour(t.sunEndHours);
+            restaurantEnd.minute(t.sunEndMinutes);
+        } else {
+           // error
+           return;
+        };
+        console.log('------');
+        console.log(restaurantStart.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+        console.log(restaurantEnd.format("dddd, MMMM Do YYYY, h:mm:ss a"));
+
+        if(start.isBefore(restaurantStart) || start.isAfter(restaurantEnd)) {
+            showToast('Početak rasporeda rada zaposlenog se ne uklapa u radno vreme.');
+            return;
+        };
+        if(end.isBefore(restaurantStart) || end.isAfter(restaurantEnd)) {
+            showToast('Kraj rasporeda rada zaposlenog se ne uklapa u radno vreme.');
+            return;
+        }
+
+       calendarEvent.startsAt = newStart;
+       calendarEvent.endsAt = newEnd;
        console.log(calendarEvent);
        var t = splitDate(calendarEvent);
        var regid = -1;
@@ -274,7 +362,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
 
    function convertTypeToClass(type) {
        if (type == 'cook') {
-           return 'important';
+           return 'smart';
        };
        if (type == 'waiter') {
            return 'success';
