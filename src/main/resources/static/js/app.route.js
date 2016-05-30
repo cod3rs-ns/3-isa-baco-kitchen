@@ -4,6 +4,12 @@ angular
 
 function config($routeProvider) {
     $routeProvider
+        // Route for reservation invite
+        .when('/invite', {
+            templateUrl: 'views/reservation-invite.html',
+            controller: 'ReservationInviteController',
+            controllerAs: 'inviteVm'
+        })
         // Route for homepage
         .when('/', {
             templateUrl: 'views/home.html',
