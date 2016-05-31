@@ -30,7 +30,6 @@ public class BartenderController {
         return new ResponseEntity <Collection <Bartender>>(bartenders, HttpStatus.OK);
     }
 
-
     @RequestMapping(
             value = "/api/bartenders/{id}",
             method = RequestMethod.GET,

@@ -16,4 +16,6 @@ public interface ClientOrderService {
     public ClientOrder update(ClientOrder e);
 
     public void delete(Integer eId);
+
+    public Collection<ClientOrder> getOrdersForBill(int tableId);
 }

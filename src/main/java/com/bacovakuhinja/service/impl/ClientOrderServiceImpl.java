@@ -41,4 +41,9 @@ public class ClientOrderServiceImpl implements ClientOrderService{
     public void delete(Integer coId) {
         clientOrderRepository.delete(coId);
     }
+
+    @Override
+    public Collection<ClientOrder> getOrdersForBill(int tableId) {
+        return clientOrderRepository.findByTable_TableIdAndBill_BillId(tableId, null);
+    }
 }

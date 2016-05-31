@@ -132,3 +132,15 @@ hr{
 	background-image: -o-linear-gradient(top, #ff4081, #f50057);
 	background-image: linear-gradient(to bottom, #ff4081, #f50057);
 }
+
+
+#billTable th{
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}
+#billTable td{
+	padding: 8px;
+	text-align: left;
+	border-bottom: 1px solid #ddd;
+}

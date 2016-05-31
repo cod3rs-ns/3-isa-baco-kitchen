@@ -169,7 +169,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     waiterProfileVm.selectedTableOrders = [];
 
-
     waiterProfileVm.addOrder = addOrder;
     function addOrder() {
         $mdDialog.show({
@@ -185,6 +184,23 @@ function WaiterProfileController(tableService, waiterService, passService, order
                 edit : null
             },
             onRemoving : function() {getOrders();}
+        });
+    };
+
+
+    waiterProfileVm.createBill = createBill;
+    function createBill() {
+        waiterProfileVm.selectedTableOrders.length = 0;
+        $mdDialog.show({
+            controller: 'BillController',
+            controllerAs: 'billVm',
+            templateUrl: '/views/dialogs/bill-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: true,
+            locals: {
+                table: waiterProfileVm.selectedTable
+            }
         });
     };
 

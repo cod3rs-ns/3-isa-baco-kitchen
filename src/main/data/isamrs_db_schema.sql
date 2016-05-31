@@ -145,7 +145,7 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `isa_mrs_project`.`bills` ;
 
 CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bills` (
-  `bl_id` INT(11) NOT NULL,
+  `bl_id` INT(11) NOT NULL AUTO_INCREMENT,
   `bl_publish_date` DATETIME NOT NULL,
   `bl_total_amount` DOUBLE NOT NULL,
   `bl_waiter_id` INT(11) NOT NULL,

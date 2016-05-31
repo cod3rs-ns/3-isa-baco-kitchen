@@ -39,8 +39,7 @@ public class OrderController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection<ClientOrder>> getOrdersOfTable(@PathVariable("table_id") Integer tableId) {
-        RestaurantTable table = tableService.findOne(tableId);
-        Set<ClientOrder> tableOrders = table.getOrders();
+        Collection<ClientOrder> tableOrders = clientOrderService.getOrdersForBill(tableId);
         return new ResponseEntity <Collection <ClientOrder>>(tableOrders, HttpStatus.OK);
     }
 

@@ -1,0 +1,53 @@
+<md-dialog flex="70" aria-label="Racun"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Pregled računa</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="billVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="row" ng-cloak>
+            <table id="billTable" style="width:100%; border-collapse: collapse; color: #212121">
+                <tr>
+                    <th>Naziv</th>
+                    <th>Cijena</th>
+                    <th>Količina</th>
+                    <th> &nbsp; </th>
+                </tr>
+
+                <tr ng-repeat="item in billVm.items">
+                    <td>{{item.mi.name}}</td>
+                    <td>{{item.mi.price}}</td>
+                    <td>{{item.amount}}</td>
+                    <td>{{item.price}}</td>
+                </tr>
+
+                <tr>
+                    <th colspan="3" style="text-align: right !important;">Ukupno</th>
+                    <td>{{billVm.total}}</td>
+                </tr>
+
+                <tr>
+                    <th colspan="3" style="text-align: right !important;">Datum</th>
+                    <td>{{billVm.date | date: 'medium' }}</td>
+                </tr>
+
+            </table>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-primary" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="billVm.cancel();" md-autofocus>
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

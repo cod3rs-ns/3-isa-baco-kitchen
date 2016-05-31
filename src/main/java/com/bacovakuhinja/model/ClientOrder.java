@@ -3,6 +3,7 @@ package com.bacovakuhinja.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Fetch;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,6 +33,11 @@ public class ClientOrder implements Serializable{
 
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
     private Set<OrderItem> items = new HashSet<OrderItem>(0);
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "co_bill_id")
+    private Bill bill;
 
     public ClientOrder(){
     }
@@ -76,6 +82,14 @@ public class ClientOrder implements Serializable{
     @JsonProperty
     public void setItems(Set<OrderItem> items) {
         this.items = items;
+    }
+
+    public Bill getBill() {
+        return bill;
+    }
+
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 
     @Override
