@@ -46,7 +46,6 @@ function ReservationInviteController($routeParams, menuItemService, orderService
     function confirm() {
         if (inviteVm.orderedMeals.length !== 0) {
             var order = createOrder();
-            // Treba koji sto i koji restoran
             orderService.addOrder(order, inviteVm.tableId, inviteVm.restaurantId)
               .then(function (data) {
                   if (data != null) {
@@ -64,10 +63,6 @@ function ReservationInviteController($routeParams, menuItemService, orderService
           inviteVm.reservation = data.reservation;
           inviteVm.tableId = data.tableId;
           inviteVm.restaurantId = data.restaurantId;
-          
-          alert(data.reservation);
-          alert(data.tableId);
-          alert(data.restaurantId);
           
           menuItemService.getMenuItemsByRestaurant(inviteVm.restaurantId)
             .then(function (data) {
