@@ -22,6 +22,8 @@ public class ReservationController {
     private static final String INVITED  = "invited";
     private static final String OWNER    = "owner";
 
+    private static final String INVITE_TITLE = "Poziv na rezervaciju";
+
     @Autowired
     private ReservationService reservationService;
 
@@ -92,6 +94,24 @@ public class ReservationController {
     }
 
     @RequestMapping(
+            value    = "/api/reservation/invited/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<ReservationInvite> getInviteParams(@PathVariable("id") Integer id) {
+        // FIXME Check if user is invited
+
+        Reservation reservation = reservationService.findOne(id);
+        Integer restaurantId = reservation.getRestaurant().getRestaurantId();
+
+        // FIXME Give first free table, not first table
+        Collection<ReservationTable> tables = reservationTableService.findAllByReservationId(reservation.getReservationId());
+        Integer tableId = ((ReservationTable) tables.toArray()[0]).getTable().getTableId();
+
+        return new ResponseEntity<ReservationInvite>(new ReservationInvite(reservation, tableId, restaurantId), HttpStatus.OK);
+    }
+
+    @RequestMapping(
             value    = "/api/reservation/tables",
             method   = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -139,11 +159,14 @@ public class ReservationController {
         return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
     }
 
+    @Authorization(value = "guest")
     @RequestMapping(
             value    = "/api/reservation/invite",
             method   = RequestMethod.HEAD
     )
-    public void inviteFriend(@RequestParam(value="reservation") Integer reservationId, @RequestParam(value="friend") String email) {
+    public void inviteFriend(final HttpServletRequest request, @RequestParam(value="reservation") Integer reservationId, @RequestParam(value="friend") String email) {
+        Guest me = (Guest) request.getAttribute("loggedUser");
+
         Reservation reservation = reservationService.findOne(reservationId);
         Guest friend = (Guest) userService.findOne(email);
 
@@ -155,12 +178,83 @@ public class ReservationController {
         reservationGuestService.create(reservationGuest);
 
         // FIXME Better implementation.
+        String html = getInviteBodyHTML(me.getFirstName() + " " + me.getLastName(),
+                reservationId.toString(),
+                reservation.getRestaurant().getName(),
+                reservation.getRestaurant().getAddress(),
+                reservation.getReservationDateTime().getDate() + "",
+                reservation.getReservationDateTime().getTime() + "");
 
         try {
-            SendMailAspect.sendMail(email, "Poziv na rezervaciju", "Test");
+            SendMailAspect.sendMail(email, INVITE_TITLE, html);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+    }
+
+    private String getInviteBodyHTML(String friend, String reservationId, String restaurantName, String restaurantAddress, String reservationDate, String reservationTime) {
+        return "<html>\n" +
+                "  <head>\n" +
+                "    <link href=\"https://fonts.googleapis.com/icon?family=Material+Icons\" rel=\"stylesheet\">\n" +
+                "  </head>\n" +
+                "  <body>\n" +
+                "    <div style=\"text-align: center;\">\n" +
+                "      <img src=\"http://s33.postimg.org/pq0lf02pb/logo.png\" style=\"height: 196px;\">\n" +
+                "      <h2 style=\"font-family: Roboto Medium; color: #283593; font-size: 24pt;\"><b>BA&#x106;OVA KUHINJA</b></h2>\n" +
+                "      <h4 style=\"font-family: Roboto Light; color: #3f51b5;\">POZIV NA REGISTRACIJU</h4>\n" +
+                "    </div>\n" +
+                "\n" +
+                "    <p style=\"font-family: Roboto; color: #333; text-align: center;\">\n" +
+                "      <div style=\"font-family: Roboto; color: #333; text-align: center;\">\n" +
+                "        Va&#x161; prijatelj <b>" + friend + "</b> Vas je pozvao da mu se pridru&#x17E;ite na rezervaciji.\n" +
+                "      </div>\n" +
+                "      <div style=\"font-family: Roboto; color: #333; text-align: center; margin-top: 24;\"> \n" +
+                "        <a href=\"http://localhost:8091/index.html#/invite/" + reservationId +  "\" \n" +
+                "          style=\"background-color: #43A047; padding: 12 24; border-radius: 4px; color: #fff; font-size: 18pt; text-decoration: none;\">\n" +
+                "            Pogledaj detalje\n" +
+                "        </a>\n" +
+                "      </div>\n" +
+                "      <div style=\"font-family: Roboto; color: #333; text-align: center; margin-top: 24; margin-bottom: 12;\">\n" +
+                "        Tu mo&#x17E;ete prihvatiti/odbiti rezervaciju ili napraviti Va&#x161;u poru&#x17E;binu da bude spremna za Vas kada do&#x111;ete. \n" +
+                "      </div>\n" +
+                "    </p>\n" +
+                "    \n" +
+                "    <div style=\"background-color: #eee; padding: 24 12; margin 24 12; font-family: Roboto; color: #333;\">\n" +
+                "      <div>\n" +
+                "        <span>\n" +
+                "          <i class=\"material-icons\" style=\"font-size: 24px;\">local_dining</i>\n" +
+                "        </span>\n" +
+                "        <span style=\"font-size: 24px; padding-left: 24px;\">\n" +
+                "          " + restaurantName + "\n" +
+                "        </span>\n" +
+                "      </div>\n" +
+                "      <div>\n" +
+                "        <span>\n" +
+                "          <i class=\"material-icons\" style=\"font-size: 24px;\">location_on</i>\n" +
+                "        </span>\n" +
+                "        <span style=\"font-size: 24px; padding-left: 24px;\">\n" +
+                "         " + restaurantAddress + "\n" +
+                "        </span>\n" +
+                "      </div>\n" +
+                "      <div>\n" +
+                "        <span>\n" +
+                "          <i class=\"material-icons\" style=\"font-size: 24px;\">date_range</i>\n" +
+                "        </span>\n" +
+                "        <span style=\"font-size: 24px; padding-left: 24px;\">\n" +
+                "          " + reservationDate + "\n" +
+                "        </span>\n" +
+                "      </div>\n" +
+                "      <div>\n" +
+                "        <span>\n" +
+                "          <i class=\"material-icons\" style=\"font-size: 24px;\">alarm</i>\n" +
+                "        </span>\n" +
+                "        <span style=\"font-size: 24px; padding-left: 24px;\">\n" +
+                "          " + reservationTime + "\n" +
+                "        </span>\n" +
+                "      </div>\n" +
+                "    </div>\n" +
+                "  </body>\n" +
+                "</html>";
     }
 
 }

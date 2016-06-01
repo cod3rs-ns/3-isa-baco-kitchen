@@ -5,7 +5,7 @@ angular
 function config($routeProvider) {
     $routeProvider
         // Route for reservation invite
-        .when('/invite', {
+        .when('/invite/:reservationId', {
             templateUrl: 'views/reservation-invite.html',
             controller: 'ReservationInviteController',
             controllerAs: 'inviteVm'

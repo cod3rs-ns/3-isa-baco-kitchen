@@ -2,12 +2,15 @@ angular
     .module('isa-mrs-project')
     .controller('ReservationInviteController', ReservationInviteController);
 
-ReservationInviteController.$inject = ['menuItemService', 'orderService', '$mdToast'];
+ReservationInviteController.$inject = ['$routeParams', 'menuItemService', 'orderService', 'reservationService','$mdToast'];
 
-function ReservationInviteController(menuItemService, orderService, $mdToast) {
+function ReservationInviteController($routeParams, menuItemService, orderService, reservationService, $mdToast) {
     var inviteVm = this;
     
-    inviteVm.meals  = [];
+    inviteVm.reservation = null;
+    inviteVm.tableId = null,
+    inviteVm.restaurantId = null;
+    inviteVm.meals = [];
     inviteVm.orderedMeals = [];
     
     // Functions
@@ -43,34 +46,46 @@ function ReservationInviteController(menuItemService, orderService, $mdToast) {
     function confirm() {
         if (inviteVm.orderedMeals.length !== 0) {
             var order = createOrder();
-            if(edit == null) {
-                orderService.addOrder(order, table.tableId, restaurantId)
-                  .then(function (data) {
-                    if (data != null) {
-                      showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
-                    }
-                  });
-              }
-          }
-      };
+            // Treba koji sto i koji restoran
+            orderService.addOrder(order, inviteVm.tableId, inviteVm.restaurantId)
+              .then(function (data) {
+                  if (data != null) {
+                    showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
+                  }
+                });
+        }
+    };
 
     function activate() {
       // Ovaj 1 je restaurantId
-      menuItemService.getMenuItemsByRestaurant(1)
+      reservationService.getInvite($routeParams.reservationId)
         .then(function (data) {
-            inviteVm.meals = data;
-      });
+          
+          inviteVm.reservation = data.reservation;
+          inviteVm.tableId = data.tableId;
+          inviteVm.restaurantId = data.restaurantId;
+          
+          alert(data.reservation);
+          alert(data.tableId);
+          alert(data.restaurantId);
+          
+          menuItemService.getMenuItemsByRestaurant(inviteVm.restaurantId)
+            .then(function (data) {
+                inviteVm.meals = data;
+          });
+        });
     };
     
     function createOrder() {
         var order = {
-            orderId: edit,
+            orderId: null, 
             date : new Date(),
-            deadline: null,
+            deadline: inviteVm.reservation.reservationDateTime,
+            reservation: inviteVm.reservation,
             items : []
         };
 
-        orderVm.orderMeals.forEach(function (meal) {
+        inviteVm.orderedMeals.forEach(function (meal) {
             var count = meal.count;
             delete meal.count;
             delete meal.hide;
@@ -85,7 +100,6 @@ function ReservationInviteController(menuItemService, orderService, $mdToast) {
             order.items.push(item);
         });
 
-        console.log(order);
         return order;
     };
 
@@ -93,7 +107,7 @@ function ReservationInviteController(menuItemService, orderService, $mdToast) {
         $mdToast.show({
             hideDelay : 3000,
             position  : 'top right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
 }

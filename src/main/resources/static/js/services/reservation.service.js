@@ -9,7 +9,8 @@ function reservationService($http) {
         addReservation: addReservation,
         removeReservation: removeReservation,
         inviteFriend: inviteFriend,
-        saveTables: saveTables
+        saveTables: saveTables,
+        getInvite: getInvite
     };
 
     return service;
@@ -41,4 +42,11 @@ function reservationService($http) {
             return response.data;
         });
     };
+    
+    function getInvite(reservationId) {
+        return $http.get('/api/reservation/invited/' + reservationId)
+        .then(function(response) {
+            return response.data;
+        });
+    }
 }
