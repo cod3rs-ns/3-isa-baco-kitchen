@@ -21,14 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean alreadyExists(String email) {
-
-        for (User user: userRepository.findAll()) {
-            if (user.getEmail().equals(email)) {
-                return true;
-            }
-        }
-
-        return false;
+        return (userRepository.findByEmail(email) == null) ? false : true;
     }
 
     @Override
@@ -38,13 +31,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findOne(String email) {
-        for (User user: userRepository.findAll()) {
-            if (user.getEmail().equals(email)) {
-                return user;
-            }
-        }
-
-        return null;
+        return userRepository.findByEmail(email);
     }
 
     @Override
@@ -54,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        User userPersistent = findOne(user.getEmail());
+        User userPersistent = userRepository.findOne(user.getUserId());
 
         if (userPersistent == null)
             return null;

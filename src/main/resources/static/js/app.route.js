@@ -34,7 +34,7 @@ function config($routeProvider, $httpProvider) {
             controller: 'GuestProfileController',
             controllerAs: 'guestProfileVm'
         })
-		// Route for cook profile page
+		    // Route for cook profile page
         .when('/profile-cook/', {
             templateUrl: 'views/profile-cook.html',
             controller: 'CookProfileController',

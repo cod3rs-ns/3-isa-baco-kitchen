@@ -10,35 +10,35 @@ import org.springframework.stereotype.Service;
 public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Autowired
-    VerificationTokenRepository verificationTokenRepository;
+    VerificationTokenRepository tokenRepository;
 
     @Override
     public VerificationToken create(VerificationToken token) {
-        return verificationTokenRepository.save(token);
+        return tokenRepository.save(token);
     }
 
     @Override
     public VerificationToken get(String tokenValue) {
-        return verificationTokenRepository.findByToken(tokenValue);
+        return tokenRepository.findByToken(tokenValue);
     }
 
     @Override
     public VerificationToken getByUserId(Integer id) {
-        return verificationTokenRepository.findByUser_userId(id);
+        return tokenRepository.findByUser_userId(id);
     }
 
     @Override
     public VerificationToken update(VerificationToken token) {
-        VerificationToken tokenPersistent = verificationTokenRepository.findOne(token.getId());
+        VerificationToken tokenPersistent = tokenRepository.findOne(token.getId());
 
         if (tokenPersistent == null)
             return null;
 
-        return verificationTokenRepository.save(token);
+        return tokenRepository.save(token);
     }
 
     @Override
     public void delete(VerificationToken token) {
-        verificationTokenRepository.delete(token.getId());
+        tokenRepository.delete(token.getId());
     }
 }

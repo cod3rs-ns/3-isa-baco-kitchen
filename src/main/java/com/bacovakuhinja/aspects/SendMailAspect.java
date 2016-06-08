@@ -33,12 +33,16 @@ public class SendMailAspect {
     private static final int HOST_PORT = 587;
     private static final String AUTH_USER = "bacovakuhinja@gmail.com";
     private static final String AUTH_PASS = "jedanjebaco";
+
     @Autowired
     VerificationTokenService verificationTokenService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     ProviderResponseService providerResponseService;
+
     @Autowired
     OfferRequestService offerRequestService;
 

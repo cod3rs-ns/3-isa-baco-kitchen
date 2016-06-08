@@ -88,7 +88,6 @@ public class GuestController {
         }
         
         Collection<User> friends = friendshipService.getFriendsByGuestID(id);
-
         return new ResponseEntity<Collection<User>>(friends, HttpStatus.OK);
     }
 
