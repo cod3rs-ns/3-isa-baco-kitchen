@@ -23,14 +23,16 @@ function EmployeeScheduleController(employeeService, $mdDialog) {
     function getSchedule() {
         employeeService.getSchedule()
             .then(function (data) {
+                console.log(data);
+
                 for(var pos in data){
-                    var period = data[pos];
+                    var schedule = data[pos];
                     var event =
                     {
-                        title: 'Pocetak smjene',
-                        type: 'warning',
-                        startsAt: new Date(period.start),
-                        endsAt: new Date(period.end)
+                        title: 'Početak smjene',
+                        type: 'indigo',
+                        startsAt: new Date(schedule.mergedStart),
+                        endsAt: new Date(schedule.mergedEnd)
                     };
                     employeeScheduleVm.events.push(event);
                 }
@@ -45,6 +47,11 @@ function EmployeeScheduleController(employeeService, $mdDialog) {
     employeeScheduleVm.changeToMonth = changeToMonth;
     function changeToMonth(){
         employeeScheduleVm.calendarView = 'month';
+    }
+
+    employeeScheduleVm.changeToWeek = changeToWeek;
+    function changeToWeek(){
+        employeeScheduleVm.calendarView = 'week';
     }
 
     function cancel() {
