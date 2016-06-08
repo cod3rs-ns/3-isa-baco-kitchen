@@ -10,33 +10,40 @@ function loginService($http, $location, $window, $rootScope) {
         login: login,
         redirect: redirect,
         logout: logout,
-        redirectProfile : redirectProfile
-  };
-  return service;
+        redirectProfile: redirectProfile
+    };
+    
+    return service;
   
-  function login(username, password) {
-    return $http.post('api/authenticate?username=' + username + '&password=' + password)
-    .then(function (response) {
-        return response.data.token;
-    });
-  };
+    function login(username, password) {
+        return $http.post('api/authenticate?username=' + username + '&password=' + password)
+            .success(function(data) {
+                return data.token;
+            })
+            .error(function(data) {
+                return data;
+            });
+        };
 
 
-  function redirect() {
-    return $http.get('api/user')
-    .then(function (response) {
-        $location.path('/');
-    });
-  };
+    function redirect() {
+        return $http.get('api/user')
+            .success(function(data) {
+                $location.path("/");
+            })
+            .error(function(data) {
+                return data;
+            });
+        };
 
-   function logout() {
-       $rootScope.show = false;
-       $window.localStorage.setItem('AUTH_TOKEN', null);
-       $http.defaults.headers.common.Authorization = '';
-       $location.path('login');
-   };
-
-    function redirectProfile(){
+     function logout() {
+         $rootScope.show = false;
+         $window.localStorage.setItem('AUTH_TOKEN', null);
+         $http.defaults.headers.common.Authorization = '';
+         $location.path('login');
+     };
+     
+     function redirectProfile(){
         return $http.get('api/user')
             .then(function (response) {
             switch(response.data.type) {
@@ -56,7 +63,6 @@ function loginService($http, $location, $window, $rootScope) {
                     $location.path('profile-barman');
                     break;
                 case 'waiter':
-                    console.log("waiter");
                     $location.path('profile-waiter');
                     break;
                 case 'restaurant_manager':
@@ -67,5 +73,4 @@ function loginService($http, $location, $window, $rootScope) {
                }
         });
     }
-
 }

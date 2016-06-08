@@ -1,8 +1,7 @@
 angular
     .module('isa-mrs-project')
     .controller('RegisterController', RegisterController);
-    
-    
+
 RegisterController.$inject = ['$location', 'userService'];
     
 function RegisterController($location, userService) {

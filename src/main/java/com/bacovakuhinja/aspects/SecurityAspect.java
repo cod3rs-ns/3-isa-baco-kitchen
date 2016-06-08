@@ -54,10 +54,7 @@ public class SecurityAspect {
         final String email = claims.get("user").toString();
 
         for (User user : userService.findAll()) {
-            // Check if user's email equals request's mail and type of user is same as annotation value
-            // Presentation comment ... :)
-            if (user.getEmail().equals(email) && user.getType().equals(role)) {
-            // if (user.getEmail().equals(email)) {
+            if (user.getEmail().equals(email) && (user.getType().equals(role) || role.equals("all"))) {
                 request.setAttribute("loggedUser", user);
                 return joinPoint.proceed();
             }
