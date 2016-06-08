@@ -43,11 +43,6 @@ public class ReservationServiceImpl implements ReservationService {
 
         Date now = new Date();
         for (Reservation reservation : findAll()) {
-            // reservation.getRestaurant();
-            /*System.out.println("---------");
-            System.out.println(reservationGuestService.isOwner(reservation.getReservationId(), ownerId));
-            System.out.println(reservation.getReservationDateTime());
-            System.out.println(now);*/
             if (reservationGuestService.isOwner(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().after(now))
                 reservations.add(reservation);
         }
@@ -57,15 +52,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Collection<Reservation> findByRestaurantId(Integer restaurantId) {
-        Collection<Reservation> reservations = new ArrayList<Reservation>();
-
-        for (Reservation reservation : findAll()) {
-            if (reservation.getRestaurant().getRestaurantId() == restaurantId) {
-                reservations.add(reservation);
-            }
-        }
-
-        return reservations;
+        return reservationRepository.findByRestaurant_RestaurantId(restaurantId);
     }
 
     @Override
@@ -75,7 +62,6 @@ public class ReservationServiceImpl implements ReservationService {
         Date resBeg = datetime;
         Date resEnd = new Date(datetime.getTime() + length*HOUR_TO_MILISECONDS);
 
-
         Date reservationBeg, reservationEnd;
         for (Reservation reservation : findAll()) {
 
@@ -83,7 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
             reservationEnd = new Date(reservation.getReservationDateTime().getTime() + reservation.getLength()*HOUR_TO_MILISECONDS);
 
             if (reservation.getRestaurant().getRestaurantId() == restaurantId &&
-                    // FIXME Check if condition is okay
+                    // FIXME @Baco, Check if condition is okay
                     ((resBeg.after(reservationBeg) && reservationEnd.after(resBeg)) || (resEnd.after(reservationBeg) && reservationEnd.after(resEnd)))) {
                 reservations.add(reservation);
             }

@@ -1,6 +1,7 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.model.Guest;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.UserService;
@@ -47,6 +48,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(exists, HttpStatus.OK);
     }
 
+    // FIXME @Baco, Fix this...
     @Authorization()
     @RequestMapping(
             value    = "/api/users/oldPassword/{pass}",
@@ -59,7 +61,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
     }
 
-    @Authorization(role = "all")
+    @Authorization()
     @RequestMapping(
             value    = "/api/user",
             method   = RequestMethod.GET,
@@ -70,6 +72,7 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
+    // FIXME @Baco, Fix this too... :)
     @Authorization()
     @RequestMapping(
             value = "/api/users/pass",
@@ -84,6 +87,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
+    // FIXME @Baco, Fix this too... :)
     @Authorization()
     @RequestMapping(
             value = "/api/users/passChanged/",
@@ -97,19 +101,18 @@ public class UserController {
         return new ResponseEntity<Boolean>(ret, HttpStatus.OK);
     }
 
-
     @RequestMapping(
             value    = "/api/authenticate",
             method   = RequestMethod.POST
     )
-    public LoginResponse authenticate(@RequestParam(value="username") String username, @RequestParam(value="password") String password) {
+    public LoginResponse authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password) {
 
-        for (User user : userService.findAll()) {
-            if (user.getEmail().equals(username) && user.getPassword().equals(password) && user.getVerified().equals("verified")) {
-                return new LoginResponse(Jwts.builder().setSubject(username)
-                        .claim("user", username).setIssuedAt(new Date())
-                        .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact());
-            }
+        User user = userService.findOneByEmailAndPassword(email, password);
+
+        if (user != null && user.getVerified().equals("verified")) {
+            return new LoginResponse(Jwts.builder().setSubject(email)
+                    .claim("user", email).setIssuedAt(new Date())
+                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact());
         }
 
         return null;
@@ -121,11 +124,8 @@ public class UserController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<User> register(@RequestBody User user) {
-
-        System.out.println(user.toString());
-        User created = userService.create(user);
-        guestService.create(user, "Additional guest info.");
+    public ResponseEntity<User> register(@RequestBody Guest guest) {
+        User created = guestService.create(guest);
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
     }
 
@@ -136,8 +136,6 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> update(@RequestBody User user) {
-        System.out.println("Updating... ");
-        System.out.println(user.toString());
         User updated = userService.update(user);
         return new ResponseEntity<User>(updated, HttpStatus.OK);
     }

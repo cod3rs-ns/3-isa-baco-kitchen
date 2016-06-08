@@ -7,13 +7,9 @@ import java.util.Collection;
 
 public interface GuestService {
 
-    public Collection<Guest> getFriends();
+    Guest getGuest(Integer id);
 
-    public Collection<Guest> getFriendRequests();
+    Collection<User> getUsers(String query);
 
-    public Guest getGuest(Integer id);
-
-    public Collection<User> getUsers(String query);
-
-    public void create(User user, String additionalInfo);
+    User create(Guest user);
 }

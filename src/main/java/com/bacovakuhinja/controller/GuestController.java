@@ -150,8 +150,8 @@ public class GuestController {
     )
     public ResponseEntity<Collection<User>> queryResults(@RequestParam(value="query") String query) {
         Collection<User> result = guestService.getUsers(query.toLowerCase());
-
-        return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);}
+        return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);
+    }
 
 
     @RequestMapping (
@@ -160,11 +160,7 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<Reservation>> getReservations(@PathVariable Integer id) {
-
         Collection<Reservation> result = reservationService.findByOwnerId(id);
-
-        System.out.println(result.size());
-
         return new ResponseEntity<Collection<Reservation>>(result, HttpStatus.OK);
     }
 

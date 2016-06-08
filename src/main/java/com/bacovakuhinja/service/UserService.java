@@ -14,5 +14,7 @@ public interface UserService {
 
     public User findOne(String email);
 
+    public User findOneByEmailAndPassword(String email, String password);
+
     public User update(User user);
 }

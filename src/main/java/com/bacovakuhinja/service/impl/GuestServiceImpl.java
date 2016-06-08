@@ -3,6 +3,7 @@ package com.bacovakuhinja.service.impl;
 import com.bacovakuhinja.model.Guest;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.repository.GuestRepository;
+import com.bacovakuhinja.repository.UserRepository;
 import com.bacovakuhinja.service.GuestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,18 +14,13 @@ import java.util.Collection;
 @Service
 public class GuestServiceImpl implements GuestService {
 
+    private static String USER_ROLE = "guest";
+
     @Autowired
     GuestRepository guestRepository;
 
-    @Override
-    public Collection<Guest> getFriends() {
-        return null;
-    }
-
-    @Override
-    public Collection<Guest> getFriendRequests() {
-        return null;
-    }
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public Guest getGuest(Integer id) {
@@ -33,33 +29,12 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public Collection<User> getUsers(String query) {
-        Collection<User> users = new ArrayList<User>();
-        for (Guest guest : guestRepository.findAll()) {
-            if (guest.getFirstName().toLowerCase().contains(query) || guest.getLastName().toLowerCase().contains(query)) {
-                users.add(guest);
-                if (users.size() >= 5) break;
-            }
-        }
-
-        return users;
+        // FIXME Only Top N results
+        return userRepository.findGuestsByQuery(query);
     }
 
     @Override
-    public void create(User user, String additionalInfo) {
-        // FIXME
-        Guest guest = new Guest();
-
-        guest.setEmail(user.getEmail());
-        guest.setFirstName(user.getFirstName());
-        guest.setLastName(user.getLastName());
-        guest.setImage(user.getImage());
-        guest.setPassword(user.getPassword());
-        guest.setType(user.getType());
-        guest.setVerified(user.getVerified());
-
-        guest.setGuestId(user.getUserId());
-        guest.setGuestInfo(additionalInfo);
-
-        guestRepository.save(guest);
+    public User create(Guest user) {
+        return guestRepository.save(user);
     }
 }

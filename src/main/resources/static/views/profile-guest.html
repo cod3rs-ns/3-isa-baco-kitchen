@@ -22,7 +22,7 @@
           <md-menu-content width="5">
             <md-menu-item ng-repeat="request in guestProfileVm.friendRequests">
                 <md-list-item class="noright">
-                  <img class="md-avatar" ng-src="{{request.image}}">
+                  <img class="md-avatar" ng-src="{{request.image}}" width="320px">
                   <p>{{request.firstName + ' ' + request.lastName}}</p>
                   <md-icon aria-label="Accept friend" ng-click="guestProfileVm.acceptFriend(request.userId)" class="material-icons margin-left-4">done</md-icon>
                   <md-icon aria-label="Reject friend" ng-click="guestProfileVm.rejectFriend(request.userId)" class="material-icons margin-left-4">clear</md-icon>
