@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class EmployeeController {
@@ -80,31 +81,25 @@ public class EmployeeController {
     }
 
     // TODO change after implementation of new TimeSchedule system
-    /*
     @Authorization()
     @RequestMapping(
-            role = "/api/employee/schedule",
+            value = "/api/employee/schedule",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <ArrayList<WorkPeriod>> getSchedule(final HttpServletRequest request) {
+    public ResponseEntity <Collection<DailySchedule>> getSchedule(final HttpServletRequest request) {
         User user = (User) request.getAttribute("loggedUser");
-        Employee emp = employeeService.findOne(user.getUserId());
+        ArrayList<DailySchedule> emptyList = new ArrayList<DailySchedule>();
 
-        //TODO get real workperiods from database
-        WorkPeriod w = new WorkPeriod();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Date d1 = sdf.parse("2016-04-26 15:00:00");
-            w.setStart(d1);
-            Date d2 = sdf.parse("2016-04-26 21:00:00");
-            w.setEnd(d2);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (user == null)
+            return new ResponseEntity <Collection<DailySchedule>>(emptyList, HttpStatus.OK);
+        else {
+            Employee emp = employeeService.findOne(user.getUserId());
+            if (emp == null)
+                return new ResponseEntity <Collection<DailySchedule>>(emptyList, HttpStatus.OK);
+            else {
+                Collection<DailySchedule> schedules = dailyScheduleService.findByEmployee(emp.getUserId());
+                return new ResponseEntity<Collection<DailySchedule>>(schedules, HttpStatus.OK);
+            }
         }
-
-        ArrayList<WorkPeriod> schedule = new ArrayList<WorkPeriod>();
-        schedule.add(w);
-        return new ResponseEntity <ArrayList<WorkPeriod>>(schedule, HttpStatus.OK);
     }
-    */
 }

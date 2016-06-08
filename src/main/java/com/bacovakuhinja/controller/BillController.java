@@ -34,11 +34,19 @@ public class BillController {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillHelper> createBill(@PathVariable("tableId") Integer tableId) {
-        Collection<ClientOrder> orders = clientOrderService.getOrdersForBill(tableId);
+        List<ClientOrder> orders = clientOrderService.getOrdersForBill(tableId);
         Bill b = new Bill();
         b.setPublishDate(new Date());
         double amount = 0;
         Waiter w = waiterService.findOne(8);
+
+        //for which waiter
+        ClientOrder co = orders.get(0);
+        Date date = co.getDate();
+        Date now = new Date();
+        double diff = now.getTime() - date.getTime();
+
+
         b.setTotalAmount(amount);
         b.setWaiter(w);
         Bill created = billService.create(b);

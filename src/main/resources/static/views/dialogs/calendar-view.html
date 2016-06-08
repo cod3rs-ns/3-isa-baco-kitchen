@@ -1,8 +1,52 @@
-<md-dialog flex="90" aria-label="Raspored"  ng-cloak>
-    <md-toolbar>
-        <div class="md-toolbar-tools">
-            <h2>Raspored rada</h2>
-            <span flex></span>
+<md-dialog flex="90" style="height: 90%;" aria-label="Raspored"  ng-cloak>
+    <md-toolbar >
+        <div class="md-toolbar-tools" >
+            <div class="md-toolbar-tools">
+                <h2>Raspored rada</h2>
+                <span flex></span>
+
+                <h3 style="text-align: center" flex>{{ employeeScheduleVm.calendarTitle }}</h3>
+
+                <md-button  class="md-fab md-mini md-raised md-secondary"
+                            mwl-date-modifier
+                            date="employeeScheduleVm.calendarDate"
+                            decrement="employeeScheduleVm.calendarView">
+                    <i class="material-icons md-24">keyboard_arrow_left</i>
+                    <md-tooltip md-direction="top">
+                        Prethodni
+                    </md-tooltip>
+                </md-button>
+                <md-button  class="md-fab md-mini md-accent md-raised md-secondary"
+                            mwl-date-modifier
+                            date="employeeScheduleVm.calendarDate"
+                            set-to-today>
+                    <i class="material-icons md-24">today</i>
+                    <md-tooltip md-direction="top">
+                        Danas
+                    </md-tooltip>
+                </md-button>
+                <md-button  class="md-fab md-mini md-raised md-secondary"
+                            mwl-date-modifier
+                            date="employeeScheduleVm.calendarDate"
+                            increment="employeeScheduleVm.calendarView">
+                    <i class="material-icons md-24">keyboard_arrow_right</i>
+                    <md-tooltip md-direction="top">
+                        Sljedeći
+                    </md-tooltip>
+                </md-button>
+
+                <span flex></span>
+                <md-button ng-click="employeeScheduleVm.changeToDay()">
+                    Dnevni prikaz
+                </md-button>
+                <md-button ng-click="employeeScheduleVm.changeToWeek()">
+                    Sedmični prikaz
+                </md-button>
+                <md-button ng-click="employeeScheduleVm.changeToMonth()">
+                    Mjesečni prikaz
+                </md-button>
+            </div>
+
             <md-button class="md-icon-button" ng-click="employeeScheduleVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
             </md-button>
@@ -10,23 +54,6 @@
     </md-toolbar>
 
     <md-dialog-content>
-        <div class="btn-group">
-            <md-toolbar layout="row" class="md-hue-3">
-                <div class="md-toolbar-tools">
-                    <h2 style="text-align: center">{{ employeeScheduleVm.calendarTitle }}</h2>
-                    <span flex></span>
-                    <md-button ng-click="employeeScheduleVm.changeToDay()">
-                        Dan
-                    </md-button>
-                    <md-button ng-click="employeeScheduleVm.changeToMonth()">
-                        Mjesec
-                    </md-button>
-                </div>
-            </md-toolbar>
-
-        </div>
-
-
         <mwl-calendar
                 view="employeeScheduleVm.calendarView"
                 current-day="employeeScheduleVm.calendarDate"
