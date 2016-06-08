@@ -25,7 +25,6 @@ function loginService($http, $location, $window, $rootScope) {
             });
         };
 
-
     function redirect() {
         return $http.get('api/user')
             .success(function(data) {

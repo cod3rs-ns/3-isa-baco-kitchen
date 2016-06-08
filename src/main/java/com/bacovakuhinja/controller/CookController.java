@@ -37,7 +37,7 @@ public class CookController {
     }
 
 
-    @Authorization(value = "cook")
+    @Authorization(role = "cook")
     @RequestMapping(
             value = "/api/cook",
             method = RequestMethod.GET,

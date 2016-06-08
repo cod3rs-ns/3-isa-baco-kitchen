@@ -83,7 +83,7 @@ public class EmployeeController {
     // TODO change after implementation of new TimeSchedule system
     @Authorization(value = "all")
     @RequestMapping(
-            value = "/api/employee/schedule",
+            role = "/api/employee/schedule",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection<DailySchedule>> getSchedule(final HttpServletRequest request) {

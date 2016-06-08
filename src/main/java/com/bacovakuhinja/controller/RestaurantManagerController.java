@@ -42,7 +42,7 @@ public class RestaurantManagerController {
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
 
-    @Authorization(value = "restaurant_manager")
+    @Authorization(role = "restaurant_manager")
     @RequestMapping(
             value = "/api/rmanager",
             method = RequestMethod.GET,

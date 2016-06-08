@@ -8,18 +8,14 @@ import io.jsonwebtoken.Jwts;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
-import java.util.Random;
 
 @Component
 @Aspect
@@ -33,11 +29,11 @@ public class SecurityAspect {
     @Around("@annotation(com.bacovakuhinja.annotations.Authorization) && args(request,..)")
     public Object authorized(ProceedingJoinPoint joinPoint, final HttpServletRequest request) throws Throwable {
 
-        // Get value from annotation
+        // Get role from annotation
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         Authorization annotation = method.getAnnotation(Authorization.class);
-        final String role = annotation.value();
+        final String role = annotation.role();
 
         final String auth = request.getHeader("Authorization");
         if (auth == null || !auth.startsWith("Bearer ")) {

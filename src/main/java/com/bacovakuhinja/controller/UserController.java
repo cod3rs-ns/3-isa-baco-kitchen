@@ -1,21 +1,17 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.UserService;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Date;
@@ -63,7 +59,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
     }
 
-    @Authorization(value = "all")
+    @Authorization(role = "all")
     @RequestMapping(
             value    = "/api/user",
             method   = RequestMethod.GET,
@@ -88,7 +84,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
-    @Authorization(value = "all")
+    @Authorization()
     @RequestMapping(
             value = "/api/users/passChanged/",
             method = RequestMethod.GET,
