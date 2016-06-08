@@ -1,8 +1,8 @@
 angular
     .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard'])
-    .config(config);
-
-function config($routeProvider) {
+    .config(['$routeProvider', '$httpProvider', config]);
+    
+function config($routeProvider, $httpProvider) {
     $routeProvider
         // Route for homepage
         .when('/', {
@@ -74,6 +74,12 @@ function config($routeProvider) {
             controller: 'RestaurantManagerController',
             controllerAs: 'rmanagerVm'
         })
+        // Route for reservation invite
+        .when('/invite/:reservationId', {
+            templateUrl: 'views/reservation-invite.html',
+            controller: 'ReservationInviteController',
+            controllerAs: 'inviteVm'
+        })
         // Route for verification messages
         .when('/registration-confirm-wrong-link', {
             templateUrl: 'views/messages/verified-wrong.html'
@@ -83,5 +89,29 @@ function config($routeProvider) {
         })
         .when('/registration-confirm-success', {
             templateUrl: 'views/messages/verified-ok.html'
+        })
+        // Route for wrong URL address
+        .otherwise({
+            redirectTo: '/'
         });
+        
+        $httpProvider.interceptors.push(['$q', '$window', '$location', function($q, $window, $location) {
+            return {
+              // Set Header to Request if user is logged
+              'request': function (config) {
+                    var token = $window.localStorage.getItem('AUTH_TOKEN');
+                        if (token !== null) {
+                            config.headers.Authorization = 'Bearer ' + token;
+                        }
+                        return config;
+                },
+              // When try to get Unauthorized page  
+              'responseError': function(response) {
+                    if(response.status === 401 || response.status === 403) {
+                        $location.path('/');
+                    }
+                    return $q.reject(response);
+                }
+              };
+            }]);
 }

@@ -14,8 +14,12 @@ function systemManagerService($http){
 
     function getLoggedSM(){
         return $http.get('api/smanager')
-            .then(function(response){
-                return response.data;
+            .success(function(data){
+                return data;
+            })
+            .error(function(data) {
+                console.log(data);
+                console.log("Whaaat");
             });
     };
 

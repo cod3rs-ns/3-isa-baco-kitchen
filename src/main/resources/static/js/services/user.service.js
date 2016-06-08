@@ -14,17 +14,21 @@ function userService($http) {
 
     function registerUser(user) {
         return $http.post('api/user/register', user)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(data) {
+              return data;
+          })
+          .error(function(data) {
+              return data;
+          });
     };
 
     function getRegisteredUser() {
         return $http.get('api/user')
-            .then(function(response) {
-                return response.data;
-            });
-    }
-
-    
+          .success(function(data) {
+              return data;
+          })
+          .error(function(data) {
+              return data;
+          });
+    };
 }

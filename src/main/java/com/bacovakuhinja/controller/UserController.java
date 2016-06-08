@@ -63,7 +63,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(value = "all")
     @RequestMapping(
             value    = "/api/user",
             method   = RequestMethod.GET,
@@ -88,7 +88,7 @@ public class UserController {
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
-    @Authorization()
+    @Authorization(value = "all")
     @RequestMapping(
             value = "/api/users/passChanged/",
             method = RequestMethod.GET,

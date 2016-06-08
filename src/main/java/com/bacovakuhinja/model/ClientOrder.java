@@ -28,6 +28,11 @@ public class ClientOrder implements Serializable{
 
     @JsonIgnore
     @ManyToOne()
+    @JoinColumn(name = "co_reservation_id")
+    private Reservation reservation;
+
+    @JsonIgnore
+    @ManyToOne()
     @JoinColumn(name = "co_table_id")
     private RestaurantTable table;
 
@@ -101,5 +106,15 @@ public class ClientOrder implements Serializable{
                 ", table=" + table +
                 ", items=" + items +
                 '}';
+    }
+
+    @JsonIgnore
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    @JsonProperty
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 }
