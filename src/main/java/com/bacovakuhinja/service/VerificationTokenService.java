@@ -4,9 +4,13 @@ import com.bacovakuhinja.model.VerificationToken;
 
 public interface VerificationTokenService {
 
-    public VerificationToken create(VerificationToken token);
+    VerificationToken create(VerificationToken token);
 
-    public VerificationToken get(String tokenValue);
+    VerificationToken get(String tokenValue);
 
-    public void delete(VerificationToken token);
+    VerificationToken getByUserId(Integer id);
+
+    VerificationToken update(VerificationToken token);
+
+    void delete(VerificationToken token);
 }

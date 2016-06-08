@@ -20,7 +20,7 @@ public class VerificationToken {
     private Date expiryDate;
 
     @JoinColumn(name = "vt_user_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.REFRESH)
     private User user;
 
     public VerificationToken() {

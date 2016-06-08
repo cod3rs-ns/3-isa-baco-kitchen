@@ -24,7 +24,9 @@ function config($routeProvider, $httpProvider) {
         })
         // Route for after register message
         .when('/verify', {
-          templateUrl: 'views/messages/registered.html'
+          templateUrl: 'views/messages/registered.html',
+          controller: 'TokenController',
+          controllerAs: 'tokenVm'
         })
         // Route for guest profile page
         .when('/profile-guest/:guestId', {
@@ -82,10 +84,14 @@ function config($routeProvider, $httpProvider) {
         })
         // Route for verification messages
         .when('/registration-confirm-wrong-link', {
-            templateUrl: 'views/messages/verified-wrong.html'
+            templateUrl: 'views/messages/verified-wrong.html',
+            controller: 'TokenController',
+            controllerAs: 'tokenVm'
         })
         .when('/registration-confirm-expired-link', {
-            templateUrl: 'views/messages/verified-expired.html'
+            templateUrl: 'views/messages/verified-expired.html',
+            controller: 'TokenController',
+            controllerAs: 'tokenVm'
         })
         .when('/registration-confirm-success', {
             templateUrl: 'views/messages/verified-ok.html'

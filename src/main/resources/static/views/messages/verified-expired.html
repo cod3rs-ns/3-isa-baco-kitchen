@@ -2,6 +2,7 @@
   <h2>Nažalost, verifikovanje nije uspjelo...</h2>
   <p>
     Link je istekao.<br/>
-    <a href="#/">Pošalji ponovo</a> zahtjev za verifikovanje.
+    <input type="email" ng-model="tokenVm.email"/>
+    <a href="" ng-click="tokenVm.sendToken();">Pošalji ponovo</a>
   </p>
 </div>

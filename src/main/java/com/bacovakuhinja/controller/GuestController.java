@@ -19,8 +19,6 @@ import java.util.Collection;
 @RestController
 public class GuestController {
 
-    private static final String OWNER = "owner";
-
     @Autowired
     GuestService guestService;
 
@@ -83,6 +81,7 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<User>> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
+
         if (id == -1) {
             Guest user = (Guest) request.getAttribute("loggedUser");
             id = user.getGuestId();
@@ -125,7 +124,6 @@ public class GuestController {
     )
     public ResponseEntity<?> addFriend(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
-        System.out.println("add friend");
         friendshipService.addFriend(user.getGuestId(), id);
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
@@ -138,7 +136,6 @@ public class GuestController {
     )
     public ResponseEntity<?> removeFriend(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
-        System.out.println("remove friend");
         friendshipService.removeFriend(user.getGuestId(), id);
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
@@ -153,7 +150,7 @@ public class GuestController {
         return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);
     }
 
-
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "api/guest/reservations/{id}",
             method   = RequestMethod.GET,

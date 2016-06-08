@@ -1,6 +1,7 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Guest;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.GuestService;
@@ -118,6 +119,7 @@ public class UserController {
         return null;
     }
 
+    @SendEmail()
     @RequestMapping(
             value    = "api/user/register",
             method   = RequestMethod.POST,

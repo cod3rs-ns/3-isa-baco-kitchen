@@ -6,15 +6,15 @@ import java.util.Collection;
 
 public interface UserService {
 
-    public Collection<User> findAll();
+    Collection<User> findAll();
 
-    public boolean alreadyExists(String email);
+    boolean alreadyExists(String email);
 
-    public User create(User user);
+    User create(User user);
 
-    public User findOne(String email);
+    User findOne(String email);
 
-    public User findOneByEmailAndPassword(String email, String password);
+    User findOneByEmailAndPassword(String email, String password);
 
-    public User update(User user);
+    User update(User user);
 }

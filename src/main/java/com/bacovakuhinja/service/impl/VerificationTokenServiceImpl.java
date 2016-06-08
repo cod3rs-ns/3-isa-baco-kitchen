@@ -19,13 +19,22 @@ public class VerificationTokenServiceImpl implements VerificationTokenService {
 
     @Override
     public VerificationToken get(String tokenValue) {
-        for (VerificationToken token : verificationTokenRepository.findAll()) {
-            if (token.getToken().equals(tokenValue)) {
-                return token;
-            }
-        }
+        return verificationTokenRepository.findByToken(tokenValue);
+    }
 
-        return null;
+    @Override
+    public VerificationToken getByUserId(Integer id) {
+        return verificationTokenRepository.findByUser_userId(id);
+    }
+
+    @Override
+    public VerificationToken update(VerificationToken token) {
+        VerificationToken tokenPersistent = verificationTokenRepository.findOne(token.getId());
+
+        if (tokenPersistent == null)
+            return null;
+
+        return verificationTokenRepository.save(token);
     }
 
     @Override
