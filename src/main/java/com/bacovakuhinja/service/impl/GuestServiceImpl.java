@@ -14,8 +14,6 @@ import java.util.Collection;
 @Service
 public class GuestServiceImpl implements GuestService {
 
-    private static String USER_ROLE = "guest";
-
     @Autowired
     GuestRepository guestRepository;
 
