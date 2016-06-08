@@ -6,6 +6,7 @@ import com.bacovakuhinja.service.ClientOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class ClientOrderServiceImpl implements ClientOrderService{
     }
 
     @Override
-    public Collection<ClientOrder> getOrdersForBill(int tableId) {
-        return clientOrderRepository.findByTable_TableIdAndBill_BillId(tableId, null);
+    public List<ClientOrder> getOrdersForBill(int tableId) {
+        return clientOrderRepository.findByTable_TableIdAndBill_BillIdOrderByDateAsc(tableId, null);
     }
 }

@@ -3,6 +3,7 @@ package com.bacovakuhinja.service;
 
 import com.bacovakuhinja.model.ClientOrder;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface ClientOrderService {
 
     public void delete(Integer eId);
 
-    public Collection<ClientOrder> getOrdersForBill(int tableId);
+    public List<ClientOrder> getOrdersForBill(int tableId);
 }
