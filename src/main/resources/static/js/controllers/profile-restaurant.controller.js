@@ -313,6 +313,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
               restaurantVm.reservation = data;
               
               getFreeTables().then(function() {
+                
               });
           });
     };
