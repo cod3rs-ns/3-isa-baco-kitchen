@@ -4,55 +4,62 @@ angular
 
 menuItemService.$inject = ['$http'];
 
-function menuItemService($http){
+function menuItemService($http) {
     var service = {
-        getMenuItems: getMenuItems,
-        getSingle: getSingle,
-        updateFood: updateFood,
-        deleteFood: deleteFood,
-        createFood: createFood,
-        getMenuItemsByRestaurant: getMenuItemsByRestaurant
+        getAll: getAll,
+        getOne: getOne,
+        update: update,
+        remove: remove,
+        create: create,
+        getAllByRestaurant: getAllByRestaurant,
+        getAllByType: getAllByType
     };
-
     return service;
 
-    function getMenuItems(){
-        return $http.get('api/menuItems')
+    function getAll() {
+        return $http.get('api/menu_items')
         .then(function(response) {
             return response.data;
         });
-    };
+    }
 
-    function getSingle(id){
-        return $http.get('api/food/' + id)
+    function getOne(id){
+        return $http.get('api/menu_items/' + id)
         .then(function(response){
             return response.data;
         });
-    };
+    }
 
-    function updateFood(food, restaurant_id){
-        return $http.put('/api/food/r=' + restaurant_id, food)
+    function update(menu_item, restaurant_id) {
+        return $http.put('/api/menu_items/r=' + restaurant_id, menu_item)
         .then(function (response) {
             return response.data;
-        })
-    };
+        });
+    }
 
-    function deleteFood(id){
+    // TODO implement this
+    function remove(id){
 
-    };
+    }
 
-    function createFood(food, restaurant_id){
-        return $http.post('/api/food/r=' + restaurant_id, food)
+    function create(menu_item, restaurant_id) {
+        return $http.post('/api/menu_item/r=' + restaurant_id, menu_item)
         .then(function (response) {
             return response.data;
-        })
-    };
+        });
+    }
 
-    function getMenuItemsByRestaurant(restaurant_id){
-        return $http.get('api/menuItems/r=' + restaurant_id)
+    function getAllByRestaurant(restaurant_id){
+        return $http.get('api/menu_items/r=' + restaurant_id)
         .then(function(response) {
             return response.data;
         });
-    };
+    }
 
+    function getAllByType(type, restaurant_id){
+        return $http.get('api/menu_items/r=' + restaurant_id + '/t=' + type)
+            .then(function(response) {
+                return response.data;
+            });
+    }
 }

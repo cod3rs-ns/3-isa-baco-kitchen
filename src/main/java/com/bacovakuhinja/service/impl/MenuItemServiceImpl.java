@@ -36,6 +36,11 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
+    public Collection<MenuItem> findByTypeAndRestaurant(String type, Integer restaurantId) {
+        return menuItemRepository.findByTypeAndRestaurant_RestaurantId(type, restaurantId);
+    }
+
+    @Override
     public MenuItem update(MenuItem menuItem) {
         MenuItem menuItemPersistent = findOne(menuItem.getMenuItemId());
         if (menuItemPersistent == null) return null;

@@ -6,16 +6,18 @@ import java.util.Collection;
 
 public interface MenuItemService {
 
-    public Collection <MenuItem> findAll();
+    Collection <MenuItem> findAll();
 
-    public MenuItem findOne(Integer id);
+    MenuItem findOne(Integer id);
 
-    public MenuItem create(MenuItem menuItem);
+    MenuItem create(MenuItem menuItem);
 
-    public MenuItem update(MenuItem menuItem);
+    MenuItem update(MenuItem menuItem);
 
-    public void delete(Integer id);
+    void delete(Integer id);
 
-    public Collection <MenuItem> findAllByRestaurant(Integer restaurantId);
+    Collection <MenuItem> findAllByRestaurant(Integer restaurantId);
+
+    Collection <MenuItem> findByTypeAndRestaurant(String type, Integer restaurantId);
 
 }

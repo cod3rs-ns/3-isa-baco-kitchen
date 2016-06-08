@@ -95,7 +95,7 @@
             <md-content class="md-padding">
 
             <div layout="row" layout-wrap>
-              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.rmanager.restaurant.foodMenu" layout-wrap>
+              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
 
                   <md-card class="order-item">
                         <img src="{{meal.image}}" class="md-card-image order-img">
@@ -119,10 +119,10 @@
           <md-content class="md-padding">
 
           <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in rmanagerVm.rmanager.restaurant.drinksMenu" layout-wrap>
+            <div class='md-padding' layout="row" ng-repeat="drink in rmanagerVm.drinksMenu" layout-wrap>
 
                 <md-card class="order-item">
-                      <img src="{{drink.image}}" class="md-card-image order-img">
+                      <img src="{{drink.image}}" class="md-card-image order-img" style="height: 100%; width: 150px;">
 
                       <md-card-content>
                           <h4>{{drink.name}}</h4>
