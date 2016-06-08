@@ -25,92 +25,131 @@ function guestService($http) {
 
     function getGuest(id) {
         return $http.get('api/guest/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function updateGuest(user) {
         return $http.put('api/user/update', user)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function getRequests() {
         return $http.get('api/guest/requests')
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function getFriends(id) {
         return $http.get('api/guest/friends/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function accept(id) {
         return $http.put('api/guest/accept-friend/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function reject(id) {
         return $http.put('api/guest/reject-friend/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function isMy(id) {
         return $http.get('api/guest/admin/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function addFriend(id) {
         return $http.post('api/guest/add-friend/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function removeFriend(id) {
         return $http.delete('api/guest/remove-friend/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function isFriend(id) {
         return $http.get('api/guest/friend/' + id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function getSearchResult(query) {
         return $http.get('api/guest/users?query=' + query)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function getReservations(id) {
-        return $http.get('api/guest/reservations/' + id).
-        then (function(response) {
-            return response.data;
-        });
+        return $http.get('api/guest/reservations/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
     
     function getVisits(id) {
-        return $http.get('api/guest/visits/' + id).
-        then (function(response) {
-            return response.data;
-        });
+        return $http.get('api/guest/visits/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
     };
 }

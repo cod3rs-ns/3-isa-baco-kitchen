@@ -57,7 +57,6 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
       }
       else {
         showToast('Rezervacija počinje za manje od pola sata. Nije moguće otkazati.');
-        console.log('Ne može se otkazati.');
       }
     };
     
@@ -68,7 +67,6 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     function addFriend(id) {
         guestService.addFriend(id)
           .then(function (response) {
-              console.log('Added friend ' + id);
               guestProfileVm.sendRequest = true;
           });
     };
@@ -76,7 +74,6 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     function removeFriend(id) {
       guestService.removeFriend(id)
         .then(function (response) {
-            console.log('Removed friend ' + id);
             guestProfileVm.isFriend = false;
             
             if (guestProfileVm.admin) {
@@ -97,7 +94,6 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     function acceptFriend(id) {
         guestService.accept(id)
           .then(function (response) {
-              console.log('Accepted friend ' + id);
               for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
                   if (guestProfileVm.friendRequests[i].guestId === id) {
                      guestProfileVm.friends.push(guestProfileVm.friendRequests[i]);
@@ -111,7 +107,6 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     function rejectFriend(id) {
       guestService.reject(id)
         .then(function (response) {
-            console.log('Rejected friend ' + id);
             for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
                 if (guestProfileVm.friendRequests[i].guestId === id) {
                    guestProfileVm.friendRequests.splice(i, 1);
@@ -150,25 +145,15 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
             guestProfileVm.admin = data;
         });
       
-        getUser().then(function() {
-            console.log('User loaded.');
-        });
+        getUser().then(function() { });
         
-        getRequests().then(function() {
-            console.log('Requests loaded.');
-        });
+        getRequests().then(function() { });
         
-        getFriends().then(function() {
-            console.log('Friends loaded.');
-        });
+        getFriends().then(function() { });
         
-        isFriend().then(function() {
-            console.log('Is friend loaded.');
-        });
+        isFriend().then(function() { });
         
-        getReservations().then(function () {
-            console.log('Active reservations loaded.');
-        });
+        getReservations().then(function () { });
     };
 
     function getUser() {

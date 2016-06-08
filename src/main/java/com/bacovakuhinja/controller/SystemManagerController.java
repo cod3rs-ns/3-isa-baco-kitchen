@@ -5,7 +5,6 @@ import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.SystemManagerService;
-import com.sun.swing.internal.plaf.synth.resources.synth_sv;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,7 +45,7 @@ public class SystemManagerController {
     }
 
 
-    @Authorization(value = "system_manager")
+    @Authorization(role = "system_manager")
     @RequestMapping(
             value = "/api/smanager",
             method = RequestMethod.GET,

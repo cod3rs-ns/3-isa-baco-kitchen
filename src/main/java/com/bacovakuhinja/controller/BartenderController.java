@@ -50,7 +50,7 @@ public class BartenderController {
         return new ResponseEntity<Bartender>(created, HttpStatus.CREATED);
     }
 
-    @Authorization(value = "bartender")
+    @Authorization(role = "bartender")
     @RequestMapping(
             value = "/api/bartender",
             method = RequestMethod.GET,

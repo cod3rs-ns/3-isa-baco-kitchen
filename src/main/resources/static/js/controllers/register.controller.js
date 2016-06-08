@@ -21,7 +21,7 @@ function RegisterController($location, userService) {
             lastName: '',
             email: '',
             password: '',
-            image: 'http://www.cubadebate.cu/wp-content/uploads/2013/02/333.jpg',
+            image: 'https://cdn1.iconfinder.com/data/icons/user-pictures/101/malecostume-512.png',
             type: 'guest',
             verified: 'not_verified'
         };

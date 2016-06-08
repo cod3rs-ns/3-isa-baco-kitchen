@@ -30,7 +30,7 @@ public class GuestController {
     @Autowired
     ReservationService reservationService;
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/requests",
             method   = RequestMethod.GET,
@@ -43,7 +43,7 @@ public class GuestController {
         return new ResponseEntity<Collection<User>>(requests, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping(
             value    = "/api/guest/{id}",
             method   = RequestMethod.GET,
@@ -54,7 +54,7 @@ public class GuestController {
         return new ResponseEntity<Guest>(guest, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/admin/{id}",
             method   = RequestMethod.GET,
@@ -65,7 +65,7 @@ public class GuestController {
         return new ResponseEntity<Boolean>(user.getGuestId() == id, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/friend/{id}",
             method   = RequestMethod.GET,
@@ -76,7 +76,7 @@ public class GuestController {
         return new ResponseEntity<Boolean>(friendshipService.areWeFriends(user.getGuestId(), id), HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/friends/{id}",
             method   = RequestMethod.GET,
@@ -93,7 +93,7 @@ public class GuestController {
         return new ResponseEntity<Collection<User>>(friends, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/accept-friend/{senderId}",
             method   = RequestMethod.PUT,
@@ -105,7 +105,7 @@ public class GuestController {
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/reject-friend/{senderId}",
             method   = RequestMethod.PUT,
@@ -117,7 +117,7 @@ public class GuestController {
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/add-friend/{id}",
             method   = RequestMethod.POST,
@@ -130,7 +130,7 @@ public class GuestController {
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping (
             value    = "/api/guest/remove-friend/{id}",
             method   = RequestMethod.DELETE,
