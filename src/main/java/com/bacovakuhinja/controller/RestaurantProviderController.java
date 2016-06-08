@@ -38,7 +38,7 @@ private RestaurantProviderService providerService;
         return new ResponseEntity <RestaurantProvider>(provider, HttpStatus.OK);
     }
 
-    @Authorization(value = "restaurant_provider")
+    @Authorization(role = "restaurant_provider")
     @RequestMapping(
             value = "/api/provider",
             method = RequestMethod.GET,

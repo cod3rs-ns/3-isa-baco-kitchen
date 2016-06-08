@@ -83,7 +83,7 @@ public class EmployeeController {
     /*
     @Authorization()
     @RequestMapping(
-            value = "/api/employee/schedule",
+            role = "/api/employee/schedule",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <ArrayList<WorkPeriod>> getSchedule(final HttpServletRequest request) {

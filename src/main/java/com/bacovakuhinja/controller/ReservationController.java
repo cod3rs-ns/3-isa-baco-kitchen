@@ -43,7 +43,7 @@ public class ReservationController {
     private UserService userService;
 
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping(
             value    = "/api/reservation",
             method   = RequestMethod.POST,
@@ -159,7 +159,7 @@ public class ReservationController {
         return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
     }
 
-    @Authorization(value = "guest")
+    @Authorization(role = "guest")
     @RequestMapping(
             value    = "/api/reservation/invite",
             method   = RequestMethod.HEAD
