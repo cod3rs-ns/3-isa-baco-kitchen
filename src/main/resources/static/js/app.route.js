@@ -1,8 +1,8 @@
 angular
     .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard'])
-    .config(config);
-
-function config($routeProvider) {
+    .config(['$routeProvider', '$httpProvider', config]);
+    
+function config($routeProvider, $httpProvider) {
     $routeProvider
         // Route for reservation invite
         .when('/invite/:reservationId', {
@@ -90,4 +90,26 @@ function config($routeProvider) {
         .when('/registration-confirm-success', {
             templateUrl: 'views/messages/verified-ok.html'
         });
+        
+        $httpProvider.interceptors.push(['$q', '$window', '$location', function($q, $window, $location) {
+                  return {
+                      'request': function (config) {
+                          var token = $window.localStorage.getItem('AUTH_TOKEN');
+                          // alert(token);
+                          if (token !== null) {
+                              config.headers.Authorization = 'Bearer ' + token;
+                          }
+                          return config;
+                      },
+                      'responseError': function(response) {
+                        console.log('Called error');
+                        console.log(response);
+                        console.log(response.status);
+                          if(response.status === 401 || response.status === 403) {
+                              $location.path('/');
+                          }
+                          return $q.reject(response);
+                      }
+                  };
+              }]);
 }
