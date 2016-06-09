@@ -27,12 +27,12 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             //alert('Restaurant retreived from database.')
 
         });
-        menuItemService.getAllByType('food', 2).then(function(data) {
+        menuItemService.getAllActiveByType('food', 2).success(function(data) {
             console.log(data);
             rmanagerVm.foodMenu = data;
         });
 
-        menuItemService.getAllByType('drink', 2).then(function(data) {
+        menuItemService.getAllActiveByType('drink', 2).success(function(data) {
             console.log(data);
             rmanagerVm.drinksMenu = data;
         });

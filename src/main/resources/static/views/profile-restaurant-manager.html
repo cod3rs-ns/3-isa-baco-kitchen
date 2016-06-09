@@ -93,7 +93,7 @@
     	</md-content>
 
 		<!-- Restaurant info -->
-		<md-subheader layout="column" layout-align="center start">
+		<md-subheader layout="column" layout-align="center start" class="md-no-sticky">
 			<h3>Podaci o restoranu</h3>
 			<md-divider></md-divider>
 			<div layout="row">
@@ -132,14 +132,23 @@
     <md-tabs id="tabs" class="md-primary md-hue-2" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected" >
         <md-tab label="Jelovnik">
 			<md-tab-body>
-				<div layout="row" layout-wrap>
+				<md-subheader ng-show="rmanager.foodMenu.length == 0" class="md-no-sticky">
+					<p>Trenutno ne postoji nijedna stavka u jelovniku.</p>
+				</md-subheader>
+				<div ng-hide="rmanagerVm.foodMenu.length == 0" layout="row" layout-wrap>
 	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
-								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:150px;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Edit" style="margin-left:100px;">
 									<md-icon class="material-icons">edit</md-icon>
 									<md-tooltip>
 										Izmeni
+									</md-tooltip>
+								</md-button>
+								<md-button class="md-fab md-accent md-mini" aria-label="Delete">
+									<md-icon class="material-icons">delete_forever</md-icon>
+									<md-tooltip>
+										Ukloni
 									</md-tooltip>
 								</md-button>
 							</div>
@@ -165,14 +174,23 @@
         </md-tab>
 		<md-tab label="Karta pića">
 			<md-tab-body>
-				<div layout="row" layout-wrap>
+				<md-subheader ng-show="rmanager.drinksMenu.length == 0" class="md-no-sticky">
+					<p>Trenutno ne postoji nijedna stavka u karti pića.</p>
+				</md-subheader>
+				<div ng-hide="rmanager.drinksMenu.length == 0" layout="row" layout-wrap>
 	            	<div layout="row" ng-repeat="meal in rmanagerVm.drinksMenu" layout-wrap>
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
-								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:150px;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:100px;">
 									<md-icon class="material-icons">edit</md-icon>
 									<md-tooltip>
 										Izmeni
+									</md-tooltip>
+								</md-button>
+								<md-button class="md-fab md-accent md-mini" aria-label="Delete">
+									<md-icon class="material-icons">delete_forever</md-icon>
+									<md-tooltip>
+										Ukloni
 									</md-tooltip>
 								</md-button>
 							</div>
@@ -231,7 +249,6 @@
 							Region:  {{ table.region.name }}
 						</md-tooltip>
 					</div>
-
 				</div>
 				<div layout="column" style="margin-top: 50px;">
 					<div layout="row">

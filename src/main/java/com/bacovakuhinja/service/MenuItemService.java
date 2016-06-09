@@ -16,8 +16,8 @@ public interface MenuItemService {
 
     void delete(Integer id);
 
-    Collection <MenuItem> findAllByRestaurant(Integer restaurantId);
+    Collection <MenuItem> findAllByRestaurant(Integer id);
 
-    Collection <MenuItem> findByTypeAndRestaurant(String type, Integer restaurantId);
+    Collection <MenuItem> findByTypeAndDeletedAndRestaurant(String type, boolean deleted, Integer id);
 
 }
