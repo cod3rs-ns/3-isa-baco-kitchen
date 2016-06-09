@@ -4,3 +4,9 @@
     border-radius: 50%;
     margin: 5px;
 }
+
+.img-heightfix {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    max-height: 180px !important;
+}

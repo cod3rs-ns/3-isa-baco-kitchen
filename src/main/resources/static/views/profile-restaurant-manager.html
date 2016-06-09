@@ -1,4 +1,4 @@
-<div id="wrapper" layout="row">
+<div id="wrapper" layout="row" flex>
 	<md-sidenav
         class="md-sidenav-left"
         md-component-id="left"
@@ -31,19 +31,27 @@
 	<!-- Account info -->
 	<md-subheader layout="column" layout-align="center start">
 		<div layout="row" layout-align="center start">
-			<md-icon class="material-icons">mail_outline</md-icon>
-			<h4> &nbsp;{{rmanagerVm.rmanager.email}}</h4>
+			<md-icon class="material-icons">mail_outline
+				<md-tooltip md-direction="top">
+					Email
+				</md-tooltip>
+			</md-icon>
+			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.email}}</h4>
 		</div>
 		<div layout="row" layout-align="center start">
-			<md-icon class="material-icons">info_outline</md-icon>
-			<h4> &nbsp;{{rmanagerVm.rmanager.info}}</h4>
+			<md-icon class="material-icons">info_outline
+				<md-tooltip md-direction="top">
+					Biografija
+				</md-tooltip>
+			</md-icon>
+			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.info}}</h4>
 		</div>
 	</md-subheader>
 
 	<!-- Actions -->
 	<md-divider></md-divider>
       <md-content>
-         <md-menu-content>
+         <md-menu-content flex>
            <md-menu-item class="md-indent">
             <md-button 	class="md-primary">
 				<md-icon class="material-icons">account_circle</md-icon>
@@ -82,69 +90,112 @@
             </md-button>
            </md-menu-item>
 		   <md-divider></md-divider>
-      </md-content>
+    	</md-content>
+
+		<!-- Restaurant info -->
+		<md-subheader layout="column" layout-align="center start">
+			<h3>Podaci o restoranu</h3>
+			<md-divider></md-divider>
+			<div layout="row">
+				<h4>
+					<md-icon class="material-icons">business
+						<md-tooltip md-direction="top">
+							Naziv restorana
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.name}}
+				</h4>
+			</div>
+			<div layout="row" layout-align="center start">
+				<h4>
+					<md-icon class="material-icons">local_dining
+						<md-tooltip md-direction="top">
+							Vrsta restorana
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.type}}
+				</h4>
+			</div>
+			<div layout="row" layout-align="center start">
+				<h4>
+					<md-icon class="material-icons">info
+						<md-tooltip md-direction="top">
+							Dodatne informacije
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.info}}
+				</h4>
+			</div>
+		</md-subheader>
 	</md-sidenav>
 
 	<!-- Tabs -->
-	<div id="right" style="margin-left:3px; margin-top:3px" flex>
-	  <md-content>
-	    <md-tabs id="tabs" class="md-primary md-hue-2" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
-	        <md-tab label="Info">
-	          <md-content class="md-padding" style="font-size:120%;">
-				  	<!-- NEEDS TO BE CHANGED -->
-	                <p><i class="material-icons">business</i>  {{rmanagerVm.rmanager.restaurant.name}}</p>
-					<p><i class="material-icons">local_dining</i>  {{rmanagerVm.rmanager.restaurant.type}}</p>
-					<p><i class="material-icons">info</i>  {{rmanagerVm.rmanager.restaurant.info}}</p>
-					 </md-content>
-	        </md-tab>
-	          <md-tab label="Jelovnik">
-	            <md-content class="md-padding">
-
-	            <div layout="row" layout-wrap>
-	              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
-
-	                  <md-card class="order-item">
-	                        <img src="{{meal.image}}" class="md-card-image order-img">
-
-	                        <md-card-content>
+	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
+	<md-content>
+    <md-tabs id="tabs" class="md-primary md-hue-2" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected" >
+        <md-tab label="Jelovnik">
+			<md-tab-body>
+				<div layout="row" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
+	                	<md-card class="order-item">
+							<div layout="row" style="position:absolute;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:150px;">
+									<md-icon class="material-icons">edit</md-icon>
+									<md-tooltip>
+										Izmeni
+									</md-tooltip>
+								</md-button>
+							</div>
+							<!-- This style attribute must be here - it fixes one Chromium bug -->
+							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+	                        <md-card-content style="margin-top:-24px;">
 	                            <h4>{{meal.name}}</h4>
-	                            <p class="md-primary" style="color:grey">{{meal.info}}</p>
-	                            <md-button style="visibility: hidden;"></md-button>
+	                            <p style="color:grey">{{meal.info}}</p>
+								<div layout="row" layout-align="start start">
+									<p>
+										<md-icon class="material-icons">attach_money
+											<md-tooltip>
+												Cena
+											</md-tooltip>
+										</md-icon>{{meal.price}} RSD
+									</p>
+								</div>
 	                        </md-card-content>
-
-	                        <md-card-actions class="order-btns" layout="row" layout-align="center center">
-	                            <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena jela: {{meal.price}}</md-button>
-	                        </md-card-actions>
-	                  </md-card>
-
-	              </div>
+	                	</md-card>
+	            	</div>
 	            </div>
-	            </md-content>
-	          </md-tab>
-	      <md-tab label="Karta pića">
-	          <md-content class="md-padding">
-
-	          <div layout="row" layout-wrap>
-	            <div class='md-padding' layout="row" ng-repeat="drink in rmanagerVm.drinksMenu" layout-wrap>
-
-	                <md-card class="order-item">
-	                      <img src="{{drink.image}}" class="md-card-image order-img" style="height: 100%; width: 150px;">
-
-	                      <md-card-content>
-	                          <h4>{{drink.name}}</h4>
-	                          <p class="md-primary" style="color:grey">{{drink.info}}</p>
-	                          <md-button style="visibility: hidden;"></md-button>
-	                      </md-card-content>
-
-	                      <md-card-actions class="order-btns" layout="row" layout-align="center center">
-	                          <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena pića: {{drink.price}}</md-button>
-	                      </md-card-actions>
-	                </md-card>
-
+			</md-tab-body>
+        </md-tab>
+		<md-tab label="Karta pića">
+			<md-tab-body>
+				<div layout="row" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.drinksMenu" layout-wrap>
+	                	<md-card class="order-item">
+							<div layout="row" style="position:absolute;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:150px;">
+									<md-icon class="material-icons">edit</md-icon>
+									<md-tooltip>
+										Izmeni
+									</md-tooltip>
+								</md-button>
+							</div>
+							<!-- This style attribute must be here - it fixes one Chromium bug -->
+							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+	                        <md-card-content style="margin-top:-24px;">
+	                            <h4>{{meal.name}}</h4>
+	                            <p style="color:grey">{{meal.info}}</p>
+								<div layout="row" layout-align="start start">
+									<p>
+										<md-icon class="material-icons">attach_money
+											<md-tooltip>
+												Cena
+											</md-tooltip>
+										</md-icon>{{meal.price}} RSD
+									</p>
+								</div>
+	                        </md-card-content>
+	                	</md-card>
+	            	</div>
 	            </div>
-	          </div>
-	          </md-content>
-	      </md-tab>
+			</md-tab-body>
+		</md-tab>
 
 	      <md-tab label="Spisak zaposlenih">
 	        <md-content class="md-padding">
