@@ -40,10 +40,8 @@ public class Restaurant implements Serializable {
     @JoinColumn(name = "r_sm_id")
     private SystemManager systemManager;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
     private Set <MenuItem> menuItemMenu = new HashSet <MenuItem>(0);
-
 
     @JsonIgnore
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)

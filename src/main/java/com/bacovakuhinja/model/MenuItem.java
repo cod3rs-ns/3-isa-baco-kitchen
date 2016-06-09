@@ -1,7 +1,6 @@
 package com.bacovakuhinja.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.*;
 
@@ -37,6 +36,8 @@ public class MenuItem {
     @Column(name = "mi_spec_type")
     private String specType;
 
+    @Column(name = "mi_deleted")
+    private boolean deleted;
 
     public MenuItem() {
     }
@@ -103,5 +104,13 @@ public class MenuItem {
 
     public void setSpecType(String specType) {
         this.specType = specType;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

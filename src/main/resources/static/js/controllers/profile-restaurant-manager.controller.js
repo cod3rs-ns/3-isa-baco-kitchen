@@ -2,12 +2,14 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog']
+RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
+    rmanagerVm.foodMenu = [];
+    rmanagerVm.drinkMenu = [];
     rmanagerVm.updateRestaurant = updateRestaurant;
     rmanagerVm.createDrink = createDrink;
     rmanagerVm.createFood = createFood;
@@ -21,11 +23,20 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, Single
 
     function activate() {
         // curently locked
-        return getLoggedRestaurantManager().then(function() {
+        getLoggedRestaurantManager().then(function() {
             //alert('Restaurant retreived from database.')
 
         });
-    };
+        menuItemService.getAllActiveByType('food', 2).success(function(data) {
+            console.log(data);
+            rmanagerVm.foodMenu = data;
+        });
+
+        menuItemService.getAllActiveByType('drink', 2).success(function(data) {
+            console.log(data);
+            rmanagerVm.drinksMenu = data;
+        });
+    }
 
     function getLoggedRestaurantManager() {
         return restaurantManagerService.getLoggedRestaurantManager()

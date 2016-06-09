@@ -406,6 +406,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
   `mi_image` VARCHAR(100) NOT NULL,
   `mi_restaurant_id` INT(11) NOT NULL,
   `mi_spec_type` VARCHAR(20) NOT NULL,
+  `mi_deleted` TINYINT(1) NOT NULL,
   PRIMARY KEY (`mi_id`),
   INDEX `d_restaurant_fid_idx` (`mi_restaurant_id` ASC),
   CONSTRAINT `d_restaurant_fid`
