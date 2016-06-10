@@ -10,3 +10,8 @@
     min-height: 0 !important;
     max-height: 180px !important;
 }
+
+.additional-info {
+    background: #eee;
+    color: grey;
+}

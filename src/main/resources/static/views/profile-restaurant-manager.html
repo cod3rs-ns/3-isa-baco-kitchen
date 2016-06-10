@@ -1,11 +1,13 @@
-<div id="wrapper" layout="row" flex>
+<div id="wrapper" layout="row">
+	<section layout="column">
 	<md-sidenav
         class="md-sidenav-left"
         md-component-id="left"
         md-is-locked-open="true"
         md-disable-backdrop
         md-whiteframe="4"
-		style="height:100%">
+		style="height:100%"
+	>
 
 	<!-- Name and image -->
     <md-toolbar class="md-hue-2">
@@ -32,7 +34,7 @@
 	<md-divider></md-divider>
 
 	<!-- Account info -->
-	<md-subheader layout="column" layout-align="center start">
+	<div layout="column" layout-align="center start" class="additional-info">
 		<div layout="row" layout-align="center start">
 			<md-icon class="material-icons">mail_outline
 				<md-tooltip md-direction="top">
@@ -49,12 +51,12 @@
 			</md-icon>
 			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.info}}</h4>
 		</div>
-	</md-subheader>
+	</div>
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-      <md-content>
-         <md-menu-content flex>
+      <md-content flex style="min-height:270px;">
+         <md-menu-content>
            <md-menu-item class="md-indent">
             <md-button 	class="md-primary">
 				<md-icon class="material-icons">account_circle</md-icon>
@@ -96,7 +98,7 @@
     	</md-content>
 
 		<!-- Restaurant info -->
-		<md-subheader layout="column" layout-align="center start" class="md-no-sticky">
+		<div layout="column" layout-align="center start" class="additional-info">
 			<h3>Podaci o restoranu</h3>
 			<md-divider></md-divider>
 			<div layout="row">
@@ -126,8 +128,9 @@
 					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.info}}
 				</h4>
 			</div>
-		</md-subheader>
+		</div>
 	</md-sidenav>
+	</section>
 
 	<!-- Tabs -->
 	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
