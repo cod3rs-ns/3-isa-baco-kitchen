@@ -27,22 +27,26 @@ public class ImageUploadController {
         return "You can upload a file by posting to this same URL.";
     }
 
-    @RequestMapping(value = "api/upload", method = RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file) {
-        String name = "image.png";
+    @RequestMapping(value = "api/upload/{item_type}/{unique_item_id}", method = RequestMethod.POST)
+    public
+    @ResponseBody
+    String handleFileUpload(@RequestParam("file") MultipartFile file, @PathVariable("item_type") String type, @PathVariable("unique_item_id") String id) {
+        String[] parts = file.getOriginalFilename().split("\\.");
+        String ext = parts[parts.length-1];
         if (!file.isEmpty()) {
+            String name = imagesPath + type + sp + type + "_" + id + "." + ext;
             try {
                 byte[] bytes = file.getBytes();
                 BufferedOutputStream stream =
-                        new BufferedOutputStream(new FileOutputStream(new File( imagesPath + file.getOriginalFilename())));
+                        new BufferedOutputStream(new FileOutputStream(new File(name)));
                 stream.write(bytes);
                 stream.close();
-                return "You successfully uploaded " + name + "!";
+                return "You successfully uploaded image!";
             } catch (Exception e) {
-                return "You failed to upload " + name + " => " + e.getMessage();
+                return "You failed to upload image => " + e.getMessage();
             }
         } else {
-            return "You failed to upload " + name + " because the file was empty.";
+            return "You failed to upload image because the file was empty.";
         }
     }
 }
