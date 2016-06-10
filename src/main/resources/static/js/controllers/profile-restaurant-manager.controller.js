@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService'];
+RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -17,6 +17,18 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     // Currently active tab
     rmanagerVm.tabs = {
         selected: 0
+    }
+
+    rmanagerVm.upload = upload;
+    function upload($flow){
+        $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
+        $flow.upload();
+        console.log($flow);
+        rmanagerVm.rmanager.image = '/images/users/users_' + rmanagerVm.rmanager.userId + '.png';
+        restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
+            .then(function(data) {
+                rmanagerVm.rmanager = data;
+            })
     }
 
     activate();

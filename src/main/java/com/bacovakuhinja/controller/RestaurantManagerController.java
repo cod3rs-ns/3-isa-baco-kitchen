@@ -74,6 +74,7 @@ public class RestaurantManagerController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantManager> updateRestaurantManager(@RequestBody RestaurantManager manager) {
+        manager.setPassword(rmService.findOne(manager.getUserId()).getPassword());
         RestaurantManager updatedManager = rmService.update(manager);
         if (updatedManager == null) {
             return new ResponseEntity <RestaurantManager>(HttpStatus.NOT_FOUND);

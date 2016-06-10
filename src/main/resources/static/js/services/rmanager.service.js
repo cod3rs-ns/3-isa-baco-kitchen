@@ -37,8 +37,11 @@ function restaurantManagerService($http) {
         });
     };
 
-    function updateRestaurantManager(restaurant) {
-
+    function updateRestaurantManager(restaurant_man) {
+        return $http.put('api/rmanagers', restaurant_man)
+        .then(function(response){
+            return response.data;
+        });
     };
 
     function deleteRestaurantManager(id) {

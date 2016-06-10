@@ -129,6 +129,21 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- http://mvnrepository.com/artifact/org.webjars/ng-flow -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>ng-flow</artifactId>
+            <version>2.6.1</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- http://mvnrepository.com/artifact/org.webjars/nervgh-angular-file-upload -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>nervgh-angular-file-upload</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
         <dependency>
             <groupId>org.webjars.bower</groupId>
             <artifactId>interact.js</artifactId>
