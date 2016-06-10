@@ -1,8 +1,9 @@
 angular
-    .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard'])
-    .config(['$routeProvider', '$httpProvider', config]);
-    
-function config($routeProvider, $httpProvider) {
+    .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard', 'flow'])
+    .config(['$routeProvider', '$httpProvider', routeConfig])
+    .config(['flowFactoryProvider', uploadConfig]);
+
+function routeConfig($routeProvider, $httpProvider) {
     $routeProvider
         // Route for homepage
         .when('/', {
@@ -94,7 +95,7 @@ function config($routeProvider, $httpProvider) {
         .otherwise({
             redirectTo: '/'
         });
-        
+
         $httpProvider.interceptors.push(['$q', '$window', '$location', function($q, $window, $location) {
             return {
               // Set Header to Request if user is logged
@@ -105,7 +106,7 @@ function config($routeProvider, $httpProvider) {
                         }
                         return config;
                 },
-              // When try to get Unauthorized page  
+              // When try to get Unauthorized page
               'responseError': function(response) {
                     if(response.status === 401 || response.status === 403) {
                         $location.path('/');
@@ -114,4 +115,21 @@ function config($routeProvider, $httpProvider) {
                 }
               };
             }]);
+}
+
+function uploadConfig(flowFactoryProvider) {
+    console.log("Flow config");
+    flowFactoryProvider.defaults = {
+        target: 'http://localhost:8091/api/upload',
+        permanentErrors: [404, 500, 501],
+        maxChunkRetries: 1,
+        uploadMethod: 'POST',
+        chunkRetryInterval: 5000,
+        simultaneousUploads: 4,
+        singleFile: true
+    };
+
+    flowFactoryProvider.on('catchAll', function (event) {
+        console.log('catchAll', arguments);
+    });
 }

@@ -1,4 +1,7 @@
-<html ng-app="isa-mrs-project">
+<html
+    ng-app="isa-mrs-project"
+    flow-init
+    flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,6 +46,9 @@
     <!-- Web Sockets -->
     <script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"> </script>
     <script src="/webjars/stomp-websocket/2.3.4/lib/stomp.js"></script>
+
+    <!-- Image upload -->
+    <script src="/webjars/ng-flow/2.6.1/ng-flow-standalone.js"> </script>
 
     <!-- Reservation steps -->
     <script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>

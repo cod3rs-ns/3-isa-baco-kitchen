@@ -10,7 +10,10 @@
 	<!-- Name and image -->
     <md-toolbar class="md-hue-2">
 		<div layout="row" layout-align="end start">
-			<md-button class="md-icon-button" aria-label="Change image">
+			<md-button 	class="md-icon-button" aria-label="Change image"
+						flow-files-submitted="rmanagerVm.upload($flow)"
+						flow-attrs="{accept:'image/*'}"
+						flow-btn>
 				<md-icon class="material-icons">add_a_photo</md-icon>
 				<md-tooltip>
 					Promeni fotografiju
