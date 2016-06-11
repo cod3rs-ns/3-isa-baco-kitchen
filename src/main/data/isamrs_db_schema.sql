@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`users` (
   `u_lname` VARCHAR(45) NOT NULL,
   `u_email` VARCHAR(45) NOT NULL,
   `u_image` VARCHAR(200) NOT NULL,
-  `u_password` VARCHAR(45) NOT NULL,
+  `u_password` VARCHAR(100) NOT NULL,
   `u_type` VARCHAR(20) NOT NULL,
   `u_verified` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`u_id`))

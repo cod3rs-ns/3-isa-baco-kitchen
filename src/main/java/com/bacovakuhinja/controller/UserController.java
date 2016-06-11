@@ -3,6 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Guest;
+import com.bacovakuhinja.model.Sha256;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.UserService;
@@ -58,7 +59,8 @@ public class UserController {
     )
     public ResponseEntity<Boolean> passMatch(final HttpServletRequest request, @PathVariable String pass) {
         User user = (User) request.getAttribute("loggedUser");
-        boolean matched = user.getPassword().equals(pass);
+        String hashed = Sha256.getSha256(pass);
+        boolean matched = user.getPassword().equals(hashed);
         return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
     }
 
@@ -83,7 +85,7 @@ public class UserController {
     public ResponseEntity<?> changePassword(final HttpServletRequest request, @RequestBody String pass){
         User user = (User) request.getAttribute("loggedUser");
         User current = userService.findOne(user.getEmail());
-        current.setPassword(pass);
+        current.setPassword(Sha256.getSha256(pass));
         userService.update(current);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
@@ -107,7 +109,7 @@ public class UserController {
             method   = RequestMethod.POST
     )
     public LoginResponse authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password) {
-
+        password = Sha256.getSha256(password);
         User user = userService.findOneByEmailAndPassword(email, password);
 
         if (user != null && user.getVerified().equals("verified")) {
@@ -127,6 +129,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> register(@RequestBody Guest guest) {
+        guest.setPassword(Sha256.getSha256(guest.getPassword()));
         User created = guestService.create(guest);
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
     }
