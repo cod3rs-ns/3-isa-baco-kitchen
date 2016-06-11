@@ -13,7 +13,8 @@ function waiterService($http){
         getWorkingRegion: getWorkingRegion,
         getFinishedOrders: getFinishedOrders,
         deliverOrder: deliverOrder,
-        createBill: createBill
+        createBill: createBill,
+        findBills: findBills
     };
 
     return service;
@@ -69,6 +70,13 @@ function waiterService($http){
 
     function createBill(tableId){
         return $http.post('/api/bills/t=' + tableId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function findBills(){
+        return $http.get('/api/waiter/bills')
             .then(function (response) {
                 return response.data;
             });

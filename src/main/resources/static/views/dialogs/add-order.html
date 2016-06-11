@@ -1,50 +1,51 @@
-<md-dialog flex="70" aria-label="Porudžbina"  ng-cloak>
+<md-dialog flex="70" style="height: 90%;" aria-label="Porudžbina"  ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Dodavanje porudžbine</h2>
-            <span flex></span>
+            <md-toolbar layout="row" flex-gt-sm="50">
+                <div class="md-toolbar-tools">
+                    <span>Lista jela i pića</span>
+                </div>
+            </md-toolbar>
+
+            <md-toolbar layout="row" flex-gt-sm="50">
+                <div class="md-toolbar-tools">
+                    <span>Stavke porudžbine</span>
+                </div>
+            </md-toolbar>
+
             <md-button class="md-icon-button" ng-click="orderVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
             </md-button>
         </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content flex>
         <div layout="row" style="max-height:80%" ng-cloak>
-            <div flex-gt-sm="50">
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <span>Lista jela i pića</span>
-                    </div>
-                </md-toolbar>
+            <div flex-gt-sm="50" style="padding-left: 20px">
 
-                <md-input-container md-no-float class="md-block">
+                <md-input-container md-no-float class="md-block" style="padding-left: 20px; padding-right: 35px;">
                     <input ng-model="search" type="text" placeholder="Ime stavke" >
                     <md-icon style="display:inline-block;">search</md-icon>
                 </md-input-container>
 
                 <md-content  max-height="90%" layout="column">
                     <md-list style="padding-left: 5px;">
-                        <md-list-item ng-hide="meal.hide" class="md-2-line" ng-repeat="meal in orderVm.meals | filter : search ">
+                        <md-list-item ng-hide="meal.hide" class="md-2-line" layout-align="start center" ng-repeat="meal in orderVm.meals | filter : search ">
                             <img ng-src="{{meal.image}}" class="md-avatar" />
-                            <div class="md-list-item-text" layout="column">
+                            <div flex class="md-list-item-text" layout="column">
                                 <h3>{{ meal.name }}</h3>
                                 <h4>{{ meal.info }}</h4>
                             </div>
-                            <md-button class="md-icon-button" ng-click="orderVm.addMeal(meal);" aria-label="More">
+                            <md-button  style="vertical-align: middle !important; margin-top: 10px" class="md-fab md-mini md-accent" ng-click="orderVm.addMeal(meal);" aria-label="More">
                                 <md-icon aria-label="Search" class="material-icons">send</md-icon>
                             </md-button>
+                            <md-divider ng-if="!$last"></md-divider>
                         </md-list-item>
                     </md-list>
                 </md-content>
             </div>
 
             <div flex-gt-sm="50">
-                <md-toolbar layout="row" class="md-hue-3">
-                    <div class="md-toolbar-tools">
-                        <span>Stavke porudžbine</span>
-                    </div>
-                </md-toolbar>
 
                 <md-content  max-height="90%" layout="column">
                     <form name="orderForm">
@@ -69,7 +70,6 @@
                     </form>
                 </md-content>
             </div>
-
         </div>
     </md-dialog-content>
 

@@ -20,6 +20,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
         getWaiter().then(function() {
             connect(waiterProfileVm.waiter.userId);
             getRegion(waiterProfileVm.waiter.userId);
+            getBills();
         });
 
         passService.isPasswordChanged()
@@ -41,6 +42,16 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
+    
+    function getBills(){
+        return waiterService.findBills()
+            .then(function (data) {
+                for(var bill in data){
+                    data[bill].publishDate = new Date(data[bill].publishDate);
+                }
+                waiterProfileVm.bills = data;
+            })
+    }
 
     function getRegion(){
         return waiterService.getWorkingRegion(waiterProfileVm.waiter.userId)
@@ -58,24 +69,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
     waiterProfileVm.meals = [];
-	
-	waiterProfileVm.bills = [
-      {
-        code: '1235AS45',
-        total: '12000',
-        date: '28. maj  2016',
-      },
-      {
-        code: '8856A45B',
-        total: '5000',
-        date: '28. jun  2016',
-      },
-      {
-        code: '88A7SD5A',
-        total: '36987',
-        date: '15. septembar  2016',
-      },
-    ];
 
     //editing profile
     waiterProfileVm.editProfile = editProfile;

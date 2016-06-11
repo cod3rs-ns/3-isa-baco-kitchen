@@ -114,9 +114,9 @@
 						<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills">
 							<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar">
 							<div class="md-list-item-text" layout="column">
-								<h3>{{ bill.code }}</h3>
-								<h4>{{ bill.total }} RSD</h4>
-								<p>{{ bill.date }}</p>
+								<h3>{{ bill.billId }}</h3>
+								<h4>{{ bill.totalAmount }} RSD</h4>
+								<p>{{ bill.publishDate | date: 'dd-MMM-yyyy HH:mm' }}</p>
 							</div >
 							<div class="md-secondary">
 								<md-button class="md-raised">Više...</md-button>

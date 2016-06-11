@@ -1,5 +1,6 @@
 package com.bacovakuhinja.controller;
 
+import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.BartenderService;
 import com.bacovakuhinja.service.BillService;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -83,5 +85,20 @@ public class BillController {
         created.setOrders(billOrders);
         billService.update(created);
         return new ResponseEntity<BillHelper>(helper, HttpStatus.OK);
+    }
+
+
+    @Authorization(role = "waiter")
+    @RequestMapping(
+            value = "/api/waiter/bills",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection<Bill>> getWaiterBills(final HttpServletRequest request) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+
+        Collection<Bill> bills =  billService.findBillsByWaiter(waiter.getUserId());
+
+        return new ResponseEntity <Collection<Bill>>(bills, HttpStatus.OK);
     }
 }

@@ -47,6 +47,7 @@ public class CookController {
         Cook cook = cookService.findOne(user.getUserId());
         return new ResponseEntity <Cook>(cook, HttpStatus.OK);
     }
+
     @SendEmail
     @RequestMapping(value = "/api/cook",
             method = RequestMethod.POST,

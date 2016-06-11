@@ -9,15 +9,15 @@ import java.util.Collection;
  * Created by Bojan on 30-May-16.
  */
 public interface BillService {
-    public Collection<Bill> findAll();
+    Collection<Bill> findAll();
 
-    public Bill findOne(Integer bId);
+    Bill findOne(Integer bId);
 
-    public Bill create(Bill bill);
+    Bill create(Bill bill);
 
-    public Bill update(Bill bill);
+    Bill update(Bill bill);
 
-    public void delete(Integer bId);
+    void delete(Integer bId);
 
-
+    Collection<Bill> findBillsByWaiter(Integer waiterId);
 }

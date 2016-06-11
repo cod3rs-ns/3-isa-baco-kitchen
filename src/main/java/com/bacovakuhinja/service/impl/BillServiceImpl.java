@@ -43,4 +43,9 @@ public class BillServiceImpl implements BillService{
     public void delete(Integer bId) {
         billRepository.delete(bId);
     }
+
+    @Override
+    public Collection<Bill> findBillsByWaiter(Integer waiterId) {
+        return billRepository.findFirst5ByWaiter_UserIdOrderByPublishDateDesc(waiterId);
+    }
 }
