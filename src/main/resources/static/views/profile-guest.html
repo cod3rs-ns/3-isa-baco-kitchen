@@ -95,10 +95,10 @@
   					<div layout="row" layout-wrap>
   						<div class='md-padding' style="background-color: #eee" layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
   							<md-card>
-  								<img ng-src="{{visit.reservation.restaurant.imageSrc}}" class="md-card-image reservation" style="width: 196px">
+  								<img ng-src="{{visit.imageSrc}}" class="md-card-image reservation" style="width: 196px">
   								
   								<md-card-content>
-  									<h4>{{visit.reservation.restaurant.name}}</h4>
+  									<h4>{{visit.name}}</h4>
   								</md-card-content>
 
                   <!-- Ovdje bi trebalo da ocijenim rezervaciju -->

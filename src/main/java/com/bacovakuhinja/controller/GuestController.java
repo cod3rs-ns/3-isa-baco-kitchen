@@ -177,7 +177,11 @@ public class GuestController {
 
         for (Reservation reservation : reservations) {
             Review review = reviewService.getReviewByReservation(reservation.getReservationId(), user.getUserId());
-            result.add(new Visit(reservation, review));
+
+            // FIXME Restaurant Image From DataBase
+            reservation.setRestaurant(reservation.getRestaurant());
+            result.add(new Visit(reservation, review, reservation.getRestaurant().getName(),
+                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser"));
         }
 
         return new ResponseEntity<Collection<Visit>>(result, HttpStatus.OK);

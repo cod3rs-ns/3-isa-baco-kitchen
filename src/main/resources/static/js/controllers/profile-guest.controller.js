@@ -220,7 +220,6 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         return guestService.getVisits($routeParams.guestId)
         .then(function(response) {
             guestProfileVm.visits = response.data;
-            
             var index;
             for (index = 0; index < guestProfileVm.visits.length; ++index) {
                 if (guestProfileVm.visits[index].review == null) {
