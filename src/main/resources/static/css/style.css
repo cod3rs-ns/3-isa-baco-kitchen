@@ -201,11 +201,12 @@ ul.rating {
   position: relative;
   left: -12px;
   font-size: 8pt;
-  width: 10px;
+  min-width: 10px !important;
+  height: 10px !important;
   padding: 2px;
-  border-radius: 4px;
-  color: #fff;
-  background-color: red;
+  border-radius: 100%;
+  color: #FFFFFF;
+  background-color: #FC4482;
 }
 
 .cursor-pointer:hover {

@@ -4,6 +4,10 @@
     <md-toolbar scroll>
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
+        <md-button ng-show="guestProfileVm.admin" class="md-icon-button" aria-label="Change password">
+					<md-tooltip>Promjena lozinke</md-tooltip>
+					<md-icon id="pass-option" aria-label="Change password" ng-click="guestProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
+				</md-button>
         <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
           <md-icon aria-label="Cancel" class="material-icons">cancel</md-icon>
         </md-button>
@@ -14,7 +18,7 @@
           <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
         </md-button>
         <md-menu ng-show="guestProfileVm.admin">
-          <md-button class="md-icon-button" aria-label="Notification" ng-click="$mdOpenMenu($event)">
+          <md-button style="margin-top: -9px;" class="md-icon-button" aria-label="Notification" ng-click="(guestProfileVm.friendRequests.length>0)&&$mdOpenMenu($event)">
             <md-icon aria-label="Notification" class="material-icons">notifications</md-icon>
             <sup class="badge">{{guestProfileVm.friendRequests.length}}</sup>
           </md-button>
@@ -69,24 +73,11 @@
               </md-input-container>
             </div>
             
-            <md-input-container class="md-block">
-              <label>Nova lozinka</label>
+            <!--md-input-container class="md-block">
+              <label>Unesite Vašu lozinku da biste potvrdili izmjene:</label>
               <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-              <input minlength="8" required type="password" id="userPassword" name="userPassword" ng-model="guestProfileVm.user.password"/>
-              <div ng-messages="editProfileForm.userPassword.$error" role="alert">
-                <div ng-message="required">Lozinka je obavezna.</div>
-                <div ng-message="minlength">Lozinka mora imati bar 8 karaktera.</div>
-              </div>
-            </md-input-container>
-
-            <md-input-container class="md-block">
-              <label>Ponovite lozinku</label>
-              <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-              <input required type="password" name="userPasswordRepeated" pw-match="userPassword" ng-model="guestProfileVm.user.passwordRepeated"/>
-              <div ng-messages="editProfileForm.userPasswordRepeated.$error" role="alert">
-                <div ng-message="pwmatch">Lozinke se ne poklapaju.</div>
-              </div>
-            </md-input-container>
+              <input type="password" name="userPassword"/>
+            </md-input-container-->
           </form>
         </div>
       </div>
