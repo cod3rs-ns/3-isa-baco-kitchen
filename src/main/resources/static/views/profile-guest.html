@@ -95,33 +95,49 @@
   					<div layout="row" layout-wrap>
   						<div class='md-padding' style="background-color: #eee" layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
   							<md-card>
-  								<img ng-src="{{visit.restaurant.imageSrc}}" class="md-card-image" style="width: 196px">
+  								<img ng-src="{{visit.reservation.restaurant.imageSrc}}" class="md-card-image reservation" style="width: 196px">
   								
   								<md-card-content>
-  									<h4>{{visit.name}}</h4>
+  									<h4>{{visit.reservation.restaurant.name}}</h4>
   								</md-card-content>
-  								
-                  <div>
-                    <div class="rating-item">
-                      Restoran:
-                      <div ng-init="visit.rating_restaurant"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_restaurant" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    </div>
 
-                    <div class="rating-item">
-                      Usluga:
-                      <div ng-init="visit.rating_service"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_service" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                  <!-- Ovdje bi trebalo da ocijenim rezervaciju -->
+                  <div style="padding: 5 40">
+                    <div layout="row">
+                      <div class="rating-item" flex>
+                        Restoran:
+                        <div ng-init="visit.review.restaurantRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
+                      </div>
+      
+                      <div class="rating-item" flex>
+                        Usluga:
+                        <div ng-init="visit.review.serviceRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
+                      </div>
+                      
+                      <div class="rating-item" flex>
+                        Hrana:
+                        <div ng-init="visit.review.foodRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
+                        </div>
                     </div>
+                      
+                    <md-input-container ng-if="!guestProfileVm.isCommented(visit.review)" class="md-block">
+                      <label>Komentar</label>
+                      <textarea ng-model="visit.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+                    </md-input-container>
                     
-                    <div class="rating-item">
-                      Hrana:
-                      <div ng-init="visit.rating_food"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_food" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    </div>
-                    
+                    <p ng-if="guestProfileVm.isCommented(visit.review)">
+                      {{ visit.review.comment }}
+                    </p>
+                        
+                    <md-button ng-click="guestProfileVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
                   </div>
-  							</md-card>
+                </md-card>
   							
   						</div>			
   					</div>
@@ -201,7 +217,7 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-      </md-toolbar>
+    </md-toolbar>
     <md-list>
       <md-subheader class="md-primary">Moji prijatelji</md-subheader>
       <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
@@ -210,17 +226,6 @@
           </a>
           <p>{{friend.firstName + ' ' + friend.lastName}}</p>
         <md-icon ng-show="guestProfileVm.admin" ng-click="guestProfileVm.removeFriend(friend.guestId)" aria-label="Remove friend" class="material-icons cursor-pointer">highlight_off</md-icon>
-      </md-list-item>
-    </md-list>
-    <md-divider></md-divider>
-    <md-list>
-      <md-subheader class="md-primary">Ostali korisnici</md-subheader>
-      <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
-        <a ng-click="guestProfileVm.foo()">
-          <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}"  class="md-avatar" />
-        </a>
-        <p>{{ friend.firstName }}</p>
-        <md-icon aria-label="Search" class="material-icons">add_circle_outline</md-icon>
       </md-list-item>
     </md-list>
   </div>

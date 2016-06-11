@@ -6,8 +6,10 @@ import java.util.Collection;
 
 public interface ReviewService {
 
-    public Review create(Review review);
+    Review create(Review review);
 
-    public Collection<Review> restaurantReviews(Integer id);
+    Collection<Review> restaurantReviews(Integer id);
+
+    Review getReviewByReservation(Integer id, Integer userId);
 
 }

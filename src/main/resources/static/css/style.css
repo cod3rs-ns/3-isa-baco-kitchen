@@ -275,4 +275,13 @@ md-dialog-content.reservation-dialog {
 }
 */ }
 .inputdemoIcons .inputIconDemo {
-    min-height: 48px; }
+    min-height: 48px;
+}
+
+.content-container {
+    height: 300px;
+}
+
+.content-scroll-container {
+    overflow-y: scroll;
+}

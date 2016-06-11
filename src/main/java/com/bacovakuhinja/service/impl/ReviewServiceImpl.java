@@ -33,4 +33,14 @@ public class ReviewServiceImpl implements ReviewService {
         return reviews;
     }
 
+    @Override
+    public Review getReviewByReservation(Integer id, Integer userId) {
+        for (Review review : reviewRepository.findAll()) {
+            if (review.getReservation() == id && review.getReviewer().getGuestId() == userId)  {
+                return review;
+            }
+        }
+        return null;
+    }
+
 }

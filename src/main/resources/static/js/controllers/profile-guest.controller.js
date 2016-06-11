@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService'];
+GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService'];
 
-function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService) {
+function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService) {
     var guestProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -33,8 +33,18 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     guestProfileVm.to = to;
     guestProfileVm.cancelReservation = cancelReservation;
     guestProfileVm.showToast = showToast;
+    guestProfileVm.sendReview = sendReview;
+    guestProfileVm.isCommented = isCommented;
 
     activate();
+    
+    function sendReview(visit) {
+        visit.review.reservation = visit.reservation.reservationId;
+        return reviewService.addReview(visit.review)
+            .then(function(data) { 
+                visit.review.reviewId = data.reviewId;
+            });
+    };
     
     function cancelReservation(id) {
       
@@ -142,6 +152,10 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         guestProfileVm.user = JSON.parse(JSON.stringify(guestProfileVm.realUser));
     }
     
+    function isCommented(review) {
+        return !(review.reviewId == null);
+    }
+    
     function activate() {
       
         guestService.isMy($routeParams.guestId)
@@ -158,6 +172,8 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         isFriend().then(function() { });
         
         getReservations().then(function () { });
+        
+        getVisits().then(function () { });
     };
 
     function getUser() {
@@ -199,6 +215,28 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
             return guestProfileVm.activeReservations;
         });
     };
+    
+    function getVisits() {
+        return guestService.getVisits($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.visits = response.data;
+            
+            var index;
+            for (index = 0; index < guestProfileVm.visits.length; ++index) {
+                if (guestProfileVm.visits[index].review == null) {
+                    guestProfileVm.visits[index].review = {
+                        restaurantRate: 1,
+                        foodRate: 1,
+                        serviceRate: 1,
+                        reservation: 1,
+                        comment: ''
+                      };
+                }
+            }
+            
+            return guestProfileVm.visits;
+        });
+    }
     
     function showToast(toast_message) {
         $mdToast.show({

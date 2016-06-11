@@ -1,12 +1,11 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.model.Guest;
-import com.bacovakuhinja.model.Reservation;
-import com.bacovakuhinja.model.User;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.FriendshipService;
 import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.ReservationService;
+import com.bacovakuhinja.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @RestController
@@ -27,6 +27,9 @@ public class GuestController {
 
     @Autowired
     ReservationService reservationService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @Authorization(role = "guest")
     @RequestMapping (
@@ -158,6 +161,26 @@ public class GuestController {
     public ResponseEntity<Collection<Reservation>> getReservations(@PathVariable Integer id) {
         Collection<Reservation> result = reservationService.findByOwnerId(id);
         return new ResponseEntity<Collection<Reservation>>(result, HttpStatus.OK);
+    }
+
+    @Authorization(role = "guest")
+    @RequestMapping (
+            value    = "api/guest/visits/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Visit>> getVisits(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+
+        Collection<Visit> result = new ArrayList<Visit>();
+        Collection<Reservation> reservations = reservationService.findVisitsByOwnerId(id);
+
+        for (Reservation reservation : reservations) {
+            Review review = reviewService.getReviewByReservation(reservation.getReservationId(), user.getUserId());
+            result.add(new Visit(reservation, review));
+        }
+
+        return new ResponseEntity<Collection<Visit>>(result, HttpStatus.OK);
     }
 
 }

@@ -7,17 +7,17 @@ import java.util.Date;
 
 public interface ReservationService {
 
-    public Collection<Reservation> findAll();
+    Collection<Reservation> findAll();
 
-    public Reservation findOne(Integer reservationId);
+    Reservation findOne(Integer reservationId);
 
-    public Collection<Reservation> findByOwnerId(Integer ownerId);
+    Collection<Reservation> findByOwnerId(Integer ownerId);
 
-    public Collection<Reservation> findByRestaurantId(Integer restaurantId);
+    Collection<Reservation> findVisitsByOwnerId(Integer ownerId);
 
-    public Collection<Reservation> findByRestaurantIdAndTime(Integer restaurantId, Date datetime, Integer length);
+    Collection<Reservation> findByRestaurantIdAndTime(Integer restaurantId, Date datetime, Integer length);
 
-    public Reservation create(Reservation reservation);
+    Reservation create(Reservation reservation);
 
-    public void delete(Reservation reservation);
+    void delete(Reservation reservation);
 }
