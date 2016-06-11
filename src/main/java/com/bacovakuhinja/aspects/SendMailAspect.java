@@ -1,9 +1,6 @@
 package com.bacovakuhinja.aspects;
 
-import com.bacovakuhinja.model.OfferRequest;
-import com.bacovakuhinja.model.ProviderResponse;
-import com.bacovakuhinja.model.User;
-import com.bacovakuhinja.model.VerificationToken;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
 import com.bacovakuhinja.service.UserService;
@@ -30,23 +27,27 @@ import java.util.UUID;
 public class SendMailAspect {
 
     // 30 minutes
-    private static final long TOKEN_EXPIRE_TIME = 1800000;
-    private static final String TOKEN_CONFIRM_LINK = "http://localhost:8091/api/registration-confirm?token=";
+    public static final long TOKEN_EXPIRE_TIME = 1800000;
+    public static final String TOKEN_CONFIRM_LINK = "http://localhost:8091/api/registration-confirm?token=";
     private static final String HOST_NAME = "smtp.gmail.com";
     private static final int HOST_PORT = 587;
     private static final String AUTH_USER = "bacovakuhinja@gmail.com";
     private static final String AUTH_PASS = "jedanjebaco";
+
     @Autowired
     VerificationTokenService verificationTokenService;
+
     @Autowired
     UserService userService;
+
     @Autowired
     ProviderResponseService providerResponseService;
+
     @Autowired
     OfferRequestService offerRequestService;
 
-    @After(value = "@annotation(com.bacovakuhinja.annotations.SendEmail) && args(user,..)")
-    public void sendConfirmationMail(User user) throws MessagingException {
+    @After(value = "@annotation(com.bacovakuhinja.annotations.SendEmail) && args(guest,..)")
+    public void sendConfirmationMail(Guest guest) throws MessagingException {
 
         // Generate VerificationToken
         Date date = new Date();
@@ -54,10 +55,10 @@ public class SendMailAspect {
         final String tokenValue = UUID.randomUUID().toString();
 
         System.out.println(date);
-        System.out.println(user.getEmail());
-        System.out.println(userService.findOne(user.getEmail()));
+        System.out.println(guest.getEmail());
+        System.out.println(userService.findOne(guest.getEmail()));
 
-        VerificationToken token = new VerificationToken(tokenValue, date, userService.findOne(user.getEmail()));
+        VerificationToken token = new VerificationToken(tokenValue, date, userService.findOne(guest.getEmail()));
         verificationTokenService.create(token);
 
         // Message body
@@ -72,7 +73,7 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + user.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + guest.getFirstName() + "!</h1>\n" +
                 "        <p>Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +

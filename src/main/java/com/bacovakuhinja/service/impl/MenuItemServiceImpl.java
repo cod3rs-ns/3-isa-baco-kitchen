@@ -6,7 +6,6 @@ import com.bacovakuhinja.service.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -16,7 +15,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     private MenuItemRepository menuItemRepository;
 
     @Override
-    public Collection<MenuItem> findAll() {
+    public Collection <MenuItem> findAll() {
         return menuItemRepository.findAll();
     }
 
@@ -31,8 +30,13 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public Collection <MenuItem> findAllByRestaurant(Integer restaurantId) {
-        return menuItemRepository.findByRestaurant_RestaurantId(restaurantId);
+    public Collection <MenuItem> findAllByRestaurant(Integer id) {
+        return menuItemRepository.findByRestaurant_RestaurantId(id);
+    }
+
+    @Override
+    public Collection <MenuItem> findByTypeAndDeletedAndRestaurant(String type, boolean deleted, Integer id) {
+        return menuItemRepository.findByTypeAndDeletedAndRestaurant_RestaurantId(type, deleted, id);
     }
 
     @Override
@@ -46,4 +50,5 @@ public class MenuItemServiceImpl implements MenuItemService {
     public void delete(Integer id) {
         menuItemRepository.delete(id);
     }
+
 }

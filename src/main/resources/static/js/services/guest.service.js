@@ -18,7 +18,8 @@ function guestService($http) {
         isFriend: isFriend,
         getSearchResult: getSearchResult,
         getVisits: getVisits,
-        getReservations: getReservations
+        getReservations: getReservations,
+        resendToken: resendToken
     };
 
     return service;
@@ -145,6 +146,16 @@ function guestService($http) {
     
     function getVisits(id) {
         return $http.get('api/guest/visits/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function resendToken(email) {
+        return $http.put('api/registration-token-resend', email)
             .success(function(data) {
                 return data;
             })

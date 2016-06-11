@@ -1,4 +1,7 @@
-<html ng-app="isa-mrs-project">
+<html
+    ng-app="isa-mrs-project"
+    flow-init
+    flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +14,8 @@
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="/css/profile-employee.css">
     <link rel="stylesheet" href="/css/tables.css">
+    <link rel="stylesheet" href="/css/design.css">
+
     <!--link rel="stylesheet" href="/webjars/bootstrap/3.3.6/css/bootstrap.css"-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/webjars/angular-material/1.1.0-rc1/angular-material.css">
@@ -41,6 +46,9 @@
     <!-- Web Sockets -->
     <script src="/webjars/sockjs-client/1.0.2/sockjs.min.js"> </script>
     <script src="/webjars/stomp-websocket/2.3.4/lib/stomp.js"></script>
+
+    <!-- Image upload -->
+    <script src="/webjars/ng-flow/2.6.1/ng-flow-standalone.js"> </script>
 
     <!-- Reservation steps -->
     <script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>
@@ -115,6 +123,7 @@
     <script src="/js/controllers/working-time.controller.js"></script>
     <script src="/js/controllers/offer-controller.js"></script>
     <script src="/js/controllers/reservation-invite.controller.js"></script>
+    <script src="/js/controllers/token.controller.js"></script>
     <!-- Dialog controllers -->
     <script src="/js/controllers/single-provider.controller.js"></script>
     <script src="/js/controllers/single-restaurant.controller.js"></script>

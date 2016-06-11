@@ -6,17 +6,17 @@ import java.util.Collection;
 
 public interface FriendshipService {
 
-    public Collection<User> getFriendshipsRequestByGuestID(Integer id);
+    Collection<User> getFriendshipsRequestByGuestID(Integer id);
 
-    public Collection<User> getFriendsByGuestID(Integer id);
+    Collection<User> getFriendsByGuestID(Integer id);
 
-    public void acceptRequest(Integer senderId, Integer receiverId);
+    void acceptRequest(Integer senderId, Integer receiverId);
 
-    public void rejectRequest(Integer senderId, Integer receiverId);
+    void rejectRequest(Integer senderId, Integer receiverId);
 
-    public void addFriend(Integer senderId, Integer receiverId);
+    void addFriend(Integer senderId, Integer receiverId);
 
-    public void removeFriend(Integer senderId, Integer receiverId);
+    void removeFriend(Integer senderId, Integer receiverId);
 
-    public boolean areWeFriends(Integer senderId, Integer receiverId);
+    boolean areWeFriends(Integer senderId, Integer receiverId);
 }

@@ -49,6 +49,7 @@ public class SecurityAspect {
         // User's mail
         final String email = claims.get("user").toString();
 
+        // FIXME Maybe change...
         for (User user : userService.findAll()) {
             if (user.getEmail().equals(email) && (user.getType().equals(role) || role.equals("all"))) {
                 request.setAttribute("loggedUser", user);

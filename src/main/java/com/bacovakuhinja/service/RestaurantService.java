@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface RestaurantService {
 
-    public Collection <Restaurant> findAll();
+    Collection <Restaurant> findAll();
 
-    public Restaurant findOne(Integer restaurantId);
+    Restaurant findOne(Integer restaurantId);
 
-    public Restaurant create(Restaurant restaurant);
+    Restaurant create(Restaurant restaurant);
 
-    public Restaurant update(Restaurant restaurant);
+    Restaurant update(Restaurant restaurant);
 
-    public void delete(Integer restaurantId);
+    void delete(Integer restaurantId);
 
 }

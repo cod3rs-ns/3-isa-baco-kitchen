@@ -1,8 +1,9 @@
 angular
-    .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard'])
-    .config(['$routeProvider', '$httpProvider', config]);
-    
-function config($routeProvider, $httpProvider) {
+    .module('isa-mrs-project', ['ngRoute', 'ngMaterial', 'ui.bootstrap', 'mwl.calendar', 'ngMessages', 'mgo-angular-wizard', 'flow'])
+    .config(['$routeProvider', '$httpProvider', routeConfig])
+    .config(['flowFactoryProvider', uploadConfig]);
+
+function routeConfig($routeProvider, $httpProvider) {
     $routeProvider
         // Route for homepage
         .when('/', {
@@ -24,7 +25,9 @@ function config($routeProvider, $httpProvider) {
         })
         // Route for after register message
         .when('/verify', {
-          templateUrl: 'views/messages/registered.html'
+          templateUrl: 'views/messages/registered.html',
+          controller: 'TokenController',
+          controllerAs: 'tokenVm'
         })
         // Route for guest profile page
         .when('/profile-guest/:guestId', {
@@ -32,7 +35,7 @@ function config($routeProvider, $httpProvider) {
             controller: 'GuestProfileController',
             controllerAs: 'guestProfileVm'
         })
-		// Route for cook profile page
+		    // Route for cook profile page
         .when('/profile-cook/', {
             templateUrl: 'views/profile-cook.html',
             controller: 'CookProfileController',
@@ -82,10 +85,14 @@ function config($routeProvider, $httpProvider) {
         })
         // Route for verification messages
         .when('/registration-confirm-wrong-link', {
-            templateUrl: 'views/messages/verified-wrong.html'
+            templateUrl: 'views/messages/verified-wrong.html',
+            controller: 'TokenController',
+            controllerAs: 'tokenVm'
         })
         .when('/registration-confirm-expired-link', {
-            templateUrl: 'views/messages/verified-expired.html'
+            templateUrl: 'views/messages/verified-expired.html',
+            controller: 'TokenController',
+            controllerAs: 'tokenVm'
         })
         .when('/registration-confirm-success', {
             templateUrl: 'views/messages/verified-ok.html'
@@ -94,7 +101,7 @@ function config($routeProvider, $httpProvider) {
         .otherwise({
             redirectTo: '/'
         });
-        
+
         $httpProvider.interceptors.push(['$q', '$window', '$location', function($q, $window, $location) {
             return {
               // Set Header to Request if user is logged
@@ -105,7 +112,7 @@ function config($routeProvider, $httpProvider) {
                         }
                         return config;
                 },
-              // When try to get Unauthorized page  
+              // When try to get Unauthorized page
               'responseError': function(response) {
                     if(response.status === 401 || response.status === 403) {
                         $location.path('/');
@@ -114,4 +121,21 @@ function config($routeProvider, $httpProvider) {
                 }
               };
             }]);
+}
+
+function uploadConfig(flowFactoryProvider) {
+    console.log("Flow config");
+    flowFactoryProvider.defaults = {
+        target: 'http://localhost:8091/api/upload',
+        permanentErrors: [404, 500, 501],
+        maxChunkRetries: 1,
+        uploadMethod: 'POST',
+        chunkRetryInterval: 5000,
+        simultaneousUploads: 4,
+        singleFile: true
+    };
+
+    flowFactoryProvider.on('catchAll', function (event) {
+        console.log('catchAll', arguments);
+    });
 }

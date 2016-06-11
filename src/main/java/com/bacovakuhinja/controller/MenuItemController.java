@@ -16,51 +16,47 @@ import java.util.Collection;
 public class MenuItemController {
 
     @Autowired
-    private MenuItemService menuItemService;
-
+    private MenuItemService menuService;
 
     @Autowired
     private RestaurantService restaurantService;
 
     @RequestMapping(
-            value = "/api/menuItems",
+            value = "/api/menu_items",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <MenuItem>> getMenuItems() {
-        Collection <MenuItem> menuItem = menuItemService.findAll();
+        Collection <MenuItem> menuItem = menuService.findAll();
         return new ResponseEntity <Collection <MenuItem>>(menuItem, HttpStatus.OK);
     }
 
     @RequestMapping(
-            value = "/api/food/{id}",
+            value = "/api/menu_items/{id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <MenuItem> getSingle(@PathVariable("id") Integer id) {
-        MenuItem menuItem = menuItemService.findOne(id);
+    public ResponseEntity <MenuItem> getMenuItem(@PathVariable("id") Integer id) {
+        MenuItem menuItem = menuService.findOne(id);
         return new ResponseEntity <MenuItem>(menuItem, HttpStatus.OK);
     }
 
-
-    @RequestMapping(value = "/api/food/r={rst_id}",
+    @RequestMapping(value = "/api/menu_items/r={rst_id}",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <MenuItem> createFood(@RequestBody MenuItem menuItem, @PathVariable("rst_id") Integer id) {
+    public ResponseEntity <MenuItem> createMenuItem(@RequestBody MenuItem menuItem, @PathVariable("rst_id") Integer id) {
         Restaurant restaurant = restaurantService.findOne(id);
         menuItem.setRestaurant(restaurant);
-        MenuItem created = menuItemService.create(menuItem);
+        MenuItem created = menuService.create(menuItem);
         return new ResponseEntity <MenuItem>(created, HttpStatus.CREATED);
     }
 
     @RequestMapping(
-            value = "/api/food/r={rst_id}",
+            value = "/api/menu_items",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <MenuItem> updateFood(@RequestBody MenuItem menuItem, @PathVariable("rst_id") Integer id) {
-        Restaurant restaurant = restaurantService.findOne(id);
-        menuItem.setRestaurant(restaurant);
-        MenuItem updated = menuItemService.update(menuItem);
+    public ResponseEntity <MenuItem> updateFood(@RequestBody MenuItem menuItem) {
+        MenuItem updated = menuService.update(menuItem);
         if (updated == null) {
             return new ResponseEntity <MenuItem>(HttpStatus.NOT_FOUND);
         }
@@ -68,19 +64,31 @@ public class MenuItemController {
     }
 
     @RequestMapping(
-            value = "/api/food/{id}",
+            value = "/api/menu_items/{id}",
             method = RequestMethod.DELETE)
     public ResponseEntity <MenuItem> deleteFood(@PathVariable("id") Integer id) {
-        menuItemService.delete(id);
+        MenuItem mi = menuService.findOne(id);
+        mi.setDeleted(true);
+        menuService.update(mi);
         return new ResponseEntity <MenuItem>(HttpStatus.NO_CONTENT);
     }
 
     @RequestMapping(
-            value = "api/menuItems/r={rst_id}",
+            value = "api/menu_items/r={rst_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <MenuItem>> getMenuItemsByRestaurant(@PathVariable("rst_id") Integer id) {
-        Collection <MenuItem> restaurantMenuItem = menuItemService.findAllByRestaurant(id);
+        Collection <MenuItem> restaurantMenuItem = menuService.findAllByRestaurant(id);
+        return new ResponseEntity <Collection <MenuItem>>(restaurantMenuItem, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "api/menu_items/r={rest_id}/t={t_str}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection <MenuItem>> getMenuItemsByTypeAndRestaurant(@PathVariable("rest_id") Integer restaurantId, @PathVariable("t_str") String type) {
+        // Always deleted = false, to retrieve only ones that are not deleted
+        Collection <MenuItem> restaurantMenuItem = menuService.findByTypeAndDeletedAndRestaurant(type, false, restaurantId);
         return new ResponseEntity <Collection <MenuItem>>(restaurantMenuItem, HttpStatus.OK);
     }
 

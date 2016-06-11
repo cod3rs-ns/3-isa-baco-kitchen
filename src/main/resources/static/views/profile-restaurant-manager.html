@@ -1,705 +1,736 @@
-<div id="upper" layout="row">
-	<div flex-gt-sm="70" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Profil menadžera restorana</h3>
-				<md-button class="md-icon-button" aria-label="Notification">
-					<md-icon aria-label="Notification" class="material-icons">plus_one</md-icon>
-				</md-button>
-				<md-button class="md-icon-button" aria-label="More">
-					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
+<div id="wrapper" layout="row">
+	<section layout="column">
+	<md-sidenav
+        class="md-sidenav-left"
+        md-component-id="left"
+        md-is-locked-open="true"
+        md-disable-backdrop
+        md-whiteframe="4"
+		style="height:100%"
+	>
 
-		<div layout="column">
-			<div layout="row" layout-xs="column">
-				<div flex class="content">
-					<img alt="{{rmanagerVm.rmanager.firstName}}" src="{{rmanagerVm.rmanager.image}}" class="md-avatar"/>
-				</div>
-				<div flex class="content">
-					<table style="color: black; vertical-align: center; margin-top:40px; margin-left: 35px;">
-						<tr>
-							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
-							<td ><h2> {{rmanagerVm.rmanager.firstName + ' ' + rmanagerVm.rmanager.lastName}}</h2></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
-							<td ><h4> {{rmanagerVm.rmanager.email}} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">info</md-icon></td>
-							<td><h4> {{rmanagerVm.rmanager.info}}</h4></td>
-						</tr>
-					</table>
-				</div>
-			</div>
+	<!-- Name and image -->
+    <md-toolbar class="md-hue-2">
+		<div layout="row" layout-align="end start">
+			<md-button 	class="md-icon-button" aria-label="Change image"
+						flow-files-submitted="rmanagerVm.upload($flow)"
+						flow-attrs="{accept:'image/*'}"
+						flow-btn>
+				<md-icon class="material-icons">add_a_photo</md-icon>
+				<md-tooltip>
+					Promeni fotografiju
+				</md-tooltip>
+			</md-button>
+		</div>
+		<div layout="column" layout-align="center center">
+			<img
+				alt="{{rmanagerVm.rmanager.firstName}}"
+				src="{{rmanagerVm.rmanager.image}}"
+				class="img-circle"
+			/>
+			<h2>{{rmanagerVm.rmanager.firstName + ' ' + rmanagerVm.rmanager.lastName}}</h2>
+		</div>
+    </md-toolbar>
+	<md-divider></md-divider>
+
+	<!-- Account info -->
+	<div layout="column" layout-align="center start" class="additional-info">
+		<div layout="row" layout-align="center start">
+			<md-icon class="material-icons">mail_outline
+				<md-tooltip md-direction="top">
+					Email
+				</md-tooltip>
+			</md-icon>
+			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.email}}</h4>
+		</div>
+		<div layout="row" layout-align="center start">
+			<md-icon class="material-icons">info_outline
+				<md-tooltip md-direction="top">
+					Biografija
+				</md-tooltip>
+			</md-icon>
+			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.info}}</h4>
 		</div>
 	</div>
 
-	<div flex-gt-sm="30" layout="column" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
+	<!-- Actions -->
+	<md-divider></md-divider>
+      <md-content flex style="min-height:270px;">
+         <md-menu-content>
+           <md-menu-item class="md-indent">
+            <md-button 	class="md-primary">
+				<md-icon class="material-icons">account_circle</md-icon>
+            	<strong>Ažuriranje profila</strong>
+            </md-button>
+           </md-menu-item>
+		   <md-divider></md-divider>
+		   <md-menu-item class="md-indent">
+            <md-button 	class="md-primary"
+						ng-click="rmanagerVm.createNewEmployee();">
+				<md-icon class="material-icons">supervisor_account</md-icon>
+            	<strong>Registrovanje zaposlenog</strong>
+            </md-button>
+           </md-menu-item>
+		   <md-divider></md-divider>
+		   <md-menu-item class="md-indent">
+            <md-button class="md-primary"
+						ng-click="rmanagerVm.createDrink();">
+				<md-icon class="material-icons">restaurant_menu</md-icon>
+            	<strong>Nova stavka menija</strong>
+            </md-button>
+           </md-menu-item>
+		   <md-divider></md-divider>
+		   <md-menu-item class="md-indent">
+            <md-button 	class="md-primary"
+						ng-click="rmanagerVm.updateRestaurant();">
+				<md-icon class="material-icons">business</md-icon>
+            	<strong>Ažuriranje restorana</strong>
+            </md-button>
+           </md-menu-item>
+		   <md-divider></md-divider>
+		   <md-menu-item class="md-indent">
+            <md-button 	class="md-primary">
+				<md-icon class="material-icons">exit_to_app</md-icon>
+            	<strong>Odjavi se</strong>
+            </md-button>
+           </md-menu-item>
+		   <md-divider></md-divider>
+    	</md-content>
+
+		<!-- Restaurant info -->
+		<div layout="column" layout-align="center start" class="additional-info">
+			<h3>Podaci o restoranu</h3>
+			<md-divider></md-divider>
+			<div layout="row">
+				<h4>
+					<md-icon class="material-icons">business
+						<md-tooltip md-direction="top">
+							Naziv restorana
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.name}}
+				</h4>
 			</div>
-		</md-toolbar>
-
-		<div layout="column">
-			<div style="padding-right: 12px; padding-left:5px; background-color:white;">
-                <div class="option">
-					<md-button 	ng-click="rmanagerVm.updateRestaurant();"
-								class="action-empl md-raised md-primary"> <i class="material-icons md-48">business</i> </md-button>
-					<h4> Izmena podataka o restoranu </h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button ng-click="rmanagerVm.createNewEmployee();"
-					 class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
-					<h4> Registrovanje zaposlenog </h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button 	ng-click="rmanagerVm.createFood();"
-					 			class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
-					<h4> Dodavanje novog jela </h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button 	ng-click="rmanagerVm.createDrink();"
-								class="action-empl md-raised md-primary"> <i class="material-icons md-48">local_bar</i> </md-button>
-					<h4> Dodavanje novog pića </h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button ng-disabled="true" class="action-empl md-raised md-primary"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila</h4>
-				</div>
-
+			<div layout="row" layout-align="center start">
+				<h4>
+					<md-icon class="material-icons">local_dining
+						<md-tooltip md-direction="top">
+							Vrsta restorana
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.type}}
+				</h4>
+			</div>
+			<div layout="row" layout-align="center start">
+				<h4>
+					<md-icon class="material-icons">info
+						<md-tooltip md-direction="top">
+							Dodatne informacije
+						</md-tooltip>
+					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.info}}
+				</h4>
 			</div>
 		</div>
-	</div>
-</div>
+	</md-sidenav>
+	</section>
 
-<div id="down" style="margin-top:15px"ng-cloak>
-  <md-content>
-    <md-tabs id="tabs" class="md-primary" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected">
-        <md-tab label="Info">
-          <md-content class="md-padding" style="font-size:120%;">
-			  	<!-- NEEDS TO BE CHANGED -->
-                <p><i class="material-icons">business</i>  {{rmanagerVm.rmanager.restaurant.name}}</p>
-				<p><i class="material-icons">local_dining</i>  {{rmanagerVm.rmanager.restaurant.type}}</p>
-				<p><i class="material-icons">info</i>  {{rmanagerVm.rmanager.restaurant.info}}</p>
-				 </md-content>
+	<!-- Tabs -->
+	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
+	<md-content>
+    <md-tabs id="tabs" class="md-primary md-hue-2" md-dynamic-height md-border-bottom md-selected="rmanagerVm.tabs.selected" >
+        <md-tab label="Jelovnik">
+			<md-tab-body>
+				<md-subheader ng-show="rmanager.foodMenu.length == 0" class="md-no-sticky">
+					<p>Trenutno ne postoji nijedna stavka u jelovniku.</p>
+				</md-subheader>
+				<div ng-hide="rmanagerVm.foodMenu.length == 0" layout="row" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
+	                	<md-card class="order-item">
+							<div layout="row" style="position:absolute;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Edit" style="margin-left:100px;">
+									<md-icon class="material-icons">edit</md-icon>
+									<md-tooltip>
+										Izmeni
+									</md-tooltip>
+								</md-button>
+								<md-button class="md-fab md-accent md-mini" aria-label="Delete">
+									<md-icon class="material-icons">delete_forever</md-icon>
+									<md-tooltip>
+										Ukloni
+									</md-tooltip>
+								</md-button>
+							</div>
+							<!-- This style attribute must be here - it fixes one Chromium bug -->
+							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+	                        <md-card-content style="margin-top:-24px;">
+	                            <h4>{{meal.name}}</h4>
+	                            <p style="color:grey">{{meal.info}}</p>
+								<div layout="row" layout-align="start start">
+									<p>
+										<md-icon class="material-icons">attach_money
+											<md-tooltip>
+												Cena
+											</md-tooltip>
+										</md-icon>{{meal.price}} RSD
+									</p>
+								</div>
+	                        </md-card-content>
+	                	</md-card>
+	            	</div>
+	            </div>
+			</md-tab-body>
         </md-tab>
-          <md-tab label="Jelovnik">
-            <md-content class="md-padding">
+		<md-tab label="Karta pića">
+			<md-tab-body>
+				<md-subheader ng-show="rmanager.drinksMenu.length == 0" class="md-no-sticky">
+					<p>Trenutno ne postoji nijedna stavka u karti pića.</p>
+				</md-subheader>
+				<div ng-hide="rmanager.drinksMenu.length == 0" layout="row" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.drinksMenu" layout-wrap>
+	                	<md-card class="order-item">
+							<div layout="row" style="position:absolute;">
+								<md-button class="md-fab md-primary md-mini" aria-label="Change image" style="margin-left:100px;">
+									<md-icon class="material-icons">edit</md-icon>
+									<md-tooltip>
+										Izmeni
+									</md-tooltip>
+								</md-button>
+								<md-button class="md-fab md-accent md-mini" aria-label="Delete">
+									<md-icon class="material-icons">delete_forever</md-icon>
+									<md-tooltip>
+										Ukloni
+									</md-tooltip>
+								</md-button>
+							</div>
+							<!-- This style attribute must be here - it fixes one Chromium bug -->
+							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+	                        <md-card-content style="margin-top:-24px;">
+	                            <h4>{{meal.name}}</h4>
+	                            <p style="color:grey">{{meal.info}}</p>
+								<div layout="row" layout-align="start start">
+									<p>
+										<md-icon class="material-icons">attach_money
+											<md-tooltip>
+												Cena
+											</md-tooltip>
+										</md-icon>{{meal.price}} RSD
+									</p>
+								</div>
+	                        </md-card-content>
+	                	</md-card>
+	            	</div>
+	            </div>
+			</md-tab-body>
+		</md-tab>
 
-            <div layout="row" layout-wrap>
-              <div class='md-padding' layout="row" ng-repeat="meal in rmanagerVm.rmanager.restaurant.foodMenu" layout-wrap>
+	      <md-tab label="Spisak zaposlenih">
+	        <md-content class="md-padding">
+	              <md-subheader class="md-no-sticky">Trenutno nema zaposlenih</md-subheader>
+	        </md-content>
+	      </md-tab>
 
-                  <md-card class="order-item">
-                        <img src="{{meal.image}}" class="md-card-image order-img">
-
-                        <md-card-content>
-                            <h4>{{meal.name}}</h4>
-                            <p class="md-primary" style="color:grey">{{meal.info}}</p>
-                            <md-button style="visibility: hidden;"></md-button>
-                        </md-card-content>
-
-                        <md-card-actions class="order-btns" layout="row" layout-align="center center">
-                            <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena jela: {{meal.price}}</md-button>
-                        </md-card-actions>
-                  </md-card>
-
-              </div>
-            </div>
-            </md-content>
-          </md-tab>
-      <md-tab label="Karta pića">
-          <md-content class="md-padding">
-
-          <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in rmanagerVm.rmanager.restaurant.drinksMenu" layout-wrap>
-
-                <md-card class="order-item">
-                      <img src="{{drink.image}}" class="md-card-image order-img">
-
-                      <md-card-content>
-                          <h4>{{drink.name}}</h4>
-                          <p class="md-primary" style="color:grey">{{drink.info}}</p>
-                          <md-button style="visibility: hidden;"></md-button>
-                      </md-card-content>
-
-                      <md-card-actions class="order-btns" layout="row" layout-align="center center">
-                          <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena pića: {{drink.price}}</md-button>
-                      </md-card-actions>
-                </md-card>
-
-            </div>
-          </div>
-          </md-content>
-      </md-tab>
-
-      <md-tab label="Spisak zaposlenih">
-        <md-content class="md-padding">
-              <md-subheader class="md-no-sticky">Trenutno nema zaposlenih</md-subheader>
-        </md-content>
-      </md-tab>
-
-	  <md-tab label="Raspored stolova">
-        <md-content layout="row" class="md-padding" ng-controller="TablesController as tablesVm">
-            <div  layout="column" id="canvas" class="restaurant-canvas" style="height:600px; width:600px;" >
-				<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
-						name="{{table.tableId != null ? table.tableId : table.tempId}}"
-						data-x="{{table.datax}}"
-						data-y="{{table.datay}}"
-						width="{{table.width + '%'}}"
-						height="{{table.height + '%'}}"
-						style="	top:{{table.datay + '%'}};
-								left: {{table.datax + '%'}};
-								height:{{table.height + '%'}};
-								width:{{table.width + '%'}};
-							  "
-						class="restaurant-table {{tablesVm.tableColors[table.region.regionNo - 1]}}"
-						layout="row"
-						ng-repeat="table in tablesVm.tables">
-					<p flex layout="column" layout-align="center center" style="color:white; font-weight:bold;">{{table.tableInRestaurantNo}}</p>
-					<md-tooltip md-direction="bottom">
-						Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
-					</md-tooltip>
-					<md-tooltip md-direction="right">
-						Pozicija  {{ table.positions }}
-					</md-tooltip>
-					<md-tooltip md-direction="left">
-						Region:  {{ table.region.name }}
-					</md-tooltip>
-				</div>
-
-			</div>
-			<div layout="column" style="margin-top: 50px;">
-				<div layout="row">
-					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.saveChanges();" class="md-fab md-primary md-raised">
-						<i class="material-icons md-36">save</i>
+		  <md-tab label="Raspored stolova">
+	        <md-content layout="row" class="md-padding" ng-controller="TablesController as tablesVm">
+	            <div  layout="column" id="canvas" class="restaurant-canvas" style="height:600px; width:600px;" >
+					<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
+							name="{{table.tableId != null ? table.tableId : table.tempId}}"
+							data-x="{{table.datax}}"
+							data-y="{{table.datay}}"
+							width="{{table.width + '%'}}"
+							height="{{table.height + '%'}}"
+							style="	top:{{table.datay + '%'}};
+									left: {{table.datax + '%'}};
+									height:{{table.height + '%'}};
+									width:{{table.width + '%'}};
+								  "
+							class="restaurant-table {{tablesVm.tableColors[table.region.regionNo - 1]}}"
+							layout="row"
+							ng-repeat="table in tablesVm.tables">
+						<p flex layout="column" layout-align="center center" style="color:white; font-weight:bold;">{{table.tableInRestaurantNo}}</p>
+						<md-tooltip md-direction="bottom">
+							Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
+						</md-tooltip>
 						<md-tooltip md-direction="right">
-          					Sačuvaj izmene
-        				</md-tooltip>
-					</md-button>
-
-				</div>
-				<div layout="row">
-					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.cancelChanges();" class="md-fab md-accent md-raised">
-						<i class="material-icons md-36">cancel</i>
-						<md-tooltip md-direction="right">
-          					Poništi sve izmene
-        				</md-tooltip>
-					</md-button>
-				</div>
-				<div layout="row">
-					<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.showInfo($event);" class="md-fab md-default md-raised">
-						<i class="material-icons md-36">info</i>
-						<md-tooltip md-direction="right">
-          					Uputstvo za korišćenje
-        				</md-tooltip>
-					</md-button>
-				</div>
-				<div layout="row">
-					<md-button ng-hide="tablesVm.enabledEdit" ng-click="tablesVm.switchCanvasState();" class="md-fab md-primary md-raised">
-						<i class="material-icons md-36">edit</i>
-						<md-tooltip md-direction="right">
-          					Izmeni trenutni raspored stolova
-        				</md-tooltip>
-					</md-button>
-				</div>
-
-			</div>
-			<div layout="column" style="margin-top: 50px;">
-
-				<div layout="row">
-					<md-button ng-click="tablesVm.addNewRegion();" class="md-fab md-primary md-raised">
-						<i class="material-icons md-36">add</i>
-						<md-tooltip md-direction="right">
-          					Dodaj region
-        				</md-tooltip>
-					</md-button>
-				</div>
-
-			</div>
-
-			<div layout="column" class="restaurant-regions">
-
-					<div layout="row" class="region-tab" layout-align="center center"
-						ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
-							<div 	layout="column"
-									ng-hide="tablesVm.regionEditFields[$index]"
-									flex>
-								<h4 style="color:white;">{{region.name}}</h4>
-							</div>
-
-							<md-input-container class="md-block" flex-gt-xs
-								ng-show="tablesVm.regionEditFields[$index]">
-            					<label>Naziv regiona</label>
-            					<input ng-model="tablesVm.regions[$index].name" >
-          					</md-input-container>
-
-							<div layout="column" layout-align="center end">
-								<md-button  class="md-fab md-mini md-default md-raised"
-											ng-click="tablesVm.regionEditFields[$index] = true"
-											ng-hide="tablesVm.regionEditFields[$index]">
-   		   							<i class="material-icons md-24">edit</i>
-   		   							<md-tooltip md-direction="right">
-   		             					Izmeni region
-   		           					</md-tooltip>
-   		   						</md-button>
-
-								<md-button  class="md-fab md-mini md-default md-raised"
-											ng-show="tablesVm.regionEditFields[$index]"
-											ng-click="tablesVm.saveRegion($index)">
-   		   							<i class="material-icons md-24">save</i>
-   		   							<md-tooltip md-direction="right">
-   		             					Sačuvaj
-   		           					</md-tooltip>
-   		   						</md-button>
-								<md-button  class="md-fab md-mini md-default md-raised"
-											ng-click="tablesVm.regionEditFields[$index] = false"
-											ng-show="tablesVm.regionEditFields[$index]"
-											ng-disabled="true"
-											ng-click="tablesVm.deleteRegion($index)">
-   		   							<i class="material-icons md-24">delete_forever</i>
-   		   							<md-tooltip md-direction="right">
-   		             					Obriši region
-   		           					</md-tooltip>
-   		   						</md-button>
-							</div>
-	                </div>
-
-
-
-			</div>
-
-
-		</md-content>
-      </md-tab>
-	  <md-tab label="Raspored" >
-		  <md-content ng-controller="RestaurantScheduleController as scheduleVm">
-
-			<div id="calendar" layout="row">
-				<div flex-gt-sm="20" layout="column" style="margin:15px; height:480px;" >
-					<md-toolbar class="md-theme-light" layout="column">
-						<h2 class="md-toolbar-tools">
-							<span>Raspored rada</span>
-
-
-						<md-button class="md-icon-button" aria-label="Info">
-        					<md-tooltip md-direction="bottom">
-        						Izaberite unapred definisanu smenu ili unesite proizvoljno vreme.
-        					</md-tooltip>
-        					<md-icon aria-label="Password change" class="material-icons">help</md-icon>
-        					</md-icon>
-    					</md-button>
-						</h2>
-					</md-toolbar>
-					<form name="scheduleForm" flex>
-						<md-input-container class="md-block">
-							<label>Smena</label>
-							<md-select 	placeholder="Izaberite smenu" md-on-open="scheduleVm.loadShifts()"
-										ng-disabled="!scheduleVm.selectedDate" ng-model="scheduleVm.testDate.shift"
-										name="scheduleEmployee" flex>
-								<md-option ng-value="employee" ng-repeat="shift in scheduleVm.shifts"
-										ng-click="scheduleVm.setShift(shift)">
-										{{shift.name}}
-								</md-option>
-							</md-select>
-						</md-input-container>
-
-						<md-input-container class="md-block">
-							<label>Zaposleni</label>
-							<md-select 	placeholder="Izaberite zaposlenog" md-on-open="scheduleVm.loadEmployees()"
-										ng-model="scheduleVm.testDate.employee" ng-disabled="!scheduleVm.selectedDate"
-										name="scheduleEmployee" flex required>
-	    						<md-option ng-value="employee" ng-repeat="employee in scheduleVm.employees"
-										ng-click="scheduleVm.onSelectedEmployee(employee)">
-										{{employee.firstName + ' ' + employee.lastName}}
-								</md-option>
-	    					</md-select>
-							<div ng-messages="scheduleForm.scheduleEmployee.$error" ng-if="scheduleForm.$dirty" class="errors">
-								<div ng-message="required">Morate izabrati zaposlenog.</div>
-							</div>
-						</md-input-container>
-						<md-input-container class="md-block">
-							<label>Region</label>
-							<md-select 	placeholder="Izaberite region" md-on-open="scheduleVm.loadRegions()"
-										ng-model="scheduleVm.testDate.region" ng-disabled="!scheduleVm.selectedDate"
-										ng-hide="!scheduleVm.isWaiterSelected" ng-required="scheduleVm.isWaiterSelected"
-										name="scheduleRegion" flex>
-	    					<md-option ng-value="region" ng-repeat="region in scheduleVm.regions"
-											>{{region.name}}</md-option>
-	    					</md-select>
-							<div ng-messages="scheduleForm.scheduleRegion.$error" ng-if="scheduleForm.$dirty" class="errors">
-								<div ng-message="required">Morate izabrati region.</div>
-							</div>
-						</md-input-container>
-
-					<label>Početak smene</label>
-					<div layout="row">
-						<md-input-container class="md-block">
-							<label>časovi</label>
-	    					<input 	name="scheduleStartHours" ng-model="scheduleVm.testDate.sh"
-									type="number" step="1" min="0" max="24" required
-									ng-disabled="!scheduleVm.selectedDate">
-							<div ng-messages="scheduleForm.scheduleStartHours.$error">
-								<div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 24.</div>
-							</div>
-	    				</md-input-container>
-						<md-input-container class="md-block">
-							<label>minuti</label>
-	    					<input 	name="scheduleStartMinutes" ng-model="scheduleVm.testDate.sm"
-									type="number" step="1" min="0" max="60" required
-									ng-disabled="!scheduleVm.selectedDate">
-							<div ng-messages="scheduleForm.scheduleStartMinutes.$error">
-								<div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 60.</div>
-							</div>
-	    				</md-input-container>
+							Pozicija  {{ table.positions }}
+						</md-tooltip>
+						<md-tooltip md-direction="left">
+							Region:  {{ table.region.name }}
+						</md-tooltip>
 					</div>
-					<label>Kraj smene</label>
+				</div>
+				<div layout="column" style="margin-top: 50px;">
 					<div layout="row">
-						<md-input-container class="md-block">
-							<label>časovi</label>
-	    					<input 	name="scheduleEndHours" ng-model="scheduleVm.testDate.eh"
-									type="number" step="1" min="0" max="24" required
-									ng-disabled="!scheduleVm.selectedDate">
-							<div ng-messages="scheduleForm.scheduleEndHours.$error">
-								<div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 24.</div>
-							</div>
-	    				</md-input-container>
-						<md-input-container class="md-block">
-							<label>minuti</label>
-	    					<input 	name="scheduleEndMinutes" ng-model="scheduleVm.testDate.em"
-									type="number" step="1" min="0" max="60" required
-									ng-disabled="!scheduleVm.selectedDate">
-							<div ng-messages="scheduleForm.scheduleEndMinutes.$error">
-								<div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 60.</div>
-							</div>
-	    				</md-input-container>
+						<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.saveChanges();" class="md-fab md-primary md-raised">
+							<i class="material-icons md-36">save</i>
+							<md-tooltip md-direction="right">
+	          					Sačuvaj izmene
+	        				</md-tooltip>
+						</md-button>
 
 					</div>
-					<div ng-hide="scheduleVm.selectedDate">
-						<p style="color:red;">Izaberite datum u kalendarskom prikazu</p>
-					</div>
 					<div layout="row">
-						<p ng-show="scheduleVm.invalidForm" style="color:red;">{{scheduleVm.invalidMessage}}</p>
-					</div>
-					<div layout="row">
-						<md-button ng-disabled="!scheduleForm.$valid" ng-click="scheduleVm.addNewEvent()" class="md-raised md-primary">
-							Kreiraj raspored
+						<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.cancelChanges();" class="md-fab md-accent md-raised">
+							<i class="material-icons md-36">cancel</i>
+							<md-tooltip md-direction="right">
+	          					Poništi sve izmene
+	        				</md-tooltip>
 						</md-button>
 					</div>
-				</form>
-
-			  	</div>
-
-			  	<div flex-gt-sm="80" layout="column" class="main-content">
-					<div class="btn-group" layout="row">
-	      	            <md-toolbar layout="row">
-	      	                <div class="md-toolbar-tools">
-	      	                    <h2 style="text-align: center" flex>{{ scheduleVm.calendarTitle }}</h2>
-
-								<md-button  class="md-fab md-mini md-raised md-secondary"
-											mwl-date-modifier
-		  						          	date="scheduleVm.calendarDate"
-		  						          	decrement="scheduleVm.calendarView">
-									<i class="material-icons md-24">keyboard_arrow_left</i>
-									<md-tooltip md-direction="top">
-										Prethodni
-									</md-tooltip>
-								</md-button>
-								<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
-											mwl-date-modifier
-		  						          	date="scheduleVm.calendarDate"
-		  						          	set-to-today>
-									<i class="material-icons md-24">today</i>
-									<md-tooltip md-direction="top">
-										Danas
-									</md-tooltip>
-								</md-button>
-								<md-button  class="md-fab md-mini md-raised md-secondary"
-											mwl-date-modifier
-											date="scheduleVm.calendarDate"
-		  						          	increment="scheduleVm.calendarView">
-									<i class="material-icons md-24">keyboard_arrow_right</i>
-									<md-tooltip md-direction="top">
-										Sledeći
-									</md-tooltip>
-								</md-button>
-
-	      	                    <span flex></span>
-	      	                    <md-button ng-click="scheduleVm.changeToDay()">
-	      	                        Dnevni prikaz
-	      	                    </md-button>
-								<md-button ng-click="scheduleVm.changeToWeek()">
-									Sedmični prikaz
-								</md-button>
-	      	                    <md-button ng-click="scheduleVm.changeToMonth()">
-	      	                        Mesečni prikaz
-	      	                    </md-button>
-	      	                </div>
-	      	            </md-toolbar>
-	      	        </div>
-					<mwl-calendar
-	  					  view="scheduleVm.calendarView"
-	  					  current-day="scheduleVm.calendarDate"
-	  					  events="scheduleVm.events"
-	  					  view-title="scheduleVm.calendarTitle"
-	  					  view-date="scheduleVm.viewDate"
-	  					  on-event-click="eventClicked(calendarEvent)"
-	  					  on-event-times-changed="scheduleVm.eventTimesChanged(calendarEvent, calendarNewEventStart, calendarNewEventEnd);"
-	  					  edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
-	  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
-	  					  on-edit-event-click="eventEdited(calendarEvent)"
-	  					  on-delete-event-click="eventDeleted(calendarEvent)"
-	  					  cell-is-open="true"
-						  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
-						  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)"
-						  >
-
-
-	  			  </mwl-calendar>
+					<div layout="row">
+						<md-button ng-hide="!tablesVm.enabledEdit" ng-click="tablesVm.showInfo($event);" class="md-fab md-default md-raised">
+							<i class="material-icons md-36">info</i>
+							<md-tooltip md-direction="right">
+	          					Uputstvo za korišćenje
+	        				</md-tooltip>
+						</md-button>
+					</div>
+					<div layout="row">
+						<md-button ng-hide="tablesVm.enabledEdit" ng-click="tablesVm.switchCanvasState();" class="md-fab md-primary md-raised">
+							<i class="material-icons md-36">edit</i>
+							<md-tooltip md-direction="right">
+	          					Izmeni trenutni raspored stolova
+	        				</md-tooltip>
+						</md-button>
+					</div>
 
 				</div>
-			  </div>
+				<div layout="column" style="margin-top: 50px;">
 
-  	    </md-content>
-      </md-tab>
+					<div layout="row">
+						<md-button ng-click="tablesVm.addNewRegion();" class="md-fab md-primary md-raised">
+							<i class="material-icons md-36">add</i>
+							<md-tooltip md-direction="right">
+	          					Dodaj region
+	        				</md-tooltip>
+						</md-button>
+					</div>
 
-	  <!-- Tab that controlls Shift Templates for Restaurant -->
-	  <md-tab label="Smene" >
-			<md-content ng-controller="ShiftTemplateController as shiftVm">
-				<div layout="row">
-					<div flex-gt-xs="50" layout="column"  style="margin:15px;">
-						<md-toolbar class="md-theme-light">
+				</div>
+
+				<div layout="column" class="restaurant-regions">
+
+						<div layout="row" class="region-tab" layout-align="center center"
+							ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
+								<div 	layout="column"
+										ng-hide="tablesVm.regionEditFields[$index]"
+										flex>
+									<h4 style="color:white;">{{region.name}}</h4>
+								</div>
+
+								<md-input-container class="md-block" flex-gt-xs
+									ng-show="tablesVm.regionEditFields[$index]">
+	            					<label>Naziv regiona</label>
+	            					<input ng-model="tablesVm.regions[$index].name" >
+	          					</md-input-container>
+
+								<div layout="column" layout-align="center end">
+									<md-button  class="md-fab md-mini md-default md-raised"
+												ng-click="tablesVm.regionEditFields[$index] = true"
+												ng-hide="tablesVm.regionEditFields[$index]">
+	   		   							<i class="material-icons md-24">edit</i>
+	   		   							<md-tooltip md-direction="right">
+	   		             					Izmeni region
+	   		           					</md-tooltip>
+	   		   						</md-button>
+
+									<md-button  class="md-fab md-mini md-default md-raised"
+												ng-show="tablesVm.regionEditFields[$index]"
+												ng-click="tablesVm.saveRegion($index)">
+	   		   							<i class="material-icons md-24">save</i>
+	   		   							<md-tooltip md-direction="right">
+	   		             					Sačuvaj
+	   		           					</md-tooltip>
+	   		   						</md-button>
+									<md-button  class="md-fab md-mini md-default md-raised"
+												ng-click="tablesVm.regionEditFields[$index] = false"
+												ng-show="tablesVm.regionEditFields[$index]"
+												ng-disabled="true"
+												ng-click="tablesVm.deleteRegion($index)">
+	   		   							<i class="material-icons md-24">delete_forever</i>
+	   		   							<md-tooltip md-direction="right">
+	   		             					Obriši region
+	   		           					</md-tooltip>
+	   		   						</md-button>
+								</div>
+		                </div>
+
+
+
+				</div>
+
+
+			</md-content>
+	      </md-tab>
+		  <md-tab label="Raspored" >
+			  <md-content ng-controller="RestaurantScheduleController as scheduleVm">
+
+				<div id="calendar" layout="row">
+					<div flex-gt-sm="20" layout="column" style="margin:15px; height:480px;" >
+						<md-toolbar class="md-theme-light" layout="column">
 							<h2 class="md-toolbar-tools">
-								<span>Šablon smene</span>
+								<span>Raspored rada</span>
+
+
+							<md-button class="md-icon-button" aria-label="Info">
+	        					<md-tooltip md-direction="bottom">
+	        						Izaberite unapred definisanu smenu ili unesite proizvoljno vreme.
+	        					</md-tooltip>
+	        					<md-icon aria-label="Password change" class="material-icons">help</md-icon>
+	        					</md-icon>
+	    					</md-button>
 							</h2>
 						</md-toolbar>
-						<form name="shiftTemplateForm" style="margin:15px;">
-							<div layout="row">
-								<md-input-container class="md-block" flex>
-									<label>Naziv smene</label>
-			    					<input 	name="shiftTemplateName" ng-model="shiftVm.activeShiftTemplate.name"
-											type="text" md-maxlength="40" required>
-									<div ng-messages="shiftTemplateForm.shiftTemplateName.$error">
-										<div ng-message="required">Ovo polje je obavezno.</div>
-										<div ng-message="md-maxlength">Naziv mora biti kraći od 40 karaktera.</div>
-									</div>
-			    				</md-input-container>
-							</div>
-							<label>Početak smene</label>
-							<div layout="row">
-								<md-input-container class="md-block" flex>
-									<label>časovi</label>
-			    					<input 	name="shiftStartHours" ng-model="shiftVm.activeShiftTemplate.startHours"
-											type="number" step="1" min="0" max="23" required="">
-									<div ng-messages="shiftTemplateForm.shiftStartHours.$error">
-										<div ng-message="required">Ovo polje je obavezno.</div>
-										<div ng-message="min">Vrednost mora biti veća od 0.</div>
-										<div ng-message="max">Vrednost mora biti manja od 24.</div>
-									</div>
-			    				</md-input-container>
-								<md-input-container class="md-block" flex>
-									<label>minuti</label>
-			    					<input 	name="shiftStartMinutes" ng-model="shiftVm.activeShiftTemplate.startMinutes"
-											type="number" step="1" min="0" max="59" required>
-									<div ng-messages="shiftTemplateForm.shiftStartMinutes.$error">
-										<div ng-message="required">Ovo polje je obavezno.</div>
-										<div ng-message="min">Vrednost mora biti veća od 0.</div>
-										<div ng-message="max">Vrednost mora biti manja od 60.</div>
-									</div>
-			    				</md-input-container>
-							</div>
+						<form name="scheduleForm" flex>
+							<md-input-container class="md-block">
+								<label>Smena</label>
+								<md-select 	placeholder="Izaberite smenu" md-on-open="scheduleVm.loadShifts()"
+											ng-disabled="!scheduleVm.selectedDate" ng-model="scheduleVm.testDate.shift"
+											name="scheduleEmployee" flex>
+									<md-option ng-value="employee" ng-repeat="shift in scheduleVm.shifts"
+											ng-click="scheduleVm.setShift(shift)">
+											{{shift.name}}
+									</md-option>
+								</md-select>
+							</md-input-container>
 
-							<label>Kraj smene</label>
-							<div layout="row">
-								<md-input-container class="md-block" flex>
-									<label>časovi</label>
-			    					<input 	name="shiftEndHours" ng-model="shiftVm.activeShiftTemplate.endHours"
-											type="number" step="1" min="0" max="23" required>
-									<div ng-messages="shiftTemplateForm.shiftEndHours.$error">
-										<div ng-message="required">Ovo polje je obavezno.</div>
-										<div ng-message="min">Vrednost mora biti veća od 0.</div>
-										<div ng-message="max">Vrednost mora biti manja od 24.</div>
-									</div>
-			    				</md-input-container>
-								<md-input-container class="md-block" flex>
-									<label>minuti</label>
-			    					<input 	name="shiftEndMinutes" ng-model="shiftVm.activeShiftTemplate.endMinutes"
-											type="number" step="1" min="0" max="59" required>
-									<div ng-messages="shiftTemplateForm.shiftEndMinutes.$error">
-										<div ng-message="required">Ovo polje je obavezno.</div>
-										<div ng-message="min">Vrednost mora biti veća od 0.</div>
-										<div ng-message="max">Vrednost mora biti manja od 60.</div>
-									</div>
-			    				</md-input-container>
-							</div>
+							<md-input-container class="md-block">
+								<label>Zaposleni</label>
+								<md-select 	placeholder="Izaberite zaposlenog" md-on-open="scheduleVm.loadEmployees()"
+											ng-model="scheduleVm.testDate.employee" ng-disabled="!scheduleVm.selectedDate"
+											name="scheduleEmployee" flex required>
+		    						<md-option ng-value="employee" ng-repeat="employee in scheduleVm.employees"
+											ng-click="scheduleVm.onSelectedEmployee(employee)">
+											{{employee.firstName + ' ' + employee.lastName}}
+									</md-option>
+		    					</md-select>
+								<div ng-messages="scheduleForm.scheduleEmployee.$error" ng-if="scheduleForm.$dirty" class="errors">
+									<div ng-message="required">Morate izabrati zaposlenog.</div>
+								</div>
+							</md-input-container>
+							<md-input-container class="md-block">
+								<label>Region</label>
+								<md-select 	placeholder="Izaberite region" md-on-open="scheduleVm.loadRegions()"
+											ng-model="scheduleVm.testDate.region" ng-disabled="!scheduleVm.selectedDate"
+											ng-hide="!scheduleVm.isWaiterSelected" ng-required="scheduleVm.isWaiterSelected"
+											name="scheduleRegion" flex>
+		    					<md-option ng-value="region" ng-repeat="region in scheduleVm.regions"
+												>{{region.name}}</md-option>
+		    					</md-select>
+								<div ng-messages="scheduleForm.scheduleRegion.$error" ng-if="scheduleForm.$dirty" class="errors">
+									<div ng-message="required">Morate izabrati region.</div>
+								</div>
+							</md-input-container>
 
-							<div layout="row" flex>
-								<md-button 	ng-hide="shiftVm.editState" class="md-primary md-raised"
-											ng-click="shiftVm.createShiftTemplate();"
-											ng-disabled="!shiftTemplateForm.$valid">
-									Dodaj smenu
-								</md-button>
-								<md-button 	ng-show="shiftVm.editState" class="md-primary md-raised"
-											ng-click="shiftVm.updateShiftTemplate();"
-											ng-disabled="!shiftTemplateForm.$valid">
-									Sačuvaj izmene
-								</md-button>
-								<md-button 	ng-show="shiftVm.editState" class="md-default md-raised"
-											ng-click="shiftVm.cancelChanges();">
-									Otkaži
-								</md-button>
-							</div>
-						</form>
-					</div>
-
-					<div flex="50" style="margin:15px;">
-						<md-toolbar class="md-theme-light">
-	    					<h2 class="md-toolbar-tools">
-	    						<span>Postojeći šabloni smena</span>
-	    					</h2>
-						</md-toolbar>
-						<md-list ng-cloak>
-							<md-list-item class="md-3-line" ng-repeat="shiftTemplate in shiftVm.shiftTemplates">
-	        					<div class="md-list-item-text">
-	        						<h3><strong>{{shiftTemplate.name}}</strong></h3>
-						        	<p>{{'početak: ' + shiftTemplate.startHours + ':' + shiftTemplate.startMinutes + 'h'}}</p>
-									<p>{{'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kraj: ' + shiftTemplate.endHours + ':' + shiftTemplate.endMinutes + 'h'}}</p>
-						        </div>
-								<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
-											ng-click="shiftVm.initEditMode(shiftTemplate);">
-									<i class="material-icons md-24">edit</i>
-									<md-tooltip md-direction="top">
-										Izmeni smenu
-									</md-tooltip>
-								</md-button>
-								<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
-											ng-click="shiftVm.deleteShiftTemplate(shiftTemplate.shiftId);">
-									<i class="material-icons md-24">delete_forever</i>
-									<md-tooltip md-direction="top">
-										Obriši smenu
-									</md-tooltip>
-								</md-button>
-	        					<md-divider ng-if="!$last"></md-divider>
-	    					</md-list-item>
-
-						</md-list>
-					</div>
-				</div>
-    		</md-content>
-    	</md-tab>
-
-	<!-- Tab that defines Restaurant Working time -->
-	<md-tab label="Radno vreme" >
-		<md-content ng-controller="WorkingTimeController as workingTimeVm">
-			<form name="workTime">
-				<div layout="row" style="margin-left: 5px;">
-				<!-- Restaurant working time on regular days -->
-					<div flex-gt-xs="33" layout="column">
-						<md-switch 	ng-disabled="workingTimeVm.editMode" ng-change="workingTimeVm.initEditMode();"
-									class="md-default" aria-label="Switch No Ink" ng-model="workingTimeVm.editMode">
-	    					<strong>Izmenjivo</strong>
-	    				</md-switch>
-						<div>
-							<md-checkbox 	ng-model="workingTimeVm.wtime.regReversed" class="md-primary"
-											aria-label="Checkbox 1" ng-disabled="!workingTimeVm.editMode">
-								Dvodnevno radno vreme
-							</md-checkbox>
-						</div>
-					<label>Početak radnog vremena (radni dani)</label>
-					<div layout="row">
-						<md-input-container class="md-block">
-							<label>časovi</label>
-	    					<input 	name="regStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartHours"
-									type="number" step="1" min="0" max="23" required>
-							<div ng-messages="workTime.regStartHours.$error">
-	                            <div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 24.</div>
-	                        </div>
-	    				</md-input-container>
-						<md-input-container class="md-block">
-							<label>minuti</label>
-	    					<input 	name="regStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartMinutes"
-									type="number" step="1" min="0" max="59" required>
-							<div ng-messages="workTime.regStartMinutes.$error">
-	                            <div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 60.</div>
-	                        </div>
-	    				</md-input-container>
-					</div>
-
-					<label>Kraj radnog vremena (radni dani)</label>
-					<div layout="row">
-						<md-input-container class="md-block">
-							<label>časovi</label>
-	    					<input  name="regEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndHours"
-									type="number" step="1" min="0" max="23" required>
-							<div ng-messages="workTime.regEndHours.$error">
-			                    <div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 24.</div>
-			                </div>
-	    				</md-input-container>
-						<md-input-container class="md-block">
-							<label>minuti</label>
-	    					<input 	name="regEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndMinutes"
-									type="number" step="1" min="0" max="59" required>
-							<div ng-messages="workTime.regEndMinutes.$error">
-			                    <div ng-message="required">Ovo polje je obavezno.</div>
-								<div ng-message="min">Vrednost mora biti veća od 0.</div>
-								<div ng-message="max">Vrednost mora biti manja od 60.</div>
-			                </div>
-	    				</md-input-container>
-					</div>
-					<p style="color:red;" ng-show="workingTimeVm.regInvalid"> {{workingTimeVm.invalidMessage}}</p>
-					<!-- Actions that can be perfomed -->
-					<div layout="row">
-						<md-button 	ng-hide="!workingTimeVm.editMode" class="md-raised md-primary"
-									ng-click="workingTimeVm.updateWorkingTime();" ng-disabled="!workTime.$valid">
-							Sačuvaj
-						</md-button>
-						<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-default" ng-click="workingTimeVm.cancelChanges();">
-							Otkaži
-						</md-button>
-					</div>
-				</div>
-
-				<!-- Restaurant working time on Saturdays -->
-				<div flex-gt-xs="33" layout="column">
-					<md-switch  ng-disabled="!workingTimeVm.editMode" class="md-default" aria-label="Switch working on Saturdays."
-								ng-model="workingTimeVm.wtime.workingOnSat">
-	    				<strong>Restoran otvoren subotom</strong>
-	    			</md-switch>
-					<div ng-show="workingTimeVm.wtime.workingOnSat">
-						<div flex-xs flex="50">
-							<md-checkbox 	ng-model="workingTimeVm.wtime.satReversed" class="md-primary"
-											aria-label="Checkbox 2" ng-disabled="!workingTimeVm.editMode">
-								Dvodnevno radno vreme
-							</md-checkbox>
-						</div>
-						<label>Početak radnog vremena (subota)</label>
+						<label>Početak smene</label>
 						<div layout="row">
 							<md-input-container class="md-block">
 								<label>časovi</label>
-		    					<input 	name="satStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartHours"
-										type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSat">
-								<div ng-messages="workTime.satStartHours.$error">
+		    					<input 	name="scheduleStartHours" ng-model="scheduleVm.testDate.sh"
+										type="number" step="1" min="0" max="24" required
+										ng-disabled="!scheduleVm.selectedDate">
+								<div ng-messages="scheduleForm.scheduleStartHours.$error">
+									<div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+								</div>
+		    				</md-input-container>
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input 	name="scheduleStartMinutes" ng-model="scheduleVm.testDate.sm"
+										type="number" step="1" min="0" max="60" required
+										ng-disabled="!scheduleVm.selectedDate">
+								<div ng-messages="scheduleForm.scheduleStartMinutes.$error">
+									<div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+								</div>
+		    				</md-input-container>
+						</div>
+						<label>Kraj smene</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input 	name="scheduleEndHours" ng-model="scheduleVm.testDate.eh"
+										type="number" step="1" min="0" max="24" required
+										ng-disabled="!scheduleVm.selectedDate">
+								<div ng-messages="scheduleForm.scheduleEndHours.$error">
+									<div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+								</div>
+		    				</md-input-container>
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input 	name="scheduleEndMinutes" ng-model="scheduleVm.testDate.em"
+										type="number" step="1" min="0" max="60" required
+										ng-disabled="!scheduleVm.selectedDate">
+								<div ng-messages="scheduleForm.scheduleEndMinutes.$error">
+									<div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+								</div>
+		    				</md-input-container>
+
+						</div>
+						<div ng-hide="scheduleVm.selectedDate">
+							<p style="color:red;">Izaberite datum u kalendarskom prikazu</p>
+						</div>
+						<div layout="row">
+							<p ng-show="scheduleVm.invalidForm" style="color:red;">{{scheduleVm.invalidMessage}}</p>
+						</div>
+						<div layout="row">
+							<md-button ng-disabled="!scheduleForm.$valid" ng-click="scheduleVm.addNewEvent()" class="md-raised md-primary">
+								Kreiraj raspored
+							</md-button>
+						</div>
+					</form>
+
+				  	</div>
+
+				  	<div flex-gt-sm="80" layout="column" class="main-content">
+						<div class="btn-group" layout="row">
+		      	            <md-toolbar layout="row">
+		      	                <div class="md-toolbar-tools">
+		      	                    <h2 style="text-align: center" flex>{{ scheduleVm.calendarTitle }}</h2>
+
+									<md-button  class="md-fab md-mini md-raised md-secondary"
+												mwl-date-modifier
+			  						          	date="scheduleVm.calendarDate"
+			  						          	decrement="scheduleVm.calendarView">
+										<i class="material-icons md-24">keyboard_arrow_left</i>
+										<md-tooltip md-direction="top">
+											Prethodni
+										</md-tooltip>
+									</md-button>
+									<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
+												mwl-date-modifier
+			  						          	date="scheduleVm.calendarDate"
+			  						          	set-to-today>
+										<i class="material-icons md-24">today</i>
+										<md-tooltip md-direction="top">
+											Danas
+										</md-tooltip>
+									</md-button>
+									<md-button  class="md-fab md-mini md-raised md-secondary"
+												mwl-date-modifier
+												date="scheduleVm.calendarDate"
+			  						          	increment="scheduleVm.calendarView">
+										<i class="material-icons md-24">keyboard_arrow_right</i>
+										<md-tooltip md-direction="top">
+											Sledeći
+										</md-tooltip>
+									</md-button>
+
+		      	                    <span flex></span>
+		      	                    <md-button ng-click="scheduleVm.changeToDay()">
+		      	                        Dnevni prikaz
+		      	                    </md-button>
+									<md-button ng-click="scheduleVm.changeToWeek()">
+										Sedmični prikaz
+									</md-button>
+		      	                    <md-button ng-click="scheduleVm.changeToMonth()">
+		      	                        Mesečni prikaz
+		      	                    </md-button>
+		      	                </div>
+		      	            </md-toolbar>
+		      	        </div>
+						<mwl-calendar
+		  					  view="scheduleVm.calendarView"
+		  					  current-day="scheduleVm.calendarDate"
+		  					  events="scheduleVm.events"
+		  					  view-title="scheduleVm.calendarTitle"
+		  					  view-date="scheduleVm.viewDate"
+		  					  on-event-click="eventClicked(calendarEvent)"
+		  					  on-event-times-changed="scheduleVm.eventTimesChanged(calendarEvent, calendarNewEventStart, calendarNewEventEnd);"
+		  					  edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
+		  					  delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
+		  					  on-edit-event-click="eventEdited(calendarEvent)"
+		  					  on-delete-event-click="eventDeleted(calendarEvent)"
+		  					  cell-is-open="true"
+							  on-timespan-click="scheduleVm.timespanClicked(calendarDate)"
+							  on-view-change-click="scheduleVm.viewChangeClicked(viewDate, calendarNextView)"
+							  >
+
+
+		  			  </mwl-calendar>
+
+					</div>
+				  </div>
+
+	  	    </md-content>
+	      </md-tab>
+
+		  <!-- Tab that controlls Shift Templates for Restaurant -->
+		  <md-tab label="Smene" >
+				<md-content ng-controller="ShiftTemplateController as shiftVm">
+					<div layout="row">
+						<div flex-gt-xs="50" layout="column"  style="margin:15px;">
+							<md-toolbar class="md-theme-light">
+								<h2 class="md-toolbar-tools">
+									<span>Šablon smene</span>
+								</h2>
+							</md-toolbar>
+							<form name="shiftTemplateForm" style="margin:15px;">
+								<div layout="row">
+									<md-input-container class="md-block" flex>
+										<label>Naziv smene</label>
+				    					<input 	name="shiftTemplateName" ng-model="shiftVm.activeShiftTemplate.name"
+												type="text" md-maxlength="40" required>
+										<div ng-messages="shiftTemplateForm.shiftTemplateName.$error">
+											<div ng-message="required">Ovo polje je obavezno.</div>
+											<div ng-message="md-maxlength">Naziv mora biti kraći od 40 karaktera.</div>
+										</div>
+				    				</md-input-container>
+								</div>
+								<label>Početak smene</label>
+								<div layout="row">
+									<md-input-container class="md-block" flex>
+										<label>časovi</label>
+				    					<input 	name="shiftStartHours" ng-model="shiftVm.activeShiftTemplate.startHours"
+												type="number" step="1" min="0" max="23" required="">
+										<div ng-messages="shiftTemplateForm.shiftStartHours.$error">
+											<div ng-message="required">Ovo polje je obavezno.</div>
+											<div ng-message="min">Vrednost mora biti veća od 0.</div>
+											<div ng-message="max">Vrednost mora biti manja od 24.</div>
+										</div>
+				    				</md-input-container>
+									<md-input-container class="md-block" flex>
+										<label>minuti</label>
+				    					<input 	name="shiftStartMinutes" ng-model="shiftVm.activeShiftTemplate.startMinutes"
+												type="number" step="1" min="0" max="59" required>
+										<div ng-messages="shiftTemplateForm.shiftStartMinutes.$error">
+											<div ng-message="required">Ovo polje je obavezno.</div>
+											<div ng-message="min">Vrednost mora biti veća od 0.</div>
+											<div ng-message="max">Vrednost mora biti manja od 60.</div>
+										</div>
+				    				</md-input-container>
+								</div>
+
+								<label>Kraj smene</label>
+								<div layout="row">
+									<md-input-container class="md-block" flex>
+										<label>časovi</label>
+				    					<input 	name="shiftEndHours" ng-model="shiftVm.activeShiftTemplate.endHours"
+												type="number" step="1" min="0" max="23" required>
+										<div ng-messages="shiftTemplateForm.shiftEndHours.$error">
+											<div ng-message="required">Ovo polje je obavezno.</div>
+											<div ng-message="min">Vrednost mora biti veća od 0.</div>
+											<div ng-message="max">Vrednost mora biti manja od 24.</div>
+										</div>
+				    				</md-input-container>
+									<md-input-container class="md-block" flex>
+										<label>minuti</label>
+				    					<input 	name="shiftEndMinutes" ng-model="shiftVm.activeShiftTemplate.endMinutes"
+												type="number" step="1" min="0" max="59" required>
+										<div ng-messages="shiftTemplateForm.shiftEndMinutes.$error">
+											<div ng-message="required">Ovo polje je obavezno.</div>
+											<div ng-message="min">Vrednost mora biti veća od 0.</div>
+											<div ng-message="max">Vrednost mora biti manja od 60.</div>
+										</div>
+				    				</md-input-container>
+								</div>
+
+								<div layout="row" flex>
+									<md-button 	ng-hide="shiftVm.editState" class="md-primary md-raised"
+												ng-click="shiftVm.createShiftTemplate();"
+												ng-disabled="!shiftTemplateForm.$valid">
+										Dodaj smenu
+									</md-button>
+									<md-button 	ng-show="shiftVm.editState" class="md-primary md-raised"
+												ng-click="shiftVm.updateShiftTemplate();"
+												ng-disabled="!shiftTemplateForm.$valid">
+										Sačuvaj izmene
+									</md-button>
+									<md-button 	ng-show="shiftVm.editState" class="md-default md-raised"
+												ng-click="shiftVm.cancelChanges();">
+										Otkaži
+									</md-button>
+								</div>
+							</form>
+						</div>
+
+						<div flex="50" style="margin:15px;">
+							<md-toolbar class="md-theme-light">
+		    					<h2 class="md-toolbar-tools">
+		    						<span>Postojeći šabloni smena</span>
+		    					</h2>
+							</md-toolbar>
+							<md-list ng-cloak>
+								<md-list-item class="md-3-line" ng-repeat="shiftTemplate in shiftVm.shiftTemplates">
+		        					<div class="md-list-item-text">
+		        						<h3><strong>{{shiftTemplate.name}}</strong></h3>
+							        	<p>{{'početak: ' + shiftTemplate.startHours + ':' + shiftTemplate.startMinutes + 'h'}}</p>
+										<p>{{'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;kraj: ' + shiftTemplate.endHours + ':' + shiftTemplate.endMinutes + 'h'}}</p>
+							        </div>
+									<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
+												ng-click="shiftVm.initEditMode(shiftTemplate);">
+										<i class="material-icons md-24">edit</i>
+										<md-tooltip md-direction="top">
+											Izmeni smenu
+										</md-tooltip>
+									</md-button>
+									<md-button  class="md-fab md-mini md-accent md-raised md-secondary"
+												ng-click="shiftVm.deleteShiftTemplate(shiftTemplate.shiftId);">
+										<i class="material-icons md-24">delete_forever</i>
+										<md-tooltip md-direction="top">
+											Obriši smenu
+										</md-tooltip>
+									</md-button>
+		        					<md-divider ng-if="!$last"></md-divider>
+		    					</md-list-item>
+
+							</md-list>
+						</div>
+					</div>
+	    		</md-content>
+	    	</md-tab>
+
+		<!-- Tab that defines Restaurant Working time -->
+		<md-tab label="Radno vreme" >
+			<md-content ng-controller="WorkingTimeController as workingTimeVm">
+				<form name="workTime">
+					<div layout="row" style="margin-left: 5px;">
+					<!-- Restaurant working time on regular days -->
+						<div flex-gt-xs="33" layout="column">
+							<md-switch 	ng-disabled="workingTimeVm.editMode" ng-change="workingTimeVm.initEditMode();"
+										class="md-default" aria-label="Switch No Ink" ng-model="workingTimeVm.editMode">
+		    					<strong>Izmenjivo</strong>
+		    				</md-switch>
+							<div>
+								<md-checkbox 	ng-model="workingTimeVm.wtime.regReversed" class="md-primary"
+												aria-label="Checkbox 1" ng-disabled="!workingTimeVm.editMode">
+									Dvodnevno radno vreme
+								</md-checkbox>
+							</div>
+						<label>Početak radnog vremena (radni dani)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input 	name="regStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartHours"
+										type="number" step="1" min="0" max="23" required>
+								<div ng-messages="workTime.regStartHours.$error">
+		                            <div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 24.</div>
+		                        </div>
+		    				</md-input-container>
+							<md-input-container class="md-block">
+								<label>minuti</label>
+		    					<input 	name="regStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regStartMinutes"
+										type="number" step="1" min="0" max="59" required>
+								<div ng-messages="workTime.regStartMinutes.$error">
+		                            <div ng-message="required">Ovo polje je obavezno.</div>
+									<div ng-message="min">Vrednost mora biti veća od 0.</div>
+									<div ng-message="max">Vrednost mora biti manja od 60.</div>
+		                        </div>
+		    				</md-input-container>
+						</div>
+
+						<label>Kraj radnog vremena (radni dani)</label>
+						<div layout="row">
+							<md-input-container class="md-block">
+								<label>časovi</label>
+		    					<input  name="regEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndHours"
+										type="number" step="1" min="0" max="23" required>
+								<div ng-messages="workTime.regEndHours.$error">
 				                    <div ng-message="required">Ovo polje je obavezno.</div>
 									<div ng-message="min">Vrednost mora biti veća od 0.</div>
 									<div ng-message="max">Vrednost mora biti manja od 24.</div>
@@ -707,176 +738,228 @@
 		    				</md-input-container>
 							<md-input-container class="md-block">
 								<label>minuti</label>
-		    					<input 	name="satStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartMinutes"
-										type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSat">
-								<div ng-messages="workTime.satStartMinutes.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+		    					<input 	name="regEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.regEndMinutes"
+										type="number" step="1" min="0" max="59" required>
+								<div ng-messages="workTime.regEndMinutes.$error">
+				                    <div ng-message="required">Ovo polje je obavezno.</div>
 									<div ng-message="min">Vrednost mora biti veća od 0.</div>
 									<div ng-message="max">Vrednost mora biti manja od 60.</div>
 				                </div>
 		    				</md-input-container>
 						</div>
-
-						<label>Kraj radnog vremena (subota)</label>
+						<p style="color:red;" ng-show="workingTimeVm.regInvalid"> {{workingTimeVm.invalidMessage}}</p>
+						<!-- Actions that can be perfomed -->
 						<div layout="row">
-							<md-input-container class="md-block">
-								<label>časovi</label>
-		    					<input 	name="satEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndHours"
-										type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSat">
-								<div ng-messages="workTime.satEndHours.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 24.</div>
-				                </div>
-		    				</md-input-container>
-							<md-input-container class="md-block">
-								<label>minuti</label>
-		    					<input 	name="satEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndMinutes"
-										type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSat">
-								<div ng-messages="workTime.satEndMinutes.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 60.</div>
-				                </div>
-		    				</md-input-container>
-						</div>
-						<p style="color:red;" ng-show="workingTimeVm.satInvalid"> {{workingTimeVm.invalidMessage}}</p>
-					</div>
-				</div>
-
-				<!-- Restaurant working time on Sundays -->
-				<div flex-gt-xs="33" layout="column">
-					<md-switch ng-disabled="!workingTimeVm.editMode" md-no-ink class="md-default" aria-label="Switch working on Sundays." ng-model="workingTimeVm.wtime.workingOnSun">
-	    				<strong>Restoran otvoren nedeljom</strong>
-	    			</md-switch>
-					<div ng-show="workingTimeVm.wtime.workingOnSun">
-						<div flex-xs flex="50">
-							<md-checkbox 	ng-model="workingTimeVm.wtime.sunReversed" class="md-primary"
-											aria-label="Checkbox 3" ng-disabled="!workingTimeVm.editMode">
-								Dvodnevno radno vreme
-							</md-checkbox>
-						</div>
-						<label>Početak radnog vremena (nedelja)</label>
-						<div layout="row">
-							<md-input-container class="md-block">
-								<label>časovi</label>
-		    					<input 	name="sunStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartHours"
-										type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSun">
-								<div ng-messages="workTime.sunStartHours.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 24.</div>
-				                </div>
-		    				</md-input-container>
-							<md-input-container class="md-block">
-								<label>minuti</label>
-		    					<input 	name="sunStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartMinutes"
-										type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSun">
-								<div ng-messages="workTime.sunStartMinutes.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 60.</div>
-				                </div>
-		    				</md-input-container>
-						</div>
-
-						<label>Kraj radnog vremena (nedelja)</label>
-						<div layout="row">
-							<md-input-container class="md-block">
-								<label>časovi</label>
-		    					<input 	name="sunEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndHours"
-										type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSun">
-								<div ng-messages="workTime.sunEndHours.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 24.</div>
-				                </div>
-		    				</md-input-container>
-
-							<md-input-container class="md-block">
-								<label>minuti</label>
-		    					<input 	name="sunEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndMinutes"
-										type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSun">
-								<div ng-messages="workTime.sunEndMinutes.$error">
-				                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
-									<div ng-message="min">Vrednost mora biti veća od 0.</div>
-									<div ng-message="max">Vrednost mora biti manja od 60.</div>
-				                </div>
-		    				</md-input-container>
-						</div>
-						<p style="color:red;" ng-show="workingTimeVm.sunInvalid"> {{workingTimeVm.invalidMessage}}</p>
-					</div>
-				</div>
-			</div>
-			</form>
-		</md-content>
-
-      </md-tab>
-
-	  <!-- Tab that defines Restaurant Working time -->
-	<md-tab label="Porudžbine" >
-		<md-content ng-controller="OfferController as offerVm">
-			<div layout="row">
-				<div flex-gt-xs="50"  layout="column" style="margin:15px;">
-					<md-toolbar class="md-theme-light">
-						<h2 class="md-toolbar-tools">
-							<span>Nova porudžbina</span>
-						</h2>
-					</md-toolbar>
-					<form name="offerForm" style="margin:15px;" ng-cloak>
-						<md-input-container class="md-block" flex>
-							<label>Sadržaj porudžbine</label>
-							<textarea md-maxlength="255" name="offerContent" ng-model="offerVm.activeOffer.offer" columns="1" rows="5" md-select-on-focus required></textarea>
-							<div ng-messages="offerForm.offerContent.$error" class="validation-messages">
-								<div ng-message="md-maxlength">Sadržaj porudžbine mora imati manje od 255 karaktera.</div>
-								<div ng-message="required">Ovo polje je neophodno</div>
-							</div>
-						</md-input-container>
-
-						<md-datepicker  id="offerDeadline" name="offerDeadline" data-ng-model="offerVm.activeOffer.deadline"
-										md-min-date="offerVm.minDate" md-placeholder="Krajnji rok" ng-required="true"></md-datepicker>
-						<div ng-messages="offerForm.offerDeadline.$error" class="validation-messages">
-							<div ng-message="required">Ovo polje je neophodno.</div>
-							<div ng-message="mindate">Datum nije validan.</div>
-						</div>
-					</form>
-					<!-- Actions that can be perfomed -->
-					<div layout="row">
-						<md-button 	class="md-raised md-primary"
-									ng-click="offerVm.createNewOffer();" ng-disabled="!offerForm.$valid">
-							Objavi porudžbinu
-						</md-button>
-					</div>
-				</div>
-				<div flex="50" style="margin:15px;">
-					<md-toolbar class="md-theme-light">
-						<h2 class="md-toolbar-tools">
-							<span>Porudžbine</span>
-						</h2>
-					</md-toolbar>
-					<md-list ng-cloak>
-						<md-list-item class="md-3-line" ng-repeat="offer in offerVm.offers">
-							<div class="md-list-item-text">
-								<h3><strong>{{'Porudžbina #' + offer.offerId}}</strong></h3>
-								<p>{{offer.offer}}</p>
-								<p>{{'status: ' + offer.status}}</p>
-							</div>
-							<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
-										ng-click="offerVm.showPickDialog(offer);">
-								<i class="material-icons md-24">search</i>
-								<md-tooltip md-direction="top">
-									Pregledaj pristigle ponude
-								</md-tooltip>
+							<md-button 	ng-hide="!workingTimeVm.editMode" class="md-raised md-primary"
+										ng-click="workingTimeVm.updateWorkingTime();" ng-disabled="!workTime.$valid">
+								Sačuvaj
 							</md-button>
-							<md-divider ng-if="!$last"></md-divider>
-						</md-list-item>
+							<md-button ng-hide="!workingTimeVm.editMode" class="md-raised md-default" ng-click="workingTimeVm.cancelChanges();">
+								Otkaži
+							</md-button>
+						</div>
+					</div>
 
-					</md-list>
+					<!-- Restaurant working time on Saturdays -->
+					<div flex-gt-xs="33" layout="column">
+						<md-switch  ng-disabled="!workingTimeVm.editMode" class="md-default" aria-label="Switch working on Saturdays."
+									ng-model="workingTimeVm.wtime.workingOnSat">
+		    				<strong>Restoran otvoren subotom</strong>
+		    			</md-switch>
+						<div ng-show="workingTimeVm.wtime.workingOnSat">
+							<div flex-xs flex="50">
+								<md-checkbox 	ng-model="workingTimeVm.wtime.satReversed" class="md-primary"
+												aria-label="Checkbox 2" ng-disabled="!workingTimeVm.editMode">
+									Dvodnevno radno vreme
+								</md-checkbox>
+							</div>
+							<label>Početak radnog vremena (subota)</label>
+							<div layout="row">
+								<md-input-container class="md-block">
+									<label>časovi</label>
+			    					<input 	name="satStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartHours"
+											type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSat">
+									<div ng-messages="workTime.satStartHours.$error">
+					                    <div ng-message="required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 24.</div>
+					                </div>
+			    				</md-input-container>
+								<md-input-container class="md-block">
+									<label>minuti</label>
+			    					<input 	name="satStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satStartMinutes"
+											type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSat">
+									<div ng-messages="workTime.satStartMinutes.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 60.</div>
+					                </div>
+			    				</md-input-container>
+							</div>
+
+							<label>Kraj radnog vremena (subota)</label>
+							<div layout="row">
+								<md-input-container class="md-block">
+									<label>časovi</label>
+			    					<input 	name="satEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndHours"
+											type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSat">
+									<div ng-messages="workTime.satEndHours.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 24.</div>
+					                </div>
+			    				</md-input-container>
+								<md-input-container class="md-block">
+									<label>minuti</label>
+			    					<input 	name="satEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.satEndMinutes"
+											type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSat">
+									<div ng-messages="workTime.satEndMinutes.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 60.</div>
+					                </div>
+			    				</md-input-container>
+							</div>
+							<p style="color:red;" ng-show="workingTimeVm.satInvalid"> {{workingTimeVm.invalidMessage}}</p>
+						</div>
+					</div>
+
+					<!-- Restaurant working time on Sundays -->
+					<div flex-gt-xs="33" layout="column">
+						<md-switch ng-disabled="!workingTimeVm.editMode" md-no-ink class="md-default" aria-label="Switch working on Sundays." ng-model="workingTimeVm.wtime.workingOnSun">
+		    				<strong>Restoran otvoren nedeljom</strong>
+		    			</md-switch>
+						<div ng-show="workingTimeVm.wtime.workingOnSun">
+							<div flex-xs flex="50">
+								<md-checkbox 	ng-model="workingTimeVm.wtime.sunReversed" class="md-primary"
+												aria-label="Checkbox 3" ng-disabled="!workingTimeVm.editMode">
+									Dvodnevno radno vreme
+								</md-checkbox>
+							</div>
+							<label>Početak radnog vremena (nedelja)</label>
+							<div layout="row">
+								<md-input-container class="md-block">
+									<label>časovi</label>
+			    					<input 	name="sunStartHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartHours"
+											type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSun">
+									<div ng-messages="workTime.sunStartHours.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 24.</div>
+					                </div>
+			    				</md-input-container>
+								<md-input-container class="md-block">
+									<label>minuti</label>
+			    					<input 	name="sunStartMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunStartMinutes"
+											type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSun">
+									<div ng-messages="workTime.sunStartMinutes.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 60.</div>
+					                </div>
+			    				</md-input-container>
+							</div>
+
+							<label>Kraj radnog vremena (nedelja)</label>
+							<div layout="row">
+								<md-input-container class="md-block">
+									<label>časovi</label>
+			    					<input 	name="sunEndHours" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndHours"
+											type="number" step="1" min="0" max="23" ng-required="workingTimeVm.wtime.workingOnSun">
+									<div ng-messages="workTime.sunEndHours.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 24.</div>
+					                </div>
+			    				</md-input-container>
+
+								<md-input-container class="md-block">
+									<label>minuti</label>
+			    					<input 	name="sunEndMinutes" ng-disabled="!workingTimeVm.editMode" ng-model="workingTimeVm.wtime.sunEndMinutes"
+											type="number" step="1" min="0" max="59" ng-required="workingTimeVm.wtime.workingOnSun">
+									<div ng-messages="workTime.sunEndMinutes.$error">
+					                    <div ng-message="ng-required">Ovo polje je obavezno.</div>
+										<div ng-message="min">Vrednost mora biti veća od 0.</div>
+										<div ng-message="max">Vrednost mora biti manja od 60.</div>
+					                </div>
+			    				</md-input-container>
+							</div>
+							<p style="color:red;" ng-show="workingTimeVm.sunInvalid"> {{workingTimeVm.invalidMessage}}</p>
+						</div>
+					</div>
 				</div>
-			</div>
-		</md-content>
-    </md-tab>
-    </md-tabs>
-  </md-content>
+				</form>
+			</md-content>
+
+	      </md-tab>
+
+		  <!-- Tab that defines Restaurant Working time -->
+		<md-tab label="Porudžbine" >
+			<md-content ng-controller="OfferController as offerVm">
+				<div layout="row">
+					<div flex-gt-xs="50"  layout="column" style="margin:15px;">
+						<md-toolbar class="md-theme-light">
+							<h2 class="md-toolbar-tools">
+								<span>Nova porudžbina</span>
+							</h2>
+						</md-toolbar>
+						<form name="offerForm" style="margin:15px;" ng-cloak>
+							<md-input-container class="md-block" flex>
+								<label>Sadržaj porudžbine</label>
+								<textarea md-maxlength="255" name="offerContent" ng-model="offerVm.activeOffer.offer" columns="1" rows="5" md-select-on-focus required></textarea>
+								<div ng-messages="offerForm.offerContent.$error" class="validation-messages">
+									<div ng-message="md-maxlength">Sadržaj porudžbine mora imati manje od 255 karaktera.</div>
+									<div ng-message="required">Ovo polje je neophodno</div>
+								</div>
+							</md-input-container>
+
+							<md-datepicker  id="offerDeadline" name="offerDeadline" data-ng-model="offerVm.activeOffer.deadline"
+											md-min-date="offerVm.minDate" md-placeholder="Krajnji rok" ng-required="true"></md-datepicker>
+							<div ng-messages="offerForm.offerDeadline.$error" class="validation-messages">
+								<div ng-message="required">Ovo polje je neophodno.</div>
+								<div ng-message="mindate">Datum nije validan.</div>
+							</div>
+						</form>
+						<!-- Actions that can be perfomed -->
+						<div layout="row">
+							<md-button 	class="md-raised md-primary"
+										ng-click="offerVm.createNewOffer();" ng-disabled="!offerForm.$valid">
+								Objavi porudžbinu
+							</md-button>
+						</div>
+					</div>
+					<div flex="50" style="margin:15px;">
+						<md-toolbar class="md-theme-light">
+							<h2 class="md-toolbar-tools">
+								<span>Porudžbine</span>
+							</h2>
+						</md-toolbar>
+						<md-list ng-cloak>
+							<md-list-item class="md-3-line" ng-repeat="offer in offerVm.offers">
+								<div class="md-list-item-text">
+									<h3><strong>{{'Porudžbina #' + offer.offerId}}</strong></h3>
+									<p>{{offer.offer}}</p>
+									<p>{{'status: ' + offer.status}}</p>
+								</div>
+								<md-button  class="md-fab md-mini md-primary md-raised md-secondary"
+											ng-click="offerVm.showPickDialog(offer);">
+									<i class="material-icons md-24">search</i>
+									<md-tooltip md-direction="top">
+										Pregledaj pristigle ponude
+									</md-tooltip>
+								</md-button>
+								<md-divider ng-if="!$last"></md-divider>
+							</md-list-item>
+
+						</md-list>
+					</div>
+				</div>
+			</md-content>
+	    </md-tab>
+	    </md-tabs>
+	  </md-content>
+
+	</div>
+
 
 </div>

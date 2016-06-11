@@ -118,8 +118,8 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     
     function search() {
       return guestService.getSearchResult(guestProfileVm.query)
-        .then(function (data) {
-            guestProfileVm.queryResult = data;
+        .then(function (response) {
+            guestProfileVm.queryResult = response.data;
         });
     };
     
@@ -141,8 +141,9 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     
     function activate() {
       
-        guestService.isMy($routeParams.guestId).then(function(data) {
-            guestProfileVm.admin = data;
+        guestService.isMy($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.admin = response.data;
         });
       
         getUser().then(function() { });
@@ -157,36 +158,41 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     };
 
     function getUser() {
-        return guestService.getGuest($routeParams.guestId).then(function(data) {
-            guestProfileVm.user = data;
+        return guestService.getGuest($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.user = response.data;
             return guestProfileVm.user;
         });
     };
     
     function getRequests() {
-        return guestService.getRequests().then(function(data) {
-            guestProfileVm.friendRequests = data;
+        return guestService.getRequests()
+        .then(function(response) {
+            guestProfileVm.friendRequests = response.data;
             return guestProfileVm.friendRequests;
         });
     };
     
     function getFriends() {
-        return guestService.getFriends($routeParams.guestId).then(function(data) {
-            guestProfileVm.friends = data;
+        return guestService.getFriends($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.friends = response.data;
             return guestProfileVm.friends;
         });
     };
     
     function isFriend() {
-        return guestService.isFriend($routeParams.guestId).then(function(data) {
-            guestProfileVm.isFriend = data;
+        return guestService.isFriend($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.isFriend = response.data;
             return guestProfileVm.isFriend;
         });
     };
     
     function getReservations() {
-        return guestService.getReservations($routeParams.guestId).then(function(data) {
-            guestProfileVm.activeReservations = data;
+        return guestService.getReservations($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.activeReservations = response.data;
             return guestProfileVm.activeReservations;
         });
     };
