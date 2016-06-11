@@ -1,191 +1,227 @@
-<div layout="row">
-	<div flex-gt-sm="70" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Profil konobara</h3>
-				<md-button class="md-icon-button" aria-label="Notification">
-					<md-tooltip>Promjena lozinke</md-tooltip>
-					<md-icon id="pass-option" aria-label="Notification" ng-click="waiterProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
-				</md-button>
-				<md-button class="md-icon-button" aria-label="More">
-					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-				</md-button>
+<div id="wrapper" layout="row">
+	<section layout="column">
+		<md-sidenav
+				class="md-sidenav-left"
+				md-component-id="left"
+				md-is-locked-open="true"
+				md-disable-backdrop
+				md-whiteframe="4"
+				style="height:100%"
+		>
+			<!-- Name and image -->
+			<md-toolbar class="md-hue-2" style="height: 100%;">
+				<div layout="row" layout-align="end start">
+					<md-button 	class="md-icon-button" aria-label="Change image"
+								  flow-files-submitted="rmanagerVm.upload($flow)"
+								  flow-attrs="{accept:'image/*'}"
+								  flow-btn>
+						<md-icon class="material-icons">add_a_photo</md-icon>
+						<md-tooltip>
+							Promeni fotografiju
+						</md-tooltip>
+					</md-button>
+				</div>
+				<div layout="column" layout-align="center center">
+					<img
+							alt="{{waiterProfileVm.waiter.firstName}}"
+							ng-src="{{waiterProfileVm.waiter.image}}"
+							class="img-circle"
+					/>
+					<h2>{{waiterProfileVm.waiter.firstName + ' ' + waiterProfileVm.waiter.lastName}}</h2>
+				</div>
+			</md-toolbar>
+			<md-divider></md-divider>
+
+			<!-- Account info -->
+			<div layout="column" style="height: 100%; margin-left: 5px;" layout-align="center start" class="additional-info">
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">mail_outline
+						<md-tooltip md-direction="top">
+							Email
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{waiterProfileVm.waiter.email}}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">date_range
+						<md-tooltip md-direction="top">
+							Datum rođenja
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{waiterProfileVm.waiter.birthday | date: 'longDate' }}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							broj cipela
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{waiterProfileVm.waiter.shoesSize}}</h4>
+				</div>
+				<div layout="row"  layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							konfekcijski broj
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{waiterProfileVm.waiter.dressSize}}</h4>
+				</div>
 			</div>
-		</md-toolbar>
 
-		<div layout="column">
-			<div layout="row" layout-xs="column">
-				<div class="content">
-					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
-				</div>
-				<div flex class="content">
-					<table style="vertical-align: center; margin-top:40px; margin-left: 35px;">
-						<tr>
-							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
-							<td ><h2> {{waiterProfileVm.waiter.firstName}} &nbsp; {{waiterProfileVm.waiter.lastName}}</h2></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
-							<td ><h4> {{waiterProfileVm.waiter.email}} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">date_range</md-icon></td>
-							<td ><h4> {{waiterProfileVm.waiter.birthday | date: 'longDate' }} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>broj cipela: </i></td>
-							<td><h4> {{waiterProfileVm.waiter.shoesSize}}</h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>konfekcijski broj: &nbsp;&nbsp;</i></td>
-							<td><h4> {{waiterProfileVm.waiter.dressSize}} </h4></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-	</div>
+			<!-- Actions -->
+			<md-divider></md-divider>
+			<md-content flex style="min-height:270px;">
+				<md-menu-content>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="waiterProfileVm.editProfile();">
+							<md-icon class="material-icons">account_circle</md-icon>
+							<strong>Ažuriranje profila</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="waiterProfileVm.openSchedule()">
+							<md-icon class="material-icons">event</md-icon>
+							<strong>Pregled rasporeda rada</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="waiterProfileVm.changePassword(true);">
+							<md-icon class="material-icons">lock</md-icon>
+							<strong>Izmjena lozinke</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary">
+							<md-icon class="material-icons">exit_to_app</md-icon>
+							<strong>Odjavi se</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+				</md-menu-content>
+			</md-content>
 
-	<div flex-gt-sm="30" layout="column" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
-			</div>
-		</md-toolbar>
+		</md-sidenav>
+	</section>
 
-		<div layout="column">
-			<div style="padding-right: 12px; padding-left:5px;">
-				<div class="option">
-					<md-button class="action-empl" ng-click="waiterProfileVm.sendName()" ng-disabled="true"> <i class="material-icons md-48">dashboard</i> </md-button>
-					<h4>Pregled rasporeda stolova</h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button ng-click="waiterProfileVm.openSchedule()" class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
-					<h4>Pregled rasporeda rada</h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button  ng-click="waiterProfileVm.editProfile()" class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila</h4>
-				</div>
-				<hr>
-			</div>
-		</div>
-	</div>
-</div>
+	<!-- Tabs -->
+	<div id="right" style="margin-left:3px; margin-top:3px; background-color:#DDDDDD" flex>
+		<md-content>
+			<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="waiterProfileVm.clickOnTab();" md-selected="waiterProfileVm.selectedTab">
+				<md-tab>
+					<md-tab-label>
+						Završene porudžbine&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="waiterProfileVm.notNo!=-1">{{waiterProfileVm.notNo}}</span>
+					</md-tab-label>
+					<md-tab-body>
+						<md-content class="md-padding">
+							<p ng-show="waiterProfileVm.meals.length == 0;"> Nema završenih porudžbina. </p>
 
-<div ng-cloak>
-	<md-content>
-		<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="waiterProfileVm.clickOnTab();" md-selected="waiterProfileVm.selectedTab">
-			<md-tab>
-				<md-tab-label>
-					Završene porudžbine&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="waiterProfileVm.notNo!=-1">{{waiterProfileVm.notNo}}</span>
-				</md-tab-label>
-				<md-tab-body>
-				<md-content class="md-padding">
-					<p ng-show="waiterProfileVm.meals.length == 0;"> Nema završenih porudžbina. </p>
+							<div layout="row" ng-show="waiterProfileVm.meals.length != 0;" layout-wrap>
+								<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
 
-					<div layout="row" ng-show="waiterProfileVm.meals.length != 0;" layout-wrap>
-						<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
+									<md-card class="order-item">
+										<md-card-content>
+											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
+											<h4>{{meal.menuItem.name}}</h4>
+											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+										</md-card-content>
 
-							<md-card class="order-item">
-								<md-card-content>
-									<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
-									<h4>{{meal.menuItem.name}}</h4>
-									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
-								</md-card-content>
-								
-								<md-card-actions class="order-btns" layout="row" layout-align="center end">
-									<md-button > <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
-									<md-button class="md-raised md-primary" ng-click="waiterProfileVm.deliverOrder(meal.itemId);">Prihvati</md-button>
-								</md-card-actions>
-							</md-card>
-							
-						</div>			
-					</div>
-				</md-content>
-				</md-tab-body>
-			</md-tab>
-			<md-tab label="Izdati računi">
-				
-				<md-content class="md-padding">
-					<md-list flex>
-						<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills">
-							<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar">
-							<div class="md-list-item-text" layout="column">
-								<h3>{{ bill.billId }}</h3>
-								<h4>{{ bill.totalAmount }} RSD</h4>
-								<p>{{ bill.publishDate | date: 'dd-MMM-yyyy HH:mm' }}</p>
-							</div >
-							<div class="md-secondary">
-								<md-button class="md-raised">Više...</md-button>
+										<md-card-actions class="order-btns" layout="row" layout-align="center end">
+											<md-button > <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
+											<md-button class="md-raised md-primary" ng-click="waiterProfileVm.deliverOrder(meal.itemId);">Prihvati</md-button>
+										</md-card-actions>
+									</md-card>
+
+								</div>
 							</div>
-						</md-list-item>
-					</md-list>
-				</md-content>
-			
-			</md-tab>
+						</md-content>
+					</md-tab-body>
+				</md-tab>
+				<md-tab label="Izdati računi">
 
-			<md-tab label="Raspored stolova" layout = "row">
-                <md-content layout="row" class="md-padding" style="background-color:#DDDDDD">
-                    <div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas" >
-                        <div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
-                                name="{{table.tableId != null ? table.tableId : table.tempId}}"
-								data-x="{{table.datax}}"
-								data-y="{{table.datay}}"
-								width="{{table.width + '%'}}"
-								height="{{table.height + '%'}}"
-								style="	top:{{table.datay + '%'}};
+					<md-content class="md-padding">
+						<md-list flex>
+							<md-list-item class="md-3-line" ng-repeat="bill in waiterProfileVm.bills">
+								<img ng-src="images/icons/ic_offer_black_36px.svg" class="md-avatar">
+								<div class="md-list-item-text" layout="column">
+									<h3>{{ bill.billId }}</h3>
+									<h4>{{ bill.totalAmount }} RSD</h4>
+									<p>{{ bill.publishDate | date: 'dd-MMM-yyyy HH:mm' }}</p>
+								</div >
+								<div class="md-secondary">
+									<md-button class="md-raised">Više...</md-button>
+								</div>
+							</md-list-item>
+						</md-list>
+					</md-content>
+
+				</md-tab>
+
+				<md-tab label="Raspored stolova" layout = "row">
+					<md-content layout="row" class="md-padding" style="height: 80%; background-color:#DDDDDD">
+						<div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas" style="background-image: url('../images/dotgrid.png'); background-size:cover; background-repeat: no-repeat; border-color: #607D8B; border-width: 2px;" >
+							<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
+									name="{{table.tableId != null ? table.tableId : table.tempId}}"
+									data-x="{{table.datax}}"
+									data-y="{{table.datay}}"
+									width="{{table.width + '%'}}"
+									height="{{table.height + '%'}}"
+									style="	top:{{table.datay + '%'}};
 								left: {{table.datax + '%'}};
 								height:{{table.height + '%'}};
 								width:{{table.width + '%'}};
 								background-color: {{table.color}}"
-                                class="restaurant-table"
-								ng-click="waiterProfileVm.selectTable(table.tableId);"
-                                ng-repeat="table in waiterProfileVm.allTables">
-                            <!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
-                            <md-tooltip md-direction="bottom">
-                                Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
-                            </md-tooltip>
-                            <md-tooltip md-direction="right">
-                                Pozicija  {{ table.positions }}
-                            </md-tooltip>
-                        </div>
-                    </div>
-
-                    <div flex-gt-sm="30" layout="column" style="padding-top: 20px;">
-                        <div id="table-img-div">
-							<img width="100%" id="table-img" src="../images/table.jpg"/>
-							<div id="selected-table">
-								<p ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
-								<p ng-show="waiterProfileVm.selectedTable == -1" style="color:#B71C1C"> Selektovani sto nije u vašoj nadležnosti!</p>
-								<p ng-show="waiterProfileVm.selectedTable == null"> Kliknite na sto da biste ga selektovali! </p>
-							</div>
-							<div id="inside-img">
-								<div id="center-vert" layout="column">
-									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1 || waiterProfileVm.selectedTableOrders.length == 0;"  ng-click="waiterProfileVm.createBill();">Izdaj račun</md-button>
-									<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
-								</div>
+									class="restaurant-table"
+									ng-click="waiterProfileVm.selectTable(table.tableId);"
+									ng-repeat="table in waiterProfileVm.allTables">
+								<!--<p style="color:white; font-weight:bold;">{{table.positions}}</p>-->
+								<md-tooltip md-direction="bottom">
+									Sto broj  {{ table.tableId != null ? table.tableId : table.tempId }}
+								</md-tooltip>
+								<md-tooltip md-direction="right">
+									Pozicija  {{ table.positions }}
+								</md-tooltip>
 							</div>
 						</div>
-                        <div layout="column">
-							<md-list>
-								<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.selectedTableOrders">
-									<md-icon class="material-icons md-avatar">description</md-icon>
-									<div class="md-list-item-text">
-										<h3>id porudžbine : {{order.orderId}}</h3>
-										<p>{{order.date | date: 'medium'}}</p>
+
+						<div flex-gt-sm="30" layout="column" style="padding-top: 20px;">
+							<div id="table-img-div">
+								<img width="100%" id="table-img" src="../images/table.jpg"/>
+								<div id="selected-table">
+									<p ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
+									<p ng-show="waiterProfileVm.selectedTable == -1"> Selektovani sto nije u vašoj nadležnosti!</p>
+									<p ng-show="waiterProfileVm.selectedTable == null"> Kliknite na sto da biste ga selektovali! </p>
+								</div>
+								<div id="inside-img">
+									<div id="center-vert" layout="column">
+										<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1 || waiterProfileVm.selectedTableOrders.length == 0;"  ng-click="waiterProfileVm.createBill();">Izdaj račun</md-button>
+										<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
 									</div>
+								</div>
+							</div>
+							<div layout="column">
+								<md-list>
+									<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.selectedTableOrders">
+										<md-icon class="material-icons md-avatar">description</md-icon>
+										<div class="md-list-item-text">
+											<h3>id porudžbine : {{order.orderId}}</h3>
+											<p>{{order.date | date: 'medium'}}</p>
+										</div>
 
-									<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>
-								</md-list-item>
-							</md-list>
-                        </div>
-                    </div>
-                </md-content>
-			</md-tab>
+										<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>
+									</md-list-item>
+								</md-list>
+							</div>
+						</div>
+					</md-content>
+				</md-tab>
 
-		</md-tabs>
-	</md-content>
+			</md-tabs>
+		</md-content>
+	</div>
 </div>

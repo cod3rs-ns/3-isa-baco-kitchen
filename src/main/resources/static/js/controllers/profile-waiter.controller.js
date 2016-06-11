@@ -123,7 +123,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
                 for (var pos in tables){
                     for(var mypos in data){
                         if(tables[pos].tableId == data[mypos].tableId)
-                            tables[pos].color = '#CDDC39';
+                            tables[pos].color = '#FF3F80';
                     }
                 }
             });
@@ -135,7 +135,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
         for(var table in waiterProfileVm.allTables){
             if (waiterProfileVm.allTables[table].tableId == tableId){
                 waiterProfileVm.selectedTable = waiterProfileVm.allTables[table];
-                if(waiterProfileVm.selectedTable.color !== '#CDDC39'){
+                if(waiterProfileVm.selectedTable.color !== '#FF3F80'){
                     waiterProfileVm.selectedTable = -1;
                     waiterProfileVm.selectedTableOrders.length = 0;
                 }

@@ -1,90 +1,155 @@
-<div layout="row">
-	<div flex-gt-sm="70" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Profil šankera</h3>
-				<md-button class="md-icon-button" aria-label="Notification">
-					<md-tooltip>Promjena lozinke</md-tooltip>
-					<md-icon id="pass-option" aria-label="Notification" ng-click="barmanProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
-				</md-button>
-				<md-button class="md-icon-button" aria-label="More">
-					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
+<div id="wrapper" layout="row">
 
-		<div layout="column">
-			<div layout="row" layout-xs="column">
-				<div class="content">
-					<img alt="Sergio Ramos" src="../images/profile.jpg" class="md-avatar" />
+	<section layout="column">
+		<md-sidenav
+				class="md-sidenav-left"
+				md-component-id="left"
+				md-is-locked-open="true"
+				md-disable-backdrop
+				md-whiteframe="4"
+				style="height:100%"
+		>
+			<!-- Name and image -->
+			<md-toolbar class="md-hue-2" style="height: 100%;">
+				<div layout="row" layout-align="end start">
+					<md-button 	class="md-icon-button" aria-label="Change image"
+								  flow-files-submitted="rmanagerVm.upload($flow)"
+								  flow-attrs="{accept:'image/*'}"
+								  flow-btn>
+						<md-icon class="material-icons">add_a_photo</md-icon>
+						<md-tooltip>
+							Promeni fotografiju
+						</md-tooltip>
+					</md-button>
 				</div>
-				<div flex class="content">
-					<table style="vertical-align: center; margin-top:40px; margin-left: 35px;">
-						<tr>
-							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
-							<td ><h2> {{barmanProfileVm.barman.firstName}} &nbsp; {{barmanProfileVm.barman.lastName}}</h2></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
-							<td ><h4> {{barmanProfileVm.barman.email}} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">date_range</md-icon></td>
-							<td ><h4> {{barmanProfileVm.barman.birthday | date: 'longDate' }} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>broj cipela: </i></td>
-							<td><h4> {{barmanProfileVm.barman.shoesSize}}</h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>konfekcijski broj: &nbsp;&nbsp;</i></td>
-							<td><h4> {{barmanProfileVm.barman.dressSize}} </h4></td>
-						</tr>
-					</table>
+				<div layout="column" layout-align="center center">
+					<img
+							alt="{{barmanProfileVm.barman.firstName}}"
+							ng-src="{{barmanProfileVm.barman.image}}"
+							class="img-circle"
+					/>
+					<h2>{{barmanProfileVm.barman.firstName + ' ' + barmanProfileVm.barman.lastName}}</h2>
+				</div>
+			</md-toolbar>
+			<md-divider></md-divider>
+
+			<!-- Account info -->
+			<div layout="column" style="height: 100%; margin-left: 5px;" layout-align="center start" class="additional-info">
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">mail_outline
+						<md-tooltip md-direction="top">
+							Email
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{barmanProfileVm.barman.email}}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">date_range
+						<md-tooltip md-direction="top">
+							Datum rođenja
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{barmanProfileVm.barman.birthday | date: 'longDate' }}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							broj cipela
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{barmanProfileVm.barman.shoesSize}}</h4>
+				</div>
+				<div layout="row"  layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							konfekcijski broj
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{barmanProfileVm.barman.dressSize}}</h4>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div flex-gt-sm="30" layout="column" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
-			</div>
-		</md-toolbar>
+			<!-- Actions -->
+			<md-divider></md-divider>
+			<md-content flex style="min-height:270px;">
+				<md-menu-content>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="barmanProfileVm.editProfile();">
+							<md-icon class="material-icons">account_circle</md-icon>
+							<strong>Ažuriranje profila</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="barmanProfileVm.openSchedule()">
+							<md-icon class="material-icons">event</md-icon>
+							<strong>Pregled rasporeda rada</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="barmanProfileVm.changePassword(true);">
+							<md-icon class="material-icons">lock</md-icon>
+							<strong>Izmjena lozinke</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary">
+							<md-icon class="material-icons">exit_to_app</md-icon>
+							<strong>Odjavi se</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+				</md-menu-content>
+			</md-content>
 
-		<div layout="column">
-			<div style="padding-right: 12px; padding-left:5px;">
-				<div class="option">
-					<md-button ng-click="barmanProfileVm.openSchedule()" class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
-					<h4>Pregled rasporeda rada</h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button  ng-click="barmanProfileVm.editProfile()" class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila</h4>
-				</div>
-				<hr>
-			</div>
-		</div>
-	</div>
-</div>
+		</md-sidenav>
+	</section>
 
+	<!-- Tabs -->
+	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
+		<md-content>
+			<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="barmanProfileVm.clickOnTab();" md-selected="barmanProfileVm.selectedTab">
+				<md-tab>
+					<md-tab-label>
+						Pristigla pića&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="barmanProfileVm.notNo!=-1">{{barmanProfileVm.notNo}}</span>
+					</md-tab-label>
+					<md-tab-body>
+						<md-content class="md-padding">
+							<p ng-show="barmanProfileVm.waitingDrinks.length == 0;"> Nema pristiglih pića za izradu. </p>
 
-<div ng-cloak>
-	<md-content>
-		<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="barmanProfileVm.clickOnTab();" md-selected="barmanProfileVm.selectedTab">
-			<md-tab>
-				<md-tab-label>
-					Pristigla pića&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="barmanProfileVm.notNo!=-1">{{barmanProfileVm.notNo}}</span>
-				</md-tab-label>
-				<md-tab-body>
+							<div ng-show="barmanProfileVm.waitingDrinks.length != 0;" layout="row" layout-wrap>
+								<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
+
+									<md-card class="order-item">
+										<md-card-content>
+											<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">
+											<h4>{{drink.menuItem.name}}</h4>
+											<p><md-icon class="material-icons">local_bar</md-icon> količina:{{drink.amount}}</p>
+											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+										</md-card-content>
+
+										<md-card-actions class="order-btns" layout="row" layout-align="center end">
+											<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
+											<md-button class="md-raised md-primary" ng-click="barmanProfileVm.prepareDrink(drink.itemId);">Prihvati</md-button>
+										</md-card-actions>
+									</md-card>
+
+								</div>
+							</div>
+						</md-content>
+					</md-tab-body>
+				</md-tab>
+				<md-tab label="Pića u izradi">
 					<md-content class="md-padding">
-						<p ng-show="barmanProfileVm.waitingDrinks.length == 0;"> Nema pristiglih pića za izradu. </p>
+						<p ng-show="barmanProfileVm.preparingDrinks.length == 0;"> Nema prihvaćenih pića za izradu. </p>
 
-						<div ng-show="barmanProfileVm.waitingDrinks.length != 0;" layout="row" layout-wrap>
-							<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
-
+						<div ng-show="barmanProfileVm.preparingDrinks.length != 0;" layout="row" layout-wrap>
+							<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks" layout-wrap>
 								<md-card class="order-item">
 									<md-card-content>
 										<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">
@@ -95,40 +160,19 @@
 
 									<md-card-actions class="order-btns" layout="row" layout-align="center end">
 										<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
-										<md-button class="md-raised md-primary" ng-click="barmanProfileVm.prepareDrink(drink.itemId);">Prihvati</md-button>
+										<md-button class="md-raised md-primary" ng-click="barmanProfileVm.finishDrink(drink.itemId);">Notifikuj</md-button>
 									</md-card-actions>
 								</md-card>
 
 							</div>
 						</div>
+
 					</md-content>
-				</md-tab-body>
-			</md-tab>
-			<md-tab label="Pića u izradi">
-				<md-content class="md-padding">
-					<p ng-show="barmanProfileVm.preparingDrinks.length == 0;"> Nema prihvaćenih pića za izradu. </p>
+				</md-tab>
+			</md-tabs>
+		</md-content>
+	</div>
 
-					<div ng-show="barmanProfileVm.preparingDrinks.length != 0;" layout="row" layout-wrap>
-						<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks" layout-wrap>
-							<md-card class="order-item">
-								<md-card-content>
-									<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">
-									<h4>{{drink.menuItem.name}}</h4>
-									<p><md-icon class="material-icons">local_bar</md-icon> količina:{{drink.amount}}</p>
-									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
-								</md-card-content>
-								
-								<md-card-actions class="order-btns" layout="row" layout-align="center end">
-									<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
-									<md-button class="md-raised md-primary" ng-click="barmanProfileVm.finishDrink(drink.itemId);">Notifikuj</md-button>
-								</md-card-actions>
-							</md-card>
-							
-						</div>			
-					</div>
-
-				</md-content>
-			</md-tab>
-		</md-tabs>
-	</md-content>
 </div>
+
+
