@@ -1,138 +1,182 @@
-<div layout="row">
-	<div flex-gt-sm="70" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Profil kuvara</h3>
-				<md-button class="md-icon-button" aria-label="Notification">
-					<md-tooltip>Promjena lozinke</md-tooltip>
-					<md-icon id="pass-option" aria-label="Notification" ng-click="cookProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
-				</md-button>
-				<md-button class="md-icon-button" aria-label="More">
-					<md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
+<div id="wrapper" layout="row">
 
-		<div layout="column">
-			<div layout="row" layout-xs="column">
-				<div class="content" flex="45">
-					<img alt="Sergio Ramos" ng-src="{{cookProfileVm.cook.image}}" class="md-avatar" style="width:100%; height:400px;" />
+	<section layout="column">
+		<md-sidenav
+				class="md-sidenav-left"
+				md-component-id="left"
+				md-is-locked-open="true"
+				md-disable-backdrop
+				md-whiteframe="4"
+				style="height:100%"
+		>
+			<!-- Name and image -->
+			<md-toolbar class="md-hue-2" style="height: 100%;">
+				<div layout="row" layout-align="end start">
+					<md-button 	class="md-icon-button" aria-label="Change image"
+								  flow-files-submitted="rmanagerVm.upload($flow)"
+								  flow-attrs="{accept:'image/*'}"
+								  flow-btn>
+						<md-icon class="material-icons">add_a_photo</md-icon>
+						<md-tooltip>
+							Promeni fotografiju
+						</md-tooltip>
+					</md-button>
 				</div>
-				<div flex="55" class="content">
-					<table style="vertical-align: center; margin-top:40px; margin-left: 35px;">
-						<tr>
-							<td valign="top"><md-icon class="material-icons">account_circle</md-icon></td>
-							<td ><h2> {{cookProfileVm.cook.firstName}} &nbsp; {{cookProfileVm.cook.lastName}}</h2></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">mail_outline</md-icon></td>
-							<td ><h4> {{cookProfileVm.cook.email}} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><md-icon class="material-icons">date_range</md-icon></td>
-							<td ><h4> {{cookProfileVm.cook.birthday | date: 'longDate' }} </h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>broj cipela: </i></td>
-							<td><h4> {{cookProfileVm.cook.shoesSize}}</h4></td>
-						</tr>
-						<tr>
-							<td valign="top"><i>konfekcijski broj: &nbsp;&nbsp;</i></td>
-							<td><h4> {{cookProfileVm.cook.dressSize}} </h4></td>
-						</tr>
-					</table>
+				<div layout="column" layout-align="center center">
+					<img
+							alt="{{cookProfileVm.cook.firstName}}"
+							ng-src="{{cookProfileVm.cook.image}}"
+							class="img-circle"
+					/>
+					<h2>{{cookProfileVm.cook.firstName + ' ' + cookProfileVm.cook.lastName}}</h2>
+				</div>
+			</md-toolbar>
+			<md-divider></md-divider>
+
+			<!-- Account info -->
+			<div layout="column" style="height: 100%; margin-left: 5px;" layout-align="center start" class="additional-info">
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">mail_outline
+						<md-tooltip md-direction="top">
+							Email
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{cookProfileVm.cook.email}}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">date_range
+						<md-tooltip md-direction="top">
+							Datum rođenja
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{cookProfileVm.cook.birthday | date: 'longDate'}}</h4>
+				</div>
+				<div layout="row" layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							broj cipela
+						</md-tooltip>
+					</md-icon>
+					<h4 >&nbsp;&nbsp;{{cookProfileVm.cook.shoesSize}}</h4>
+				</div>
+				<div layout="row"  layout-align="center center">
+					<md-icon class="material-icons">style
+						<md-tooltip md-direction="top">
+							konfekcijski broj
+						</md-tooltip>
+					</md-icon>
+					<h4>&nbsp;&nbsp;{{cookProfileVm.cook.dressSize}}</h4>
 				</div>
 			</div>
-		</div>
-	</div>
 
-	<div flex-gt-sm="30" layout="column" class="main-content">
-		<md-toolbar scroll>
-			<div class="md-toolbar-tools">
-				<h3 md-header-title flex>Aktivnosti</h3>
-			</div>
-		</md-toolbar>
+			<!-- Actions -->
+			<md-divider></md-divider>
+			<md-content flex style="min-height:270px;">
+				<md-menu-content>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="cookProfileVm.editProfile();">
+							<md-icon class="material-icons">account_circle</md-icon>
+							<strong>Ažuriranje profila</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="cookProfileVm.openSchedule();">
+							<md-icon class="material-icons">event</md-icon>
+							<strong>Pregled rasporeda rada</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary"
+									  ng-click="cookProfileVm.changePassword(true);">
+							<md-icon class="material-icons">lock</md-icon>
+							<strong>Izmjena lozinke</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+					<md-menu-item class="md-indent">
+						<md-button 	class="md-primary">
+							<md-icon class="material-icons">exit_to_app</md-icon>
+							<strong>Odjavi se</strong>
+						</md-button>
+					</md-menu-item>
+					<md-divider></md-divider>
+				</md-menu-content>
+			</md-content>
 
-		<div layout="column">
-			<div style="padding-right: 12px; padding-left:5px;">
-				<div class="option">
-					<md-button ng-click="cookProfileVm.openSchedule()" class="action-empl"> <i class="material-icons md-48">event</i> </md-button>
-					<h4>Pregled rasporeda rada</h4>
-				</div>
-				<hr>
-				<div class="option">
-					<md-button ng-click="cookProfileVm.editProfile()" class="action-empl"> <i class="material-icons md-48">mode_edit</i> </md-button>
-					<h4> Ažuriranje profila</h4>
-				</div>
-				<hr>
-			</div>
-		</div>
-	</div>
-</div>
+		</md-sidenav>
+	</section>
 
-<div ng-cloak>
-	<md-content>
-		<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="cookProfileVm.clickOnTab();" md-selected="cookProfileVm.selectedTab">
-			<md-tab>
-				<md-tab-label>
-					Pristigla jela&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="cookProfileVm.notNo!=-1">{{cookProfileVm.notNo}}</span>
-				</md-tab-label>
+	<!-- Tabs -->
+	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
+		<md-content>
+			<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="cookProfileVm.clickOnTab();" md-selected="cookProfileVm.selectedTab">
+				<md-tab>
+					<md-tab-label>
+						Pristigla jela&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="cookProfileVm.notNo!=-1">{{cookProfileVm.notNo}}</span>
+					</md-tab-label>
 
-				<md-tab-body>
-					<md-content class="md-padding">
-						<div layout="row" layout-wrap>
-							<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals" layout-wrap>
+					<md-tab-body>
+						<md-content class="md-padding">
+							<div layout="row" layout-wrap>
+								<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals" layout-wrap>
 
-								<md-card class="order-item">
-									<md-card-content>
-										<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
-										<h4>{{meal.menuItem.name}}</h4>
-										<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
-										<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
-									</md-card-content>
+									<md-card class="order-item">
+										<md-card-content>
+											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
+											<h4>{{meal.menuItem.name}}</h4>
+											<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
+											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+										</md-card-content>
 
-									<md-card-actions class="order-btns" layout="row" layout-align="center end">
-										<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
-										<md-button class="md-raised md-primary" ng-click="cookProfileVm.prepareFood(meal.itemId);">Prihvati</md-button>
-									</md-card-actions>
-								</md-card>
+										<md-card-actions class="order-btns" layout="row" layout-align="center end">
+											<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
+											<md-button class="md-raised md-primary" ng-click="cookProfileVm.prepareFood(meal.itemId);">Prihvati</md-button>
+										</md-card-actions>
+									</md-card>
+								</div>
 							</div>
-						</div>
-					</md-content>
-				</md-tab-body>
-			</md-tab>
-			<md-tab>
-				<md-tab-label>
-					Jela u izradi
-				</md-tab-label>
-				<md-tab-body>
-				<md-content class="md-padding">
-					<p ng-show="cookProfileVm.preparingMeals.length == 0;"> Nema prihvaćenih jela za izradu. </p>
+						</md-content>
+					</md-tab-body>
+				</md-tab>
+				<md-tab>
+					<md-tab-label>
+						Jela u izradi
+					</md-tab-label>
+					<md-tab-body>
+						<md-content class="md-padding">
+							<p ng-show="cookProfileVm.preparingMeals.length == 0;"> Nema prihvaćenih jela za izradu. </p>
 
-					<div layout="row" ng-show="cookProfileVm.preparingMeals.length !== 0" layout-wrap>
-						<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
+							<div layout="row" ng-show="cookProfileVm.preparingMeals.length !== 0" layout-wrap>
+								<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.preparingMeals" layout-wrap>
 
-							<md-card class="order-item">
-								<md-card-content>
-									<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
-									<h4>{{meal.menuItem.name}}</h4>
-									<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
-									<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
-								</md-card-content>
-								
-								<md-card-actions class="order-btns" layout="row" layout-align="center end">
-									<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
-									<md-button class="md-raised md-primary" ng-click="cookProfileVm.finishFood(meal.itemId);" >Notifikuj</md-button>
-								</md-card-actions>
-							</md-card>
-							
-						</div>			
-					</div>
+									<md-card class="order-item">
+										<md-card-content>
+											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
+											<h4>{{meal.menuItem.name}}</h4>
+											<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>
+											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+										</md-card-content>
 
-				</md-content>
-				</md-tab-body>
+										<md-card-actions class="order-btns" layout="row" layout-align="center end">
+											<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
+											<md-button class="md-raised md-primary" ng-click="cookProfileVm.finishFood(meal.itemId);" >Notifikuj</md-button>
+										</md-card-actions>
+									</md-card>
 
-			</md-tab>
-		</md-tabs>
-	</md-content>
+								</div>
+							</div>
+
+						</md-content>
+					</md-tab-body>
+
+				</md-tab>
+			</md-tabs>
+		</md-content>
+	</div>
+
 </div>
+

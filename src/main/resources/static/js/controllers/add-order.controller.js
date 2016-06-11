@@ -16,8 +16,9 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
         console.log(table);
 
         if(edit == null) {
-            menuItemService.getMenuItemsByRestaurant(restaurantId)
-                .then(function (data) {
+            menuItemService.getAllByRestaurant(restaurantId)
+                .then(function (response) {
+                    var data = response.data;
                     for (var pos in data) {
                         orderVm.meals.push(data[pos]);
                     }
@@ -26,10 +27,9 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
         else{
             orderService.getOrder(edit).
                 then(function (orderItems) {
-                    menuItemService.getMenuItemsByRestaurant(restaurantId)
-                        .then(function (data) {
-                            console.log(data);
-                            console.log(orderItems);
+                    menuItemService.getAllByRestaurant(restaurantId)
+                        .then(function (response) {
+                            var data = response.data;
 
                             for (var pos in data) {
                                 //dodaj sve menuItem-e u listu za dodavanje
