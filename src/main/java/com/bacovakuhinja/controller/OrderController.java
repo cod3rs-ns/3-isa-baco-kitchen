@@ -188,5 +188,20 @@ public class OrderController {
 
         return oldOrder;
     }
+
+    @RequestMapping(
+            value = "api/order/canEdit/{order_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Boolean> canEdit(@PathVariable("order_id") Integer orderId) {
+        ClientOrder order = clientOrderService.findOne(orderId);
+        for(OrderItem oi : order.getItems()){
+            if(!oi.getState().equals("CREATED")){
+                return new ResponseEntity <Boolean>(false, HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity <Boolean>(true, HttpStatus.OK);
+    }
+
 }
 

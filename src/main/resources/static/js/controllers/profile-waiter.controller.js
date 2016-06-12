@@ -192,7 +192,11 @@ function WaiterProfileController(tableService, waiterService, passService, order
             clickOutsideToClose:false,
             fullscreen: true,
             locals: {
-                table: waiterProfileVm.selectedTable
+                table: waiterProfileVm.selectedTable,
+                billId: null
+            },
+            onRemoving: function() {
+                getBills();
             }
         });
     };
@@ -224,26 +228,41 @@ function WaiterProfileController(tableService, waiterService, passService, order
                     .textContent('Ne možete izmijeniti porudžbinu!\n Isteklo je više od 30 min od kreiranja iste.')
                     .ok('POTVRDA!')
             );
-            //showToast();
+            return;
         }
-        else {
-            $mdDialog.show({
-                controller: 'AddOrderController',
-                controllerAs: 'orderVm',
-                templateUrl: '/views/dialogs/add-order.html',
-                parent: angular.element(document.body),
-                clickOutsideToClose: false,
-                fullscreen: true,
-                locals: {
-                    table: waiterProfileVm.selectedTable,
-                    restaurantId: waiterProfileVm.waiter.restaurantID,
-                    edit: order.orderId
-                },
-                onRemoving: function () {
-                    getOrders();
+
+        orderService.canEdit(order.orderId)
+            .then(function (data) {
+                alert(data);
+                if(!data){
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .clickOutsideToClose(false)
+                            .title('Upozorenje!')
+                            .textContent('Ne možete izmijeniti porudžbinu!\n Neke od njenih stavki su već u izradi.')
+                            .ok('POTVRDA!')
+                    );
+                }
+                else {
+                    $mdDialog.show({
+                        controller: 'AddOrderController',
+                        controllerAs: 'orderVm',
+                        templateUrl: '/views/dialogs/add-order.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: false,
+                        fullscreen: true,
+                        locals: {
+                            table: waiterProfileVm.selectedTable,
+                            restaurantId: waiterProfileVm.waiter.restaurantID,
+                            edit: order.orderId
+                        },
+                        onRemoving: function () {
+                            getOrders();
+                        }
+                    });
                 }
             });
-        }
+
     };
 
 
@@ -304,4 +323,19 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
+    waiterProfileVm.showBill = showBill;
+    function showBill(billId) {
+        $mdDialog.show({
+            controller: 'BillController',
+            controllerAs: 'billVm',
+            templateUrl: '/views/dialogs/bill-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: true,
+            locals: {
+                table: null,
+                billId: billId
+            }
+        });
+    };
 }

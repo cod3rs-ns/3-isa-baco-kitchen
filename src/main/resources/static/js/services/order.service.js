@@ -9,7 +9,8 @@ function orderService($http) {
         addOrder: addOrder,
         getOrders: getOrders,
         getOrder: getOrder,
-        updateOrder : updateOrder
+        updateOrder : updateOrder,
+        canEdit: canEdit
     };
     return service;
 
@@ -36,6 +37,13 @@ function orderService($http) {
 
     function getOrder(orderId){
         return $http.get('api/orderItems/' + orderId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function canEdit(orderId) {
+        return $http.get('api/order/canEdit/' + orderId)
             .then(function (response) {
                 return response.data;
             });

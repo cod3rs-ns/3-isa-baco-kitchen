@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('BillController', BillController);
 
-BillController.$inject = ['waiterService', '$mdDialog', '$mdToast', 'table'];
+BillController.$inject = ['waiterService', '$mdDialog', '$mdToast', 'table', 'billId'];
 
-function BillController(waiterService, $mdDialog, $mdToast, table) {
+function BillController(waiterService, $mdDialog, $mdToast, table, billId) {
     var billVm = this;
     billVm.items = [];
     billVm.total = 0;
@@ -12,15 +12,28 @@ function BillController(waiterService, $mdDialog, $mdToast, table) {
     activate();
 
     function activate() {
-        waiterService.createBill(table.tableId)
-            .then(function (data) {
-                for (var bkey in data.items){
-                    billVm.items.push(data.items[bkey]);
-                    billVm.total += data.items[bkey].price;
-                }
-                billVm.waiter = data.waiter;
-                billVm.date = data.date;
-            });
+        if(table == null){
+            waiterService.billDetails(billId)
+                .then(function (data) {
+                    for (var bkey in data.items) {
+                        billVm.items.push(data.items[bkey]);
+                        billVm.total += data.items[bkey].price;
+                    }
+                    billVm.waiter = data.waiter;
+                    billVm.date = data.date;
+                });
+        }
+        else {
+            waiterService.createBill(table.tableId)
+                .then(function (data) {
+                    for (var bkey in data.items) {
+                        billVm.items.push(data.items[bkey]);
+                        billVm.total += data.items[bkey].price;
+                    }
+                    billVm.waiter = data.waiter;
+                    billVm.date = data.date;
+                });
+        }
     };
 
 

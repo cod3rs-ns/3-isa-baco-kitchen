@@ -154,7 +154,7 @@
 									<p>{{ bill.publishDate | date: 'dd-MMM-yyyy HH:mm' }}</p>
 								</div >
 								<div class="md-secondary">
-									<md-button class="md-raised">Više...</md-button>
+									<md-button class="md-raised" ng-click="waiterProfileVm.showBill(bill.billId);">Više...</md-button>
 								</div>
 							</md-list-item>
 						</md-list>

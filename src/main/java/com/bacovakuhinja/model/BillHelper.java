@@ -8,7 +8,6 @@ public class BillHelper {
     private Waiter waiter;
     private Date date;
 
-
     public BillHelper(){
 
     }

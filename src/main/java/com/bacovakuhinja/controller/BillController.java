@@ -101,4 +101,41 @@ public class BillController {
 
         return new ResponseEntity <Collection<Bill>>(bills, HttpStatus.OK);
     }
+
+    @Authorization(role = "waiter")
+    @RequestMapping(
+            value = "/api/waiter/bill/{billId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <BillHelper> getBill(final HttpServletRequest request, @PathVariable("billId") Integer billId) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+
+        Bill bill =  billService.findOne(billId);
+        BillHelper helper = new BillHelper();
+        helper.setDate(bill.getPublishDate());
+
+        HashMap<Integer, BillItem> billItems = new HashMap<Integer, BillItem>();
+
+        for(ClientOrder order : bill.getOrders()){
+            for(OrderItem item : order.getItems()){
+                MenuItem mi = item.getMenuItem();
+                if(!billItems.containsKey(mi.getMenuItemId())) {
+                    BillItem bi = new BillItem(mi.getMenuItemId(), mi, mi.getPrice() * item.getAmount(), item.getAmount());
+                    billItems.put(bi.getId(), bi);
+                }
+                else {
+                    BillItem curr = billItems.get(mi.getMenuItemId());
+                    curr.setAmount(curr.getAmount() + item.getAmount());
+                    curr.setPrice(curr.getPrice() + item.getAmount() * mi.getPrice());
+                    billItems.put(curr.getId(), curr);
+                }
+            }
+        }
+
+        helper.setItems(billItems);
+        helper.setWaiter(bill.getWaiter());
+
+        return new ResponseEntity <BillHelper>(helper, HttpStatus.OK);
+    }
 }

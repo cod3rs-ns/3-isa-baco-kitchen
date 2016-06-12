@@ -14,7 +14,8 @@ function waiterService($http){
         getFinishedOrders: getFinishedOrders,
         deliverOrder: deliverOrder,
         createBill: createBill,
-        findBills: findBills
+        findBills: findBills,
+        billDetails: billDetails
     };
 
     return service;
@@ -77,6 +78,13 @@ function waiterService($http){
 
     function findBills(){
         return $http.get('/api/waiter/bills')
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function billDetails(billId){
+        return $http.get('/api/waiter/bill/' + billId)
             .then(function (response) {
                 return response.data;
             });

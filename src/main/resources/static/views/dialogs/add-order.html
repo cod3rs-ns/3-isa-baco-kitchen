@@ -48,13 +48,13 @@
             <div flex-gt-sm="50">
 
                 <md-content  max-height="90%" layout="column">
-                    <form name="orderForm">
+                    <form name="orderForm" style="margin-left: 10px;">
                     <md-list>
                         <md-list-item class="md-3-line md-long-text" ng-repeat="meal in  orderVm.orderMeals" style="margin-top: 5px; margin-bottom: 0px;">
                             <img ng-src="{{meal.image}}" class="md-avatar" />
                             <div flex="85" class="md-list-item-text" layout="column">
-                                <h3>Moje ime je jako dugo i imacete problem sa njim</h3>
-                                <h4>drugi dugi red smanji se oo</h4>
+                                <h3>{{meal.name}}</h3>
+                                <h4>{{meal.info}}</h4>
                                 <md-input-container class="md-block">
                                     <label>Količina</label>
                                     <input required type="number" step="any" name="mealCount" ng-model="meal.count" min="1" />
