@@ -10,7 +10,7 @@
 				style="height:100%"
 		>
 			<!-- Name and image -->
-			<md-toolbar class="md-hue-2" style="height: 100%;">
+			<md-toolbar class="md-hue-2">
 				<div layout="row" layout-align="end start">
 					<md-button 	class="md-icon-button" aria-label="Change image"
 								  flow-files-submitted="rmanagerVm.upload($flow)"
@@ -34,8 +34,8 @@
 			<md-divider></md-divider>
 
 			<!-- Account info -->
-			<div layout="column" style="height: 100%; margin-left: 5px;" layout-align="center start" class="additional-info">
-				<div layout="row" layout-align="center center">
+			<div layout="column" layout-align="center start" class="additional-info">
+				<div style=" margin-left: 10px;" layout="row" layout-align="center center">
 					<md-icon class="material-icons">mail_outline
 						<md-tooltip md-direction="top">
 							Email
@@ -43,7 +43,7 @@
 					</md-icon>
 					<h4>&nbsp;&nbsp;{{barmanProfileVm.barman.email}}</h4>
 				</div>
-				<div layout="row" layout-align="center center">
+				<div style=" margin-left: 10px;" layout="row" layout-align="center center">
 					<md-icon class="material-icons">date_range
 						<md-tooltip md-direction="top">
 							Datum rođenja
@@ -51,7 +51,7 @@
 					</md-icon>
 					<h4 >&nbsp;&nbsp;{{barmanProfileVm.barman.birthday | date: 'longDate' }}</h4>
 				</div>
-				<div layout="row" layout-align="center center">
+				<div style=" margin-left: 10px;" layout="row" layout-align="center center">
 					<md-icon class="material-icons">style
 						<md-tooltip md-direction="top">
 							broj cipela
@@ -59,7 +59,7 @@
 					</md-icon>
 					<h4 >&nbsp;&nbsp;{{barmanProfileVm.barman.shoesSize}}</h4>
 				</div>
-				<div layout="row"  layout-align="center center">
+				<div style=" margin-left: 10px;" layout="row"  layout-align="center center">
 					<md-icon class="material-icons">style
 						<md-tooltip md-direction="top">
 							konfekcijski broj
