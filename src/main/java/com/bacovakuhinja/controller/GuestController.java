@@ -180,7 +180,7 @@ public class GuestController {
         Collection<Reservation> reservations = reservationService.findVisitsByOwnerId(id);
 
         for (Reservation reservation : reservations) {
-            Review review = reviewService.getReviewByReservation(reservation.getReservationId(), user.getUserId());
+            Review review = reviewService.getReviewByReservation(reservation.getReservationId(), id);
 
             // FIXME Restaurant Image From DataBase
             reservation.setRestaurant(reservation.getRestaurant());

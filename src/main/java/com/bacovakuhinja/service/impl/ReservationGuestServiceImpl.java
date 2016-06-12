@@ -38,6 +38,18 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     }
 
     @Override
+    public boolean isAccepted(Integer reservationId, Integer userId) {
+
+        // FIXME Better implementation
+        for (ReservationGuest guest : findAll()) {
+            if (guest.getReservation().getReservationId() == reservationId && guest.getStatus().equals(ACCEPTED) && guest.getReservationGuest().getGuestId() == userId)
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public ReservationGuest create(ReservationGuest reservationGuest) {
         return reservationGuestRepository.save(reservationGuest);
     }

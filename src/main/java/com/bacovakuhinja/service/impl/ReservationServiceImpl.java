@@ -43,7 +43,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         Date now = new Date();
         for (Reservation reservation : findAll()) {
-            if (reservationGuestService.isOwner(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().after(now))
+            if ((reservationGuestService.isOwner(reservation.getReservationId(), ownerId) || reservationGuestService.isAccepted(reservation.getReservationId(), ownerId)) && reservation.getReservationDateTime().after(now))
                 reservations.add(reservation);
         }
 
