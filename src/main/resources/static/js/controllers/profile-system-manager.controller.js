@@ -101,4 +101,10 @@ function SystemManagerProfileController(systemManagerService, $mdDialog) {
         });
     }
 
+    systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
+    function showRestaurantDetails(restaurantId) {
+        $location.path('profile-restaurant/' + restaurantId);
+    }
+
+
 }

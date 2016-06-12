@@ -3,6 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.RestaurantProvider;
+import com.bacovakuhinja.model.Sha256;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.RestaurantProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ private RestaurantProviderService providerService;
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantProvider> createProvider(@RequestBody RestaurantProvider provider) {
         // TODO generate password
-        provider.setPassword("generated_password");
+        provider.setPassword(Sha256.getSha256("generated_password"));
         provider.setVerified("not_verified");
         RestaurantProvider created = providerService.create(provider);
         return new ResponseEntity <RestaurantProvider>(created, HttpStatus.CREATED);

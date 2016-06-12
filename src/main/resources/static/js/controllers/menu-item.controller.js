@@ -9,7 +9,7 @@ function MenuItemController(menuItemService, $mdDialog, $mdToast, restaurant_id,
     menuItemVm.restaurant_id = restaurant_id;
     menuItemVm.food_menu_ref = menuItem_menu_ref;
     menuItemVm.drinks_menu_ref = drinks_menu_ref;
-    
+
     menuItemVm.tabs = tabs;
     menuItemVm.cancel = cancel;
     menuItemVm.createMenuItem = createMenuItem;
@@ -24,7 +24,7 @@ function MenuItemController(menuItemService, $mdDialog, $mdToast, restaurant_id,
         image: null,
         specType: null
     };
-    
+
     menuItemVm.allowedTypes = [
         {
             db_value: 'dessert',
@@ -42,7 +42,7 @@ function MenuItemController(menuItemService, $mdDialog, $mdToast, restaurant_id,
 
     function createMenuItem() {
         menuItemService.createMenuItem(menuItemVm.menuItem, restaurant_id)
-            .then(function(addedmenuItem){
+            .then(function (addedmenuItem) {
                 menuItemVm.menuItem_menu_ref.push(addedmenuItem);
                 menuItemVm.showToast('Jelo je uspešno kreirano i dodato u jelovnik.');
                 menuItemVm.tabs.selected = 1; // switch to menuItem menu
@@ -52,12 +52,13 @@ function MenuItemController(menuItemService, $mdDialog, $mdToast, restaurant_id,
 
     function showToast(toast_message) {
         $mdToast.show({
-            hideDelay : 3000,
-            position  : 'top right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            hideDelay: 3000,
+            position: 'top right',
+            template: '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
     };
 
     function cancel() {
         $mdDialog.cancel();
     };
+}
