@@ -128,10 +128,15 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     };
     
     function search() {
-      return guestService.getSearchResult(guestProfileVm.query)
-        .then(function (response) {
-            guestProfileVm.queryResult = response.data;
-        });
+      if (guestProfileVm.query != '') {
+          return guestService.getSearchResult(guestProfileVm.query)
+            .then(function (response) {
+                guestProfileVm.queryResult = response.data;
+            });
+      }
+      else {
+          guestProfileVm.queryResult = [];
+      }
     };
     
     function editProfile() {
