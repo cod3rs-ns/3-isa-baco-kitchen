@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SystemManagerProfileController', SystemManagerProfileController);
 
-SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog'];
+SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog', '$location'];
 
-function SystemManagerProfileController(systemManagerService, $mdDialog) {
+function SystemManagerProfileController(systemManagerService, $mdDialog, $location) {
     var systemManagerProfileVm = this;
 
     systemManagerProfileVm.showSearch = false;

@@ -127,8 +127,8 @@
 					<div class="caption-waiter">
 						<h4>{{restaurant.name}}</h4>
 						<div style="text-align: right; align-content: flex-end;">
-							<md-button style="align-content: right;" class="md-raised md-primary" tooltip="Dodaj menadžera restorana" aria-label="Search" ng-click="">
-								Detalji...
+							<md-button style="align-content: right;" class="md-raised md-primary" aria-label="Search" ng-click="systemManagerProfileVm.showRestaurantDetails(restaurant.restaurantId)">
+								Detalji
 							</md-button>
 							<md-button class="md-icon-button md-raised md-primary" aria-label="Search" ng-click="systemManagerProfileVm.addRestaurantManager(restaurant.restaurantId)">
 								<md-tooltip md-direction="top">
