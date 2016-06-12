@@ -42,7 +42,6 @@ public class ReservationController {
     @Autowired
     private UserService userService;
 
-
     @Authorization(role = "guest")
     @RequestMapping(
             value    = "/api/reservation",
