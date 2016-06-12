@@ -14,6 +14,7 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
     employeeVm.cancel = cancel;
     employeeVm.update = update;
     employeeVm.create = create;
+    employeeVm.sizeClicked = sizeClicked;
 
     initState();
 
@@ -92,4 +93,8 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
         }
         $mdDialog.cancel();
     };
+
+    function sizeClicked(control){
+        employeeVm.employee.dressSize = control;
+    }
 }
