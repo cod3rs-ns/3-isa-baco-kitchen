@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', 'guestService'];
+GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService'];
 
-function GuestProfileController($routeParams, $location, $mdToast, guestService) {
+function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService) {
     var guestProfileVm = this;
 
     // Set bindable memebers at the top of the controller
@@ -12,6 +12,7 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     guestProfileVm.showSearch = false;
     guestProfileVm.editMode = false;
     guestProfileVm.user = {};
+    guestProfileVm.realUser = {};
     guestProfileVm.friendRequests = [];
     guestProfileVm.friends = [];
     guestProfileVm.isFriend = false;
@@ -32,8 +33,18 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     guestProfileVm.to = to;
     guestProfileVm.cancelReservation = cancelReservation;
     guestProfileVm.showToast = showToast;
+    guestProfileVm.sendReview = sendReview;
+    guestProfileVm.isCommented = isCommented;
 
     activate();
+    
+    function sendReview(visit) {
+        visit.review.reservation = visit.reservation.reservationId;
+        return reviewService.addReview(visit.review)
+            .then(function(data) { 
+                visit.review.reviewId = data.reviewId;
+            });
+    };
     
     function cancelReservation(id) {
       
@@ -125,6 +136,7 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     
     function editProfile() {
         guestProfileVm.editMode = true;
+        guestProfileVm.realUser = JSON.parse(JSON.stringify(guestProfileVm.user));
     }
     
     function saveChanges() {
@@ -137,6 +149,11 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
     
     function cancel() {
         guestProfileVm.editMode = false;
+        guestProfileVm.user = JSON.parse(JSON.stringify(guestProfileVm.realUser));
+    }
+    
+    function isCommented(review) {
+        return !(review.reviewId == null);
     }
     
     function activate() {
@@ -155,6 +172,8 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
         isFriend().then(function() { });
         
         getReservations().then(function () { });
+        
+        getVisits().then(function () { });
     };
 
     function getUser() {
@@ -197,11 +216,52 @@ function GuestProfileController($routeParams, $location, $mdToast, guestService)
         });
     };
     
+    function getVisits() {
+        return guestService.getVisits($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.visits = response.data;
+            var index;
+            for (index = 0; index < guestProfileVm.visits.length; ++index) {
+                if (guestProfileVm.visits[index].review == null) {
+                    guestProfileVm.visits[index].review = {
+                        restaurantRate: 1,
+                        foodRate: 1,
+                        serviceRate: 1,
+                        reservation: 1,
+                        comment: ''
+                      };
+                }
+            }
+            
+            return guestProfileVm.visits;
+        });
+    }
+    
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
             position  : 'bottom right',
             template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
+    };
+    
+    guestProfileVm.changePassword = changePassword;
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
     };
 }

@@ -26,8 +26,20 @@ public class ReviewController {
     )
     public ResponseEntity<Collection<Review>> getReviews(@PathVariable Integer id) {
         Collection<Review> reviews = reviewService.restaurantReviews(id);
-
         return new ResponseEntity<Collection<Review>>(reviews, HttpStatus.OK);
+    }
+
+    @Authorization(role = "guest")
+    @RequestMapping(
+            value    = "/api/reviews/reservation/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Review> getReview(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+
+        Review review = reviewService.getReviewByReservation(id, user.getUserId());
+        return new ResponseEntity<Review>(review, HttpStatus.OK);
     }
 
     @Authorization(role = "guest")
@@ -44,5 +56,4 @@ public class ReviewController {
 
         return new ResponseEntity<Review>(created, HttpStatus.CREATED);
     }
-
 }

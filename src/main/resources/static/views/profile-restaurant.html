@@ -112,8 +112,9 @@
 
       <md-tab label="Utisci gostiju">
         <md-content class="md-padding">
-            <md-subheader class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+            <md-subheader ng-hide="restaurantVm.reviews.length > 0" class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
             
+            <!-- Restaurant Reviews -->
             <div style="padding: 5 40" ng-repeat="review in restaurantVm.reviews">
               <p>{{review.reviewer.firstName + ' ' + review.reviewer.lastName}}
               <div layout-gt-sm="row" layout="column">
@@ -134,38 +135,8 @@
                   <div ng-init="review.foodRate"></div>
                   <div class="star-rating" star-rating-no-click rating-value="review.foodRate" data-max="5"></div>
                 </div>
-                
               </div>
               <p>{{review.comment}}</p>
-            </div>
-            <p><b> Vaš komentar: </b></p>
-            <div style="padding: 5 40">
-              <div layout-gt-sm="row" layout="column">
-                <div class="rating-item" flex>
-                  Restoran:
-                  <div ng-init="restaurantVm.review.restaurantRate"></div>
-                  <div class="star-rating" star-rating rating-value="restaurantVm.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                </div>
-
-                <div class="rating-item" flex>
-                  Usluga:
-                  <div ng-init="restaurantVm.review.serviceRate"></div>
-                  <div class="star-rating" star-rating rating-value="restaurantVm.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                </div>
-                
-                <div class="rating-item" flex>
-                  Hrana:
-                  <div ng-init="restaurantVm.review.foodRate"></div>
-                  <div class="star-rating" star-rating rating-value="restaurantVm.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                </div>
-              </div>
-                
-              <md-input-container class="md-block">
-                <label>Komentar</label>
-                <textarea ng-model="restaurantVm.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-              </md-input-container>
-                  
-              <md-button ng-click="restaurantVm.sendReview();" style="float: right">Potvrdi</md-button>
             </div>
         </md-content>
       </md-tab>

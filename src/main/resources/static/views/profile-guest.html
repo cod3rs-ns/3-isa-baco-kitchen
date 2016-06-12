@@ -4,6 +4,10 @@
     <md-toolbar scroll>
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
+        <md-button ng-show="guestProfileVm.admin" class="md-icon-button" aria-label="Change password">
+					<md-tooltip>Promjena lozinke</md-tooltip>
+					<md-icon id="pass-option" aria-label="Change password" ng-click="guestProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
+				</md-button>
         <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
           <md-icon aria-label="Cancel" class="material-icons">cancel</md-icon>
         </md-button>
@@ -14,7 +18,7 @@
           <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
         </md-button>
         <md-menu ng-show="guestProfileVm.admin">
-          <md-button class="md-icon-button" aria-label="Notification" ng-click="$mdOpenMenu($event)">
+          <md-button style="margin-top: -9px;" class="md-icon-button" aria-label="Notification" ng-click="(guestProfileVm.friendRequests.length>0)&&$mdOpenMenu($event)">
             <md-icon aria-label="Notification" class="material-icons">notifications</md-icon>
             <sup class="badge">{{guestProfileVm.friendRequests.length}}</sup>
           </md-button>
@@ -69,24 +73,11 @@
               </md-input-container>
             </div>
             
-            <md-input-container class="md-block">
-              <label>Nova lozinka</label>
+            <!--md-input-container class="md-block">
+              <label>Unesite Vašu lozinku da biste potvrdili izmjene:</label>
               <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-              <input minlength="8" required type="password" id="userPassword" name="userPassword" ng-model="guestProfileVm.user.password"/>
-              <div ng-messages="editProfileForm.userPassword.$error" role="alert">
-                <div ng-message="required">Lozinka je obavezna.</div>
-                <div ng-message="minlength">Lozinka mora imati bar 8 karaktera.</div>
-              </div>
-            </md-input-container>
-
-            <md-input-container class="md-block">
-              <label>Ponovite lozinku</label>
-              <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-              <input required type="password" name="userPasswordRepeated" pw-match="userPassword" ng-model="guestProfileVm.user.passwordRepeated"/>
-              <div ng-messages="editProfileForm.userPasswordRepeated.$error" role="alert">
-                <div ng-message="pwmatch">Lozinke se ne poklapaju.</div>
-              </div>
-            </md-input-container>
+              <input type="password" name="userPassword"/>
+            </md-input-container-->
           </form>
         </div>
       </div>
@@ -104,33 +95,49 @@
   					<div layout="row" layout-wrap>
   						<div class='md-padding' style="background-color: #eee" layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
   							<md-card>
-  								<img ng-src="{{visit.restaurant.imageSrc}}" class="md-card-image" style="width: 196px">
+  								<img ng-src="{{visit.imageSrc}}" class="md-card-image reservation" style="width: 196px">
   								
   								<md-card-content>
   									<h4>{{visit.name}}</h4>
   								</md-card-content>
-  								
-                  <div>
-                    <div class="rating-item">
-                      Restoran:
-                      <div ng-init="visit.rating_restaurant"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_restaurant" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    </div>
 
-                    <div class="rating-item">
-                      Usluga:
-                      <div ng-init="visit.rating_service"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_service" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                  <!-- Ovdje bi trebalo da ocijenim rezervaciju -->
+                  <div style="padding: 5 40">
+                    <div layout="row">
+                      <div class="rating-item" flex>
+                        Restoran:
+                        <div ng-init="visit.review.restaurantRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
+                      </div>
+      
+                      <div class="rating-item" flex>
+                        Usluga:
+                        <div ng-init="visit.review.serviceRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
+                      </div>
+                      
+                      <div class="rating-item" flex>
+                        Hrana:
+                        <div ng-init="visit.review.foodRate"></div>
+                        <div ng-if="!guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                        <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
+                        </div>
                     </div>
+                      
+                    <md-input-container ng-if="!guestProfileVm.isCommented(visit.review)" class="md-block">
+                      <label>Komentar</label>
+                      <textarea ng-model="visit.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
+                    </md-input-container>
                     
-                    <div class="rating-item">
-                      Hrana:
-                      <div ng-init="visit.rating_food"></div>
-                      <div class="star-rating" star-rating rating-value="visit.rating_food" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    </div>
-                    
+                    <p ng-if="guestProfileVm.isCommented(visit.review)">
+                      {{ visit.review.comment }}
+                    </p>
+                        
+                    <md-button ng-click="guestProfileVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
                   </div>
-  							</md-card>
+                </md-card>
   							
   						</div>			
   					</div>
@@ -210,7 +217,7 @@
           </md-menu-item>
         </md-menu-content>
       </md-menu>
-      </md-toolbar>
+    </md-toolbar>
     <md-list>
       <md-subheader class="md-primary">Moji prijatelji</md-subheader>
       <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
@@ -219,17 +226,6 @@
           </a>
           <p>{{friend.firstName + ' ' + friend.lastName}}</p>
         <md-icon ng-show="guestProfileVm.admin" ng-click="guestProfileVm.removeFriend(friend.guestId)" aria-label="Remove friend" class="material-icons cursor-pointer">highlight_off</md-icon>
-      </md-list-item>
-    </md-list>
-    <md-divider></md-divider>
-    <md-list>
-      <md-subheader class="md-primary">Ostali korisnici</md-subheader>
-      <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
-        <a ng-click="guestProfileVm.foo()">
-          <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}"  class="md-avatar" />
-        </a>
-        <p>{{ friend.firstName }}</p>
-        <md-icon aria-label="Search" class="material-icons">add_circle_outline</md-icon>
       </md-list-item>
     </md-list>
   </div>
