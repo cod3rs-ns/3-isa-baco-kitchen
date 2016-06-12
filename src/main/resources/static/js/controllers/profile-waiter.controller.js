@@ -233,7 +233,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
         orderService.canEdit(order.orderId)
             .then(function (data) {
-                alert(data);
                 if(!data){
                     $mdDialog.show(
                         $mdDialog.alert()
