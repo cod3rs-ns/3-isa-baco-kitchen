@@ -19,7 +19,8 @@ function guestService($http) {
         getSearchResult: getSearchResult,
         getVisits: getVisits,
         getReservations: getReservations,
-        resendToken: resendToken
+        resendToken: resendToken,
+        isLoggedIn: isLoggedIn
     };
 
     return service;
@@ -156,6 +157,16 @@ function guestService($http) {
     
     function resendToken(email) {
         return $http.put('api/registration-token-resend', email)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function isLoggedIn() {
+        return $http.get('api/guest/logged')
             .success(function(data) {
                 return data;
             })

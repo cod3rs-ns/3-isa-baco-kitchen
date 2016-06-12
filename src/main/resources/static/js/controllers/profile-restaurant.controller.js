@@ -18,6 +18,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
       reservationDateTime: null,
       length: 0
     };
+    restaurantVm.isGuestLogged = false;
     restaurantVm.reservationTables = [];
     restaurantVm.currentUserFriends = [];
     restaurantVm.inviteFriend = inviteFriend;
@@ -57,8 +58,13 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
 
         });
         
-        getFriends().then(function() {
-          
+        isLoggedIn().then(function() {
+            // alert(restaurantVm.isGuestLogged);
+            if (restaurantVm.isGuestLogged) {
+                getFriends().then(function() {
+                  
+                });
+            }
         });
     };
 
@@ -82,6 +88,14 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
             .then(function(data) {
                 restaurantVm.reviews = data;
                 return restaurantVm.reviews;
+            });
+    };
+    
+    function isLoggedIn() {
+        return guestService.isLoggedIn()
+            .then(function(response) {
+                restaurantVm.isGuestLogged = response.data;
+                return restaurantVm.isGuestLogged;
             });
     };
 

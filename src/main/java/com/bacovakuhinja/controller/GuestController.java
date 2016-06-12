@@ -2,10 +2,9 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
-import com.bacovakuhinja.service.FriendshipService;
-import com.bacovakuhinja.service.GuestService;
-import com.bacovakuhinja.service.ReservationService;
-import com.bacovakuhinja.service.ReviewService;
+import com.bacovakuhinja.service.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,11 +15,16 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import static javax.crypto.Cipher.SECRET_KEY;
+
 @RestController
 public class GuestController {
 
     @Autowired
     GuestService guestService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     FriendshipService friendshipService;
@@ -185,6 +189,45 @@ public class GuestController {
         }
 
         return new ResponseEntity<Collection<Visit>>(result, HttpStatus.OK);
+    }
+
+    // FIXME @DMG
+    @RequestMapping (
+            value    = "api/guest/logged",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> isGuestLoggedIn(final HttpServletRequest request) {
+        final String auth = request.getHeader("Authorization");
+        if (auth == null || !auth.startsWith("Bearer ")) {
+            return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+        }
+
+        // Authorization token
+        final String token = auth.substring(7);
+
+        final Claims claims = Jwts.parser().setSigningKey("VojislavSeselj")
+                .parseClaimsJws(token).getBody();
+
+        final String email = claims.get("user").toString();
+
+
+        User guest = null;
+        // FIXME Maybe change...
+        for (User user : userService.findAll()) {
+            if (user.getEmail().equals(email) && user.getType().equals("guest")) {
+                guest = user;
+                break;
+            }
+        }
+
+        System.out.println(guest);
+
+        if (guest != null) {
+            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     }
 
 }

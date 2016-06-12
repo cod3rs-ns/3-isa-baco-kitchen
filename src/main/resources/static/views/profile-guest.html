@@ -5,7 +5,6 @@
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
         <md-button ng-show="guestProfileVm.admin" class="md-icon-button" aria-label="Change password">
-					<md-tooltip>Promjena lozinke</md-tooltip>
 					<md-icon id="pass-option" aria-label="Change password" ng-click="guestProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
 				</md-button>
         <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
@@ -34,16 +33,13 @@
             </md-menu-item>
           </md-menu-content>
         </md-menu>
-        <md-button class="md-icon-button" aria-label="More">
-          <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-        </md-button>
       </div>
     </md-toolbar>
     
     <div layout="column">
       <div layout="row" layout-xs="column">
         <div flex class="content">
-          <img alt="{{guestProfileVm.user.firstName}}" ng-src="{{guestProfileVm.user.image}}" class="md-avatar" />
+          <img alt="{{guestProfileVm.user.firstName}}" ng-src="{{guestProfileVm.user.image}}" class="md-avatar profile-image" />
         </div>
         <div flex class="content">
           <!-- Ime i prezime -->
@@ -72,12 +68,6 @@
                 </div>
               </md-input-container>
             </div>
-            
-            <!--md-input-container class="md-block">
-              <label>Unesite Vašu lozinku da biste potvrdili izmjene:</label>
-              <md-icon aria-label="Password" class="material-icons">lock_outline</md-icon>
-              <input type="password" name="userPassword"/>
-            </md-input-container-->
           </form>
         </div>
       </div>
@@ -156,9 +146,7 @@
                   </md-card-title>
                   <md-card-content>
                     <img src="http://www.tastealanya.com/wp-content/uploads/2014/03/reserved.jpg" class="md-card-image reservation" alt="Washed Out">
-
                   </md-card-content>
-
 
                   <div class="reservation-item">
                     <i class="material-icons">today</i> {{ reservation.reservationDateTime}}
