@@ -1,12 +1,10 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.model.Guest;
-import com.bacovakuhinja.model.Reservation;
-import com.bacovakuhinja.model.User;
-import com.bacovakuhinja.service.FriendshipService;
-import com.bacovakuhinja.service.GuestService;
-import com.bacovakuhinja.service.ReservationService;
+import com.bacovakuhinja.model.*;
+import com.bacovakuhinja.service.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Collection;
+
+import static javax.crypto.Cipher.SECRET_KEY;
 
 @RestController
 public class GuestController {
@@ -23,10 +24,16 @@ public class GuestController {
     GuestService guestService;
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     FriendshipService friendshipService;
 
     @Autowired
     ReservationService reservationService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @Authorization(role = "guest")
     @RequestMapping (
@@ -158,6 +165,69 @@ public class GuestController {
     public ResponseEntity<Collection<Reservation>> getReservations(@PathVariable Integer id) {
         Collection<Reservation> result = reservationService.findByOwnerId(id);
         return new ResponseEntity<Collection<Reservation>>(result, HttpStatus.OK);
+    }
+
+    @Authorization(role = "guest")
+    @RequestMapping (
+            value    = "api/guest/visits/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Visit>> getVisits(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+
+        Collection<Visit> result = new ArrayList<Visit>();
+        Collection<Reservation> reservations = reservationService.findVisitsByOwnerId(id);
+
+        for (Reservation reservation : reservations) {
+            Review review = reviewService.getReviewByReservation(reservation.getReservationId(), user.getUserId());
+
+            // FIXME Restaurant Image From DataBase
+            reservation.setRestaurant(reservation.getRestaurant());
+            result.add(new Visit(reservation, review, reservation.getRestaurant().getName(),
+                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser"));
+        }
+
+        return new ResponseEntity<Collection<Visit>>(result, HttpStatus.OK);
+    }
+
+    // FIXME @DMG
+    @RequestMapping (
+            value    = "api/guest/logged",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> isGuestLoggedIn(final HttpServletRequest request) {
+        final String auth = request.getHeader("Authorization");
+        if (auth == null || !auth.startsWith("Bearer ")) {
+            return new ResponseEntity<Boolean>(false, HttpStatus.OK);
+        }
+
+        // Authorization token
+        final String token = auth.substring(7);
+
+        final Claims claims = Jwts.parser().setSigningKey("VojislavSeselj")
+                .parseClaimsJws(token).getBody();
+
+        final String email = claims.get("user").toString();
+
+
+        User guest = null;
+        // FIXME Maybe change...
+        for (User user : userService.findAll()) {
+            if (user.getEmail().equals(email) && user.getType().equals("guest")) {
+                guest = user;
+                break;
+            }
+        }
+
+        System.out.println(guest);
+
+        if (guest != null) {
+            return new ResponseEntity<Boolean>(true, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     }
 
 }

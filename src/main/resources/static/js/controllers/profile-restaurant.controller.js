@@ -12,25 +12,15 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.allTables = [];
     restaurantVm.freeTables = [];
     restaurantVm.addManagerOption = false;
-    restaurantVm.review = {
-      // reviewId: 1,
-      restaurantRate: 1,
-      foodRate: 1,
-      serviceRate: 1,
-      reservation: 1,
-      comment: ''
-    };
-    
     restaurantVm.DateTime = {};
     restaurantVm.reservation = {
       restaurant: null,
       reservationDateTime: null,
       length: 0
     };
+    restaurantVm.isGuestLogged = false;
     restaurantVm.reservationTables = [];
     restaurantVm.currentUserFriends = [];
-    
-    restaurantVm.sendReview = sendReview;
     restaurantVm.inviteFriend = inviteFriend;
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.selectTable = selectTable;
@@ -68,25 +58,14 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
 
         });
         
-        getFriends().then(function() {
-          
+        isLoggedIn().then(function() {
+            // alert(restaurantVm.isGuestLogged);
+            if (restaurantVm.isGuestLogged) {
+                getFriends().then(function() {
+                  
+                });
+            }
         });
-    };
-    
-    function sendReview() {
-        return reviewService.addReview(restaurantVm.review)
-            .then(function(data) {
-                restaurantVm.reviews.push(data);
-                
-                restaurantVm.review = {
-                  // reviewId: 1,
-                  restaurantRate: 1,
-                  foodRate: 1,
-                  serviceRate: 1,
-                  reservation: 1,
-                  comment: ''
-                };
-            });
     };
 
     function setPriorities() {
@@ -109,6 +88,14 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
             .then(function(data) {
                 restaurantVm.reviews = data;
                 return restaurantVm.reviews;
+            });
+    };
+    
+    function isLoggedIn() {
+        return guestService.isLoggedIn()
+            .then(function(response) {
+                restaurantVm.isGuestLogged = response.data;
+                return restaurantVm.isGuestLogged;
             });
     };
 

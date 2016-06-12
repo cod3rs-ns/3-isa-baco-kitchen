@@ -51,8 +51,16 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Collection<Reservation> findByRestaurantId(Integer restaurantId) {
-        return reservationRepository.findByRestaurant_RestaurantId(restaurantId);
+    public Collection<Reservation> findVisitsByOwnerId(Integer ownerId) {
+        Collection<Reservation> reservations = new ArrayList<Reservation>();
+
+        Date now = new Date();
+        for (Reservation reservation : findAll()) {
+            if (reservationGuestService.isOwner(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().before(now))
+                reservations.add(reservation);
+        }
+
+        return reservations;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.bacovakuhinja.service.impl;
 
+import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.Review;
+import com.bacovakuhinja.repository.ReservationRepository;
 import com.bacovakuhinja.repository.ReviewRepository;
 import com.bacovakuhinja.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class ReviewServiceImpl implements ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
 
+    @Autowired
+    ReservationRepository reservationRepository;
+
     @Override
     public Review create(Review review) {
         return reviewRepository.save(review);
@@ -25,12 +30,18 @@ public class ReviewServiceImpl implements ReviewService {
         Collection<Review> reviews = new ArrayList<Review>();
 
         for (Review review : reviewRepository.findAll()) {
-            if (review.getReservation() == id) {
+            Reservation reservation = reservationRepository.findOne(review.getReservation());
+            if (reservation.getRestaurant().getRestaurantId() == id) {
                 reviews.add(review);
             }
         }
 
         return reviews;
+    }
+
+    @Override
+    public Review getReviewByReservation(Integer id, Integer userId) {
+        return reviewRepository.findByReservationAndReviewer_guestId(id, userId);
     }
 
 }
