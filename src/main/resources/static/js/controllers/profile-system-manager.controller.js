@@ -21,11 +21,11 @@ function SystemManagerProfileController(systemManagerService, $mdDialog) {
 
     function getSystemManager(){
         return systemManagerService.getLoggedSM()
-            .then(function(data) {
+            .then(function(response) {
+                var data = response.data;
                 systemManagerProfileVm.smanager = data;
                 return systemManagerProfileVm.smanager;
             });
-
     };
 
     function getRestaurants(id) {
@@ -84,5 +84,21 @@ function SystemManagerProfileController(systemManagerService, $mdDialog) {
             }
         );
     };
+
+    systemManagerProfileVm.addRestaurantManager = addRestaurantManager;
+    function addRestaurantManager(restaurantId) {
+        $mdDialog.show({
+            controller: 'SingleRManagerController',
+            controllerAs: 'rmanagerVm',
+            templateUrl: '/views/dialogs/single-rmanager-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : null,
+                restaurant_id : restaurantId
+            }
+        });
+    }
 
 }
