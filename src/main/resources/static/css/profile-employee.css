@@ -148,7 +148,7 @@ hr{
 
 .fond{position:absolute;top:0;left:0; right:0;bottom:0;}
 
-.style_prevu_kit
+.dressSizeBox
 {
 	background: #3949AB;
 	color: white;
@@ -167,7 +167,7 @@ hr{
 	transform: scale(1);
 	outline: none;
 }
-.style_prevu_kit:hover
+.dressSizeBox:hover
 {
 	box-shadow: 0px 0px 20px #000000;
 	z-index: 2;
