@@ -2,18 +2,29 @@ angular
     .module('isa-mrs-project')
     .controller('AddOrderController', AddOrderController);
 
-AddOrderController.$inject = ['menuItemService', 'orderService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit'];
+AddOrderController.$inject = ['menuItemService', 'orderService', 'reservationService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit', 'reservationId'];
 
-function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, table, restaurantId, edit) {
+function AddOrderController(menuItemService, orderService, reservationService, $mdDialog, $mdToast, table, restaurantId, edit, reservationId) {
     var orderVm = this;
     orderVm.cancel = cancel;
     orderVm.showToast = showToast;
     orderVm.meals  = [];
+    
+    orderVm.reservation = {};
+    orderVm.tableId = null;
 
     activate();
     
     function activate() {
         console.log(table);
+        
+        if (reservationId != null) {
+        reservationService.getInvite(reservationId)
+          .then(function (data) {
+            orderVm.reservation = data.reservation;
+            orderVm.tableId = data.tableId;
+          });
+        }
 
         if(edit == null) {
             menuItemService.getAllByRestaurant(restaurantId)
@@ -96,15 +107,27 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
     orderVm.confirm = confirm;
     function confirm(){
         if (orderVm.orderMeals.length !== 0){
-            var order = createOrder();
+            
             if(edit == null) {
-                orderService.addOrder(order, table.tableId, restaurantId)
+                if (reservationId == null) {
+                  var order = createOrder();
+                  orderService.addOrder(order, table.tableId, restaurantId)
+                      .then(function (data) {
+                          if (data != null) {
+                              showToast("Porudžbina je uspješno dodata.");
+                              $mdDialog.cancel();
+                          }
+                      });
+                }
+                else {
+                  var order = createReservationOrder();
+                  orderService.addOrder(order, orderVm.tableId, restaurantId)
                     .then(function (data) {
                         if (data != null) {
-                            showToast("Porudžbina je uspješno dodata.");
-                            $mdDialog.cancel();
+                          showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
                         }
-                    });
+                      });
+                }
             }
             else{
                 orderService.updateOrder(order, restaurantId)
@@ -145,4 +168,30 @@ function AddOrderController(menuItemService, orderService, $mdDialog, $mdToast, 
         return order;
     };
 
+    function createReservationOrder() {
+        var order = {
+            orderId: null, 
+            date : new Date(),
+            deadline: orderVm.reservation.reservationDateTime,
+            reservation: orderVm.reservation,
+            items : []
+        };
+    
+        orderVm.orderMeals.forEach(function (meal) {
+            var count = meal.count;
+            delete meal.count;
+            delete meal.hide;
+    
+            var item = {
+                itemId : null,
+                state : "CREATED",
+                order : null,
+                menuItem : meal,
+                amount : count
+            };
+            order.items.push(item);
+        });
+    
+        return order;
+    };
 }

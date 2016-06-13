@@ -59,10 +59,9 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
         });
         
         isLoggedIn().then(function() {
-            // alert(restaurantVm.isGuestLogged);
             if (restaurantVm.isGuestLogged) {
                 getFriends().then(function() {
-                  
+
                 });
             }
         });
@@ -208,9 +207,9 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function getFriends() {
-        return guestService.getFriends(-1).then(function(data) {
-            restaurantVm.currentUserFriends = data;
-            return restaurantVm.friends;
+        return guestService.getFriends(-1).then(function(response) {
+            restaurantVm.currentUserFriends = response.data;
+            return restaurantVm.currentUserFriends;
         });
     };
     

@@ -1,17 +1,24 @@
 package com.bacovakuhinja.service;
 
-import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.ReservationGuest;
 
 import java.util.Collection;
 
 public interface ReservationGuestService {
 
-    public Collection<ReservationGuest> findAll();
+    Collection<ReservationGuest> findAll();
 
-    public boolean isOwner(Integer reservationId, Integer userId);
+    boolean isOwner(Integer reservationId, Integer userId);
 
-    public ReservationGuest create(ReservationGuest reservationGuest);
+    boolean isInvited(Integer reservationId, Integer userId);
 
-    public ReservationGuest update(ReservationGuest reservationGuest);
+    boolean isAccepted(Integer reservationId, Integer userId);
+
+    ReservationGuest acceptInvitation(Integer reservationId, Integer userId);
+
+    ReservationGuest declineInvitation(Integer reservationId, Integer userId);
+
+    ReservationGuest create(ReservationGuest reservationGuest);
+
+    ReservationGuest update(ReservationGuest reservationGuest);
 }

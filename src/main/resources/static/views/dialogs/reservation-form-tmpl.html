@@ -84,7 +84,7 @@
               <h1>Koga želite da pozovete od prijatelja?</h1>
               <md-list>
                 <md-list-item ng-repeat="friend in restaurantVm.currentUserFriends">
-                  <img alt="{{ friend.firstName }}" ng-src="{{ friend.image }}" class="md-avatar" />
+                  <img alt="{{ friend.firstName }}" ng-src="{{friend.image}}" class="md-avatar" />
                   <p>{{ friend.firstName + ' ' + friend.lastName }}</p>
                   <md-button ng-hide="friend.invited" ng-click="restaurantVm.inviteFriend(friend.userId);">Pozovi</md-button>
                 </md-list-item>

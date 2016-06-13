@@ -21,6 +21,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     guestProfileVm.queryResult = [];
     guestProfileVm.activeReservations = [];
     guestProfileVm.visits = [];
+    guestProfileVm.invitations = [];
     // Functions 
     guestProfileVm.editProfile = editProfile;
     guestProfileVm.saveChanges = saveChanges;
@@ -35,6 +36,10 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     guestProfileVm.showToast = showToast;
     guestProfileVm.sendReview = sendReview;
     guestProfileVm.isCommented = isCommented;
+    
+    guestProfileVm.acceptInvite = acceptInvite;
+    guestProfileVm.declineInvite = declineInvite;
+    guestProfileVm.mealOrder = mealOrder;
 
     activate();
     
@@ -152,6 +157,43 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         guestProfileVm.editMode = false;
     }
     
+    function acceptInvite(reservationId) {
+        guestService.acceptInvite(reservationId)
+          .then(function (response) {
+              // TODO Remove from list and update list...
+              getVisits().then(function () { });
+              
+              getInvitations().then(function () { });
+          });
+    };
+    
+    function declineInvite(reservationId) {
+      guestService.declineInvite(reservationId)
+        .then(function (response) {
+            // TODO Remove from list and update list...
+            getVisits().then(function () { });
+            
+            getInvitations().then(function () { });
+        });
+    };
+    
+    function mealOrder(reservation) {
+      $mdDialog.show({
+          controller: 'AddOrderController',
+          controllerAs: 'orderVm',
+          templateUrl: '/views/dialogs/add-order.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose:false,
+          fullscreen: true,
+          locals: {
+              table: null,
+              restaurantId : reservation.restaurantId,
+              edit : null,
+              reservationId : reservation.reservation.reservationId
+          },
+      });
+    };
+    
     function cancel() {
         guestProfileVm.editMode = false;
         guestProfileVm.user = JSON.parse(JSON.stringify(guestProfileVm.realUser));
@@ -179,6 +221,8 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         getReservations().then(function () { });
         
         getVisits().then(function () { });
+        
+        getInvitations().then(function () { });
     };
 
     function getUser() {
@@ -218,6 +262,14 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         .then(function(response) {
             guestProfileVm.activeReservations = response.data;
             return guestProfileVm.activeReservations;
+        });
+    };
+    
+    function getInvitations() {
+        return guestService.getInvitations($routeParams.guestId)
+        .then(function(response) {
+            guestProfileVm.invitations = response.data;
+            return guestProfileVm.invitations;
         });
     };
     

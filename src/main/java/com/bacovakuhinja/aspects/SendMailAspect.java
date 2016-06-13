@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
@@ -213,7 +214,7 @@ public class SendMailAspect {
         sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
-
+    @Async
     public static void sendMail(String address, String subject, String message) throws MessagingException {
 
         JavaMailSenderImpl sender = new JavaMailSenderImpl();

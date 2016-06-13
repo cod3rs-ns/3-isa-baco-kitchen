@@ -15,6 +15,8 @@ public interface ReservationService {
 
     Collection<Reservation> findVisitsByOwnerId(Integer ownerId);
 
+    Collection<Reservation> findInvitationsByOwnerId(Integer ownerId);
+
     Collection<Reservation> findByRestaurantIdAndTime(Integer restaurantId, Date datetime, Integer length);
 
     Reservation create(Reservation reservation);

@@ -174,7 +174,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
             locals: {
                 table: waiterProfileVm.selectedTable,
                 restaurantId : waiterProfileVm.waiter.restaurantID,
-                edit : null
+                edit : null,
+                reservationId : null
             },
             onRemoving : function() {getOrders();}
         });
