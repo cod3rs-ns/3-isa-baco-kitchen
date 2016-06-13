@@ -170,6 +170,42 @@
   					</div>
           </md-content>
         </md-tab>
+        <md-tab label="Pozivi na rezervacije">
+          <md-content class="md-padding" style="background-color: #eee;">
+            <div layout="row" layout-wrap>
+  						<div layout="row" ng-repeat="invite in guestProfileVm.invitations" layout-wrap>
+                <md-card>
+                  <md-card-title>
+                    <md-card-title-text>
+                      <span class="md-headline">{{invite.name}}</span>
+                      <span class="md-subhead">Pozvao vas je {{invite.inviter}}</span>
+                    </md-card-title-text>
+                  </md-card-title>
+                  <md-card-content>
+                    <img ng-src="{{invite.imageSrc}}" class="md-card-image reservation" alt="Washed Out">
+                  </md-card-content>
+
+                  <div class="reservation-item">
+                    <i class="material-icons">today</i> {{ invite.reservation.reservationDateTime | date:'dd.MM.yyyy.'}}
+                  </div>
+                  <div class="reservation-item">
+                    <i class="material-icons">schedule</i> {{ invite.reservation.reservationDateTime | date:'HH:mm'}}
+                  </div>
+                  <div class="reservation-item">
+                    <i class="material-icons">people</i> 1
+                  </div>
+
+                  <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.acceptInvite(invite.reservation.reservationId);"><i class="material-icons">done</i></md-button>
+                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.declineInvite(invite.reservation.reservationId);"><i class="material-icons">clear</i></md-button>
+                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.mealOrder(invite.reservationId);">Naruči</md-button>
+                  </md-card-actions>
+                </md-card>
+  							
+  						</div>			
+  					</div>
+          </md-content>
+        </md-tab>
       </md-tabs>
     </div>
   </div>

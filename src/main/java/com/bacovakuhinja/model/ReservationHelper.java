@@ -1,15 +1,16 @@
 package com.bacovakuhinja.model;
 
 
-public class Visit {
+public class ReservationHelper {
 
     private Reservation reservation;
     private Review review;
     private String name;
     private String imageSrc;
+    private String inviter;
 
 
-    public Visit(Reservation reservation, Review review, String name, String imageSrc) {
+    public ReservationHelper(Reservation reservation, Review review, String name, String imageSrc) {
         this.reservation = reservation;
         this.review = review;
         this.name = name;
@@ -46,5 +47,13 @@ public class Visit {
 
     public void setImageSrc(String imageSrc) {
         this.imageSrc = imageSrc;
+    }
+
+    public String getInviter() {
+        return inviter;
+    }
+
+    public void setInviter(String inviter) {
+        this.inviter = inviter;
     }
 }

@@ -56,7 +56,20 @@ public class ReservationServiceImpl implements ReservationService {
 
         Date now = new Date();
         for (Reservation reservation : findAll()) {
-            if (reservationGuestService.isOwner(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().before(now))
+            if ((reservationGuestService.isOwner(reservation.getReservationId(), ownerId) || reservationGuestService.isAccepted(reservation.getReservationId(), ownerId)) && reservation.getReservationDateTime().before(now))
+                reservations.add(reservation);
+        }
+
+        return reservations;
+    }
+
+    @Override
+    public Collection<Reservation> findInvitationsByOwnerId(Integer ownerId) {
+        Collection<Reservation> reservations = new ArrayList<Reservation>();
+
+        Date now = new Date();
+        for (Reservation reservation : findAll()) {
+            if (reservationGuestService.isInvited(reservation.getReservationId(), ownerId) && reservation.getReservationDateTime().after(now))
                 reservations.add(reservation);
         }
 

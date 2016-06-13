@@ -38,6 +38,17 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     }
 
     @Override
+    public boolean isInvited(Integer reservationId, Integer userId) {
+        // FIXME Better implementation
+        for (ReservationGuest guest : findAll()) {
+            if (guest.getReservation().getReservationId() == reservationId && guest.getStatus().equals(INVITED) && guest.getReservationGuest().getGuestId() == userId)
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean isAccepted(Integer reservationId, Integer userId) {
 
         // FIXME Better implementation
@@ -50,13 +61,34 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     }
 
     @Override
+    public ReservationGuest acceptInvitation(Integer reservationId, Integer userId) {
+        ReservationGuest rg = reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestId(reservationId, userId);
+
+        if (rg == null)
+            return null;
+
+        rg.setStatus(ACCEPTED);
+        return reservationGuestRepository.save(rg);
+    }
+
+    @Override
+    public ReservationGuest declineInvitation(Integer reservationId, Integer userId) {
+        ReservationGuest rg = reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestId(reservationId, userId);
+
+        if (rg == null)
+            return null;
+
+        rg.setStatus(REJECTED);
+        return reservationGuestRepository.save(rg);
+    }
+
+    @Override
     public ReservationGuest create(ReservationGuest reservationGuest) {
         return reservationGuestRepository.save(reservationGuest);
     }
 
     @Override
     public ReservationGuest update(ReservationGuest reservationGuest) {
-        // ReservationGuest rg =
         return null;
     }
 }

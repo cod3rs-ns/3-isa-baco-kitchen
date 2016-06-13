@@ -19,6 +19,9 @@ function guestService($http) {
         getSearchResult: getSearchResult,
         getVisits: getVisits,
         getReservations: getReservations,
+        getInvitations: getInvitations,
+        acceptInvite: acceptInvite,
+        declineInvite: declineInvite,
         resendToken: resendToken,
         isLoggedIn: isLoggedIn
     };
@@ -77,6 +80,26 @@ function guestService($http) {
     
     function reject(id) {
         return $http.put('api/guest/reject-friend/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function acceptInvite(id) {
+        return $http.put('api/guest/accept-invite/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function declineInvite(id) {
+        return $http.put('api/guest/decline-invite/' + id)
             .success(function(data) {
                 return data;
             })
@@ -147,6 +170,16 @@ function guestService($http) {
     
     function getVisits(id) {
         return $http.get('api/guest/visits/' + id)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function getInvitations(id) {
+        return $http.get('api/guest/invitations/' + id)
             .success(function(data) {
                 return data;
             })

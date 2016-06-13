@@ -10,7 +10,13 @@ public interface ReservationGuestService {
 
     boolean isOwner(Integer reservationId, Integer userId);
 
+    boolean isInvited(Integer reservationId, Integer userId);
+
     boolean isAccepted(Integer reservationId, Integer userId);
+
+    ReservationGuest acceptInvitation(Integer reservationId, Integer userId);
+
+    ReservationGuest declineInvitation(Integer reservationId, Integer userId);
 
     ReservationGuest create(ReservationGuest reservationGuest);
 
