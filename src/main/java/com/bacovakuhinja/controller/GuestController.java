@@ -212,6 +212,7 @@ public class GuestController {
 
             // FIXME Find Reservation Owner's Name and Lastname
             helper.setInviter("Ime i prezme");
+            helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
             result.add(helper);
         }
 

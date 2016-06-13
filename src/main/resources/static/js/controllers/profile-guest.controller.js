@@ -161,6 +161,9 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         guestService.acceptInvite(reservationId)
           .then(function (response) {
               // TODO Remove from list and update list...
+              getVisits().then(function () { });
+              
+              getInvitations().then(function () { });
           });
     };
     
@@ -168,11 +171,27 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
       guestService.declineInvite(reservationId)
         .then(function (response) {
             // TODO Remove from list and update list...
+            getVisits().then(function () { });
+            
+            getInvitations().then(function () { });
         });
     };
     
-    function mealOrder(reservationId) {
-
+    function mealOrder(reservation) {
+      $mdDialog.show({
+          controller: 'AddOrderController',
+          controllerAs: 'orderVm',
+          templateUrl: '/views/dialogs/add-order.html',
+          parent: angular.element(document.body),
+          clickOutsideToClose:false,
+          fullscreen: true,
+          locals: {
+              table: null,
+              restaurantId : reservation.restaurantId,
+              edit : null,
+              reservationId : reservation.reservation.reservationId
+          },
+      });
     };
     
     function cancel() {
