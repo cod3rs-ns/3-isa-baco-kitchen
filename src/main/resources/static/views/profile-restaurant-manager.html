@@ -145,7 +145,14 @@
 	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
-								<md-button class="md-fab md-primary md-mini" aria-label="Edit" style="margin-left:100px;">
+								<md-button 	class="md-fab md-primary md-mini" aria-label="Report" style="margin-left:50px;"
+											ng-click="rmanagerVm.showMenuItemReport(meal.menuItemId);">
+									<md-icon class="material-icons">show_chart</md-icon>
+									<md-tooltip>
+										Izveštaj
+									</md-tooltip>
+								</md-button>
+								<md-button class="md-fab md-primary md-mini" aria-label="Edit">
 									<md-icon class="material-icons">edit</md-icon>
 									<md-tooltip>
 										Izmeni

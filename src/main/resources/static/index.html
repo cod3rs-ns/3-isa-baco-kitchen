@@ -54,6 +54,11 @@
     <script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.css">
 
+    <!-- Google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+    </script>
 </head>
 <body style="background-color: #eee;">
     <md-content ng-cloak>
@@ -95,9 +100,9 @@
           </div>
         </md-toolbar>
     </md-content>
-    
+
     <div style="background-color: #eee;" ng-view></div>
-    
+
     <!-- AngularJS App Init -->
     <script src="/js/app.module.js"></script>
     <script src="/js/app.route.js"></script>
@@ -135,6 +140,7 @@
     <script src="/js/controllers/single-offer.controller.js"></script>
     <script src="/js/controllers/single-response.controller.js"></script>
     <script src="/js/controllers/single-bill.controller.js"></script>
+    <script src="/js/controllers/report-controllers/menu-item-report.controller.js"></script>
     <!-- Directives -->
     <script src="/js/directives/rating.directive.js"></script>
     <script src="/js/directives/rating-no-click.directive.js"></script>

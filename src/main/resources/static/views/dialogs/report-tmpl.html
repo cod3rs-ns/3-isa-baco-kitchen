@@ -1,0 +1,28 @@
+<md-dialog aria-label="Food report"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{reportVm.dialogName}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="reportVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <md-content layout-padding>
+                <div id="chart_div"></div>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+
+        <md-button class="md-raised md-default" ng-click="reportVm.cancel()" md-autofocus>
+            Zatvori
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

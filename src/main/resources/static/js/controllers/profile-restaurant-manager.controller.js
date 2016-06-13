@@ -73,6 +73,21 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     };
 
+    rmanagerVm.showMenuItemReport = showMenuItemReport;
+    function showMenuItemReport(id) {
+        $mdDialog.show({
+            controller: 'MenuItemReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                item_id : id
+            }
+        });
+    };
+
     function createDrink(restaurant_id, drinks_menu_ref) {
         $mdDialog.show({
             controller: 'SingleDrinkController',
