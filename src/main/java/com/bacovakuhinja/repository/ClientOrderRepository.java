@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface ClientOrderRepository extends JpaRepository<ClientOrder, Integer> {
     List<ClientOrder> findByTable_TableIdAndBill_BillIdOrderByDateAsc(Integer tableId, Integer billId);
+
+    ClientOrder findByReservation_reservationIdAndClientId(Integer reservationId, Integer userId);
 }

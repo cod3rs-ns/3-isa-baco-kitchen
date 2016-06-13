@@ -40,6 +40,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     guestProfileVm.acceptInvite = acceptInvite;
     guestProfileVm.declineInvite = declineInvite;
     guestProfileVm.mealOrder = mealOrder;
+    guestProfileVm.cancelMealOrder = cancelMealOrder;
 
     activate();
     
@@ -55,7 +56,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
       
       var reservation = null;
       for (var i in guestProfileVm.activeReservations) {
-          if (guestProfileVm.activeReservations[i].reservationId == id) {
+          if (guestProfileVm.activeReservations[i].reservation.reservationId == id) {
               reservation = guestProfileVm.activeReservations[i];
               break;
           }
@@ -189,9 +190,26 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               table: null,
               restaurantId : reservation.restaurantId,
               edit : null,
-              reservationId : reservation.reservation.reservationId
+              reservationId : reservation.reservation.reservationId,
+              guestId : $routeParams.guestId
           },
+          onRemoving: function () {
+              getReservations();
+          }
       });
+    };
+    
+    function cancelMealOrder(reservation) {
+        if (Date.now() + 30*60*1000 < reservation.reservation.reservationDateTime) {
+          guestService.cancelMealOrder(reservation.order)
+            .then(function() {
+                showToast('Otkazali ste porudžbinu. Sada možete napraviti novu!');
+                reservation.order = null;
+            });
+        }
+        else {
+            showToast('Vaša porudžbina će biti spremna za manje od pola sata. Nije moguće otkazati.');
+        }
     };
     
     function cancel() {

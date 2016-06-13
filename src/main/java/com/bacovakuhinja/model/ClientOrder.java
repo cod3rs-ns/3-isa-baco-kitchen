@@ -31,6 +31,9 @@ public class ClientOrder implements Serializable{
     @JoinColumn(name = "co_reservation_id")
     private Reservation reservation;
 
+    @Column(name = "co_client_id")
+    private Integer clientId;
+
     @JsonIgnore
     @ManyToOne()
     @JoinColumn(name = "co_table_id")
@@ -116,5 +119,13 @@ public class ClientOrder implements Serializable{
     @JsonProperty
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
     }
 }

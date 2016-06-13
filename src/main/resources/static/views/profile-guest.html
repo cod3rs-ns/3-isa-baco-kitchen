@@ -143,26 +143,27 @@
                 <md-card>
                   <md-card-title>
                     <md-card-title-text>
-                      <span class="md-headline">Rez</span>
-                      <span class="md-subhead">Tip</span>
+                      <span class="md-headline">{{reservation.name}}</span>
                     </md-card-title-text>
                   </md-card-title>
                   <md-card-content>
-                    <img src="http://www.tastealanya.com/wp-content/uploads/2014/03/reserved.jpg" class="md-card-image reservation" alt="Washed Out">
+                    <img ng-src="{{reservation.imageSrc}}" class="md-card-image reservation" alt="Washed Out">
                   </md-card-content>
 
                   <div class="reservation-item">
-                    <i class="material-icons">today</i> {{ reservation.reservationDateTime | date:'dd.MM.yyyy.'}}
+                    <i class="material-icons">today</i> {{ reservation.reservation.reservationDateTime | date:'dd.MM.yyyy.'}}
                   </div>
                   <div class="reservation-item">
-                    <i class="material-icons">schedule</i> {{ reservation.reservationDateTime | date:'HH:mm'}}
+                    <i class="material-icons">schedule</i> {{ reservation.reservation.reservationDateTime | date:'HH:mm'}}
                   </div>
                   <div class="reservation-item">
                     <i class="material-icons">people</i> 1
                   </div>
 
                   <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.cancelReservation(reservation.reservationId);">Otkaži rezervaciju</md-button>
+                    <md-button ng-show="guestProfileVm.admin && reservation.order == null" ng-click="guestProfileVm.mealOrder(reservation);">Naruči</md-button>
+                    <md-button ng-show="guestProfileVm.admin && reservation.order != null" ng-click="guestProfileVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
+                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.cancelReservation(reservation.reservation.reservationId);">Otkaži rezervaciju</md-button>
                   </md-card-actions>
                 </md-card>
   							
@@ -198,7 +199,6 @@
                   <md-card-actions layout="row" layout-align="end center">
                     <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.acceptInvite(invite.reservation.reservationId);"><i class="material-icons">done</i></md-button>
                     <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.declineInvite(invite.reservation.reservationId);"><i class="material-icons">clear</i></md-button>
-                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.mealOrder(invite);">Naruči</md-button>
                   </md-card-actions>
                 </md-card>
   							
@@ -236,7 +236,7 @@
     </md-toolbar>
     <md-list>
       <md-subheader ng-show="guestProfileVm.admin" class="md-primary" style="margin: 0 -8;">Moji prijatelji</md-subheader>
-      <md-list-item ng-repeat="friend in guestProfileVm.friends" class="noright">
+      <md-list-item ng-repeat="friend in guestProfileVm.friends | orderBy:['firstName', 'lastName']" class="noright">
           <a ng-href="#/profile-guest/{{friend.guestId}}">
             <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}"  class="md-avatar" />
           </a>

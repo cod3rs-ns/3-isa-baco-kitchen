@@ -8,15 +8,17 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ClientOrderService {
-    public Collection<ClientOrder> findAll();
+    Collection<ClientOrder> findAll();
 
-    public ClientOrder findOne(Integer eId);
+    ClientOrder findOne(Integer eId);
 
-    public ClientOrder create(ClientOrder e);
+    ClientOrder create(ClientOrder e);
 
-    public ClientOrder update(ClientOrder e);
+    ClientOrder update(ClientOrder e);
 
-    public void delete(Integer eId);
+    void delete(Integer eId);
 
-    public List<ClientOrder> getOrdersForBill(int tableId);
+    List<ClientOrder> getOrdersForBill(int tableId);
+
+    ClientOrder findByReservationAndUser(Integer reservationId, Integer guestId);
 }

@@ -238,6 +238,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   `co_date` DATETIME NOT NULL,
   `co_deadline` DATETIME NULL DEFAULT NULL,
   `co_reservation_id` INT(11) NULL DEFAULT NULL,
+  `co_client_id` INT(11) NULL DEFAULT NULL,
   `co_table_id` INT(11) NOT NULL,
   `co_bill_id` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`co_id`),

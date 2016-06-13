@@ -34,6 +34,9 @@ public class GuestController {
     ReservationGuestService reservationGuestService;
 
     @Autowired
+    ClientOrderService clientOrderService;
+
+    @Autowired
     ReviewService reviewService;
 
     @Authorization(role = "guest")
@@ -163,9 +166,27 @@ public class GuestController {
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Collection<Reservation>> getReservations(@PathVariable Integer id) {
-        Collection<Reservation> result = reservationService.findByOwnerId(id);
-        return new ResponseEntity<Collection<Reservation>>(result, HttpStatus.OK);
+    public ResponseEntity<Collection<ReservationHelper>> getReservations(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute("loggedUser");
+
+        Collection<ReservationHelper> result = new ArrayList<ReservationHelper>();
+        Collection<Reservation> reservations = reservationService.findByOwnerId(id);
+
+        for (Reservation reservation : reservations) {
+            // FIXME Restaurant Image From DataBase
+            reservation.setRestaurant(reservation.getRestaurant());
+
+            ClientOrder co = clientOrderService.findByReservationAndUser(reservation.getReservationId(), id);
+
+            ReservationHelper helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
+                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser");
+
+            helper.setOrder(co == null ? null : co.getOrderId());
+            helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
+            result.add(helper);
+        }
+
+        return new ResponseEntity<Collection<ReservationHelper>>(result, HttpStatus.OK);
     }
 
     @Authorization(role = "guest")

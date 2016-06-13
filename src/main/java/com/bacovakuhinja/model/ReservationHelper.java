@@ -9,6 +9,7 @@ public class ReservationHelper {
     private String imageSrc;
     private String inviter;
     private Integer restaurantId;
+    private Integer order;
 
 
     public ReservationHelper(Reservation reservation, Review review, String name, String imageSrc) {
@@ -64,5 +65,13 @@ public class ReservationHelper {
 
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
     }
 }

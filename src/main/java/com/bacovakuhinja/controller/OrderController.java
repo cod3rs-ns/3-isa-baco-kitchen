@@ -203,5 +203,17 @@ public class OrderController {
         return new ResponseEntity <Boolean>(true, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/api/order/{orderId}",
+            method = RequestMethod.DELETE
+    )
+    public void deleteOrder(@PathVariable("orderId") Integer orderId) {
+        ClientOrder order = clientOrderService.findOne(orderId);
+
+        if (order == null) return;
+
+        clientOrderService.delete(order.getOrderId());
+    }
+
 }
 

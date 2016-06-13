@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('AddOrderController', AddOrderController);
 
-AddOrderController.$inject = ['menuItemService', 'orderService', 'reservationService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit', 'reservationId'];
+AddOrderController.$inject = ['menuItemService', 'orderService', 'reservationService', '$mdDialog', '$mdToast', 'table', 'restaurantId', 'edit', 'reservationId', 'guestId'];
 
-function AddOrderController(menuItemService, orderService, reservationService, $mdDialog, $mdToast, table, restaurantId, edit, reservationId) {
+function AddOrderController(menuItemService, orderService, reservationService, $mdDialog, $mdToast, table, restaurantId, edit, reservationId, guestId) {
     var orderVm = this;
     orderVm.cancel = cancel;
     orderVm.showToast = showToast;
@@ -124,6 +124,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                   orderService.addOrder(order, orderVm.tableId, restaurantId)
                     .then(function (data) {
                         if (data != null) {
+                          $mdDialog.cancel();
                           showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
                         }
                       });
@@ -172,6 +173,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
         var order = {
             orderId: null, 
             date : new Date(),
+            clientId: guestId,
             deadline: orderVm.reservation.reservationDateTime,
             reservation: orderVm.reservation,
             items : []
