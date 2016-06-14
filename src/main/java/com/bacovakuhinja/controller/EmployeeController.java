@@ -80,6 +80,16 @@ public class EmployeeController {
         return new ResponseEntity <RestaurantRegion>(sch.getRegion(), HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/api/employees/r={rst_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection<Employee>> getEmployeesByRestaurant(@PathVariable("rst_id") Integer rstID) {
+        Collection<Employee> employees = employeeService.findByRestaurant(rstID);
+
+        return new ResponseEntity <Collection<Employee>>(employees, HttpStatus.OK);
+    }
+
     // TODO change after implementation of new TimeSchedule system
     @Authorization()
     @RequestMapping(

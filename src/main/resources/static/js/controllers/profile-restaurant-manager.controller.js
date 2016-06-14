@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope'];
+RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -14,6 +14,9 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.createDrink = createDrink;
     rmanagerVm.createFood = createFood;
     rmanagerVm.createNewEmployee = createNewEmployee;
+
+    // TODO update on create new
+    rmanagerVm.employees = [];
     // Currently active tab
     rmanagerVm.tabs = {
         selected: 0
@@ -47,6 +50,11 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         menuItemService.getAllActiveByType('drink', 2).success(function(data) {
             console.log(data);
             rmanagerVm.drinksMenu = data;
+        });
+
+        employeeService.getEmployeesByRestaurant(2).then(function(data) {
+            console.log(data);
+            rmanagerVm.employees = data;
         });
     }
 

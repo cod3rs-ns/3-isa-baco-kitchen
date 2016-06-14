@@ -44,6 +44,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.delete(eId);
     }
 
+
+    // TODO @Baćo probably :) Switch to query
     @Override
     public Collection <Employee> findByRestaurant(Integer restaurantId) {
         Collection <Employee> allEmployees = employeeRepository.findAll();
