@@ -84,8 +84,8 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     
     function getReviews(id) {
         return reviewService.getReviews(id)
-            .then(function(data) {
-                restaurantVm.reviews = data;
+            .then(function(response) {
+                restaurantVm.reviews = response.data;
                 return restaurantVm.reviews;
             });
     };

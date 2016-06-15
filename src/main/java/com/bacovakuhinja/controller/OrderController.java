@@ -1,19 +1,13 @@
 package com.bacovakuhinja.controller;
 
-
-
-import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.model.ClientOrder;
 import com.bacovakuhinja.model.OrderItem;
 import com.bacovakuhinja.model.RestaurantTable;
 import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +15,7 @@ import java.util.*;
 
 @RestController
 public class OrderController {
+
     @Autowired
     private RestaurantTableService tableService;
 
@@ -33,6 +28,8 @@ public class OrderController {
     @Autowired
     private MenuItemService menuItemService;
 
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @RequestMapping(
             value = "api/orders/{table_id}",
@@ -52,9 +49,6 @@ public class OrderController {
         return new ResponseEntity <ClientOrder>(order, HttpStatus.OK);
     }
 
-    @Autowired
-    private SimpMessagingTemplate template;
-
     @RequestMapping(
             value = "/api/orders/{restaurantId}/{tableId}",
             method = RequestMethod.POST,
@@ -68,10 +62,12 @@ public class OrderController {
         return new ResponseEntity <ClientOrder>(newOrder, HttpStatus.OK);
     }
 
+    // FIXME @Baco - Ove statuse definisi negdje kao private static String ili tako nesto...
+    // FIXME Mozda nije lose da napravimo jednu Util klasu sa svim ovim stringovima
     private ClientOrder createOrder(ClientOrder order, int restaurantId){
         ClientOrder newOrder = clientOrderService.create(order);
 
-        //notify for new items
+        // Notify for new items
         HashMap<String, ArrayList<OrderItem>> foodMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> foodList = new ArrayList<OrderItem>();
         HashMap<String, ArrayList<OrderItem>> drinkMap = new HashMap<String, ArrayList<OrderItem>>();
@@ -98,6 +94,7 @@ public class OrderController {
     }
 
 
+    // FIXME @Baco - Normalan order. :)
     @RequestMapping(
             value = "/api/orders/{restaurantId}",
             method = RequestMethod.PUT,
@@ -111,17 +108,18 @@ public class OrderController {
         return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
     }
 
+    // FIXME @Baco
     private ClientOrder updateOrder(ClientOrder newOrder, ClientOrder oldOrder, int r_id){
         Set<OrderItem> oldItems = new HashSet<OrderItem>();
         oldItems.addAll(oldOrder.getItems());
 
-        //notify for new items
+        // Notify for new items
         HashMap<String, ArrayList<OrderItem>> foodMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> foodNew = new ArrayList<OrderItem>();
         ArrayList<OrderItem> foodRemove = new ArrayList<OrderItem>();
         ArrayList<OrderItem> foodUpdate = new ArrayList<OrderItem>();
 
-        //notify for new items
+        // Notify for new items
         HashMap<String, ArrayList<OrderItem>> drinksMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> drinkNew = new ArrayList<OrderItem>();
         ArrayList<OrderItem> drinkRemove = new ArrayList<OrderItem>();

@@ -4,31 +4,31 @@
     <md-toolbar scroll>
       <div class="md-toolbar-tools">
         <h3 md-header-title flex>Profil korisnika</h3>
-        <md-button ng-show="guestProfileVm.admin" class="md-icon-button" aria-label="Change password">
-					<md-icon id="pass-option" aria-label="Change password" ng-click="guestProfileVm.changePassword(true);" class="material-icons">lock</md-icon>
+        <md-button ng-show="guestVm.admin" class="md-icon-button" aria-label="Change password">
+					<md-icon id="pass-option" aria-label="Change password" ng-click="guestVm.changePassword(true);" class="material-icons">lock</md-icon>
 				</md-button>
-        <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestProfileVm.cancel()">
+        <md-button ng-show="guestVm.editMode && guestVm.admin" class="md-icon-button" aria-label="Cancel" ng-click="guestVm.cancel()">
           <md-icon aria-label="Cancel" class="material-icons">cancel</md-icon>
         </md-button>
-        <md-button ng-show="guestProfileVm.editMode && guestProfileVm.admin" class="md-icon-button" aria-label="Save changes" ng-disabled="editProfileForm.$invalid" ng-click="guestProfileVm.saveChanges()">
+        <md-button ng-show="guestVm.editMode && guestVm.admin" class="md-icon-button" aria-label="Save changes" ng-disabled="editProfileForm.$invalid" ng-click="guestVm.saveChanges()">
           <md-icon aria-label="Save changes" class="material-icons">save</md-icon>
         </md-button>
-        <md-button ng-hide="guestProfileVm.editMode || !guestProfileVm.admin" class="md-icon-button" aria-label="Edit profile" ng-click="guestProfileVm.editProfile()">
+        <md-button ng-hide="guestVm.editMode || !guestVm.admin" class="md-icon-button" aria-label="Edit profile" ng-click="guestVm.editProfile()">
           <md-icon aria-label="Edit profile" class="material-icons">mode_edit</md-icon>
         </md-button>
-        <md-menu ng-show="guestProfileVm.admin">
-          <md-button style="margin-top: -9px;" class="md-icon-button" aria-label="Notification" ng-click="(guestProfileVm.friendRequests.length>0)&&$mdOpenMenu($event)">
+        <md-menu ng-show="guestVm.admin">
+          <md-button style="margin-top: -9px;" class="md-icon-button" aria-label="Notification" ng-click="(guestVm.friendRequests.length>0)&&$mdOpenMenu($event)">
             <md-icon aria-label="Notification" class="material-icons">notifications</md-icon>
-            <sup class="badge">{{guestProfileVm.friendRequests.length}}</sup>
+            <sup class="badge">{{guestVm.friendRequests.length}}</sup>
           </md-button>
           <!-- Requests menu -->
           <md-menu-content width="5">
-            <md-menu-item ng-repeat="request in guestProfileVm.friendRequests">
+            <md-menu-item ng-repeat="request in guestVm.friendRequests">
                 <md-list-item class="noright">
                   <img class="md-avatar" ng-src="{{request.image}}" width="320px">
                   <p>{{request.firstName + ' ' + request.lastName}}</p>
-                  <md-icon aria-label="Accept friend" ng-click="guestProfileVm.acceptFriend(request.userId)" class="material-icons margin-left-4">done</md-icon>
-                  <md-icon aria-label="Reject friend" ng-click="guestProfileVm.rejectFriend(request.userId)" class="material-icons margin-left-4">clear</md-icon>
+                  <md-icon aria-label="Accept friend" ng-click="guestVm.acceptFriend(request.userId)" class="material-icons margin-left-4">done</md-icon>
+                  <md-icon aria-label="Reject friend" ng-click="guestVm.rejectFriend(request.userId)" class="material-icons margin-left-4">clear</md-icon>
                 </md-list-item>
             </md-menu-item>
           </md-menu-content>
@@ -39,21 +39,21 @@
     <div layout="column">
       <div layout="row" layout-xs="column">
         <div flex class="content">
-          <img alt="{{guestProfileVm.user.firstName}}" ng-src="{{guestProfileVm.user.image}}" class="md-avatar profile-image" />
+          <img alt="{{guestVm.user.firstName}}" ng-src="{{guestVm.user.image}}" class="md-avatar profile-image" />
         </div>
         <div flex class="content">
           <!-- Ime i prezime -->
-          <h2 ng-hide="guestProfileVm.editMode">{{ guestProfileVm.user.firstName + ' ' +  guestProfileVm.user.lastName }}</h2>
+          <h2 ng-hide="guestVm.editMode">{{ guestVm.user.firstName + ' ' +  guestVm.user.lastName }}</h2>
           
           <!-- E-mail (ne moze se mijenjati) -->
-          <h4>{{ guestProfileVm.user.email }}</h4>
+          <h4>{{ guestVm.user.email }}</h4>
           
           <!-- Edit profila -->
-          <form name="editProfileForm" ng-show="guestProfileVm.editMode && guestProfileVm.admin">
+          <form name="editProfileForm" ng-show="guestVm.editMode && guestVm.admin">
             <div layout-gt-sm="row">
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Ime</label>
-                <input md-maxlength="10" required name="name" ng-model="guestProfileVm.user.firstName" />
+                <input md-maxlength="10" required name="name" ng-model="guestVm.user.firstName" />
                 <div ng-messages="editProfileForm.name.$error">
                   <div ng-message="required">Ime je obavezno.</div>
                   <div ng-message="md-maxlength">Ime ne može biti duže od 10 karaktera.</div>
@@ -61,7 +61,7 @@
               </md-input-container>
               <md-input-container class="md-block" flex-gt-sm>
                 <label>Prezime</label>
-                <input md-maxlength="20" required name="lastname" ng-model="guestProfileVm.user.lastName" />
+                <input md-maxlength="20" required name="lastname" ng-model="guestVm.user.lastName" />
                 <div ng-messages="editProfileForm.lastname.$error" role="alert">
                   <div ng-message="required">Prezime je obavezno.</div>
                   <div ng-message="md-maxlength">Prezime ne može biti duže od 20 karaktera.</div>
@@ -73,20 +73,20 @@
       </div>
 
       <div style="text-align: right; padding-right: 40px;">
-        <md-button style="margin-top: -32px;" ng-show="!guestProfileVm.admin && !guestProfileVm.isFriend && !guestProfileVm.sendRequest" class="md-fab" aria-label="Add friend">
-          <md-icon ng-click="guestProfileVm.addFriend(guestProfileVm.user.guestId)" aria-label="Add person" class="material-icons">person_add</md-icon>
+        <md-button style="margin-top: -32px;" ng-show="!guestVm.admin && !guestVm.isFriend && !guestVm.sendRequest" class="md-fab" aria-label="Add friend">
+          <md-icon ng-click="guestVm.addFriend(guestVm.user.guestId)" aria-label="Add person" class="material-icons">person_add</md-icon>
         </md-button>
-        <md-button style="margin-top: -32px;" ng-show="!guestProfileVm.admin && guestProfileVm.isFriend" class="md-fab" aria-label="Remove person from friends">
-          <md-icon ng-click="guestProfileVm.removeFriend(guestProfileVm.user.guestId)" aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
+        <md-button style="margin-top: -32px;" ng-show="!guestVm.admin && guestVm.isFriend" class="md-fab" aria-label="Remove person from friends">
+          <md-icon ng-click="guestVm.removeFriend(guestVm.user.guestId)" aria-label="Remove person from friends" class="material-icons">remove_circle_outline</md-icon>
         </md-button>
-        <span ng-show="guestProfileVm.sendRequest">&nbsp</span>
+        <span ng-show="guestVm.sendRequest">&nbsp</span>
       </div>
       
       <md-tabs md-dynamic-height style="max-width: 100%; margin-top: 10px; background-color: #3f51b5; color: #eee;">
         <md-tab label="Moje posjete">
           <md-content style="background-color: #eee;">
   					<div layout="row" layout-wrap>
-  						<div class='md-padding' layout="row" ng-repeat="visit in guestProfileVm.visits" layout-wrap>
+  						<div class='md-padding' layout="row" ng-repeat="visit in guestVm.visits" layout-wrap>
                 <md-card>
                   <md-card-title>
                     <md-card-title-text>
@@ -97,39 +97,39 @@
                     <img ng-src="{{visit.imageSrc}}" class="md-card-image reservation" alt="{{visit.name}}">
                   </md-card-content>
 
-                  <div class="rating-item" ng-hide="!guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)">
+                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
                     Restoran:
                     <div ng-init="visit.review.restaurantRate"></div>
-                    <div ng-if="guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
+                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
                   </div>
-                  <div class="rating-item" ng-hide="!guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)">
+                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
                     Usluga:
                     <div ng-init="visit.review.serviceRate"></div>
-                    <div ng-if="guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
+                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
                   </div>
-                  <div class="rating-item" ng-hide="!guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)">
+                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
                     Hrana:
                     <div ng-init="visit.review.foodRate"></div>
-                    <div ng-if="guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestProfileVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
+                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
                   </div>
                   
-                  <md-input-container ng-if="guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" class="md-block">
+                  <md-input-container ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="md-block">
                     <label>Komentar</label>
                     <textarea ng-model="visit.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
                   </md-input-container>
                   
-                  <p ng-if="guestProfileVm.isCommented(visit.review)" style="padding: 0 16;">
+                  <p ng-if="guestVm.isCommented(visit.review)" style="padding: 0 16;">
                     {{ visit.review.comment }}
                   </p>
-                  <p ng-if="!guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" style="padding: 0 16;">
+                  <p ng-if="!guestVm.admin && !guestVm.isCommented(visit.review)" style="padding: 0 16;">
                     Korisnik još nije ostavio recenziju za ovu posjetu.
                   </p>
 
                   <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-if="guestProfileVm.admin && !guestProfileVm.isCommented(visit.review)" ng-click="guestProfileVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
+                    <md-button ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" ng-click="guestVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
                   </md-card-actions>
                 </md-card>
   						</div>			
@@ -139,7 +139,7 @@
         <md-tab label="Aktivne rezervacije">
           <md-content class="md-padding" style="background-color: #eee;">
             <div layout="row" layout-wrap>
-  						<div layout="row" ng-repeat="reservation in guestProfileVm.activeReservations" layout-wrap>
+  						<div layout="row" ng-repeat="reservation in guestVm.activeReservations" layout-wrap>
                 <md-card>
                   <md-card-title>
                     <md-card-title-text>
@@ -161,9 +161,9 @@
                   </div>
 
                   <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-show="guestProfileVm.admin && reservation.order == null" ng-click="guestProfileVm.mealOrder(reservation);">Naruči</md-button>
-                    <md-button ng-show="guestProfileVm.admin && reservation.order != null" ng-click="guestProfileVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
-                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.cancelReservation(reservation.reservation.reservationId);">Otkaži rezervaciju</md-button>
+                    <md-button ng-show="guestVm.admin && reservation.order == null" ng-click="guestVm.mealOrder(reservation);">Naruči</md-button>
+                    <md-button ng-show="guestVm.admin && reservation.order != null" ng-click="guestVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
+                    <md-button ng-show="guestVm.admin" ng-click="guestVm.cancelReservation(reservation.reservation);">Otkaži rezervaciju</md-button>
                   </md-card-actions>
                 </md-card>
   							
@@ -174,7 +174,7 @@
         <md-tab label="Pozivi na rezervacije">
           <md-content class="md-padding" style="background-color: #eee;">
             <div layout="row" layout-wrap>
-  						<div layout="row" ng-repeat="invite in guestProfileVm.invitations" layout-wrap>
+  						<div layout="row" ng-repeat="invite in guestVm.invitations" layout-wrap>
                 <md-card>
                   <md-card-title>
                     <md-card-title-text>
@@ -197,8 +197,8 @@
                   </div>
 
                   <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.acceptInvite(invite.reservation.reservationId);"><i class="material-icons">done</i></md-button>
-                    <md-button ng-show="guestProfileVm.admin" ng-click="guestProfileVm.declineInvite(invite.reservation.reservationId);"><i class="material-icons">clear</i></md-button>
+                    <md-button ng-show="guestVm.admin" ng-click="guestVm.acceptInvite(invite.reservation.reservationId);"><i class="material-icons">done</i></md-button>
+                    <md-button ng-show="guestVm.admin" ng-click="guestVm.declineInvite(invite.reservation.reservationId);"><i class="material-icons">clear</i></md-button>
                   </md-card-actions>
                 </md-card>
   							
@@ -212,36 +212,36 @@
   
   <!-- Side Content -->
   <div flex-gt-sm="30" class="side-content" style="height: 100%;">
-      <md-toolbar ng-show="guestProfileVm.admin">
+      <md-toolbar ng-show="guestVm.admin">
         <div class="md-toolbar-tools">
           <md-icon aria-label="Search" class="material-icons">search</md-icon>
           <md-input-container id="search" flex>
             <label>&nbsp;</label>
-            <input type="text" placeholder="Traži po imenu/prezimenu" ng-change="guestProfileVm.search()" ng-model="guestProfileVm.query">
+            <input type="text" placeholder="Traži po imenu/prezimenu" ng-change="guestVm.search()" ng-model="guestVm.query">
           </md-input-container>
         </div>
-          <md-menu-content ng-if="guestProfileVm.queryResult.length > 0" width="5">
-            <md-menu-item ng-repeat="result in guestProfileVm.queryResult">
-                <md-list-item class="noright" ng-click="guestProfileVm.to(result.userId)">
+          <md-menu-content ng-if="guestVm.queryResult.length > 0" width="5">
+            <md-menu-item ng-repeat="result in guestVm.queryResult">
+                <md-list-item class="noright" ng-click="guestVm.to(result.userId)">
                   <img class="md-avatar" ng-src="{{result.image}}">
                   <p class="color-gray">{{result.firstName + ' ' + result.lastName}}</p>
                 </md-list-item>
             </md-menu-item>
           </md-menu-content>
     </md-toolbar>
-    <md-toolbar ng-show="!guestProfileVm.admin">
+    <md-toolbar ng-show="!guestVm.admin">
       <div class="md-toolbar-tools">
         Prijatelji korisnika
       </div>
     </md-toolbar>
     <md-list>
-      <md-subheader ng-show="guestProfileVm.admin" class="md-primary" style="margin: 0 -8;">Moji prijatelji</md-subheader>
-      <md-list-item ng-repeat="friend in guestProfileVm.friends | orderBy:['firstName', 'lastName']" class="noright">
+      <md-subheader ng-show="guestVm.admin" class="md-primary" style="margin: 0 -8;">Moji prijatelji</md-subheader>
+      <md-list-item ng-repeat="friend in guestVm.friends | orderBy:['firstName', 'lastName']" class="noright">
           <a ng-href="#/profile-guest/{{friend.guestId}}">
             <img alt="{{friend.firstName + ' ' + friend.lastName}}" ng-src="{{ friend.image }}"  class="md-avatar" />
           </a>
           <p>{{friend.firstName + ' ' + friend.lastName}}</p>
-        <md-icon ng-show="guestProfileVm.admin" ng-click="guestProfileVm.removeFriend(friend.guestId)" aria-label="Remove friend" class="material-icons cursor-pointer">highlight_off</md-icon>
+        <md-icon ng-show="guestVm.admin" ng-click="guestVm.removeFriend(friend.guestId)" aria-label="Remove friend" class="material-icons cursor-pointer">highlight_off</md-icon>
       </md-list-item>
     </md-list>
   </div>
