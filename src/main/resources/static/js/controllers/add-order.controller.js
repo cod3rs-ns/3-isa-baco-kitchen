@@ -16,8 +16,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
     activate();
     
     function activate() {
-        console.log(table);
-        
+
         if (reservationId != null) {
         reservationService.getInvite(reservationId)
           .then(function (data) {
@@ -116,6 +115,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                           if (data != null) {
                               showToast("Porudžbina je uspješno dodata.");
                               $mdDialog.cancel();
+                              orderService.setWaiterId(data.orderId);
                           }
                       });
                 }

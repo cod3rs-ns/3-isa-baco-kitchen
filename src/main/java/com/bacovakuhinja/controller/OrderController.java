@@ -1,8 +1,7 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.model.ClientOrder;
-import com.bacovakuhinja.model.OrderItem;
-import com.bacovakuhinja.model.RestaurantTable;
+import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @RestController
@@ -30,6 +30,9 @@ public class OrderController {
 
     @Autowired
     private SimpMessagingTemplate template;
+
+    @Autowired
+    private WaiterService waiterService;
 
     @RequestMapping(
             value = "api/orders/{table_id}",
@@ -211,6 +214,20 @@ public class OrderController {
         if (order == null) return;
 
         clientOrderService.delete(order.getOrderId());
+    }
+
+    @Authorization(role = "waiter")
+    @RequestMapping(
+            value = "/api/orders/setWaiter/{orderId}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ClientOrder> setOrderWaiter(final HttpServletRequest request, @PathVariable("orderId") Integer orderId) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+        ClientOrder order = clientOrderService.findOne(orderId);
+        order.setWaiterId(waiter.getUserId());
+        ClientOrder updated = clientOrderService.update(order);
+        return new ResponseEntity<ClientOrder>(updated, HttpStatus.OK);
     }
 
 }

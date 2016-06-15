@@ -6,6 +6,7 @@ import com.bacovakuhinja.service.BartenderService;
 import com.bacovakuhinja.service.BillService;
 import com.bacovakuhinja.service.ClientOrderService;
 import com.bacovakuhinja.service.WaiterService;
+import com.bacovakuhinja.utility.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.HashMapChangeSet;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -31,34 +33,35 @@ public class BillController {
     @Autowired
     private WaiterService waiterService;
 
+    @Authorization(role = "waiter")
     @RequestMapping(
             value = "/api/bills/t={tableId}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BillHelper> createBill(@PathVariable("tableId") Integer tableId) {
+    public ResponseEntity<BillHelper> createBill(final HttpServletRequest request, @PathVariable("tableId") Integer tableId) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+
         List<ClientOrder> orders = clientOrderService.getOrdersForBill(tableId);
         Bill b = new Bill();
         b.setPublishDate(new Date());
         double amount = 0;
-        Waiter w = waiterService.findOne(8);
-
-        //for which waiter
-        ClientOrder co = orders.get(0);
-        Date date = co.getDate();
-        Date now = new Date();
-        double diff = now.getTime() - date.getTime();
-
-
         b.setTotalAmount(amount);
-        b.setWaiter(w);
         Bill created = billService.create(b);
 
         Set<ClientOrder> billOrders = new HashSet<ClientOrder>();
         HashMap<Integer, BillItem> billItems = new HashMap<Integer, BillItem>();
+        HashMap<Integer, Integer> waitersCount = new HashMap<Integer, Integer>();
         for (Iterator<ClientOrder> it = orders.iterator(); it.hasNext(); ) {
             ClientOrder i = it.next();
             billOrders.add(i);
             i.setBill(created);
+            if(i.getWaiterId()!=null){
+                if(waitersCount.containsKey(i.getWaiterId()))
+                    waitersCount.put(i.getWaiterId(), waitersCount.get(i.getWaiterId()) + 1);
+                else
+                    waitersCount.put(i.getWaiterId(), 1);
+            }
             for (Iterator<OrderItem> ord = i.getItems().iterator(); ord.hasNext(); ) {
                 OrderItem oi = ord.next();
                 MenuItem mi = oi.getMenuItem();
@@ -74,6 +77,16 @@ public class BillController {
                     billItems.put(bi.getId(), bi);
                 }
             }
+        }
+
+        //seting waiter who had more orders created for that table
+        if(waitersCount.isEmpty()) {
+            created.setWaiter(waiter);
+        }
+        else {
+            LinkedHashMap<Integer, Integer> linked =  (LinkedHashMap<Integer, Integer>) MapUtil.sortByValue(waitersCount);
+            Integer waiterId = linked.keySet().iterator().next();
+            created.setWaiter(waiterService.findOne(waiterId));
         }
 
         BillHelper helper = new BillHelper();
