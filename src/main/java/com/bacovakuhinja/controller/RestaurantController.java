@@ -73,4 +73,14 @@ public class RestaurantController {
         restaurantService.delete(id);
         return new ResponseEntity <Restaurant>(HttpStatus.NO_CONTENT);
     }
+
+    @RequestMapping (
+            value    = "api/restaurant/restaurants",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Restaurant>> queryResults(@RequestParam(value="query") String query) {
+        Collection<Restaurant> result = restaurantService.getRestaurants(query.toLowerCase());
+        return new ResponseEntity<Collection<Restaurant>>(result, HttpStatus.OK);
+    }
 }
