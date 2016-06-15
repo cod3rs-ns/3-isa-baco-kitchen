@@ -84,7 +84,6 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   break;
               }
           }
-          
           showToast('Otkazana rezervacija.');
       }
       else {
@@ -102,6 +101,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         guestService.addFriend(id)
           .then(function (response) {
               guestVm.sendRequest = true;
+              showToast('Zahtjev za prijateljstvo poslat.');
           });
     };
     
@@ -123,6 +123,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   guestVm.isFriend = false;
                   getFriends();
               }
+              showToast('Obrisali ste prijatelja.');
           });
     };
 
@@ -134,6 +135,9 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
                   if (guestVm.friendRequests[i].guestId === id) {
                      guestVm.friends.push(guestVm.friendRequests[i]);
+                     showToast('Poziv za prijateljstvo od ' + 
+                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                        ' prihvaćen.');
                      guestVm.friendRequests.splice(i, 1);
                      break;
                   }
@@ -148,8 +152,11 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               // Remove request
               for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
                   if (guestVm.friendRequests[i].guestId === id) {
-                     guestVm.friendRequests.splice(i, 1);
-                     break;
+                    showToast('Poziv za prijateljstvo od ' + 
+                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                       ' odbijen.');
+                      guestVm.friendRequests.splice(i, 1);
+                      break;
                   }
               }
           });
@@ -175,8 +182,9 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     
     function saveChanges() {
         guestService.updateGuest(guestVm.user)
-          .then(function (updatedUser) {
-            guestVm.user = updatedUser;
+          .then(function (response) {
+            guestVm.user = response.data;
+            showToast('Promjene su sačuvane.');
           });
         guestVm.editMode = false;
     }
@@ -188,6 +196,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               // Update visits and intvitations
               getVisits();
               getInvitations();
+              showToast('Poziv za rezervaciju prihvaćen. Sada možete napraviti porudžbinu u sekciji aktivnih rezervacija.');
           });
     };
     
@@ -198,6 +207,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
             // Update visits and intvitations
             getVisits();  
             getInvitations();
+            showToast('Poziv za rezervaciju odbijen.');
         });
     };
     
@@ -351,7 +361,8 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
-            position  : 'bottom right',
+            parent    : angular.element(document.querySelectorAll('#toast-box')),
+            position  : 'right',
             template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };

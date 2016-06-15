@@ -68,8 +68,8 @@ function AddOrderController(menuItemService, orderService, reservationService, $
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
-            position  : 'top right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            position  : 'right',
+            template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
 
@@ -125,7 +125,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                     .then(function (data) {
                         if (data != null) {
                           $mdDialog.cancel();
-                          showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
                         }
                       });
                 }

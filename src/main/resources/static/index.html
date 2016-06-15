@@ -65,6 +65,13 @@
             <h2>
               <span>Baćova kuhinja</span>
             </h2>
+            
+            <md-icon aria-label="Search" class="material-icons" style="margin-left: 20px;">search</md-icon>
+            <md-input-container id="search" flex>
+              <label>&nbsp;</label>
+              <input type="text" placeholder="Traži po restoran po imenu ili tipu" ng-change="tbCtrl.restaurantSearch()" ng-model="tbCtrl.restaurantQuery">
+            </md-input-container>
+            
             <span flex></span>
 
             <md-button aria-label="Login" ng-hide="$root.show" ng-href="#/login">
@@ -93,6 +100,14 @@
                   </md-fab-speed-dial>
               </div>
           </div>
+          <md-menu-content width="5">
+            <md-menu-item ng-repeat="result in tbCtrl.restaurantQueryResult">
+                <md-list-item class="noright" ng-click="tbCtrl.toRestaurant(result.restaurantId)">
+                  <img class="md-avatar" src="http://medias.otbor.vm.aiprod.com/360x360/RESAQU033FS000JE/0-Bouliac-Restaurant-Le-St-James-2.jpg">
+                  <p class="color-gray">{{result.name}</p>
+                </md-list-item>
+            </md-menu-item>
+          </md-menu-content>
         </md-toolbar>
     </md-content>
     

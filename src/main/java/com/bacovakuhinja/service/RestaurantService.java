@@ -16,4 +16,6 @@ public interface RestaurantService {
 
     void delete(Integer restaurantId);
 
+    Collection<Restaurant> getRestaurants(String query);
+
 }
