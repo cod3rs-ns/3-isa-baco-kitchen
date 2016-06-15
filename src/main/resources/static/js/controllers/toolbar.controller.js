@@ -43,6 +43,7 @@ function ToolbarController($rootScope, $location, loginService, restaurantServic
                   for (; index < this.restaurantQueryResult.length; ++index) {
                       console.log(this.restaurantQueryResult[index].name);
                   }
+                  console.log("---------------------------------------------");
               });
         }
         else {
