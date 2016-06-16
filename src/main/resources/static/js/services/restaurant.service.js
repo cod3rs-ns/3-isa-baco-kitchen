@@ -11,14 +11,15 @@ function restaurantService($http){
         updateRestaurant: updateRestaurant,
         deleteRestaurant: deleteRestaurant,
         createRestaurant: createRestaurant,
-        getSearchRestaurants: getSearchRestaurants
+        getSearchResult: getSearchResult
     };
 
     return service;
     
-    function getSearchRestaurants(query) {
+    function getSearchResult(query) {
         return $http.get('api/restaurant/restaurants?query=' + query)
           .success(function(data) {
+              console.log("Success");
               return data;
           })
           .error(function(data) {
