@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.Date;
 
 /**
  * Created by Bojan on 30-May-16.
@@ -47,5 +48,10 @@ public class BillServiceImpl implements BillService{
     @Override
     public Collection<Bill> findBillsByWaiter(Integer waiterId) {
         return billRepository.findFirst5ByWaiter_UserIdOrderByPublishDateDesc(waiterId);
+    }
+
+    @Override
+    public Collection <Bill> findBillsByWaiterAndPublishDate(Integer userId, Date dateStart, Date dateEnd) {
+        return billRepository.findByWaiter_UserIdAndPublishDateBetween(userId, dateStart, dateEnd);
     }
 }

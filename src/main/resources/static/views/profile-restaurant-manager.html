@@ -257,7 +257,8 @@
 							</md-tooltip>
 						</md-button>
 						<md-button  class="md-fab md-mini md-primary md-accent md-secondary"
-									ng-click="rmanagerVm.showEmployeeReportDialog(empl.userId);">
+									ng-click="rmanagerVm.showEmployeeReportDialog(empl.userId);"
+									ng-disabled="empl.type != 'waiter'">
 							<i class="material-icons md-24">show_chart</i>
 							<md-tooltip md-direction="top">
 								Izveštaj

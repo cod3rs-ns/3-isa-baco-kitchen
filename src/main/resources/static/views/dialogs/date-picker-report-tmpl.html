@@ -1,0 +1,59 @@
+<md-dialog aria-label="Report" ng-cloak flex="60">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>{{reportVm.dialogName}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="reportVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <form name="datePickers">
+                <div layout="row">
+                    <div layout="column" style="margin: 10px;">
+                        <label>Početni datum</label>
+                        <md-datepicker  name="startDate" ng-model="reportVm.startDate" md-placeholder="Početni datum" required></md-datepicker>
+                        <div class="validation-messages" ng-messages="datePickers.startDate.$error">
+                            <div ng-message="valid">Unesena vrednost nije validan datum.</div>
+                            <div ng-message="required">Ovo polje je neophodno.</div>
+                        </div>
+                    </div>
+                    <div layout="column" style="margin: 10px;">
+                        <label>Kranji datum</label>
+                        <md-datepicker  name="endDate" ng-model="reportVm.endDate" md-placeholder="Krajnji datum" required></md-datepicker>
+                        <div class="validation-messages" ng-messages="datePickers.endDate.$error">
+                            <div ng-message="valid">Unesena vrednost nije validan datum.</div>
+                            <div ng-message="required">Ovo polje je neophodno.</div>
+                        </div>
+                    </div>
+                    <span flex></span>
+                    <md-button  class="md-fab md-mini md-primary md-raised md-secondary"
+                                ng-disabled="!datePickers.$valid"
+                                ng-click="reportVm.showReport()"
+                                md-autofocus
+                                style="margin: 10px;">
+                        <i class="material-icons md-24">send</i>
+                        <md-tooltip md-direction="top">
+                            Prikaži izveštaj
+                        </md-tooltip>
+                    </md-button>
+                </div>
+            </form>
+            <md-divider></md-divider>
+            <md-content layout-padding>
+                <div id="chart_div"></div>
+                <p>Ukupan prihod za izabrani vremenski period: <strong>{{reportVm.total}} RSD </strong>.</p>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-default" ng-click="reportVm.cancel()" md-autofocus>
+            Zatvori
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

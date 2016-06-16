@@ -96,6 +96,21 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     };
 
+    rmanagerVm.showEmployeeReportDialog = showEmployeeReportDialog;
+    function showEmployeeReportDialog(id) {
+        $mdDialog.show({
+            controller: 'WaiterReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                item_id : id
+            }
+        });
+    }
+
     function createDrink(restaurant_id, drinks_menu_ref) {
         $mdDialog.show({
             controller: 'SingleDrinkController',
