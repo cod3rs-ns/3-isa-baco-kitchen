@@ -22,4 +22,6 @@ public interface BillService {
     Collection <Bill> findBillsByWaiter(Integer waiterId);
 
     Collection <Bill> findBillsByWaiterAndPublishDate(Integer userId, Date dateStart, Date dateEnd);
+
+    Collection <Bill> findByRestaurant(Integer restaurantId);
 }

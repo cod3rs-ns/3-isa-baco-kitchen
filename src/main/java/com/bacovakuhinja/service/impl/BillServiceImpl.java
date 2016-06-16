@@ -54,4 +54,9 @@ public class BillServiceImpl implements BillService{
     public Collection <Bill> findBillsByWaiterAndPublishDate(Integer userId, Date dateStart, Date dateEnd) {
         return billRepository.findByWaiter_UserIdAndPublishDateBetween(userId, dateStart, dateEnd);
     }
+
+    @Override
+    public Collection <Bill> findByRestaurant(Integer restaurantId) {
+        return billRepository.findByRestaurant(restaurantId);
+    }
 }

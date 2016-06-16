@@ -126,6 +126,21 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
+    rmanagerVm.showFinances = showFinances;
+    function showFinances() {
+        $mdDialog.show({
+            controller: 'FinancesController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                item_id : 2
+            }
+        });
+    }
+
     function createDrink(restaurant_id, drinks_menu_ref) {
         $mdDialog.show({
             controller: 'SingleDrinkController',

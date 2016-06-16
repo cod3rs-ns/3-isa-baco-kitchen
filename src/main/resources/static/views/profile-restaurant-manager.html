@@ -55,8 +55,8 @@
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-      <md-content flex style="min-height:270px;">
-         <md-menu-content>
+      <md-content flex style="min-height:400px;">
+         <md-menu-content flex style="min-height:400px;">
            <md-menu-item class="md-indent">
             <md-button 	class="md-primary">
 				<md-icon class="material-icons">account_circle</md-icon>
@@ -96,6 +96,14 @@
             </md-button>
            </md-menu-item>
 		   <md-divider></md-divider>
+		   <md-menu-item class="md-indent">
+			<md-button 	class="md-primary"
+						ng-click="rmanagerVm.showFinances();">
+			  <md-icon class="material-icons">show_chart</md-icon>
+			  <strong>Izveštaj prihoda</strong>
+			</md-button>
+		   </md-menu-item>
+		 <md-divider></md-divider>
 		   <md-menu-item class="md-indent">
             <md-button 	class="md-primary">
 				<md-icon class="material-icons">exit_to_app</md-icon>

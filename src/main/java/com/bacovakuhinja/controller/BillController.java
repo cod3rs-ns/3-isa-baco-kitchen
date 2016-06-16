@@ -12,9 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
@@ -139,23 +136,27 @@ public class BillController {
             value = "api/bills/report/{waiter_id}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <Bill>> getWaiterBillsByDate(@PathVariable("waiter_id") Integer waiterId, @RequestBody ArrayList<Date> dates) {
+    public ResponseEntity <Collection <Bill>> getWaiterBillsByDate(@PathVariable("waiter_id") Integer waiterId, @RequestBody ArrayList <Date> dates) {
         Date a = dates.get(0);
         Date b = dates.get(1);
         Collection <Bill> bills = billService.findBillsByWaiterAndPublishDate(waiterId, a, b);
-        for (Bill bl: bills
-             ) {
-            System.out.println(bl);
 
-        }
-        ResponseEntity<Collection<Bill>> re = null;
+        ResponseEntity <Collection <Bill>> re = null;
         try {
-
             re = new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
-        }catch (Exception e){
-
+        } catch (Exception e) {
+            // nothing
         }
         return re;
+    }
+
+    @RequestMapping(
+            value = "api/bills/report/restaurant/{restaurant_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection <Bill>> getBillsByRestaurantId(@PathVariable("restaurant_id") Integer restaurantId) {
+        Collection <Bill> bills = billService.findByRestaurant(restaurantId);
+        return new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
     }
 
 }
