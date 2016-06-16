@@ -19,6 +19,8 @@ public interface ReservationService {
 
     Collection<Reservation> findByRestaurantIdAndTime(Integer restaurantId, Date datetime, Integer length);
 
+    Collection <Reservation> findByRestaurantId(Integer restaurantId);
+
     Reservation create(Reservation reservation);
 
     void delete(Reservation reservation);

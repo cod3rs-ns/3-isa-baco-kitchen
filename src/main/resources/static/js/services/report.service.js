@@ -6,7 +6,8 @@ reportService.$inject = ['$http'];
 
 function reportService($http){
     var service = {
-        getBillsByWaiter : getBillsByWaiter
+        getBillsByWaiter : getBillsByWaiter,
+        findReservationsByRestaurant: findReservationsByRestaurant
     };
 
     return service;
@@ -18,6 +19,13 @@ function reportService($http){
             .then(function(response){
                 return response.data;
             });
+    };
+
+    function findReservationsByRestaurant(restaurant_id) {
+        return $http.get('/api/reservations/' + restaurant_id)
+        .then(function(response) {
+            return response.data;
+        });
     };
 
 }

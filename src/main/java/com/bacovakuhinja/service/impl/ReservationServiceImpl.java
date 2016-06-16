@@ -100,6 +100,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Collection <Reservation> findByRestaurantId(Integer restaurantId) {
+        return reservationRepository.findByRestaurant_RestaurantId(restaurantId);
+    }
+
+    @Override
     public Reservation create(Reservation reservation) {
         return reservationRepository.save(reservation);
     }

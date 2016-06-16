@@ -69,6 +69,16 @@ public class ReservationController {
     }
 
     @RequestMapping(
+            value    = "/api/reservations/{restaurant_id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Reservation>> findReservationsByRestaurantId(@PathVariable("restaurant_id") Integer restaurantId) {
+        Collection<Reservation> reservations = reservationService.findByRestaurantId(restaurantId);
+        return new ResponseEntity<Collection<Reservation>>(reservations, HttpStatus.CREATED);
+    }
+
+    @RequestMapping(
             value    = "/api/reservation/free",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE

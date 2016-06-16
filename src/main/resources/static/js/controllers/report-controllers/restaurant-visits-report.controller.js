@@ -1,14 +1,12 @@
 angular
     .module('isa-mrs-project')
-    .controller('WaiterReportController', WaiterReportController);
+    .controller('RestaurantVisitsController', RestaurantVisitsController);
 
-WaiterReportController.$inject = ['$mdDialog', 'reportService'];
+RestaurantVisitsController.$inject = ['$mdDialog', 'reportService'];
 
-function WaiterReportController($mdDialog, reportService) {
+function RestaurantVisitsController($mdDialog, reportService) {
     var reportVm = this;
-    reportVm.dialogName = 'Prihodi konobara';
-    reportVm.startDate = new Date();
-    reportVm.endDate = new Date();
+    reportVm.dialogName = 'Posećenost restorana';
     reportVm.total = 0;
     reportVm.message = '';
 
@@ -20,30 +18,29 @@ function WaiterReportController($mdDialog, reportService) {
     function init() {
         if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
             // Load for first time if needed
-            google.charts.load('current', {'packages':['corechart']});
+            google.charts.load("current", {packages:["calendar"]});
             // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawChart);
+            google.charts.setOnLoadCallback(reportVm.showReport);
         }else {
             // redraw on every call
             angular.element(document).ready(function () {
-                drawChart();
+                reportVm.showReport();
             });
         };
     }
 
     function showReport() {
-        var dates = [reportVm.startDate, reportVm.endDate];
-        reportService.getBillsByWaiter(8, dates)
+        reportService.findReservationsByRestaurant(2)
             .then(function(data) {
                 var reportData = new Array();
                 for (var i = 0; i < data.length; i++) {
-                    var d = new Date(data[i].publishDate);
+                    var d = new Date(data[i].reservationDateTime);
                     var just_date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
                     var timestamp_key = just_date.getTime();
                     if (reportData[timestamp_key] == null) {
-                        reportData[timestamp_key] = data[i].totalAmount;
+                        reportData[timestamp_key] = 1;
                     }else {
-                        var newVal = reportData[timestamp_key] + data[i].totalAmount;
+                        var newVal = reportData[timestamp_key] + 1;
                         reportData[timestamp_key] = newVal;
                     }
                 }
@@ -55,7 +52,7 @@ function WaiterReportController($mdDialog, reportService) {
     function drawChart() {
         var data = new google.visualization.DataTable();
         data.addColumn('date', 'Datum');
-        data.addColumn('number', 'Ostvareni prihodi');
+        data.addColumn('number', 'Broj rezervacija');
 
         var rows = [];
         reportVm.total = 0;
@@ -64,27 +61,16 @@ function WaiterReportController($mdDialog, reportService) {
             reportVm.total = reportVm.total + reportVm.report[key];
         }
 
-        reportVm.message = 'Ukupan prihod za izabrani vremenski period:' + reportVm.total + 'RSD';
+        reportVm.message = 'Ukupan broj rezervacija:' + reportVm.total;
 
         data.addRows(rows);
         var options = {
-            title: 'Prihodi za izabrani vremenski period',
-            width: 800,
-            height: 400,
-            hAxis: {
-                title: 'Datum',
-                format: 'dd.MM.yyyy'
-            },
-            viewWindow: {
-                min: reportVm.startDate,
-                max: reportVm.endDate
-            },
-            vAxis: {
-                title: 'Ostvareni prihodi'
-            }
+            title: 'Pregled posećenosti',
+            height: 500,
+            width: 1000
         };
 
-        var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+        var chart = new google.visualization.Calendar(document.getElementById('chart_div'));
         chart.draw(data, options);
     };
 
