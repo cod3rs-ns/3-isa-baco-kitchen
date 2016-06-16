@@ -6,48 +6,48 @@ ToolbarController.$inject = ['$rootScope', '$location', 'loginService', 'restaur
 
 
 function ToolbarController($rootScope, $location, loginService, restaurantService) {
-    this.isOpen = false;
-    this.selectedMode = 'md-scale';
-    this.selectedDirection = 'left';
+    
+    var bacoSlusajMeVm = this;
+  
+    bacoSlusajMeVm.isOpen = false;
+    bacoSlusajMeVm.selectedMode = 'md-scale';
+    bacoSlusajMeVm.selectedDirection = 'left';
     
     // Search parameters - query and result
-    this.restaurantQuery = "";
-    this.restaurantQueryResult = [];
+    bacoSlusajMeVm.restaurantQuery = "";
+    bacoSlusajMeVm.restaurantQueryResult = [];
     // Redirect to clicked restaurant
-    this.toRestaurant = toRestaurant;
+    bacoSlusajMeVm.toRestaurant = toRestaurant;
     // Do search
-    this.restaurantSearch = restaurantSearch;
+    bacoSlusajMeVm.restaurantSearch = restaurantSearch;
 
-    this.logout = logout;
+    bacoSlusajMeVm.logout = logout;
     function logout() {
         loginService.logout();
     };
 
-    this.profile = profile;
+    bacoSlusajMeVm.profile = profile;
     function profile() {
         loginService.redirectProfile();
     };
     
     // Redirect to restoraunt profile with this ID
     function toRestaurant(id) {
+        bacoSlusajMeVm.restaurantQuery = "";
+        bacoSlusajMeVm.restaurantQueryResult = [];
         $location.path('profile-restaurant/' + id);
     };
     
     function restaurantSearch() {
-        if (this.restaurantQuery != '') {
-            return restaurantService.getSearchRestaurants(this.restaurantQuery)
+        if (bacoSlusajMeVm.restaurantQuery != '') {
+            return restaurantService.getSearchResult(bacoSlusajMeVm.restaurantQuery)
               .then(function (response) {
-                  this.restaurantQueryResult = response.data;
-                  
-                  var index = 0;
-                  for (; index < this.restaurantQueryResult.length; ++index) {
-                      console.log(this.restaurantQueryResult[index].name);
-                  }
-                  console.log("---------------------------------------------");
+                  bacoSlusajMeVm.restaurantQueryResult = response.data;
+                  return bacoSlusajMeVm.restaurantQueryResult;
               });
         }
         else {
-            this.restaurantQueryResult = [];
+            bacoSlusajMeVm.restaurantQueryResult = [];
         }
     };
 
