@@ -6,16 +6,16 @@ import java.util.Collection;
 
 public interface ShiftTemplateService {
 
-    public Collection <ShiftTemplate> findAll();
+    Collection <ShiftTemplate> findAll();
 
-    public ShiftTemplate findOne(Integer shiftId);
+    ShiftTemplate findOne(Integer shiftId);
 
-    public ShiftTemplate create(ShiftTemplate shiftTemplate);
+    ShiftTemplate create(ShiftTemplate shiftTemplate);
 
-    public ShiftTemplate update(ShiftTemplate shiftTemplate);
+    ShiftTemplate update(ShiftTemplate shiftTemplate);
 
-    public void delete(Integer shiftId);
+    void delete(Integer shiftId);
 
-    public Collection <ShiftTemplate> findByRestaurant(Integer restaurantId);
+    Collection <ShiftTemplate> findByRestaurant(Integer restaurantId);
 
 }

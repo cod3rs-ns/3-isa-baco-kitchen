@@ -4,6 +4,7 @@ import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.aspects.SendMailAspect;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,9 +19,6 @@ import java.util.Date;
 
 @RestController
 public class ReservationController {
-
-    private static final String INVITED  = "invited";
-    private static final String OWNER    = "owner";
 
     private static final String INVITE_TITLE = "Poziv na rezervaciju";
 
@@ -42,7 +40,7 @@ public class ReservationController {
     @Autowired
     private UserService userService;
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping(
             value    = "/api/reservation",
             method   = RequestMethod.POST,
@@ -51,7 +49,7 @@ public class ReservationController {
     )
     public ResponseEntity<Reservation> createReservation(final HttpServletRequest request, @RequestBody Reservation reservation) {
 
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
 
         Restaurant restaurant = restaurantService.findOne(reservation.getRestaurant().getRestaurantId());
         reservation.setRestaurant(restaurant);
@@ -60,7 +58,7 @@ public class ReservationController {
         Reservation created = reservationService.create(reservation);
 
         // Create Reservation Owner
-        ReservationGuest reservationGuest = new ReservationGuest(user, reservation, OWNER);
+        ReservationGuest reservationGuest = new ReservationGuest(user, reservation, Constants.Reservation.OWNER);
         reservationGuestService.create(reservationGuest);
 
         return new ResponseEntity<Reservation>(created, HttpStatus.CREATED);
@@ -170,13 +168,13 @@ public class ReservationController {
         return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping(
             value    = "/api/reservation/invite",
             method   = RequestMethod.HEAD
     )
     public void inviteFriend(final HttpServletRequest request, @RequestParam(value="reservation") Integer reservationId, @RequestParam(value="friend") String email) {
-        Guest me = (Guest) request.getAttribute("loggedUser");
+        Guest me = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
 
         Reservation reservation = reservationService.findOne(reservationId);
         Guest friend = (Guest) userService.findOne(email);
@@ -184,7 +182,7 @@ public class ReservationController {
         ReservationGuest reservationGuest = new ReservationGuest();
         reservationGuest.setReservation(reservation);
         reservationGuest.setReservationGuest(friend);
-        reservationGuest.setStatus(INVITED);
+        reservationGuest.setStatus(Constants.Reservation.INVITED);
 
         reservationGuestService.create(reservationGuest);
 

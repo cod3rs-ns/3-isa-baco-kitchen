@@ -2,10 +2,8 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -79,7 +77,7 @@ public class OrderItemsController {
         Employee emp = employeeService.findOne(employeeId);
         OrderItem item = orderItemService.findOne(itemId);
         item.setEmployee(emp);
-        item.setState("ACCEPTED");
+        item.setState(Constants.OrderStatus.ACCEPTED);
         OrderItem updatedItem = orderItemService.update(item);
 
         HashMap<String, ArrayList<OrderItem>> itemMap = new HashMap<String, ArrayList<OrderItem>>();
@@ -104,10 +102,9 @@ public class OrderItemsController {
     public ResponseEntity<Boolean> finishOrderItem(@PathVariable("itemId") Integer itemId) {
         OrderItem item = orderItemService.findOne(itemId);
         if (item != null) {
-            item.setState("FINISHED");
+            item.setState(Constants.OrderStatus.FINISHED);
             OrderItem updatedItem = orderItemService.update(item);
             Integer regionId = updatedItem.getOrder().getTable().getRegion().getRegionId();
-            System.out.println(regionId);
             DailySchedule schedule = dailyScheduleService.findScheduleByRegionForNow(regionId);
             Employee e = schedule.getEmployee();
             if (e != null) {
@@ -133,7 +130,7 @@ public class OrderItemsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderItem> deliverOrderItem(@PathVariable("itemId") Integer itemId) {
         OrderItem item = orderItemService.findOne(itemId);
-        item.setState("DELIVERED");
+        item.setState(Constants.OrderStatus.DELIVERED);
         OrderItem updated = orderItemService.update(item);
         return new ResponseEntity<OrderItem> (updated, HttpStatus.OK );
     }

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ClientOrderService {
+
     Collection<ClientOrder> findAll();
 
     ClientOrder findOne(Integer eId);

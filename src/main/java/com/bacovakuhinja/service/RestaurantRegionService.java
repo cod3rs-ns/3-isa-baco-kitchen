@@ -6,17 +6,16 @@ import java.util.Collection;
 
 public interface RestaurantRegionService {
 
-    public Collection <RestaurantRegion> findAll();
+    Collection <RestaurantRegion> findAll();
 
-    public RestaurantRegion findOne(Integer id);
+    RestaurantRegion findOne(Integer id);
 
-    public RestaurantRegion create(RestaurantRegion restaurantRegion);
+    RestaurantRegion create(RestaurantRegion restaurantRegion);
 
-    public RestaurantRegion update(RestaurantRegion restaurantRegion);
+    RestaurantRegion update(RestaurantRegion restaurantRegion);
 
-    public void delete(Integer id);
+    void delete(Integer id);
 
-    public Collection <RestaurantRegion> findAllByRestaurant(Integer restaurantId);
-
+    Collection <RestaurantRegion> findAllByRestaurant(Integer restaurantId);
 
 }

@@ -5,14 +5,14 @@ import java.util.Collection;
 
 public interface SystemManagerService {
 
-    public Collection<SystemManager> findAll();
+    Collection<SystemManager> findAll();
 
-    public SystemManager findOne(Integer smId);
+    SystemManager findOne(Integer smId);
 
-    public SystemManager create(SystemManager sm);
+    SystemManager create(SystemManager sm);
 
-    public SystemManager update(SystemManager sm);
+    SystemManager update(SystemManager sm);
 
-    public void delete(Integer smId);
+    void delete(Integer smId);
 
 }

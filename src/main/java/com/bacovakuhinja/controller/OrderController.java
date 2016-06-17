@@ -3,6 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -82,12 +83,13 @@ public class OrderController {
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
             i.setRestaurantId(restaurantId);
             OrderItem nItem = orderItemService.create(i);
-            if (nItem.getMenuItem().getType().equals("food"))
+            if (nItem.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
                 foodList.add(nItem);
             else
                 drinkList.add(nItem);
         }
 
+        // FIXME @Baco
         foodMap.put("new", foodList);
         drinkMap.put("new", drinkList);
         this.template.convertAndSend("/subscribe/ActiveFood/" + restaurantId, foodMap);
@@ -139,7 +141,7 @@ public class OrderController {
                 if(oldItem.getMenuItem().getMenuItemId() == newItem.getMenuItem().getMenuItemId()){
                     if(oldItem.getAmount() != newItem.getAmount()) {
                         oldItem.setAmount(newItem.getAmount());
-                        if (oldItem.getMenuItem().getType().equals("food"))
+                        if (oldItem.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
                             foodUpdate.add(oldItem);
                         else
                             drinkUpdate.add(oldItem);
@@ -156,7 +158,7 @@ public class OrderController {
                 newItem.setMenuItem(menuItemService.findOne(newItem.getMenuItem().getMenuItemId()));
                 OrderItem item = orderItemService.create(newItem);
                 newItems.add(item);
-                if(newItem.getMenuItem().getType().equals("food"))
+                if(newItem.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
                     foodNew.add(newItem);
                 else
                     drinkNew.add(newItem);
@@ -169,13 +171,14 @@ public class OrderController {
 
         for(Iterator<OrderItem> itOld = oldItems.iterator(); itOld.hasNext();){
             OrderItem oi= itOld.next();
-            if(oi.getMenuItem().getType().equals("food"))
+            if(oi.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
                 foodRemove.add(oi);
             else
                 drinkRemove.add(oi);
             orderItemService.delete(oi.getItemId());
         }
 
+        //FIXME @Baco Stavi i ovo u Constants
         foodMap.put("new", foodNew);
         foodMap.put("remove" , foodRemove);
         foodMap.put("update", foodUpdate);
@@ -197,7 +200,7 @@ public class OrderController {
     public ResponseEntity <Boolean> canEdit(@PathVariable("order_id") Integer orderId) {
         ClientOrder order = clientOrderService.findOne(orderId);
         for(OrderItem oi : order.getItems()){
-            if(!oi.getState().equals("CREATED")){
+            if(!oi.getState().equals(Constants.OrderStatus.CREATED)){
                 return new ResponseEntity <Boolean>(false, HttpStatus.OK);
             }
         }
@@ -216,13 +219,13 @@ public class OrderController {
         clientOrderService.delete(order.getOrderId());
     }
 
-    @Authorization(role = "waiter")
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/orders/setWaiter/{orderId}",
             method = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClientOrder> setOrderWaiter(final HttpServletRequest request, @PathVariable("orderId") Integer orderId) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Waiter waiter = waiterService.findOne(user.getUserId());
         ClientOrder order = clientOrderService.findOne(orderId);
         order.setWaiterId(waiter.getUserId());

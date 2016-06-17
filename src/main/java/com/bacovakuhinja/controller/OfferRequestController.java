@@ -6,6 +6,7 @@ import com.bacovakuhinja.model.ProviderResponse;
 import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
 import com.bacovakuhinja.service.RestaurantProviderService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -96,12 +97,12 @@ public class OfferRequestController {
         Collection <ProviderResponse> responses = providerResponseService.findAllByOffer(offer);
         for (ProviderResponse response : responses) {
             if (response.getResponseId() == responseId) {
-                response.setStatus("accepted");
+                response.setStatus(Constants.OfferStatus.ACCEPTED);
                 offer.setAcceptedResponse(response.getResponseId());
-                offer.setStatus("closed");
+                offer.setStatus(Constants.OfferStatus.CLOSED);
 
             } else {
-                response.setStatus("rejected");
+                response.setStatus(Constants.OfferStatus.REJECTED);
 
             }
         }
@@ -118,7 +119,7 @@ public class OfferRequestController {
     public ResponseEntity <OfferRequest> rejectOfferResponse(@PathVariable("offer_id") Integer offerId, @PathVariable("response_id") Integer responseId) {
         OfferRequest offer = offerRequestService.findOne(offerId);
         ProviderResponse response = providerResponseService.findOne(responseId);
-        response.setStatus("rejected");
+        response.setStatus(Constants.OfferStatus.REJECTED);
         providerResponseService.update(response);
         return new ResponseEntity <OfferRequest>(offer, HttpStatus.OK);
     }
