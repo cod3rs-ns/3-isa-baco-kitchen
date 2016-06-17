@@ -266,7 +266,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
             hideDelay : 3000,
             parent    : angular.element(document.querySelectorAll('#toast-box')),
             position  : 'top right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
     
