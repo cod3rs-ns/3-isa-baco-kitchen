@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface BartenderService {
 
-    public Collection<Bartender> findAll();
+    Collection<Bartender> findAll();
 
-    public Bartender findOne(Integer eId);
+    Bartender findOne(Integer eId);
 
-    public Bartender create(Bartender e);
+    Bartender create(Bartender e);
 
-    public Bartender update(Bartender e);
+    Bartender update(Bartender e);
 
-    public void delete(Integer eId);
+    void delete(Integer eId);
 
 }

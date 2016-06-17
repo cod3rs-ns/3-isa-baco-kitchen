@@ -4,6 +4,7 @@ import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.CookService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -36,14 +37,13 @@ public class CookController {
         return new ResponseEntity <Cook>(cook, HttpStatus.OK);
     }
 
-
-    @Authorization(role = "cook")
+    @Authorization(role = Constants.UserRoles.COOK)
     @RequestMapping(
             value = "/api/cook",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Cook> getLoggedInCook(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Cook cook = cookService.findOne(user.getUserId());
         return new ResponseEntity <Cook>(cook, HttpStatus.OK);
     }
@@ -55,7 +55,7 @@ public class CookController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Cook> createCook(@RequestBody Cook cook) {
         cook.setPassword("generated_password");
-        cook.setVerified("not_verified");
+        cook.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Cook created = cookService.create(cook);
         return new ResponseEntity<Cook>(created, HttpStatus.CREATED);
     }

@@ -5,6 +5,7 @@ import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.SystemManagerService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +26,6 @@ public class SystemManagerController {
     @Autowired
     private SystemManagerService systemManagerService;
 
-
     @RequestMapping(
             value = "/api/smanagers",
             method = RequestMethod.GET,
@@ -45,18 +45,16 @@ public class SystemManagerController {
     }
 
 
-    @Authorization(role = "system_manager")
+    @Authorization(role = Constants.UserRoles.SYSTEM_MANAGER)
     @RequestMapping(
             value = "/api/smanager",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <SystemManager> getLoggedInSystemManager(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         SystemManager sm = systemManagerService.findOne(user.getUserId());
         return new ResponseEntity <SystemManager>(sm, HttpStatus.OK);
     }
-
-
 
     @RequestMapping(
             value = "/api/system_manager/{id}/restaurants",

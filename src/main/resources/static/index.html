@@ -109,7 +109,7 @@
         <md-menu-content width="5" ng-show="tbCtrl.restaurantQueryResult.length > 0">
           <md-menu-item ng-repeat="result in tbCtrl.restaurantQueryResult">
               <md-list-item class="noright" ng-click="tbCtrl.toRestaurant(result.restaurantId)">
-                <img class="md-avatar" src="http://medias.otbor.vm.aiprod.com/360x360/RESAQU033FS000JE/0-Bouliac-Restaurant-Le-St-James-2.jpg"/>
+                <img class="md-avatar" ng-src="{{result.image}}"/>
                 <p class="color-gray">{{result.name}}</p>
               </md-list-item>
           </md-menu-item>

@@ -6,18 +6,14 @@ import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.repository.FriendshipRepository;
 import com.bacovakuhinja.repository.GuestRepository;
 import com.bacovakuhinja.service.FriendshipService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
 public class FriendshipServiceImpl implements FriendshipService {
-
-    private static final String ACCEPTED = "accepted";
-    private static final String REJECTED = "rejected";
-    private static final String WAITING  = "waiting";
 
     @Autowired
     FriendshipRepository friendshipRepository;
@@ -27,14 +23,14 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public Collection<User> getFriendshipsRequestByGuestID(Integer id) {
-        return friendshipRepository.findFriendshipRequests(WAITING, id);
+        return friendshipRepository.findFriendshipRequests(Constants.FriendshipStatus.WAITING, id);
     }
 
     @Override
     public Collection<User> getFriendsByGuestID(Integer id) {
 
-        Collection<User> rec = friendshipRepository.findFriendsReceivers(ACCEPTED, id);
-        Collection<User> sen = friendshipRepository.findFriendsSenders(ACCEPTED, id);
+        Collection<User> rec = friendshipRepository.findFriendsReceivers(Constants.FriendshipStatus.ACCEPTED, id);
+        Collection<User> sen = friendshipRepository.findFriendsSenders(Constants.FriendshipStatus.ACCEPTED, id);
         rec.addAll(sen);
 
         return rec;
@@ -42,20 +38,20 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public void acceptRequest(Integer senderId, Integer receiverId) {
-        Friendship friendship = friendshipRepository.getFriendship(WAITING, senderId, receiverId);
+        Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.WAITING, senderId, receiverId);
 
         if (friendship != null) {
-            friendship.setStatus(ACCEPTED);
+            friendship.setStatus(Constants.FriendshipStatus.ACCEPTED);
             friendshipRepository.save(friendship);
         }
     }
 
     @Override
     public void rejectRequest(Integer senderId, Integer receiverId) {
-        Friendship friendship = friendshipRepository.getFriendship(WAITING, senderId, receiverId);
+        Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.WAITING, senderId, receiverId);
 
         if (friendship != null) {
-            friendship.setStatus(REJECTED);
+            friendship.setStatus(Constants.FriendshipStatus.REJECTED);
             friendshipRepository.save(friendship);
         }
     }
@@ -65,14 +61,14 @@ public class FriendshipServiceImpl implements FriendshipService {
         Friendship fs = new Friendship();
         fs.setSender(guestRepository.findOne(senderId));
         fs.setReceiver(guestRepository.findOne(receiverId));
-        fs.setStatus(WAITING);
+        fs.setStatus(Constants.FriendshipStatus.WAITING);
 
         friendshipRepository.save(fs);
     }
 
     @Override
     public void removeFriend(Integer senderId, Integer receiverId) {
-        Friendship friendship = friendshipRepository.getFriendship(ACCEPTED, senderId, receiverId);
+        Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.ACCEPTED, senderId, receiverId);
 
         if (friendship != null) {
             friendshipRepository.delete(friendship);
@@ -81,7 +77,7 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Override
     public boolean areWeFriends(Integer senderId, Integer receiverId) {
-        Friendship friendship = friendshipRepository.getFriendship(ACCEPTED, senderId, receiverId);
+        Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.ACCEPTED, senderId, receiverId);
         return (friendship == null) ? false : true;
     }
 }

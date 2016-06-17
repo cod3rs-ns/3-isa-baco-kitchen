@@ -3,6 +3,7 @@ package com.bacovakuhinja.aspects;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.UserService;
+import com.bacovakuhinja.utility.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -20,8 +21,6 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 public class SecurityAspect {
-
-    private static final String SECRET_KEY = "VojislavSeselj";
 
     @Autowired
     UserService userService;
@@ -43,16 +42,16 @@ public class SecurityAspect {
         // Authorization token
         final String token = auth.substring(7);
 
-        final Claims claims = Jwts.parser().setSigningKey(SECRET_KEY)
+        final Claims claims = Jwts.parser().setSigningKey(Constants.Authorization.SECRET_KEY)
                 .parseClaimsJws(token).getBody();
 
         // User's mail
-        final String email = claims.get("user").toString();
+        final String email = claims.get(Constants.Authorization.CLAIMS_BODY).toString();
 
         User user = userService.findOne(email);
 
-        if ((user.getType().equals(role) || role.equals("all"))) {
-            request.setAttribute("loggedUser", user);
+        if ((user.getType().equals(role) || role.equals(Constants.UserRoles.EVERYONE))) {
+            request.setAttribute(Constants.Authorization.LOGGED_USER, user);
             return joinPoint.proceed();
         }
 

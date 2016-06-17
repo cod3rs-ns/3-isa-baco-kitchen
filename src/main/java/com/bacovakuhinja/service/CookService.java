@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface CookService {
 
-    public Collection<Cook> findAll();
+    Collection<Cook> findAll();
 
-    public Cook findOne(Integer eId);
+    Cook findOne(Integer eId);
 
-    public Cook create(Cook e);
+    Cook create(Cook e);
 
-    public Cook update(Cook e);
+    Cook update(Cook e);
 
-    public void delete(Integer eId);
+    void delete(Integer eId);
 
 }

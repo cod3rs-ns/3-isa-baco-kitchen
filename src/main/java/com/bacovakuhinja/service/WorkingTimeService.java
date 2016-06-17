@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface WorkingTimeService {
 
-    public Collection<WorkingTime> findAll();
+    Collection<WorkingTime> findAll();
 
-    public WorkingTime findOne(Integer workingTimeId);
+    WorkingTime findOne(Integer workingTimeId);
 
-    public WorkingTime create(WorkingTime workingTime);
+    WorkingTime create(WorkingTime workingTime);
 
-    public WorkingTime update(WorkingTime workingTime);
+    WorkingTime update(WorkingTime workingTime);
 
-    public WorkingTime findByRestaurant(Integer restaurantId);
+    WorkingTime findByRestaurant(Integer restaurantId);
 
 }

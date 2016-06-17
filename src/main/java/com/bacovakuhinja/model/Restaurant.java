@@ -36,6 +36,9 @@ public class Restaurant implements Serializable {
     @Column(name = "r_address")
     private String address;
 
+    @Column(name = "r_image")
+    private String image;
+
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "r_sm_id")
     private SystemManager systemManager;
@@ -132,5 +135,13 @@ public class Restaurant implements Serializable {
     @JsonIgnore
     public void setRegions(Set <RestaurantRegion> regions) {
         this.regions = regions;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

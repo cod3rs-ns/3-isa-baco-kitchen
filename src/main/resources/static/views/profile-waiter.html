@@ -164,7 +164,7 @@
 
 				<md-tab label="Raspored stolova" layout ="row">
 					<md-content layout="row" class="md-padding" style="height: 80%; background-color:#DDDDDD">
-						<div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas" style="background-image: url('../images/dotgrid.png'); background-size:cover; background-repeat: no-repeat; border-color: #607D8B; border-width: 2px;" >
+						<div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas">
 							<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
 									name="{{table.tableId != null ? table.tableId : table.tempId}}"
 									data-x="{{table.datax}}"

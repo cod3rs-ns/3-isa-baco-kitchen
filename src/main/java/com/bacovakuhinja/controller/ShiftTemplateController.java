@@ -17,9 +17,6 @@ public class ShiftTemplateController {
     @Autowired
     private ShiftTemplateService shiftTemplateService;
 
-    @Autowired
-    private RestaurantService restaurantService;
-
     @RequestMapping(
             value = "/api/shifts",
             method = RequestMethod.GET,
@@ -37,7 +34,6 @@ public class ShiftTemplateController {
         ShiftTemplate shiftTemplate = shiftTemplateService.findOne(id);
         return new ResponseEntity <ShiftTemplate>(shiftTemplate, HttpStatus.OK);
     }
-
 
     @RequestMapping(value = "/api/shifts",
             method = RequestMethod.POST,

@@ -3,6 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.Constants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,20 +40,20 @@ public class GuestController {
     @Autowired
     ReviewService reviewService;
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/requests",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<User>> getRequests(final HttpServletRequest request) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Collection<User> requests = friendshipService.getFriendshipsRequestByGuestID(user.getGuestId());
 
         return new ResponseEntity<Collection<User>>(requests, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping(
             value    = "/api/guest/{id}",
             method   = RequestMethod.GET,
@@ -63,29 +64,29 @@ public class GuestController {
         return new ResponseEntity<Guest>(guest, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/admin/{id}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Boolean> isAdmin(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         return new ResponseEntity<Boolean>(user.getGuestId() == id, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/friend/{id}",
             method   = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Boolean> isFriend(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         return new ResponseEntity<Boolean>(friendshipService.areWeFriends(user.getGuestId(), id), HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/friends/{id}",
             method   = RequestMethod.GET,
@@ -94,7 +95,7 @@ public class GuestController {
     public ResponseEntity<Collection<User>> getFriends(final HttpServletRequest request, @PathVariable Integer id) {
 
         if (id == -1) {
-            Guest user = (Guest) request.getAttribute("loggedUser");
+            Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
             id = user.getGuestId();
         }
         
@@ -102,50 +103,50 @@ public class GuestController {
         return new ResponseEntity<Collection<User>>(friends, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/accept-friend/{senderId}",
             method   = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> acceptFriend(final HttpServletRequest request, @PathVariable Integer senderId) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         friendshipService.acceptRequest(senderId, user.getGuestId());
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/reject-friend/{senderId}",
             method   = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> rejectFriend(final HttpServletRequest request, @PathVariable Integer senderId) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         friendshipService.rejectRequest(senderId, user.getGuestId());
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/add-friend/{id}",
             method   = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> addFriend(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         friendshipService.addFriend(user.getGuestId(), id);
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/remove-friend/{id}",
             method   = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> removeFriend(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         friendshipService.removeFriend(user.getGuestId(), id);
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
@@ -160,7 +161,7 @@ public class GuestController {
         return new ResponseEntity<Collection<User>>(result, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "api/guest/reservations/{id}",
             method   = RequestMethod.GET,
@@ -188,7 +189,7 @@ public class GuestController {
         return new ResponseEntity<Collection<ReservationHelper>>(result, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "api/guest/visits/{id}",
             method   = RequestMethod.GET,
@@ -212,7 +213,7 @@ public class GuestController {
         return new ResponseEntity<Collection<ReservationHelper>>(result, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "api/guest/invitations/{id}",
             method   = RequestMethod.GET,
@@ -224,7 +225,6 @@ public class GuestController {
         Collection<Reservation> invitations = reservationService.findInvitationsByOwnerId(id);
 
         ReservationHelper helper;
-        Guest reservationOwner;
 
         for (Reservation reservation : invitations) {
             // FIXME Restaurant Image From DataBase
@@ -254,22 +254,20 @@ public class GuestController {
         // Authorization token
         final String token = auth.substring(7);
 
-        final Claims claims = Jwts.parser().setSigningKey("VojislavSeselj")
+        final Claims claims = Jwts.parser().setSigningKey(Constants.Authorization.SECRET_KEY)
                 .parseClaimsJws(token).getBody();
 
-        final String email = claims.get("user").toString();
+        final String email = claims.get(Constants.Authorization.CLAIMS_BODY).toString();
 
 
         User guest = null;
         // FIXME Maybe change...
         for (User user : userService.findAll()) {
-            if (user.getEmail().equals(email) && user.getType().equals("guest")) {
+            if (user.getEmail().equals(email) && user.getType().equals(Constants.UserRoles.GUEST)) {
                 guest = user;
                 break;
             }
         }
-
-        System.out.println(guest);
 
         if (guest != null) {
             return new ResponseEntity<Boolean>(true, HttpStatus.OK);
@@ -278,27 +276,27 @@ public class GuestController {
         return new ResponseEntity<Boolean>(false, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/accept-invite/{id}",
             method   = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> acceptInvite(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         reservationGuestService.acceptInvitation(id, user.getGuestId());
 
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
-    @Authorization(role = "guest")
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping (
             value    = "/api/guest/decline-invite/{id}",
             method   = RequestMethod.PUT,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> declineInvite(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         reservationGuestService.declineInvitation(id, user.getGuestId());
 
         return new ResponseEntity<Guest>(user, HttpStatus.OK);

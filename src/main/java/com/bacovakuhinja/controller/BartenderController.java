@@ -5,6 +5,7 @@ import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Bartender;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.BartenderService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,6 @@ public class BartenderController {
 
     @Autowired
     private BartenderService bartenderService;
-
 
     @RequestMapping(
             value = "/api/bartenders",
@@ -45,18 +45,18 @@ public class BartenderController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Bartender> createBartender(@RequestBody Bartender bartender) {
         bartender.setPassword("generated_password");
-        bartender.setVerified("not_verified");
+        bartender.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Bartender created = bartenderService.create(bartender);
         return new ResponseEntity<Bartender>(created, HttpStatus.CREATED);
     }
 
-    @Authorization(role = "bartender")
+    @Authorization(role = Constants.UserRoles.BARTENDER)
     @RequestMapping(
             value = "/api/bartender",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Bartender> getLoggedInBartender(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Bartender bartender = bartenderService.findOne(user.getUserId());
         return new ResponseEntity <Bartender>(bartender, HttpStatus.OK);
     }

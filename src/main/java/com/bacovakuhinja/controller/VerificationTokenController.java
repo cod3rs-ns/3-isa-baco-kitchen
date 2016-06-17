@@ -1,26 +1,20 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.annotations.Authorization;
-import com.bacovakuhinja.model.Guest;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.model.VerificationToken;
 import com.bacovakuhinja.service.UserService;
 import com.bacovakuhinja.service.VerificationTokenService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
-
-import static com.bacovakuhinja.aspects.SendMailAspect.TOKEN_EXPIRE_TIME;
 
 @RestController
 public class VerificationTokenController {
@@ -55,7 +49,7 @@ public class VerificationTokenController {
         }
 
         User user = verificationToken.getUser();
-        user.setVerified("verified");
+        user.setVerified(Constants.Registration.STATUS_VERIFIED);
 
         // Update user
         userService.update(user);
@@ -79,7 +73,7 @@ public class VerificationTokenController {
 
         // Generate VerificationToken
         Date date = new Date();
-        date.setTime(date.getTime() + TOKEN_EXPIRE_TIME);
+        date.setTime(date.getTime() + Constants.MailParameters.TOKEN_EXPIRE_TIME);
         final String tokenValue = UUID.randomUUID().toString();
 
         token.setToken(tokenValue);
