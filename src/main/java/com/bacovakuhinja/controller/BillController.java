@@ -96,7 +96,7 @@ public class BillController {
     }
 
 
-    @Authorization(role = Constants.UserRoles.BARTENDER)
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/waiter/bills",
             method = RequestMethod.GET,

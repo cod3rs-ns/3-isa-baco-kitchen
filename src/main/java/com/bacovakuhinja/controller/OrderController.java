@@ -249,7 +249,7 @@ public class OrderController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ClientOrder> changeStatus(@PathVariable("orderId") Integer orderId) {
         ClientOrder oldOrder = clientOrderService.findOne(orderId);
-        oldOrder.setStatus("ACCEPTED");
+        oldOrder.setStatus(Constants.OrderStatus.ACCEPTED);
         ClientOrder updated = clientOrderService.update(oldOrder);
 
         return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
