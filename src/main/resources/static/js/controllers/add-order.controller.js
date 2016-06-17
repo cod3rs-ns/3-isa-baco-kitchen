@@ -19,9 +19,9 @@ function AddOrderController(menuItemService, orderService, reservationService, $
 
         if (reservationId != null) {
         reservationService.getInvite(reservationId)
-          .then(function (data) {
-            orderVm.reservation = data.reservation;
-            orderVm.tableId = data.tableId;
+          .then(function (response) {
+            orderVm.reservation = response.data.reservation;
+            orderVm.tableId = response.data.tableId;
           });
         }
 

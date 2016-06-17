@@ -17,36 +17,51 @@ function reservationService($http) {
 
     function addReservation(reservation) {
         return $http.post('api/reservation', reservation)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function removeReservation(reservationId) {
         return $http.delete('api/reservation/' + reservationId)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function inviteFriend(reservationId, friendEmail) {
         return $http.head('api/reservation/invite?reservation=' + reservationId + '&friend=' + friendEmail)
-        .then(function(response) {
-
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function saveTables(reservationId, tables) {
         return $http.post('/api/reservation/tables?reservation=' + reservationId, tables)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function getInvite(reservationId) {
         return $http.get('/api/reservation/invited/' + reservationId)
-        .then(function(response) {
-            return response.data;
-        });
-    }
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
+    };
 }

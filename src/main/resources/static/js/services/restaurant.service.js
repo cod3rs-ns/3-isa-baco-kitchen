@@ -18,12 +18,11 @@ function restaurantService($http){
     
     function getSearchResult(query) {
         return $http.get('api/restaurant/restaurants?query=' + query)
-          .success(function(data) {
-              console.log("Success");
-              return data;
+          .success(function(response) {
+              return response;
           })
-          .error(function(data) {
-              return data;
+          .error(function(response) {
+              return response;
           });
     };
 

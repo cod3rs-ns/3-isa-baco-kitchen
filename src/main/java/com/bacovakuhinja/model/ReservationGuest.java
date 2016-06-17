@@ -26,6 +26,12 @@ public class ReservationGuest {
         super();
     }
 
+    public ReservationGuest(Guest reservationGuest, Reservation reservation, String status) {
+        this.reservationGuest = reservationGuest;
+        this.reservation = reservation;
+        this.status = status;
+    }
+
     public Integer getId() {
         return id;
     }
