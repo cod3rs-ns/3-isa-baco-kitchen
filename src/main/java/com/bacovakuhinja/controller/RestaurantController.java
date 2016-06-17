@@ -1,6 +1,5 @@
 package com.bacovakuhinja.controller;
 
-import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
 import com.bacovakuhinja.service.RestaurantService;
@@ -12,9 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.Iterator;
-
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
 public class RestaurantController {
@@ -22,7 +18,6 @@ public class RestaurantController {
     @Autowired
     private RestaurantService restaurantService;
 
-    // injektovanje servisa menadzera zbog dodavanja restorana
     @Autowired
     private SystemManagerService systemManagerService;
 
@@ -77,5 +72,15 @@ public class RestaurantController {
     public ResponseEntity <Restaurant> deleteRestaurant(@PathVariable("id") Integer id) {
         restaurantService.delete(id);
         return new ResponseEntity <Restaurant>(HttpStatus.NO_CONTENT);
+    }
+
+    @RequestMapping (
+            value    = "api/restaurant/restaurants",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Restaurant>> queryResults(@RequestParam(value="query") String query) {
+        Collection<Restaurant> result = restaurantService.getRestaurants(query.toLowerCase());
+        return new ResponseEntity<Collection<Restaurant>>(result, HttpStatus.OK);
     }
 }

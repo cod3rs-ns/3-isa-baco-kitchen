@@ -5,68 +5,82 @@ angular
 GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService'];
 
 function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService) {
-    var guestProfileVm = this;
+    var guestVm = this;
 
-    // Set bindable memebers at the top of the controller
-    guestProfileVm.admin = false;
-    guestProfileVm.showSearch = false;
-    guestProfileVm.editMode = false;
-    guestProfileVm.user = {};
-    guestProfileVm.realUser = {};
-    guestProfileVm.friendRequests = [];
-    guestProfileVm.friends = [];
-    guestProfileVm.isFriend = false;
-    guestProfileVm.sendRequest = false;
-    guestProfileVm.query = "";
-    guestProfileVm.queryResult = [];
-    guestProfileVm.activeReservations = [];
-    guestProfileVm.visits = [];
-    guestProfileVm.invitations = [];
-    // Functions 
-    guestProfileVm.editProfile = editProfile;
-    guestProfileVm.saveChanges = saveChanges;
-    guestProfileVm.cancel = cancel;
-    guestProfileVm.acceptFriend = acceptFriend;
-    guestProfileVm.rejectFriend = rejectFriend;
-    guestProfileVm.removeFriend = removeFriend;
-    guestProfileVm.addFriend = addFriend;
-    guestProfileVm.search = search;
-    guestProfileVm.to = to;
-    guestProfileVm.cancelReservation = cancelReservation;
-    guestProfileVm.showToast = showToast;
-    guestProfileVm.sendReview = sendReview;
-    guestProfileVm.isCommented = isCommented;
+    // Check if logged user's profile
+    guestVm.admin = false;
+    // Edit button clicked
+    guestVm.editMode = false;
+    // User informations
+    guestVm.user = {};
+    // User informations used for cancel editing
+    guestVm.realUser = {};
+    // List of friend requests
+    guestVm.friendRequests = [];
+    // List of friends
+    guestVm.friends = [];
+    // Check if current user is logged user's friend
+    guestVm.isFriend = false;
+    // If request is send but friendship is not accepted and not rejected
+    guestVm.sendRequest = false;
     
-    guestProfileVm.acceptInvite = acceptInvite;
-    guestProfileVm.declineInvite = declineInvite;
-    guestProfileVm.mealOrder = mealOrder;
-    guestProfileVm.cancelMealOrder = cancelMealOrder;
+    // Search parameters - query and result
+    guestVm.query = "";
+    guestVm.queryResult = [];
+    
+    // List of active reservations, already visited restaurants and invitations
+    guestVm.activeReservations = [];
+    guestVm.visits = [];
+    guestVm.invitations = [];
+    
+    
+    // Edit profile functions
+    guestVm.editProfile = editProfile;
+    guestVm.saveChanges = saveChanges;
+    guestVm.cancel = cancel;
+    guestVm.changePassword = changePassword;
+    
+    // Friend and user functions
+    guestVm.acceptFriend = acceptFriend;
+    guestVm.rejectFriend = rejectFriend;
+    guestVm.removeFriend = removeFriend;
+    guestVm.addFriend = addFriend;
+    guestVm.to = to;
+    
+    // Invitations, visits and active reservations functions
+    guestVm.cancelReservation = cancelReservation;
+    guestVm.acceptInvite = acceptInvite;
+    guestVm.declineInvite = declineInvite;
+    guestVm.mealOrder = mealOrder;
+    guestVm.cancelMealOrder = cancelMealOrder;
+    
+    // Check if user commented on visit
+    guestVm.isCommented = isCommented;
+    guestVm.search = search;
+    guestVm.sendReview = sendReview;
+    
+    guestVm.showToast = showToast;
 
     activate();
     
     function sendReview(visit) {
+        // Set review's reservation id to current reservation id
         visit.review.reservation = visit.reservation.reservationId;
+        // Send review 
         return reviewService.addReview(visit.review)
-            .then(function(data) { 
-                visit.review.reviewId = data.reviewId;
+            .then(function(response) { 
+                // Change review id from null to real id - function 'isCommented' use this information
+                visit.review.reviewId = response.data.reviewId;
             });
     };
     
-    function cancelReservation(id) {
-      
-      var reservation = null;
-      for (var i in guestProfileVm.activeReservations) {
-          if (guestProfileVm.activeReservations[i].reservation.reservationId == id) {
-              reservation = guestProfileVm.activeReservations[i];
-              break;
-          }
-      }
-      
+    function cancelReservation(reservation) {
+      // Check if reservation time is in next 30 minutes
       if (Date.now() + 30*60*1000 < reservation.reservationDateTime) {
-          // FIXME Dodati brisanje rezervacije.
-          for (var i in guestProfileVm.activeReservations) {
-              if (guestProfileVm.activeReservations[i].reservationId == id) {
-                  guestProfileVm.activeReservations.splice(i, 1);
+          // Remove reservation from list of active reservations
+          for (var i in guestVm.activeReservations) {
+              if (guestVm.activeReservations[i].reservationId == reservation.reservationIdid) {
+                  guestVm.activeReservations.splice(i, 1);
                   break;
               }
           }
@@ -77,129 +91,158 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
       }
     };
     
+    // Redirect to user profile with this ID
     function to(id) {
         $location.path('profile-guest/' + id);
     };
     
+    // Send friend request
     function addFriend(id) {
         guestService.addFriend(id)
           .then(function (response) {
-              guestProfileVm.sendRequest = true;
+              guestVm.sendRequest = true;
+              showToast('Zahtjev za prijateljstvo poslat.');
           });
     };
     
+    // Remove friend from list
     function removeFriend(id) {
-      guestService.removeFriend(id)
-        .then(function (response) {
-            guestProfileVm.isFriend = false;
-            
-            if (guestProfileVm.admin) {
-                for (var i = guestProfileVm.friends.length - 1; i >= 0; i--) {
-                    if (guestProfileVm.friends[i].guestId === id) {
-                       guestProfileVm.friends.splice(i, 1);
-                       break;
-                    }
-                }
-            }
-            else {
-                getFriends();
-            }
-        });
+        guestService.removeFriend(id)
+          .then(function (response) {
+              // If on my profile then remove user from list
+              if (guestVm.admin) {
+                  for (var i = guestVm.friends.length - 1; i >= 0; i--) {
+                      if (guestVm.friends[i].guestId === id) {
+                         guestVm.friends.splice(i, 1);
+                         break;
+                      }
+                  }
+              }
+              // If not on my profile - user is not friend anymore and reload his friends
+              else {
+                  guestVm.isFriend = false;
+                  getFriends();
+              }
+              showToast('Obrisali ste prijatelja.');
+          });
     };
 
-    // Implement functions later
+    // Accept friend request
     function acceptFriend(id) {
         guestService.accept(id)
           .then(function (response) {
-              for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
-                  if (guestProfileVm.friendRequests[i].guestId === id) {
-                     guestProfileVm.friends.push(guestProfileVm.friendRequests[i]);
-                     guestProfileVm.friendRequests.splice(i, 1);
+              // Add accepted friend to list of friends and remove request
+              for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
+                  if (guestVm.friendRequests[i].guestId === id) {
+                     guestVm.friends.push(guestVm.friendRequests[i]);
+                     showToast('Poziv za prijateljstvo od ' + 
+                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                        ' prihvaćen.');
+                     guestVm.friendRequests.splice(i, 1);
                      break;
                   }
               }
           });
     };
     
+    // Reject friend request
     function rejectFriend(id) {
-      guestService.reject(id)
+        guestService.reject(id)
+          .then(function (response) {
+              // Remove request
+              for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
+                  if (guestVm.friendRequests[i].guestId === id) {
+                    showToast('Poziv za prijateljstvo od ' + 
+                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                       ' odbijen.');
+                      guestVm.friendRequests.splice(i, 1);
+                      break;
+                  }
+              }
+          });
+    };
+    
+    function search() {
+        if (guestVm.query != '') {
+            return guestService.getSearchResult(guestVm.query)
+              .then(function (response) {
+                  guestVm.queryResult = response.data;
+              });
+        }
+        else {
+            guestVm.queryResult = [];
+        }
+    };
+    
+    // Edit button is clicked and copy user in 'realUser' for edit cancel
+    function editProfile() {
+        guestVm.editMode = true;
+        guestVm.realUser = JSON.parse(JSON.stringify(guestVm.user));
+    }
+    
+    function saveChanges() {
+        guestService.updateGuest(guestVm.user)
+          .then(function (response) {
+            guestVm.user = response.data;
+            showToast('Promjene su sačuvane.');
+          });
+        guestVm.editMode = false;
+    }
+    
+    // Accept reservation invite
+    function acceptInvite(reservationId) {
+        guestService.acceptInvite(reservationId)
+          .then(function (response) {
+              // Update visits and intvitations
+              getVisits();
+              getInvitations();
+              showToast('Poziv za rezervaciju prihvaćen. Sada možete napraviti porudžbinu u sekciji aktivnih rezervacija.');
+          });
+    };
+    
+    // Reject reservation invite
+    function declineInvite(reservationId) {
+      guestService.declineInvite(reservationId)
         .then(function (response) {
-            for (var i = guestProfileVm.friendRequests.length - 1; i >= 0; i--) {
-                if (guestProfileVm.friendRequests[i].guestId === id) {
-                   guestProfileVm.friendRequests.splice(i, 1);
-                   break;
-                }
+            // Update visits and intvitations
+            getVisits();  
+            getInvitations();
+            showToast('Poziv za rezervaciju odbijen.');
+        });
+    };
+    
+    // Order meal for ACCEPTED or CREATED reservation
+    function mealOrder(reservation) {
+        // Show dialog for Orders
+        $mdDialog.show({
+            controller: 'AddOrderController',
+            controllerAs: 'orderVm',
+            templateUrl: '/views/dialogs/add-order.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:false,
+            fullscreen: true,
+            locals: {
+                // User doesn't know table
+                table: null,
+                // Get 'restaurantId' by reservation
+                restaurantId : reservation.restaurantId,
+                // FIXME @Baco Not my param
+                edit : null,
+                // Get 'reservationId' for order
+                reservationId : reservation.reservation.reservationId,
+                // Which guest creates order - it's current user
+                guestId : $routeParams.guestId
+            },
+            onRemoving: function () {
+                // Update reservations list (returns if order is created or not)
+                getReservations();
             }
         });
     };
     
-    function search() {
-      if (guestProfileVm.query != '') {
-          return guestService.getSearchResult(guestProfileVm.query)
-            .then(function (response) {
-                guestProfileVm.queryResult = response.data;
-            });
-      }
-      else {
-          guestProfileVm.queryResult = [];
-      }
-    };
-    
-    function editProfile() {
-        guestProfileVm.editMode = true;
-        guestProfileVm.realUser = JSON.parse(JSON.stringify(guestProfileVm.user));
-    }
-    
-    function saveChanges() {
-        guestService.updateGuest(guestProfileVm.user)
-          .then(function (updatedUser) {
-            guestProfileVm.user = updatedUser;
-          });
-        guestProfileVm.editMode = false;
-    }
-    
-    function acceptInvite(reservationId) {
-        guestService.acceptInvite(reservationId)
-          .then(function (response) {
-              // TODO Remove from list and update list...
-              getVisits().then(function () { });
-              
-              getInvitations().then(function () { });
-          });
-    };
-    
-    function declineInvite(reservationId) {
-      guestService.declineInvite(reservationId)
-        .then(function (response) {
-            // TODO Remove from list and update list...
-            getVisits().then(function () { });
-            
-            getInvitations().then(function () { });
-        });
-    };
-    
-    function mealOrder(reservation) {
-      $mdDialog.show({
-          controller: 'AddOrderController',
-          controllerAs: 'orderVm',
-          templateUrl: '/views/dialogs/add-order.html',
-          parent: angular.element(document.body),
-          clickOutsideToClose:false,
-          fullscreen: true,
-          locals: {
-              table: null,
-              restaurantId : reservation.restaurantId,
-              edit : null,
-              reservationId : reservation.reservation.reservationId,
-              guestId : $routeParams.guestId
-          },
-          onRemoving: function () {
-              getReservations();
-          }
-      });
-    };
-    
+    // Cancel created meal order
     function cancelMealOrder(reservation) {
+        // Check if reservation time (and order time) is in next 30 minutes
         if (Date.now() + 30*60*1000 < reservation.reservation.reservationDateTime) {
           guestService.cancelMealOrder(reservation.order)
             .then(function() {
@@ -212,115 +255,118 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         }
     };
     
+    // Cancel edit mode
     function cancel() {
-        guestProfileVm.editMode = false;
-        guestProfileVm.user = JSON.parse(JSON.stringify(guestProfileVm.realUser));
+        guestVm.editMode = false;
+        // Return current user changes to old values
+        guestVm.user = JSON.parse(JSON.stringify(guestVm.realUser));
     }
     
+    // Check if review is commented
     function isCommented(review) {
         return !(review.reviewId == null);
     }
     
     function activate() {
-      
-        guestService.isMy($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.admin = response.data;
-        });
-      
-        getUser().then(function() { });
+        getUser();
+        getRequests();
+        getFriends();
+        getReservations();
+        getVisits();
+        getInvitations();
         
-        getRequests().then(function() { });
-        
-        getFriends().then(function() { });
-        
-        isFriend().then(function() { });
-        
-        getReservations().then(function () { });
-        
-        getVisits().then(function () { });
-        
-        getInvitations().then(function () { });
+        isFriend();
+        isMyProfile();
     };
 
     function getUser() {
         return guestService.getGuest($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.user = response.data;
-            return guestProfileVm.user;
-        });
+          .then(function(response) {
+              guestVm.user = response.data;
+              return guestVm.user;
+          });
     };
     
     function getRequests() {
         return guestService.getRequests()
-        .then(function(response) {
-            guestProfileVm.friendRequests = response.data;
-            return guestProfileVm.friendRequests;
-        });
+          .then(function(response) {
+              guestVm.friendRequests = response.data;
+              return guestVm.friendRequests;
+          });
     };
     
     function getFriends() {
         return guestService.getFriends($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.friends = response.data;
-            return guestProfileVm.friends;
-        });
+          .then(function(response) {
+              guestVm.friends = response.data;
+              return guestVm.friends;
+          });
     };
     
     function isFriend() {
         return guestService.isFriend($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.isFriend = response.data;
-            return guestProfileVm.isFriend;
-        });
+          .then(function(response) {
+              guestVm.isFriend = response.data;
+              return guestVm.isFriend;
+          });
     };
     
     function getReservations() {
         return guestService.getReservations($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.activeReservations = response.data;
-            return guestProfileVm.activeReservations;
-        });
+          .then(function(response) {
+              guestVm.activeReservations = response.data;
+              return guestVm.activeReservations;
+          });
     };
     
     function getInvitations() {
         return guestService.getInvitations($routeParams.guestId)
-        .then(function(response) {
-            guestProfileVm.invitations = response.data;
-            return guestProfileVm.invitations;
-        });
+          .then(function(response) {
+              guestVm.invitations = response.data;
+              return guestVm.invitations;
+          });
     };
     
     function getVisits() {
         return guestService.getVisits($routeParams.guestId)
+          .then(function(response) {
+              guestVm.visits = response.data;
+              
+              // If visit is not commented create default review
+              var index;
+              for (index = 0; index < guestVm.visits.length; ++index) {
+                  if (guestVm.visits[index].review == null) {
+                      guestVm.visits[index].review = {
+                          restaurantRate: 1,
+                          foodRate: 1,
+                          serviceRate: 1,
+                          reservation: 1,
+                          comment: ''
+                        };
+                  }
+              }
+              
+              return guestVm.visits;
+          });
+    };
+    
+    function isMyProfile() {
+      return guestService.isMy($routeParams.guestId)
         .then(function(response) {
-            guestProfileVm.visits = response.data;
-            var index;
-            for (index = 0; index < guestProfileVm.visits.length; ++index) {
-                if (guestProfileVm.visits[index].review == null) {
-                    guestProfileVm.visits[index].review = {
-                        restaurantRate: 1,
-                        foodRate: 1,
-                        serviceRate: 1,
-                        reservation: 1,
-                        comment: ''
-                      };
-                }
-            }
-            
-            return guestProfileVm.visits;
+            guestVm.admin = response.data;
+            return guestVm.admin;
         });
-    }
+    };
     
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
-            position  : 'bottom right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            parent    : angular.element(document.querySelectorAll('#toast-box')),
+            position  : 'right',
+            template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
     
-    guestProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {

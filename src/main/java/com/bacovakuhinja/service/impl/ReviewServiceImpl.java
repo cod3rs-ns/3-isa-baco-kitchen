@@ -27,6 +27,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public Collection<Review> restaurantReviews(Integer id) {
+        // TODO Check for fixes
         Collection<Review> reviews = new ArrayList<Review>();
 
         for (Review review : reviewRepository.findAll()) {

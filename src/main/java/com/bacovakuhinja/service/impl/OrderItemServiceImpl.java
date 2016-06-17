@@ -1,6 +1,5 @@
 package com.bacovakuhinja.service.impl;
 
-import com.bacovakuhinja.model.ClientOrder;
 import com.bacovakuhinja.model.OrderItem;
 import com.bacovakuhinja.repository.OrderItemRepository;
 import com.bacovakuhinja.service.OrderItemService;
@@ -8,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-import java.util.List;
 
 @Service
 public class OrderItemServiceImpl implements OrderItemService{
 
-
     @Autowired
     private OrderItemRepository orderItemRepository;
-
 
     @Override
     public Collection<OrderItem> findAll() {
@@ -44,7 +40,6 @@ public class OrderItemServiceImpl implements OrderItemService{
     public void delete(Integer oiId) {
         orderItemRepository.delete(oiId);
     }
-
 
     @Override
     public Collection<OrderItem> findOrderItemsByOrder(Integer orderId) {

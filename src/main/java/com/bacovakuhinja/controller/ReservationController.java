@@ -56,13 +56,11 @@ public class ReservationController {
         Restaurant restaurant = restaurantService.findOne(reservation.getRestaurant().getRestaurantId());
         reservation.setRestaurant(restaurant);
 
+        // Create reservation
         Reservation created = reservationService.create(reservation);
 
-        ReservationGuest reservationGuest = new ReservationGuest();
-        reservationGuest.setReservation(created);
-        reservationGuest.setReservationGuest(user);
-        reservationGuest.setStatus(OWNER);
-
+        // Create Reservation Owner
+        ReservationGuest reservationGuest = new ReservationGuest(user, reservation, OWNER);
         reservationGuestService.create(reservationGuest);
 
         return new ResponseEntity<Reservation>(created, HttpStatus.CREATED);
@@ -91,8 +89,10 @@ public class ReservationController {
         Collection<RestaurantTable> freeTables = tableService.findAllByRestaurant(restaurantId);
         Collection<Reservation> similarReservations = reservationService.findByRestaurantIdAndTime(restaurantId, new Date(Long.parseLong(datetime)), length);
 
+        // For each reservation get reserved tables and erase them from free tables
+        Collection<ReservationTable> reservedTables;
         for (Reservation reservation : similarReservations) {
-            Collection<ReservationTable> reservedTables = reservationTableService.findAllByReservationId(reservation.getReservationId());
+            reservedTables = reservationTableService.findAllByReservationId(reservation.getReservationId());
 
             for (ReservationTable reservedTable : reservedTables) {
                 freeTables.remove(reservedTable.getTable());
@@ -135,8 +135,10 @@ public class ReservationController {
         Collection<RestaurantTable> freeTables = tableService.findAllByRestaurant(reservation.getRestaurant().getRestaurantId());
         Collection<Reservation> similarReservations = reservationService.findByRestaurantIdAndTime(reservation.getRestaurant().getRestaurantId(), reservation.getReservationDateTime(), reservation.getLength());
 
+
+        Collection<ReservationTable> reservedTables;
         for (Reservation res : similarReservations) {
-            Collection<ReservationTable> reservedTables = reservationTableService.findAllByReservationId(res.getReservationId());
+            reservedTables = reservationTableService.findAllByReservationId(res.getReservationId());
 
             for (ReservationTable reservedTable : reservedTables) {
                 freeTables.remove(reservedTable.getTable());

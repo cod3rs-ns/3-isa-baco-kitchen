@@ -10,7 +10,11 @@
     </md-toolbar>
 
     <md-dialog-content>
-        <div layout="row"  stylе="padding-left: 15px;" ng-cloak>
+        <div ng-show="billVm.circular" layout="row" style="margin-top: 10px;" layout-sm="column" layout-align="space-around">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+
+        <div ng-hide="billVm.circular" layout="row"  stylе="padding-left: 15px;" ng-cloak>
             <table id="billTable" style="width:100%; border-collapse: collapse; color: #212121">
                 <tr>
                     <th>Naziv</th>

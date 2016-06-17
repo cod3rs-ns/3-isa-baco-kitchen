@@ -41,11 +41,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        User userPersistent = userRepository.findOne(user.getUserId());
+        // FIXME @DMG
+        User userPersistent = userRepository.findByEmail(user.getEmail());
 
         if (userPersistent == null)
             return null;
 
-        return userRepository.save(user);
+        userPersistent.setLastName(user.getLastName());
+        userPersistent.setFirstName(user.getFirstName());
+
+        return userRepository.save(userPersistent);
     }
 }

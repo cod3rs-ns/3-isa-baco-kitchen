@@ -16,13 +16,12 @@ function AddOrderController(menuItemService, orderService, reservationService, $
     activate();
     
     function activate() {
-        console.log(table);
-        
+
         if (reservationId != null) {
         reservationService.getInvite(reservationId)
-          .then(function (data) {
-            orderVm.reservation = data.reservation;
-            orderVm.tableId = data.tableId;
+          .then(function (response) {
+            orderVm.reservation = response.data.reservation;
+            orderVm.tableId = response.data.tableId;
           });
         }
 
@@ -69,8 +68,8 @@ function AddOrderController(menuItemService, orderService, reservationService, $
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
-            position  : 'top right',
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+            position  : 'right',
+            template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
 
@@ -116,6 +115,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                           if (data != null) {
                               showToast("Porudžbina je uspješno dodata.");
                               $mdDialog.cancel();
+                              orderService.setWaiterId(data.orderId);
                           }
                       });
                 }
@@ -125,7 +125,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                     .then(function (data) {
                         if (data != null) {
                           $mdDialog.cancel();
-                          showToast("Naručili ste hranu i piće uz Vašu rezervaciju. Čekamo Vas!");
                         }
                       });
                 }

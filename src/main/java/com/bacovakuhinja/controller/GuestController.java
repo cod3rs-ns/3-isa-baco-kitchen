@@ -167,18 +167,17 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<ReservationHelper>> getReservations(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
 
         Collection<ReservationHelper> result = new ArrayList<ReservationHelper>();
         Collection<Reservation> reservations = reservationService.findByOwnerId(id);
 
+        ClientOrder co;
+        ReservationHelper helper;
+
         for (Reservation reservation : reservations) {
+            co = clientOrderService.findByReservationAndUser(reservation.getReservationId(), id);
             // FIXME Restaurant Image From DataBase
-            reservation.setRestaurant(reservation.getRestaurant());
-
-            ClientOrder co = clientOrderService.findByReservationAndUser(reservation.getReservationId(), id);
-
-            ReservationHelper helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
+            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
                     "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser");
 
             helper.setOrder(co == null ? null : co.getOrderId());
@@ -196,16 +195,16 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<ReservationHelper>> getVisits(final HttpServletRequest request, @PathVariable Integer id) {
-        Guest user = (Guest) request.getAttribute("loggedUser");
 
         Collection<ReservationHelper> result = new ArrayList<ReservationHelper>();
         Collection<Reservation> reservations = reservationService.findVisitsByOwnerId(id);
 
+        Review review;
+
         for (Reservation reservation : reservations) {
-            Review review = reviewService.getReviewByReservation(reservation.getReservationId(), id);
+            review = reviewService.getReviewByReservation(reservation.getReservationId(), id);
 
             // FIXME Restaurant Image From DataBase
-            reservation.setRestaurant(reservation.getRestaurant());
             result.add(new ReservationHelper(reservation, review, reservation.getRestaurant().getName(),
                     "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser"));
         }
@@ -224,15 +223,15 @@ public class GuestController {
         Collection<ReservationHelper> result = new ArrayList<ReservationHelper>();
         Collection<Reservation> invitations = reservationService.findInvitationsByOwnerId(id);
 
+        ReservationHelper helper;
+        Guest reservationOwner;
+
         for (Reservation reservation : invitations) {
             // FIXME Restaurant Image From DataBase
-            reservation.setRestaurant(reservation.getRestaurant());
-
-            ReservationHelper helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
+            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
                     "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser");
 
-            // FIXME Find Reservation Owner's Name and Lastname
-            helper.setInviter("Ime i prezme");
+            helper.setInviter(reservationGuestService.getOwner(reservation.getReservationId()));
             helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
             result.add(helper);
         }
@@ -287,7 +286,6 @@ public class GuestController {
     )
     public ResponseEntity<?> acceptInvite(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
-
         reservationGuestService.acceptInvitation(id, user.getGuestId());
 
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
@@ -301,7 +299,6 @@ public class GuestController {
     )
     public ResponseEntity<?> declineInvite(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
-
         reservationGuestService.declineInvitation(id, user.getGuestId());
 
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
