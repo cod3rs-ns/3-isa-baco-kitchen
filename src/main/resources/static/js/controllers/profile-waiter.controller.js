@@ -12,7 +12,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
     waiterProfileVm.workingRegion = null;
     waiterProfileVm.notNo = -1;
     waiterProfileVm.selectedTab = 0;
-
+    waiterProfileVm.reservation = false;
+    waiterProfileVm.reservationOrders = [];
 
     activate();
 
@@ -141,6 +142,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
                 }
                 else{
                     getOrders();
+                    getReservationOrders();
                 }
                 break;
             }
@@ -152,13 +154,24 @@ function WaiterProfileController(tableService, waiterService, passService, order
         if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
         orderService.getOrders(waiterProfileVm.selectedTable.tableId)
             .then(function (data) {
-                console.log(data);
                 waiterProfileVm.selectedTableOrders = data;
                 waiterProfileVm.selectedTableOrders.forEach(function (order) {
                     order.date = new Date(order.date);
                 });
             });
     };
+
+    function getReservationOrders(){
+        if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
+            orderService.getOrdersFromReservation(waiterProfileVm.selectedTable.tableId)
+                .then(function (data) {
+                    console.log(data);
+                    waiterProfileVm.reservationOrders = data;
+                    waiterProfileVm.reservationOrders.forEach(function (order) {
+                        order.date = new Date(order.date);
+                    });
+                });
+    }
 
     waiterProfileVm.selectedTableOrders = [];
 
@@ -341,4 +354,19 @@ function WaiterProfileController(tableService, waiterService, passService, order
             }
         });
     };
+
+    waiterProfileVm.reservationButtonToggle = reservationButtonToggle;
+    function reservationButtonToggle() {
+        waiterProfileVm.reservation = !waiterProfileVm.reservation;
+        if(waiterProfileVm.reservation){
+            getReservationOrders();
+        }
+    }
+
+    waiterProfileVm.changeOrderStatus = changeOrderStatus;
+    function changeOrderStatus(order) {
+        waiterProfileVm.selectedTableOrders.push(order);
+        waiterProfileVm.reservationOrders.splice(waiterProfileVm.reservationOrders.indexOf(order),1);
+        orderService.changeStatus(order.orderId);
+    }
 }

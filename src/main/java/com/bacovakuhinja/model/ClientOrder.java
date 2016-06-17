@@ -51,6 +51,9 @@ public class ClientOrder implements Serializable{
     @Column(name = "co_waiter_id")
     private Integer waiterId;
 
+    @Column(name = "co_status")
+    private String status;
+
     public ClientOrder(){
     }
 
@@ -84,6 +87,14 @@ public class ClientOrder implements Serializable{
 
     public void setTable(RestaurantTable table) {
         this.table = table;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @JsonIgnore

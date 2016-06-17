@@ -11,7 +11,9 @@ function orderService($http) {
         getOrder: getOrder,
         updateOrder : updateOrder,
         canEdit: canEdit,
-        setWaiterId : setWaiterId
+        setWaiterId : setWaiterId,
+        getOrdersFromReservation: getOrdersFromReservation,
+        changeStatus: changeStatus
     };
     return service;
 
@@ -52,6 +54,21 @@ function orderService($http) {
 
     function setWaiterId(orderId){
         return $http.put('/api/orders/setWaiter/' + orderId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function getOrdersFromReservation(tableId){
+        return $http.get('api/orders/reserved/' + tableId)
+            .then(function (response) {
+                return response.data;
+            });
+    };
+
+
+    function changeStatus(orderId){
+        return $http.put('/api/orders/changeStatus/' + orderId)
             .then(function (response) {
                 return response.data;
             });

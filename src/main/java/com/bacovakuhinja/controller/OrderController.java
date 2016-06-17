@@ -44,6 +44,16 @@ public class OrderController {
     }
 
     @RequestMapping(
+            value = "api/orders/reserved/{table_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection<ClientOrder>> getOrdersFromReservation(@PathVariable("table_id") Integer tableId) {
+        Collection<ClientOrder> tableOrders = clientOrderService.getOrdersFromReservation(tableId);
+        return new ResponseEntity <Collection <ClientOrder>>(tableOrders, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(
             value = "api/order/{order_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -228,6 +238,18 @@ public class OrderController {
         order.setWaiterId(waiter.getUserId());
         ClientOrder updated = clientOrderService.update(order);
         return new ResponseEntity<ClientOrder>(updated, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/api/orders/changeStatus/{orderId}",
+            method = RequestMethod.PUT,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ClientOrder> changeStatus(@PathVariable("orderId") Integer orderId) {
+        ClientOrder oldOrder = clientOrderService.findOne(orderId);
+        oldOrder.setStatus("ACCEPTED");
+        ClientOrder updated = clientOrderService.update(oldOrder);
+
+        return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
     }
 
 }

@@ -242,6 +242,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   `co_table_id` INT(11) NOT NULL,
   `co_bill_id` INT(11) NULL DEFAULT NULL,
   `co_waiter_id` INT(11) NULL DEFAULT NULL,
+  `co_status` VARCHAR(40) NULL DEFAULT NULL,
   PRIMARY KEY (`co_id`),
   INDEX `fk_client_orders_reservations1_idx` (`co_reservation_id` ASC),
   INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),

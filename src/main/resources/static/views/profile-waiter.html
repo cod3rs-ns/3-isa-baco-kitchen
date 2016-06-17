@@ -9,7 +9,7 @@
 				style="height:100%"
 		>
 			<!-- Name and image -->
-			<md-toolbar class="md-hue-2">
+			<md-toolbar>
 				<div layout="row" layout-align="end start">
 					<md-button 	class="md-icon-button" aria-label="Change image"
 								  flow-files-submitted="rmanagerVm.upload($flow)"
@@ -162,7 +162,7 @@
 
 				</md-tab>
 
-				<md-tab label="Raspored stolova" layout = "row">
+				<md-tab label="Raspored stolova" layout ="row">
 					<md-content layout="row" class="md-padding" style="height: 80%; background-color:#DDDDDD">
 						<div flex-gt-sm="70" layout="column" id="canvas" class="restaurant-canvas" style="background-image: url('../images/dotgrid.png'); background-size:cover; background-repeat: no-repeat; border-color: #607D8B; border-width: 2px;" >
 							<div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
@@ -190,21 +190,60 @@
 						</div>
 
 						<div flex-gt-sm="30" layout="column" style="padding-top: 20px;">
+
+							<md-toolbar scroll style="min-height: 25px; height: 25px;">
+								<div class="md-toolbar-tools">
+									<h5 md-header-title ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1" style="float: left; text-align: left;" flex>
+										<md-icon aria-label="selectedTable" class="material-icons">restaurant_menu</md-icon>
+										&nbsp;&nbsp; sto: &nbsp;{{waiterProfileVm.selectedTable.tableId}}
+									</h5>
+									<h5 md-header-title ng-show="waiterProfileVm.selectedTable == -1" flex>
+										<md-icon aria-label="selectedTable" class="material-icons">not_interested</md-icon>
+										&nbsp;&nbsp; zabranjeni sto
+									</h5>
+									<h5 md-header-title ng-show="waiterProfileVm.selectedTable == null" flex>
+										<md-icon aria-label="selectedTable" class="material-icons">feedback</md-icon>
+										&nbsp;&nbsp;selektuj sto
+									</h5>
+									<md-button class="md-icon-button" aria-label="Reservation" ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1" ng-click="waiterProfileVm.reservationButtonToggle()">
+										<div ng-show="waiterProfileVm.reservation">
+											<md-tooltip md-direction="left"> Pregled svih porudžbina datog stola </md-tooltip>
+											<md-icon aria-label="list" class="material-icons" >list</md-icon>
+										</div>
+										<div ng-hide="waiterProfileVm.reservation">
+											<md-tooltip md-direction="left"> Pregled svih porudžbina iz rezervacija datog stola </md-tooltip>
+											<md-icon aria-label="reservation" class="material-icons">event</md-icon>
+										</div>
+									</md-button>
+								</div>
+							</md-toolbar>
+
 							<div id="table-img-div">
 								<img width="100%" id="table-img" src="../images/table.jpg"/>
-								<div id="selected-table">
-									<p ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1"> Selektovani sto: {{waiterProfileVm.selectedTable.tableId}} </p>
-									<p ng-show="waiterProfileVm.selectedTable == -1"> Selektovani sto nije u vašoj nadležnosti!</p>
-									<p ng-show="waiterProfileVm.selectedTable == null"> Kliknite na sto da biste ga selektovali! </p>
-								</div>
 								<div id="inside-img">
 									<div id="center-vert" layout="column">
-										<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1 || waiterProfileVm.selectedTableOrders.length == 0;"  ng-click="waiterProfileVm.createBill();">Izdaj račun</md-button>
-										<md-button class="md-raised md-primary" ng-disabled="waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
+										<md-button class="md-raised md-primary smaller-btn" ng-disabled="waiterProfileVm.reservation || waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1 || waiterProfileVm.selectedTableOrders.length == 0;"  ng-click="waiterProfileVm.createBill();">Izdaj račun</md-button>
+										<md-button class="md-raised md-primary smaller-btn" ng-disabled="waiterProfileVm.reservation || waiterProfileVm.selectedTable == null || waiterProfileVm.selectedTable == -1" ng-click="waiterProfileVm.addOrder()">Nova porudžbina</md-button>
 									</div>
 								</div>
 							</div>
-							<div layout="column">
+
+							<div ng-show="waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1 && ((waiterProfileVm.reservation &&  waiterProfileVm.reservationOrders.length != 0)|| (!waiterProfileVm.reservation &&  waiterProfileVm.selectedTableOrders.length != 0))">
+								<md-toolbar scroll style="min-height: 25px; height: 25px;">
+									<div class="md-toolbar-tools">
+										<h5 md-header-title  style="float: left; text-align: left;" ng-hide="waiterProfileVm.reservation ||  waiterProfileVm.selectedTableOrders.length == 0"  flex>
+											<md-icon aria-label="selectedTable" class="material-icons">list</md-icon>
+											&nbsp;&nbsp; lista porudžbina stola
+										</h5>
+										<h5 md-header-title ng-show="waiterProfileVm.reservation &&  waiterProfileVm.reservationOrders.length != 0" flex>
+											<md-icon aria-label="selectedTable" class="material-icons">list</md-icon>
+											&nbsp;&nbsp; porudžbine rezervacije
+										</h5>
+									</div>
+								</md-toolbar>
+							</div>
+
+							<div layout="column" ng-hide="waiterProfileVm.reservation">
 								<md-list>
 									<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.selectedTableOrders">
 										<md-icon class="material-icons md-avatar">description</md-icon>
@@ -216,7 +255,24 @@
 										<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>
 									</md-list-item>
 								</md-list>
+							</div >
+							<div layout="column" ng-show="waiterProfileVm.reservation">
+								<md-list>
+									<md-list-item class="md-2-line" ng-repeat="order in waiterProfileVm.reservationOrders">
+										<md-icon class="material-icons md-avatar">description</md-icon>
+										<div class="md-list-item-text">
+											<h3>id porudžbine : {{order.orderId}}</h3>
+											<p>{{order.date | date: 'medium'}}</p>
+										</div>
+
+										<md-button class="md-icon-button" ng-click="waiterProfileVm.changeOrderStatus(order);">
+											<md-icon class="material-icons md-primary md-hue-3" >assignment_return
+											</md-icon>
+										</md-button>
+									</md-list-item>
+								</md-list>
 							</div>
+
 						</div>
 					</md-content>
 				</md-tab>
