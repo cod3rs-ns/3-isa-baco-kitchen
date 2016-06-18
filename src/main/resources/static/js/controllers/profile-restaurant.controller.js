@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
+RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
+function RestaurantProfileController(WizardHandler, restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
     
     restaurantVm.restaurant = {};
@@ -27,8 +27,6 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     restaurantVm.reservationTables = [];
     // Get user's friends for invitation
     restaurantVm.currentUserFriends = [];
-    // Value to check if reservation tables are okay.
-    restaurantVm.ok = false;
     
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.saveReservation = saveReservation;
@@ -37,8 +35,6 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     
     // Call friend function
     restaurantVm.inviteFriend = inviteFriend;
-    // Check if reservation okay
-    restaurantVm.reservationOkay = reservationOkay;
     // Click on table
     restaurantVm.selectTable = selectTable;
     // Open reservation dialog
@@ -140,11 +136,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
             }
         });
     }
-    
-    function reservationOkay() {
-      return restaurantVm.ok;
-    }
-    
+
     function getTablesByRestaurant() {
         return tableService.getTablesByRestaurant($routeParams.restaurantId)
             .then(function(data) {
@@ -157,7 +149,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     function getFreeTables() {
         return tableService.getFreeTables(
             $routeParams.restaurantId,
-            restaurantVm.reservation.reservationDateTime,
+            restaurantVm.reservation.reservationDateTime.getMilliseconds(),
             restaurantVm.reservation.length)
           .then(function(data) {
               restaurantVm.freeTables = data;
@@ -235,28 +227,35 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
               showToast('Poziv je poslat za ' + invitedFriend.firstName + ' ' + invitedFriend.lastName + '.');
           });
     };
+  
+    restaurantVm.enterValidation = function() {
+      return false;
+    };
     
     function saveReservation() {
-      reservationService.saveTables(restaurantVm.reservation.reservationId, restaurantVm.reservationTables)
+      var requestBody = {
+          reservation: restaurantVm.reservation, 
+          tables: restaurantVm.reservationTables
+      }
+      reservationService.saveReservationWithTables(requestBody)
           .then(function(response) {
               if (response.data.answer == "WRONG_TABLES") {
                 showToast('Neki od stolova su zauzeti u međuvremenu. Odaberite Vaše stolove ponovo.');
                 getFreeTables();
                 restaurantVm.reservationTables = [];
-                restaurantVm.ok = false;
+                WizardHandler.wizard().goTo(1);
               }
               else if (response.data.answer == "NO_TABLES") {
                 showToast('Morate odabrati bar jedan sto!');
-                restaurantVm.ok = false;
+                WizardHandler.wizard().goTo(1);
+              }
+              else if (response.data.answer == "WRONG_RESERVATION") {
+                showToast('Pogrešni parametri rezervacije!');
+                WizardHandler.wizard().goTo(1);
               }
               else {
-                /* reservationService.addReservation(restaurantVm.reservation)
-                    .then(function(response) {
-                        restaurantVm.reservation = response.data;
-                        // getFreeTables();
-                    }); */
                 showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');
-                restaurantVm.ok = true;
+                WizardHandler.wizard().goTo(2);
               }
           });
     };
@@ -288,12 +287,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
     };
     
     function finishReservation() {
-        if (restaurantVm.ok) {
-          $mdDialog.cancel();
-        }
-        else {
-          showToast('Vratite se na prethodni korak.');
-        }
+        $mdDialog.cancel();
     };
     
     // Set reservation date and time and go to the next step
@@ -308,11 +302,7 @@ function RestaurantProfileController(restaurantService, userService, reviewServi
         0,
         0
       );
-      // getFreeTables();
-      reservationService.addReservation(restaurantVm.reservation)
-          .then(function(response) {
-              restaurantVm.reservation = response.data;
-              getFreeTables();
-          });
+      
+      getFreeTables();
     };
 }

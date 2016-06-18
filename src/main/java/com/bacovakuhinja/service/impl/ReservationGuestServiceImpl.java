@@ -72,4 +72,9 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
         Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.OWNER).getReservationGuest();
         return  owner.getFirstName() + " " + owner.getLastName();
     }
+
+    @Override
+    public void delete(ReservationGuest reservationGuest) {
+        reservationGuestRepository.delete(reservationGuest);
+    }
 }

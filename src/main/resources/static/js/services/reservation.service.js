@@ -6,24 +6,13 @@ reservationService.$inject = ['$http'];
 
 function reservationService($http) {
     var service = {
-        addReservation: addReservation,
         removeReservation: removeReservation,
         inviteFriend: inviteFriend,
-        saveTables: saveTables,
-        getInvite: getInvite
+        getInvite: getInvite,
+        saveReservationWithTables: saveReservationWithTables
     };
 
     return service;
-
-    function addReservation(reservation) {
-        return $http.post('api/reservation', reservation)
-          .success(function(response) {
-              return response;
-          })
-          .error(function(response) {
-              return response;
-          });
-    };
     
     function removeReservation(reservationId) {
         return $http.delete('api/reservation/' + reservationId)
@@ -45,8 +34,8 @@ function reservationService($http) {
           });
     };
     
-    function saveTables(reservationId, tables) {
-        return $http.post('/api/reservation/tables?reservation=' + reservationId, tables)
+    function getInvite(reservationId) {
+        return $http.get('/api/reservation/invited/' + reservationId)
           .success(function(response) {
               return response;
           })
@@ -55,8 +44,8 @@ function reservationService($http) {
           });
     };
     
-    function getInvite(reservationId) {
-        return $http.get('/api/reservation/invited/' + reservationId)
+    function saveReservationWithTables(reservation) {
+        return $http.post('api/reservation', reservation)
           .success(function(response) {
               return response;
           })

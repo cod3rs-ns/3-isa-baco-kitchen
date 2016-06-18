@@ -23,4 +23,6 @@ public interface ReservationGuestService {
     ReservationGuest update(ReservationGuest reservationGuest);
 
     String getOwner(Integer reservationId);
+
+    void delete(ReservationGuest reservationGuest);
 }

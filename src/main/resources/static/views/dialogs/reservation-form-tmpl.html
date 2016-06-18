@@ -15,19 +15,18 @@
               <h1>Kada želite da rezervišete?</h1>
               <p> Odaberite datum kada želite da rezervišete. Nakon toga, unesite vrijeme početka Vaše rezervacije, kao i koliko sati želite da ostanete na rezervaciji. </p>
               <form name="reservationForm1">
-
-                  <md-datepicker ng-model="restaurantVm.DateTime.date" style="background-color: white;"
+                  <md-datepicker ng-model="restaurantVm.DateTime.date" style="background-color: #fff;"
                     md-placeholder="Odaberi datum" required></md-datepicker>
 
                 <md-input-container class="md-block">
-                    <md-icon ng-style="{color: #aaa;}" aria-label="Time" class="material-icons">alarm</md-icon>
+                    <md-icon aria-label="Time" class="material-icons">alarm</md-icon>
                     <label>časovi</label>
-                    <input 	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
+                    <input	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
                       type="number" step="1" min="0" max="23" required />
                   </md-input-container>
                   <md-input-container class="md-block">
                     <label>minuti</label>
-                    <md-icon ng-style="{color: #aaa;}" aria-label="Time" class="material-icons">alarm</md-icon>
+                    <md-icon aria-label="Time" class="material-icons">alarm</md-icon>
                       <input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
                         type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
                   </md-input-container>
