@@ -177,9 +177,7 @@ public class GuestController {
 
         for (Reservation reservation : reservations) {
             co = clientOrderService.findByReservationAndUser(reservation.getReservationId(), id);
-            // FIXME Restaurant Image From DataBase
-            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
-                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser");
+            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(), reservation.getRestaurant().getImage());
 
             helper.setOrder(co == null ? null : co.getOrderId());
             helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
@@ -204,10 +202,7 @@ public class GuestController {
 
         for (Reservation reservation : reservations) {
             review = reviewService.getReviewByReservation(reservation.getReservationId(), id);
-
-            // FIXME Restaurant Image From DataBase
-            result.add(new ReservationHelper(reservation, review, reservation.getRestaurant().getName(),
-                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser"));
+            result.add(new ReservationHelper(reservation, review, reservation.getRestaurant().getName(), reservation.getRestaurant().getImage()));
         }
 
         return new ResponseEntity<Collection<ReservationHelper>>(result, HttpStatus.OK);
@@ -227,9 +222,7 @@ public class GuestController {
         ReservationHelper helper;
 
         for (Reservation reservation : invitations) {
-            // FIXME Restaurant Image From DataBase
-            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(),
-                    "https://www.wien.info/media/images/restaurant-konstantin-filippou.jpg/image_leading_article_teaser");
+            helper = new ReservationHelper(reservation, null, reservation.getRestaurant().getName(), reservation.getRestaurant().getImage());
 
             helper.setInviter(reservationGuestService.getOwner(reservation.getReservationId()));
             helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
