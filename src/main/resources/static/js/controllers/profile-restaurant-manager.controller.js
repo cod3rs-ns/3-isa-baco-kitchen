@@ -82,7 +82,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     };
 
     rmanagerVm.showMenuItemReport = showMenuItemReport;
-    function showMenuItemReport(id) {
+    function showMenuItemReport(menu_item_id, menu_item_name) {
         $mdDialog.show({
             controller: 'MenuItemReportController',
             controllerAs: 'reportVm',
@@ -91,7 +91,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                item_id : id
+                item_id : menu_item_id,
+                item_name : menu_item_name
             }
         });
     };
@@ -106,7 +107,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                item_id : id
+                item_id : id,
             }
         });
     }
@@ -126,17 +127,17 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
-    rmanagerVm.showFinances = showFinances;
-    function showFinances() {
+    rmanagerVm.showRestaurantFinances = showRestaurantFinances;
+    function showRestaurantFinances() {
         $mdDialog.show({
             controller: 'FinancesController',
             controllerAs: 'reportVm',
-            templateUrl: '/views/dialogs/report-tmpl.html',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                item_id : 2
+                restaurant: rmanagerVm.rmanager.restaurant
             }
         });
     }

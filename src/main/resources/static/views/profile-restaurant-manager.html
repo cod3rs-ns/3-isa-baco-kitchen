@@ -98,7 +98,7 @@
 		   <md-divider></md-divider>
 		   <md-menu-item class="md-indent">
 			<md-button 	class="md-primary"
-						ng-click="rmanagerVm.showFinances();">
+						ng-click="rmanagerVm.showRestaurantFinances();">
 			  <md-icon class="material-icons">show_chart</md-icon>
 			  <strong>Izveštaj prihoda</strong>
 			</md-button>
@@ -163,7 +163,7 @@
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
 								<md-button 	class="md-fab md-primary md-mini" aria-label="Report" style="margin-left:40px;"
-											ng-click="rmanagerVm.showMenuItemReport(meal.menuItemId);">
+											ng-click="rmanagerVm.showMenuItemReport(meal.menuItemId, meal.name);">
 									<md-icon class="material-icons">show_chart</md-icon>
 									<md-tooltip>
 										Izveštaj
@@ -213,7 +213,7 @@
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
 								<md-button 	class="md-fab md-primary md-mini" aria-label="Report" style="margin-left:40px;"
-											ng-click="rmanagerVm.showMenuItemReport(meal.menuItemId);">
+											ng-click="rmanagerVm.showMenuItemReport(meal.menuItemId, meal.name);">
 									<md-icon class="material-icons">show_chart</md-icon>
 									<md-tooltip>
 										Izveštaj

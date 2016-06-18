@@ -9,45 +9,60 @@
         </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content ng-hide="reportVm.invalidReport">
+        <!-- display animation while user waits for report generation -->
+        <div layout="column" ng-hide="reportVm.activated" style="height:300px; width:300px; margin:50px;" layout-align="center center">
+            <md-progress-circular   ng-disabled="reportVm.activated"
+                                    class="md-hue-3"
+                                    md-mode="indeterminate"
+                                    md-diameter="90"
+                                    flex></md-progress-circular>
+        </div>
         <div layout="column" ng-cloak>
-            <form name="datePickers">
-                <div layout="row">
-                    <div layout="column" style="margin: 10px;">
-                        <label>Početni datum</label>
-                        <md-datepicker  name="startDate" ng-model="reportVm.startDate" md-placeholder="Početni datum" required></md-datepicker>
-                        <div class="validation-messages" ng-messages="datePickers.startDate.$error">
-                            <div ng-message="valid">Unesena vrednost nije validan datum.</div>
-                            <div ng-message="required">Ovo polje je neophodno.</div>
+            <md-content>
+                <form ng-show="reportVm.activated" name="datePickers">
+                    <div layout="row">
+                        <div layout="column" style="margin: 10px;">
+                            <label>Početni datum</label>
+                            <md-datepicker  name="startDate" ng-model="reportVm.startDate" md-placeholder="Početni datum" required></md-datepicker>
+                            <div class="validation-messages" ng-messages="datePickers.startDate.$error">
+                                <div ng-message="valid">Unesena vrednost nije validan datum.</div>
+                                <div ng-message="required">Ovo polje je neophodno.</div>
+                            </div>
                         </div>
-                    </div>
-                    <div layout="column" style="margin: 10px;">
-                        <label>Kranji datum</label>
-                        <md-datepicker  name="endDate" ng-model="reportVm.endDate" md-placeholder="Krajnji datum" required></md-datepicker>
-                        <div class="validation-messages" ng-messages="datePickers.endDate.$error">
-                            <div ng-message="valid">Unesena vrednost nije validan datum.</div>
-                            <div ng-message="required">Ovo polje je neophodno.</div>
+                        <div layout="column" style="margin: 10px;">
+                            <label>Kranji datum</label>
+                            <md-datepicker  name="endDate" ng-model="reportVm.endDate" md-placeholder="Krajnji datum" required></md-datepicker>
+                            <div class="validation-messages" ng-messages="datePickers.endDate.$error">
+                                <div ng-message="valid">Unesena vrednost nije validan datum.</div>
+                                <div ng-message="required">Ovo polje je neophodno.</div>
+                            </div>
                         </div>
+                        <span flex></span>
+                        <md-button  class="md-fab md-mini md-primary md-raised md-secondary"
+                                    ng-disabled="!datePickers.$valid"
+                                    ng-click="reportVm.showReport()"
+                                    md-autofocus
+                                    style="margin: 10px;">
+                            <i class="material-icons md-24">send</i>
+                            <md-tooltip md-direction="top">
+                                Prikaži izveštaj
+                            </md-tooltip>
+                        </md-button>
                     </div>
-                    <span flex></span>
-                    <md-button  class="md-fab md-mini md-primary md-raised md-secondary"
-                                ng-disabled="!datePickers.$valid"
-                                ng-click="reportVm.showReport()"
-                                md-autofocus
-                                style="margin: 10px;">
-                        <i class="material-icons md-24">send</i>
-                        <md-tooltip md-direction="top">
-                            Prikaži izveštaj
-                        </md-tooltip>
-                    </md-button>
-                </div>
-            </form>
+                </form>
+            </md-content>
             <md-divider></md-divider>
             <md-content layout-padding>
                 <div id="chart_div"></div>
-                <p>{{reportVm.message}}</p>
+                <p class="report-info">{{reportVm.message}}</p>
             </md-content>
         </div>
+    </md-dialog-content>
+
+    <!-- Invalid report message -->
+    <md-dialog-content ng-show="reportVm.invalidReport" style="margin:20px;">
+        <p class="report-info">Trenutno nema dovoljno podataka za prikaz izveštaja.</p>
     </md-dialog-content>
 
     <md-dialog-actions layout="row">

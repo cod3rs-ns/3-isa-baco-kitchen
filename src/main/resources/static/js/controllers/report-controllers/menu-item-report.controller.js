@@ -2,27 +2,24 @@ angular
     .module('isa-mrs-project')
     .controller('MenuItemReportController', MenuItemReportController);
 
-MenuItemReportController.$inject = ['reportService', 'menuItemService', '$mdDialog', 'item_id'];
+MenuItemReportController.$inject = ['reportService', '$mdDialog', 'item_id', 'item_name'];
 
-function MenuItemReportController(reportService, menuItemService, $mdDialog, item_id) {
+function MenuItemReportController(reportService, $mdDialog, item_id, item_name) {
     var reportVm = this;
     reportVm.dialogName = 'Ocene stavke menija';
     reportVm.menuItemId = item_id;
-    reportVm.menuItem = {};
+    reportVm.menuItemName = item_name;
     reportVm.reviews = [];
     reportVm.activated = false;
-    reportVm.showReport = showReport;
     reportVm.message = '';
     reportVm.message_2 = '';
     reportVm.invalidReport = false;
+
+    reportVm.cancel = cancel;
+    reportVm.showReport = showReport;
     init();
 
     function init() {
-        menuItemService.getOne(reportVm.menuItemId)
-            .success(function(data) {
-                reportVm.menuItem = data;
-            });
-
         if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
             // Load for first time if needed
             google.charts.load('current', {'packages':["calendar", 'corechart']});
@@ -38,7 +35,6 @@ function MenuItemReportController(reportService, menuItemService, $mdDialog, ite
     }
 
     function showReport() {
-        console.log("report");
         reportService.findReviewsByMenuItem(reportVm.menuItemId)
             .then(function(response) {
                 var data = response.data;
@@ -76,7 +72,7 @@ function MenuItemReportController(reportService, menuItemService, $mdDialog, ite
 
         // Set chart options
         var options = {
-            'title': reportVm.menuItem.name + ' - pregled ocena',
+            'title': reportVm.menuItemName + ' - pregled ocena',
             'width': 550,
             'height': 450
         };
@@ -86,7 +82,6 @@ function MenuItemReportController(reportService, menuItemService, $mdDialog, ite
         chart.draw(data, options);
     };
 
-    reportVm.cancel = cancel;
     function cancel() {
         $mdDialog.cancel();
     };
