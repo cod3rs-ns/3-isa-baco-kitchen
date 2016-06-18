@@ -117,12 +117,12 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         $mdDialog.show({
             controller: 'RestaurantVisitsController',
             controllerAs: 'reportVm',
-            templateUrl: '/views/dialogs/report-tmpl.html',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                item_id : 2
+                restaurant : rmanagerVm.rmanager.restaurant
             }
         });
     }
