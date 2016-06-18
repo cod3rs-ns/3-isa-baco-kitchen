@@ -9,7 +9,8 @@ function reportService($http){
         getBillsByWaiter : getBillsByWaiter,
         findReservationsByRestaurant: findReservationsByRestaurant,
         findBillsByRestaurant: findBillsByRestaurant,
-        findReviewsByMenuItem: findReviewsByMenuItem
+        findReviewsByMenuItem: findReviewsByMenuItem,
+        findReviewsByRestaurant: findReviewsByRestaurant
     };
 
     return service;
@@ -47,6 +48,16 @@ function reportService($http){
 
     function findReviewsByMenuItem(menu_item_id) {
         return $http.get('/api/reviews/report/' + menu_item_id)
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
+                return response.data;
+            });
+    };
+
+    function findReviewsByRestaurant(restaurant_id) {
+        return $http.get('/api/reviews/' + restaurant_id)
             .success(function(response) {
                 return response.data;
             })

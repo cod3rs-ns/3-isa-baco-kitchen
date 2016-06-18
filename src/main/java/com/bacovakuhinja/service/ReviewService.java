@@ -8,10 +8,11 @@ public interface ReviewService {
 
     Review create(Review review);
 
-    Collection<Review> restaurantReviews(Integer id);
-
     Review getReviewByReservation(Integer id, Integer userId);
 
-    Collection<Review> findReviewsByFood(Integer itemId);
+    Collection <Review> findReviewsByFood(Integer itemId);
 
+    Collection <Review> findReviewsByRestaurant(Integer restaurantId);
+
+    Collection <Review> findReviewsByWaiter(Integer userId);
 }

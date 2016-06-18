@@ -142,6 +142,21 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
+    rmanagerVm.showRestaurantReviewReport = showRestaurantReviewReport;
+    function showRestaurantReviewReport() {
+        $mdDialog.show({
+            controller: 'RestaurantReviewReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant: rmanagerVm.rmanager.restaurant
+            }
+        });
+    };
+
     function createDrink(restaurant_id, drinks_menu_ref) {
         $mdDialog.show({
             controller: 'SingleDrinkController',

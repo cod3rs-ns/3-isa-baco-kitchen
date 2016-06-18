@@ -20,50 +20,50 @@ public class ReviewController {
     ReviewService reviewService;
 
     @RequestMapping(
-            value    = "/api/reviews/{id}",
-            method   = RequestMethod.GET,
+            value = "/api/reviews/{id}",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Collection<Review>> getReviews(@PathVariable Integer id) {
-        Collection<Review> reviews = reviewService.restaurantReviews(id);
-        return new ResponseEntity<Collection<Review>>(reviews, HttpStatus.OK);
+    public ResponseEntity <Collection <Review>> getReviews(@PathVariable Integer id) {
+        Collection <Review> reviews = reviewService.findReviewsByRestaurant(id);
+        return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
     }
 
     @RequestMapping(
-            value    = "/api/reviews/report/{menu_item_id}",
-            method   = RequestMethod.GET,
+            value = "/api/reviews/report/{menu_item_id}",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Collection<Review>> testReview(@PathVariable("menu_item_id") Integer id) {
-        Collection<Review> reviews = reviewService.findReviewsByFood(id);
-        return new ResponseEntity<Collection<Review>>(reviews, HttpStatus.OK);
+    public ResponseEntity <Collection <Review>> testReview(@PathVariable("menu_item_id") Integer id) {
+        Collection <Review> reviews = reviewService.findReviewsByFood(id);
+        return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
     }
 
     @Authorization(role = "guest")
     @RequestMapping(
-            value    = "/api/reviews/reservation/{id}",
-            method   = RequestMethod.GET,
+            value = "/api/reviews/reservation/{id}",
+            method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Review> getReview(final HttpServletRequest request, @PathVariable Integer id) {
+    public ResponseEntity <Review> getReview(final HttpServletRequest request, @PathVariable Integer id) {
         Guest user = (Guest) request.getAttribute("loggedUser");
 
         Review review = reviewService.getReviewByReservation(id, user.getUserId());
-        return new ResponseEntity<Review>(review, HttpStatus.OK);
+        return new ResponseEntity <Review>(review, HttpStatus.OK);
     }
 
     @Authorization(role = "guest")
     @RequestMapping(
-            value    = "/api/reviews",
-            method   = RequestMethod.POST,
+            value = "/api/reviews",
+            method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Review> addReview(final HttpServletRequest request, @RequestBody Review review) {
+    public ResponseEntity <Review> addReview(final HttpServletRequest request, @RequestBody Review review) {
         Guest user = (Guest) request.getAttribute("loggedUser");
 
         review.setReviewer(user);
         Review created = reviewService.create(review);
 
-        return new ResponseEntity<Review>(created, HttpStatus.CREATED);
+        return new ResponseEntity <Review>(created, HttpStatus.CREATED);
     }
 }
