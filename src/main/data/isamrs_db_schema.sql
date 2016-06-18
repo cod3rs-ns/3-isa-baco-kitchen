@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`users` (
   `u_password` VARCHAR(100) NOT NULL,
   `u_type` VARCHAR(20) NOT NULL,
   `u_verified` VARCHAR(45) NOT NULL,
+  `u_first_login` TINYINT NOT NULL,
   PRIMARY KEY (`u_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;

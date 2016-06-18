@@ -2,6 +2,7 @@ package com.bacovakuhinja.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -42,6 +43,10 @@ public class User implements Serializable {
 
     @Column(name = "u_verified")
     private String verified;
+
+    @Column(name = "u_first_login", columnDefinition = "TINYINT")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean logged;
 
     public User() {
         this.verified = "not_verified";
@@ -111,6 +116,14 @@ public class User implements Serializable {
 
     public void setVerified(String verified) {
         this.verified = verified;
+    }
+
+    public boolean isLogged() {
+        return logged;
+    }
+
+    public void setLogged(boolean logged) {
+        this.logged = logged;
     }
 
     @Override

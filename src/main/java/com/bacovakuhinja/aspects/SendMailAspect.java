@@ -3,6 +3,7 @@ package com.bacovakuhinja.aspects;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,12 +158,17 @@ public class SendMailAspect {
                 "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + provider.getFirstName() + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
                 "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao ponu&#273;a&#269;. <br/><br/> " +
-                "           Va&#353;a &#353;ifra je: <b> generated_password </b><br/><br/>" +
+                "           Va&#353;a &#353;ifra je: <b> " + provider.getPassword() + " </b><br/><br/>" +
                 "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
+
+
+        User user = userService.findOne(provider.getEmail());
+        user.setPassword(PasswordHelper.getSha256(user.getPassword()));
+        userService.update(user);
 
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
         sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
@@ -194,12 +200,16 @@ public class SendMailAspect {
                 "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + manager.getFirstName() + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
                 "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao menad&#382;er restorana <b>" + restaurantService.findOne(restaurantId).getName() +"</b>. <br/><br/> " +
-                "           Va&#353;a &#353;ifra je: <b> generated_password </b><br/><br/>" +
+                "           Va&#353;a &#353;ifra je: <b> " + manager.getPassword() + " </b><br/><br/>" +
                 "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
+
+        User user = userService.findOne(manager.getEmail());
+        user.setPassword(PasswordHelper.getSha256(user.getPassword()));
+        userService.update(user);
 
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
         sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);

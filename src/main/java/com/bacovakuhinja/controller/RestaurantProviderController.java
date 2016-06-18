@@ -3,7 +3,7 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.RestaurantProvider;
-import com.bacovakuhinja.model.Sha256;
+import com.bacovakuhinja.utility.PasswordHelper;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.RestaurantProviderService;
 import com.bacovakuhinja.utility.Constants;
@@ -57,8 +57,9 @@ public class RestaurantProviderController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantProvider> createProvider(@RequestBody RestaurantProvider provider) {
-        // TODO generate password
-        provider.setPassword(Sha256.getSha256("generated_password"));
+        String pass = PasswordHelper.randomPassword();
+        provider.setPassword(pass);
+        provider.setLogged(false);
         provider.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         RestaurantProvider created = providerService.create(provider);
         return new ResponseEntity <RestaurantProvider>(created, HttpStatus.CREATED);

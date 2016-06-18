@@ -26,7 +26,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
         passService.isPasswordChanged()
             .then(function (data) {
-                if(data){
+                if(!data){
                     waiterProfileVm.changePassword(false);
                 }
             });
