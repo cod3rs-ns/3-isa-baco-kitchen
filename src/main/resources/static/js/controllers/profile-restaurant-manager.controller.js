@@ -112,6 +112,22 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
+    rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
+    function showWaiterRatingReport(id, name, surname) {
+        $mdDialog.show({
+            controller: 'WaiterRatingReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                waiter_id : id,
+                waiter_name : name + ' ' + surname
+            }
+        });
+    }
+
     rmanagerVm.showVisitsChart = showVisitsChart;
     function showVisitsChart() {
         $mdDialog.show({

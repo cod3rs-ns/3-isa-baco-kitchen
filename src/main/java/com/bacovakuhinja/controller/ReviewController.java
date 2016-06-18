@@ -24,7 +24,7 @@ public class ReviewController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity <Collection <Review>> getReviews(@PathVariable Integer id) {
+    public ResponseEntity <Collection <Review>> findReviewsByRestaurant(@PathVariable Integer id) {
         Collection <Review> reviews = reviewService.findReviewsByRestaurant(id);
         return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
     }
@@ -34,8 +34,18 @@ public class ReviewController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity <Collection <Review>> testReview(@PathVariable("menu_item_id") Integer id) {
-        Collection <Review> reviews = reviewService.findReviewsByFood(id);
+    public ResponseEntity <Collection <Review>> findReviewsByMenuItem(@PathVariable("menu_item_id") Integer itemId) {
+        Collection <Review> reviews = reviewService.findReviewsByFood(itemId);
+        return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/api/reviews/waiter/report/{waiter_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity <Collection <Review>> findReviewsByWaiter(@PathVariable("waiter_id") Integer waiterId) {
+        Collection <Review> reviews = reviewService.findReviewsByWaiter(waiterId);
         return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
     }
 

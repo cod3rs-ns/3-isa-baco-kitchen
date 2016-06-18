@@ -17,6 +17,6 @@ public interface ReviewRepository extends JpaRepository<Review, Integer> {
     @Query("SELECT rv from Review rv, Reservation rs WHERE (rv.reservation = rs.reservationId) AND (rs.restaurant.restaurantId = ?1)")
     Collection<Review> findReviewsByRestaurant(Integer id);
 
-    @Query("SELECT rv from Review rv WHERE rv.reservation = ?1")
+    @Query("SELECT rv from Review rv, ClientOrder co, Bill bl, Waiter wt  WHERE (rv.reservation = co.reservation.reservationId) AND (co.bill.billId = bl.billId) AND (bl.waiter.userId = ?1)")
     Collection<Review> findReviewsByWaiter(Integer id);
 }
