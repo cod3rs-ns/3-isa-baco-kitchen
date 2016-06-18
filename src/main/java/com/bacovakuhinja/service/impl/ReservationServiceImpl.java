@@ -84,19 +84,21 @@ public class ReservationServiceImpl implements ReservationService {
         Date resEnd = new Date(datetime.getTime() + length*HOUR_TO_MILISECONDS);
 
         Date reservationBeg, reservationEnd;
-        for (Reservation reservation : findAll()) {
+        for (Reservation reservation : findByRestaurantId(restaurantId)) {
 
             reservationBeg = reservation.getReservationDateTime();
             reservationEnd = new Date(reservation.getReservationDateTime().getTime() + reservation.getLength()*HOUR_TO_MILISECONDS);
 
-            if (reservation.getRestaurant().getRestaurantId() == restaurantId &&
-                    // FIXME @Baco, Check if condition is okay
-                    ((resBeg.after(reservationBeg) && reservationEnd.after(resBeg)) || (resEnd.after(reservationBeg) && reservationEnd.after(resEnd)))) {
+            if (!(isBetween(resBeg, reservationBeg, reservationEnd) || isBetween(resEnd, reservationBeg, reservationEnd))) {
                 reservations.add(reservation);
             }
         }
 
         return reservations;
+    }
+
+    private boolean isBetween(Date date, Date min, Date max) {
+        return date.after(min) && date.before(max);
     }
 
     @Override

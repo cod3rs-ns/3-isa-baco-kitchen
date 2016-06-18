@@ -22,15 +22,7 @@ public class ReservationTableServiceImpl implements ReservationTableService {
 
     @Override
     public Collection<ReservationTable> findAllByReservationId(Integer reservationId) {
-        Collection<ReservationTable> reservationTables = new ArrayList<ReservationTable>();
-
-        for (ReservationTable table : findAll()) {
-            if (table.getReservation().getReservationId() == reservationId) {
-                reservationTables.add(table);
-            }
-        }
-
-        return reservationTables;
+        return reservationTableRepository.findByReservation_reservationId(reservationId);
     }
 
     @Override

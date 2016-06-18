@@ -23,6 +23,11 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     }
 
     @Override
+    public Collection<ReservationGuest> findAllByReservationAndStatus(Integer reservationId, String status) {
+        return reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, status);
+    }
+
+    @Override
     public boolean isOwner(Integer reservationId, Integer userId) {
         return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, Constants.Reservation.OWNER) != null);
     }
@@ -69,12 +74,17 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
 
     @Override
     public String getOwner(Integer reservationId) {
-        Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.OWNER).getReservationGuest();
+        Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.OWNER).iterator().next().getReservationGuest();
         return  owner.getFirstName() + " " + owner.getLastName();
     }
 
     @Override
     public void delete(ReservationGuest reservationGuest) {
         reservationGuestRepository.delete(reservationGuest);
+    }
+
+    @Override
+    public Integer numberOfReservationGuests(Integer reservationId) {
+        return 1 + reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.ACCEPTED).size();
     }
 }

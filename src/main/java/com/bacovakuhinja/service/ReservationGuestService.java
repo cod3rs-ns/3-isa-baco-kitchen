@@ -8,6 +8,8 @@ public interface ReservationGuestService {
 
     Collection<ReservationGuest> findAll();
 
+    Collection<ReservationGuest> findAllByReservationAndStatus(Integer reservationId, String status);
+
     boolean isOwner(Integer reservationId, Integer userId);
 
     boolean isInvited(Integer reservationId, Integer userId);
@@ -25,4 +27,6 @@ public interface ReservationGuestService {
     String getOwner(Integer reservationId);
 
     void delete(ReservationGuest reservationGuest);
+
+    Integer numberOfReservationGuests(Integer reservationId);
 }

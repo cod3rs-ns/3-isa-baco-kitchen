@@ -243,15 +243,12 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 showToast('Neki od stolova su zauzeti u međuvremenu. Odaberite Vaše stolove ponovo.');
                 getFreeTables();
                 restaurantVm.reservationTables = [];
-                WizardHandler.wizard().goTo(1);
               }
               else if (response.data.answer == "NO_TABLES") {
                 showToast('Morate odabrati bar jedan sto!');
-                WizardHandler.wizard().goTo(1);
               }
               else if (response.data.answer == "WRONG_RESERVATION") {
                 showToast('Pogrešni parametri rezervacije!');
-                WizardHandler.wizard().goTo(1);
               }
               else {
                 showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');

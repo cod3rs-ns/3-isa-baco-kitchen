@@ -84,7 +84,10 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   break;
               }
           }
-          showToast('Otkazana rezervacija.');
+          reservationService.removeReservation(reservation.reservationId)
+            .then(function(response) {
+                showToast('Rezervacija je otkazana i obaviješteni su pozvani prijatelji.');
+            });
       }
       else {
         showToast('Rezervacija počinje za manje od pola sata. Nije moguće otkazati.');
