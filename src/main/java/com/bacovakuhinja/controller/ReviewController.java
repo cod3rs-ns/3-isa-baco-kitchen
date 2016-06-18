@@ -29,6 +29,16 @@ public class ReviewController {
         return new ResponseEntity<Collection<Review>>(reviews, HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value    = "/api/reviews/report/{menu_item_id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Collection<Review>> testReview(@PathVariable("menu_item_id") Integer id) {
+        Collection<Review> reviews = reviewService.findReviewsByFood(id);
+        return new ResponseEntity<Collection<Review>>(reviews, HttpStatus.OK);
+    }
+
     @Authorization(role = "guest")
     @RequestMapping(
             value    = "/api/reviews/reservation/{id}",

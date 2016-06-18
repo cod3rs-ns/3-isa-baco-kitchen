@@ -12,4 +12,6 @@ public interface ReviewService {
 
     Review getReviewByReservation(Integer id, Integer userId);
 
+    Collection<Review> findReviewsByFood(Integer itemId);
+
 }

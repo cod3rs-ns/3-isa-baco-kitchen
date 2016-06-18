@@ -15,3 +15,8 @@
     background: #eee;
     color: grey;
 }
+
+.report-info {
+    font-weight: bold;
+    margin-top: -16px;
+}

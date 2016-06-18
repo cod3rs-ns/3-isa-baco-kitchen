@@ -8,32 +8,51 @@ function reportService($http){
     var service = {
         getBillsByWaiter : getBillsByWaiter,
         findReservationsByRestaurant: findReservationsByRestaurant,
-        findBillsByRestaurant: findBillsByRestaurant
+        findBillsByRestaurant: findBillsByRestaurant,
+        findReviewsByMenuItem: findReviewsByMenuItem
     };
 
     return service;
 
     function getBillsByWaiter(id, dates){
-        console.log(dates);
         var path = 'api/bills/report/' + id;
         return $http.post(path, JSON.stringify(dates))
-            .then(function(response){
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
                 return response.data;
             });
     };
 
     function findReservationsByRestaurant(restaurant_id) {
         return $http.get('/api/reservations/' + restaurant_id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
+                return response.data;
+            });
     };
 
     function findBillsByRestaurant(restaurant_id) {
         return $http.get('/api/bills/report/restaurant/' + restaurant_id)
-        .then(function(response) {
-            return response.data;
-        });
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
+                return response.data;
+            });
+    };
+
+    function findReviewsByMenuItem(menu_item_id) {
+        return $http.get('/api/reviews/report/' + menu_item_id)
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
+                return response.data;
+            });
     };
 
 }
