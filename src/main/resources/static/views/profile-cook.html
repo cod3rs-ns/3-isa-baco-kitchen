@@ -126,6 +126,12 @@
 
 									<md-card class="order-item">
 										<md-card-content>
+											<div aria-label="Type" style="position: absolute; width: 85%;">
+												<md-chips style="float: right !important; position:relative !important;">
+													<md-chip style="background-color: #ff4081; color:white; font-size: 11px;">{{meal.menuItem.specType}}</md-chip>
+												</md-chips>
+											</div>
+
 											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
 											<h4>{{meal.menuItem.name}}</h4>
 											<p><md-icon class="material-icons">local_dining</md-icon> količina:{{meal.amount}}</p>

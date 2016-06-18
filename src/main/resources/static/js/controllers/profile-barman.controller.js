@@ -22,7 +22,7 @@ function BarmanProfileController(employeeService, bartenderService, passService,
 
         passService.isPasswordChanged()
             .then(function (data) {
-                if(data){
+                if(!data){
                     barmanProfileVm.changePassword(false);
                 }
             });

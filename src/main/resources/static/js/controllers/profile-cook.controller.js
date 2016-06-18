@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('CookProfileController', CookProfileController);
 
-CookProfileController.$inject = ['employeeService', 'cookService','passService', '$mdDialog', '$scope'];
+CookProfileController.$inject = ['employeeService', 'cookService','passService', '$mdDialog', '$mdToast', '$scope'];
 
-function CookProfileController(employeeService, cookService, passService, $mdDialog, $scope) {
+function CookProfileController(employeeService, cookService, passService, $mdDialog, $mdToast, $scope) {
     var cookProfileVm = this;
     cookProfileVm.cook = {}
     cookProfileVm.notNo = -1;
@@ -22,7 +22,7 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         
         passService.isPasswordChanged()
             .then(function (data) {
-                if(data){
+                if(!data){
                     cookProfileVm.changePassword(false);
                 }
             });
@@ -102,6 +102,16 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     };
 
 
+
+    cookProfileVm.showToast= showToast;
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+
     function connect(id) {
         var socket = new SockJS('/connectFood');
         cookProfileVm.stompClient = Stomp.over(socket);
@@ -161,10 +171,13 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     cookProfileVm.prepareFood = prepareFood;
     function prepareFood(itemId){
         employeeService.prepareOrderItem(itemId, cookProfileVm.cook.userId)
-            .then(function (data) {
-                if(data != null){
-                    cookProfileVm.preparingMeals.push(data);
+            .then(function (response){
+                if(response.statusText == "OK") {
+                    cookProfileVm.preparingMeals.push(response.data);
+                    cookProfileVm.showToast("Uspješno ste prihvatili jelo za izradu.");
                 }
+                else
+                    cookProfileVm.showToast("Drugi kuvar je u međuvremenu prihvatio dato jelo.");
             });
     }
 

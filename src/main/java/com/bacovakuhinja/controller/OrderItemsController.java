@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -76,9 +77,20 @@ public class OrderItemsController {
     public ResponseEntity<OrderItem> prepareOrderItem(@PathVariable("itemId") Integer itemId, @PathVariable("employeeId") Integer employeeId) {
         Employee emp = employeeService.findOne(employeeId);
         OrderItem item = orderItemService.findOne(itemId);
+
+        if(item.getState().equals(Constants.OrderStatus.ACCEPTED))
+            return new ResponseEntity <OrderItem>(HttpStatus.IM_USED);
+
         item.setEmployee(emp);
         item.setState(Constants.OrderStatus.ACCEPTED);
-        OrderItem updatedItem = orderItemService.update(item);
+
+        OrderItem updatedItem;
+        try {
+             updatedItem = orderItemService.update(item);
+        }
+        catch (Exception e){
+            return new ResponseEntity <OrderItem>(HttpStatus.IM_USED);
+        }
 
         HashMap<String, ArrayList<OrderItem>> itemMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> items = new ArrayList<OrderItem>();

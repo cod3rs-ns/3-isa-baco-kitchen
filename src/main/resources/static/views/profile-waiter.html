@@ -123,12 +123,14 @@
 
 							<div layout="row" ng-show="waiterProfileVm.meals.length != 0;" layout-wrap>
 								<div class='md-padding' layout="row" ng-repeat="meal in waiterProfileVm.meals" layout-wrap>
-
 									<md-card class="order-item">
 										<md-card-content>
+
+
 											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
 											<h4>{{meal.menuItem.name}}</h4>
 											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
+
 										</md-card-content>
 
 										<md-card-actions class="order-btns" layout="row" layout-align="center end">
@@ -142,6 +144,7 @@
 						</md-content>
 					</md-tab-body>
 				</md-tab>
+
 				<md-tab label="Izdati računi">
 
 					<md-content class="md-padding">

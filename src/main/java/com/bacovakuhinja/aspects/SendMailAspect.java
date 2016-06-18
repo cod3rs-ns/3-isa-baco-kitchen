@@ -2,6 +2,7 @@ package com.bacovakuhinja.aspects;
 
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.CharUtils;
 import com.bacovakuhinja.utility.Constants;
 import com.bacovakuhinja.utility.PasswordHelper;
 import org.aspectj.lang.annotation.After;
@@ -17,6 +18,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Properties;
@@ -155,7 +157,8 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + provider.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " +
+                CharUtils.getASCIIFromString(provider.getFirstName()) + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
                 "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao ponu&#273;a&#269;. <br/><br/> " +
                 "           Va&#353;a &#353;ifra je: <b> " + provider.getPassword() + " </b><br/><br/>" +
@@ -164,7 +167,6 @@ public class SendMailAspect {
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
-
 
         User user = userService.findOne(provider.getEmail());
         user.setPassword(PasswordHelper.getSha256(user.getPassword()));
@@ -197,9 +199,9 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + manager.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + CharUtils.getASCIIFromString(manager.getFirstName()) + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
-                "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao menad&#382;er restorana <b>" + restaurantService.findOne(restaurantId).getName() +"</b>. <br/><br/> " +
+                "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao menad&#382;er restorana <b>" + CharUtils.getASCIIFromString(restaurantService.findOne(restaurantId).getName()) +"</b>. <br/><br/> " +
                 "           Va&#353;a &#353;ifra je: <b> " + manager.getPassword() + " </b><br/><br/>" +
                 "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
