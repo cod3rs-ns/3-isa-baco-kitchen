@@ -76,7 +76,7 @@ public class EmployeeController {
     public ResponseEntity <RestaurantRegion> getRegion(@PathVariable("emp_id") Integer empId) {
         DailySchedule sch = dailyScheduleService.findScheduleByEmployeeForNow(empId);
         if(sch == null)
-            return new ResponseEntity <RestaurantRegion>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity <RestaurantRegion>(HttpStatus.NO_CONTENT);
 
         return new ResponseEntity <RestaurantRegion>(sch.getRegion(), HttpStatus.OK);
     }
