@@ -55,40 +55,40 @@
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-      <md-content flex style="min-height:400px;">
-         <md-menu-content flex style="min-height:400px;">
-           <md-menu-item class="md-indent">
-            <md-button 	class="md-primary">
-				<md-icon class="material-icons">account_circle</md-icon>
-            	<strong>Ažuriranje profila</strong>
-            </md-button>
-           </md-menu-item>
-		   <md-divider></md-divider>
-		   <md-menu-item class="md-indent">
-            <md-button 	class="md-primary"
-						ng-click="rmanagerVm.createNewEmployee();">
-				<md-icon class="material-icons">supervisor_account</md-icon>
-            	<strong>Registrovanje zaposlenog</strong>
-            </md-button>
-           </md-menu-item>
-		   <md-divider></md-divider>
-		   <md-menu-item class="md-indent">
-            <md-button class="md-primary"
-						ng-click="rmanagerVm.createDrink();">
-				<md-icon class="material-icons">restaurant_menu</md-icon>
-            	<strong>Nova stavka menija</strong>
-            </md-button>
-           </md-menu-item>
-		   <md-divider></md-divider>
-		   <md-menu-item class="md-indent">
-            <md-button 	class="md-primary"
-						ng-click="rmanagerVm.updateRestaurant();">
-				<md-icon class="material-icons">business</md-icon>
-            	<strong>Ažuriranje restorana</strong>
-            </md-button>
-           </md-menu-item>
-		   <md-divider></md-divider>
-		   <md-menu-item class="md-indent">
+    <md-content flex style="min-height:400px;">
+        <md-menu-content flex style="min-height:400px;">
+        	<md-menu-item class="md-indent">
+	            <md-button 	class="md-primary">
+					<md-icon class="material-icons">account_circle</md-icon>
+	            	<strong>Ažuriranje profila</strong>
+	            </md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+            	<md-button 	class="md-primary"
+							ng-click="rmanagerVm.createNewEmployee();">
+					<md-icon class="material-icons">supervisor_account</md-icon>
+            		<strong>Registrovanje zaposlenog</strong>
+            	</md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+            	<md-button 	class="md-primary"
+							ng-click="rmanagerVm.createDrink();">
+					<md-icon class="material-icons">restaurant_menu</md-icon>
+            		<strong>Nova stavka menija</strong>
+            	</md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+        		<md-button 	class="md-primary"
+							ng-click="rmanagerVm.updateRestaurant();">
+					<md-icon class="material-icons">business</md-icon>
+            		<strong>Ažuriranje restorana</strong>
+            	</md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
             <md-button 	class="md-primary"
 						ng-click="rmanagerVm.showVisitsChart();">
 				<md-icon class="material-icons">show_chart</md-icon>
@@ -97,28 +97,36 @@
            </md-menu-item>
 		   <md-divider></md-divider>
 		   <md-menu-item class="md-indent">
-			<md-button 	class="md-primary"
-						ng-click="rmanagerVm.showRestaurantFinances();">
-			  <md-icon class="material-icons">show_chart</md-icon>
-			  <strong>Izveštaj prihoda</strong>
-			</md-button>
-		   </md-menu-item>
-		 <md-divider></md-divider>
-		 <md-menu-item class="md-indent">
-		  <md-button 	class="md-primary"
-					  ng-click="rmanagerVm.showRestaurantReviewReport();">
-			<md-icon class="material-icons">show_chart</md-icon>
-			<strong>Ocena restorana</strong>
-		  </md-button>
-		 </md-menu-item>
-	   <md-divider></md-divider>
-		   <md-menu-item class="md-indent">
-            <md-button 	class="md-primary">
-				<md-icon class="material-icons">exit_to_app</md-icon>
-            	<strong>Odjavi se</strong>
-            </md-button>
-           </md-menu-item>
-		   <md-divider></md-divider>
+				<md-button 	class="md-primary"
+							ng-click="rmanagerVm.showRestaurantFinances();">
+					<md-icon class="material-icons">show_chart</md-icon>
+					<strong>Izveštaj prihoda</strong>
+				</md-button>
+			</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+				<md-button 	class="md-primary"
+							ng-click="rmanagerVm.showRestaurantReviewReport();">
+					<md-icon class="material-icons">show_chart</md-icon>
+					<strong>Ocena restorana</strong>
+				</md-button>
+			</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+				<md-button 	class="md-primary"
+							ng-click="rmanagerVm.showAllWaiterFinances();">
+					<md-icon class="material-icons">show_chart</md-icon>
+					<strong>Prihodi konobara</strong>
+				</md-button>
+			</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+            	<md-button 	class="md-primary">
+					<md-icon class="material-icons">exit_to_app</md-icon>
+            		<strong>Odjavi se</strong>
+            	</md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
     	</md-content>
 
 		<!-- Restaurant info -->
@@ -285,7 +293,15 @@
 									ng-disabled="empl.type != 'waiter'">
 							<i class="material-icons md-24">show_chart</i>
 							<md-tooltip md-direction="top">
-								Izveštaj
+								Izveštaj ocena
+							</md-tooltip>
+						</md-button>
+						<md-button  class="md-fab md-mini md-primary md-accent md-secondary"
+									ng-click="rmanagerVm.showWaiterFinances(empl.userId, empl.firstName, empl.lastName);"
+									ng-disabled="empl.type != 'waiter'">
+							<i class="material-icons md-24">show_chart</i>
+							<md-tooltip md-direction="top">
+								Izveštaj poslovanja
 							</md-tooltip>
 						</md-button>
 						<md-divider ng-if="!$last"></md-divider>

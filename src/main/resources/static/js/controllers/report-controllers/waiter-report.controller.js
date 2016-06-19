@@ -2,15 +2,20 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterReportController', WaiterReportController);
 
-WaiterReportController.$inject = ['$mdDialog', 'reportService'];
+WaiterReportController.$inject = ['$mdDialog', 'reportService', 'waiter_id', 'waiter_name'];
 
-function WaiterReportController($mdDialog, reportService) {
+function WaiterReportController($mdDialog, reportService, waiter_id, waiter_name) {
     var reportVm = this;
     reportVm.dialogName = 'Prihodi konobara';
     reportVm.startDate = new Date();
     reportVm.endDate = new Date();
+    reportVm.waiterId = waiter_id;
+    reportVm.waiterName = waiter_name;
     reportVm.total = 0;
     reportVm.message = '';
+    reportVm.activated = false;
+    reportVm.invalidReport = false;
+    reportVm.partialReport = false;
 
     reportVm.showReport = showReport;
     reportVm.cancel = cancel;
@@ -20,21 +25,22 @@ function WaiterReportController($mdDialog, reportService) {
     function init() {
         if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
             // Load for first time if needed
-            google.charts.load('current', {'packages':["calendar", 'corechart']});
+            google.charts.load('current', {'packages':["calendar", 'corechart', 'bar']});
             // Set a callback to run when the Google Visualization API is loaded.
-            google.charts.setOnLoadCallback(drawChart);
+            google.charts.setOnLoadCallback(reportVm.showReport);
         }else {
             // redraw on every call
             angular.element(document).ready(function () {
-                drawChart();
+                reportVm.showReport();
             });
         };
     }
 
     function showReport() {
         var dates = [reportVm.startDate, reportVm.endDate];
-        reportService.getBillsByWaiter(8, dates)
-            .then(function(data) {
+        reportService.findBillsByWaiter(reportVm.waiterId, dates)
+            .then(function(response) {
+                var data = response.data;
                 var reportData = new Array();
                 for (var i = 0; i < data.length; i++) {
                     var d = new Date(data[i].publishDate);
@@ -48,6 +54,7 @@ function WaiterReportController($mdDialog, reportService) {
                     }
                 }
                 reportVm.report = reportData;
+                reportVm.activated = true;
                 drawChart();
             });
     }
@@ -64,11 +71,11 @@ function WaiterReportController($mdDialog, reportService) {
             reportVm.total = reportVm.total + reportVm.report[key];
         }
 
-        reportVm.message = 'Ukupan prihod za izabrani vremenski period:' + reportVm.total + 'RSD';
+        reportVm.message = 'Ukupan prihod za izabrani vremenski period: ' + reportVm.total + ' RSD';
 
         data.addRows(rows);
         var options = {
-            title: 'Prihodi za izabrani vremenski period',
+            title: 'Konobar ' + reportVm.waiterName + ' - prihodi po datumu',
             width: 800,
             height: 400,
             hAxis: {

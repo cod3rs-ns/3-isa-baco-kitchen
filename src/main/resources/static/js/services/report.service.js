@@ -6,7 +6,7 @@ reportService.$inject = ['$http'];
 
 function reportService($http){
     var service = {
-        getBillsByWaiter : getBillsByWaiter,
+        findBillsByWaiter : findBillsByWaiter,
         findReservationsByRestaurant: findReservationsByRestaurant,
         findBillsByRestaurant: findBillsByRestaurant,
         findReviewsByMenuItem: findReviewsByMenuItem,
@@ -16,7 +16,7 @@ function reportService($http){
 
     return service;
 
-    function getBillsByWaiter(id, dates){
+    function findBillsByWaiter(id, dates){
         var path = 'api/bills/report/' + id;
         return $http.post(path, JSON.stringify(dates))
             .success(function(response) {

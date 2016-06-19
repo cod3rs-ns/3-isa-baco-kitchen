@@ -22,7 +22,7 @@ function WaiterRatingReportController(reportService, $mdDialog, waiter_id, waite
     function init() {
         if ((typeof google === 'undefined') || (typeof google.visualization === 'undefined')) {
             // Load for first time if needed
-            google.charts.load('current', {'packages':["calendar", 'corechart']});
+            google.charts.load('current', {'packages':["calendar", 'corechart', 'bar']});
 
             // Set a callback to run when the Google Visualization API is loaded.
             google.charts.setOnLoadCallback(reportVm.showReport);

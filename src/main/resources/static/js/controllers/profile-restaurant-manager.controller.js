@@ -97,8 +97,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     };
 
-    rmanagerVm.showEmployeeReportDialog = showEmployeeReportDialog;
-    function showEmployeeReportDialog(id) {
+    rmanagerVm.showWaiterFinances = showWaiterFinances;
+    function showWaiterFinances(id, name, surname) {
         $mdDialog.show({
             controller: 'WaiterReportController',
             controllerAs: 'reportVm',
@@ -107,11 +107,27 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             clickOutsideToClose:true,
             fullscreen: false,
             locals: {
-                item_id : id,
+                waiter_id : id,
+                waiter_name: name + ' ' + surname
             }
         });
     }
 
+
+    rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
+    function showAllWaiterFinances() {
+        $mdDialog.show({
+            controller: 'WaitersFinanceReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant : rmanagerVm.rmanager.restaurant
+            }
+        });
+    }
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
     function showWaiterRatingReport(id, name, surname) {
         $mdDialog.show({
