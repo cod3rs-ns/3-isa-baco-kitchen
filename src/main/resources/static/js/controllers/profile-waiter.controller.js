@@ -198,24 +198,29 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     waiterProfileVm.createBill = createBill;
     function createBill() {
-        waiterProfileVm.selectedTableOrders.length = 0;
-        $mdDialog.show({
-            controller: 'BillController',
-            controllerAs: 'billVm',
-            templateUrl: '/views/dialogs/bill-tmpl.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose:false,
-            fullscreen: true,
-            locals: {
-                table: waiterProfileVm.selectedTable,
-                billId: null
-            },
-            onRemoving: function() {
-                getBills();
+        waiterProfileVm.confirmationDialog(
+            "Kreiranje računa",
+            "Da li ste sigurni da želite da kreirate račun?",
+            function () {
+                waiterProfileVm.selectedTableOrders.length = 0;
+                $mdDialog.show({
+                    controller: 'BillController',
+                    controllerAs: 'billVm',
+                    templateUrl: '/views/dialogs/bill-tmpl.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose:false,
+                    fullscreen: true,
+                    locals: {
+                        table: waiterProfileVm.selectedTable,
+                        billId: null
+                    },
+                    onRemoving: function() {
+                        getBills();
+                    }
+                });
             }
-        });
+        );
     };
-
 
     waiterProfileVm.openSchedule = openSchedule;
     function openSchedule() {
@@ -341,7 +346,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     waiterProfileVm.showBill = showBill;
     function showBill(billId) {
-        waiterProfileVm.confirmationDialog();
         $mdDialog.show({
             controller: 'BillController',
             controllerAs: 'billVm',
@@ -366,24 +370,30 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     waiterProfileVm.changeOrderStatus = changeOrderStatus;
     function changeOrderStatus(order) {
-        waiterProfileVm.selectedTableOrders.push(order);
-        waiterProfileVm.reservationOrders.splice(waiterProfileVm.reservationOrders.indexOf(order),1);
-        orderService.changeStatus(order.orderId);
+        waiterProfileVm.confirmationDialog(
+            "Prihvatanje porudžbine sa rezervacija",
+            "Da li ste sigurni da želite da prebacite porudžbinu iz rezervacije u aktivne porudžbine?",
+            function () {
+                waiterProfileVm.selectedTableOrders.push(order);
+                waiterProfileVm.reservationOrders.splice(waiterProfileVm.reservationOrders.indexOf(order),1);
+                orderService.changeStatus(order.orderId);
+            });
     }
 
     waiterProfileVm.confirmationDialog = confirmationDialog;
-    function confirmationDialog() {
+    function confirmationDialog(title, text, yesFunc) {
             var confirm = $mdDialog.confirm()
-                .title('Would you like to delete your debt?')
-                .textContent('All of the banks have agreed to forgive you your debts.')
-                .ariaLabel('Lucky day')
-                .ok('Please do it!')
-                .cancel('Sounds like a scam');
-            $mdDialog.show(confirm).then(function() {
-                alert('ok');
-            }, function() {
-                alert('no');
-            });
+                .title(title)
+                .textContent(text)
+                .ariaLabel('Confirmation')
+                .ok('DA')
+                .cancel('NE');
+
+            $mdDialog.show(confirm).then(
+                yesFunc,
+                function(){
+                    $mdDialog.hide();
+                });
     };
 
 }
