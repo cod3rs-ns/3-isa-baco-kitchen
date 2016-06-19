@@ -5,6 +5,7 @@ import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.ReservationGuest;
 import com.bacovakuhinja.repository.ReservationGuestRepository;
 import com.bacovakuhinja.service.ReservationGuestService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +13,6 @@ import java.util.Collection;
 
 @Service
 public class ReservationGuestServiceImpl implements ReservationGuestService {
-
-    private static final String ACCEPTED = "accepted";
-    private static final String REJECTED = "rejected";
-    private static final String INVITED  = "invited";
-    private static final String OWNER    = "owner";
 
     @Autowired
     ReservationGuestRepository reservationGuestRepository;
@@ -27,18 +23,23 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     }
 
     @Override
+    public Collection<ReservationGuest> findAllByReservationAndStatus(Integer reservationId, String status) {
+        return reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, status);
+    }
+
+    @Override
     public boolean isOwner(Integer reservationId, Integer userId) {
-        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, OWNER) != null);
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, Constants.Reservation.OWNER) != null);
     }
 
     @Override
     public boolean isInvited(Integer reservationId, Integer userId) {
-        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, INVITED) != null);
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, Constants.Reservation.INVITED) != null);
     }
 
     @Override
     public boolean isAccepted(Integer reservationId, Integer userId) {
-        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, ACCEPTED) != null);
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, Constants.Reservation.ACCEPTED) != null);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
 
         if (rg == null) return null;
 
-        rg.setStatus(ACCEPTED);
+        rg.setStatus(Constants.Reservation.ACCEPTED);
         return reservationGuestRepository.save(rg);
     }
 
@@ -57,7 +58,7 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
 
         if (rg == null) return null;
 
-        rg.setStatus(REJECTED);
+        rg.setStatus(Constants.Reservation.REJECTED);
         return reservationGuestRepository.save(rg);
     }
 
@@ -73,7 +74,17 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
 
     @Override
     public String getOwner(Integer reservationId) {
-        Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, OWNER).getReservationGuest();
+        Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.OWNER).iterator().next().getReservationGuest();
         return  owner.getFirstName() + " " + owner.getLastName();
+    }
+
+    @Override
+    public void delete(ReservationGuest reservationGuest) {
+        reservationGuestRepository.delete(reservationGuest);
+    }
+
+    @Override
+    public Integer numberOfReservationGuests(Integer reservationId) {
+        return 1 + reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, Constants.Reservation.ACCEPTED).size();
     }
 }

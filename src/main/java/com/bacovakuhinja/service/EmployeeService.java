@@ -6,16 +6,16 @@ import java.util.Collection;
 
 public interface EmployeeService {
 
-    public Collection <Employee> findAll();
+    Collection <Employee> findAll();
 
-    public Employee findOne(Integer eId);
+    Employee findOne(Integer eId);
 
-    public Employee create(Employee e);
+    Employee create(Employee e);
 
-    public Employee update(Employee e);
+    Employee update(Employee e);
 
-    public void delete(Integer eId);
+    void delete(Integer eId);
 
-    public Collection <Employee> findByRestaurant(Integer restaurantId);
+    Collection <Employee> findByRestaurant(Integer restaurantId);
 
 }

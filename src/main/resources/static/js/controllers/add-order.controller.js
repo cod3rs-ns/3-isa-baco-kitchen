@@ -146,7 +146,8 @@ function AddOrderController(menuItemService, orderService, reservationService, $
             orderId: edit,
             date : new Date(),
             deadline: null,
-            items : []
+            items : [],
+            status: "ACCEPTED"
         };
 
         orderVm.orderMeals.forEach(function (meal) {
@@ -175,7 +176,8 @@ function AddOrderController(menuItemService, orderService, reservationService, $
             clientId: guestId,
             deadline: orderVm.reservation.reservationDateTime,
             reservation: orderVm.reservation,
-            items : []
+            items : [],
+            status: "CREATED"
         };
     
         orderVm.orderMeals.forEach(function (meal) {

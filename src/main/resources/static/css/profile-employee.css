@@ -181,3 +181,9 @@ hr{
 	transition: all 200ms ease-in;
 	transform: scale(1.5);
 }
+
+.smaller-btn{
+	min-height: 22px !important;
+	font-size: 11px !important;
+	line-height: 0px;
+}

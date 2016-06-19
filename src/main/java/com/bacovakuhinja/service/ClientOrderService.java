@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ClientOrderService {
+
     Collection<ClientOrder> findAll();
 
     ClientOrder findOne(Integer eId);
@@ -19,6 +20,8 @@ public interface ClientOrderService {
     void delete(Integer eId);
 
     List<ClientOrder> getOrdersForBill(int tableId);
+
+    List<ClientOrder> getOrdersFromReservation(int tableId);
 
     ClientOrder findByReservationAndUser(Integer reservationId, Integer guestId);
 }

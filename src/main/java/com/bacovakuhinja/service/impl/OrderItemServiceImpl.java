@@ -3,6 +3,7 @@ package com.bacovakuhinja.service.impl;
 import com.bacovakuhinja.model.OrderItem;
 import com.bacovakuhinja.repository.OrderItemRepository;
 import com.bacovakuhinja.service.OrderItemService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,21 +49,21 @@ public class OrderItemServiceImpl implements OrderItemService{
 
     @Override
     public Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId) {
-        return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, "CREATED", "food");
+        return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, Constants.OrderStatus.CREATED, Constants.MenuItemType.FOOD);
     }
 
     @Override
     public Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId) {
-        return orderItemRepository.findByEmployee_UserIdAndState(employeeId, "ACCEPTED");
+        return orderItemRepository.findByEmployee_UserIdAndState(employeeId, Constants.OrderStatus.ACCEPTED);
     }
 
     @Override
     public Collection<OrderItem> findActiveDrinksByRestaurant(Integer restaurantId) {
-        return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, "CREATED", "drink");
+        return orderItemRepository.findByRestaurantIdAndStateAndMenuItem_Type(restaurantId, Constants.OrderStatus.CREATED, Constants.MenuItemType.DRINK);
     }
 
     @Override
     public Collection<OrderItem> findFinishedItemsByRegion(Integer regionId) {
-        return orderItemRepository.findByStateAndOrder_Table_Region_RegionId("FINISHED", regionId);
+        return orderItemRepository.findByStateAndOrder_Table_Region_RegionId(Constants.OrderStatus.FINISHED, regionId);
     }
 }

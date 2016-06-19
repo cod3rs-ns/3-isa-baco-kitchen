@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 public interface BillService {
+
     Collection <Bill> findAll();
 
     Bill findOne(Integer bId);

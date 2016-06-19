@@ -6,13 +6,13 @@ import java.util.Collection;
 
 public interface RestaurantProviderService {
 
-    public Collection <RestaurantProvider> findAll();
+    Collection <RestaurantProvider> findAll();
 
-    public RestaurantProvider findOne(Integer providerId);
+    RestaurantProvider findOne(Integer providerId);
 
-    public RestaurantProvider create(RestaurantProvider provider);
+    RestaurantProvider create(RestaurantProvider provider);
 
-    public RestaurantProvider update(RestaurantProvider provider);
+    RestaurantProvider update(RestaurantProvider provider);
 
-    public void delete(Integer providerId);
+    void delete(Integer providerId);
 }

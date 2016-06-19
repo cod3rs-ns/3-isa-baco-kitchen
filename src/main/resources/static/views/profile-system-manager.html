@@ -95,7 +95,8 @@
 	</section>
 
 	<div id="right" flex class="notification-list" style="margin-top: 3px; margin-left: 3px;">
-		<md-toolbar ng-show="!showSearch">
+		<div ng-show="!showSearch">
+		<md-toolbar>
 			<div class="md-toolbar-tools">
 				<h3>
 					Registrovani restorani
@@ -106,20 +107,22 @@
 				</md-button>
 			</div>
 		</md-toolbar>
-		<md-toolbar ng-show="showSearch">
-			<div class="md-toolbar-tools">
-				<md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
-					<md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
-				</md-button>
-				<md-input-container flex>
-					<input ng-model="rest_name" placeholder="Traži po imenu">
-				</md-input-container>
-				<md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
-					<md-icon aria-label="Search" class="material-icons">search</md-icon>
-				</md-button>
-			</div>
-		</md-toolbar>
-
+		</div>
+		<div  ng-show="showSearch">
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<md-button class="md-icon-button" ng-click="showSearch = !showSearch" aria-label="Back">
+						<md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
+					</md-button>
+					<md-input-container flex>
+						<input ng-model="rest_name" placeholder="Traži po imenu">
+					</md-input-container>
+					<md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
+						<md-icon aria-label="Search" class="material-icons">search</md-icon>
+					</md-button>
+				</div>
+			</md-toolbar>
+		</div>
 		<div class="row">
 			<ul class="equal-height-thumbnail">
 				<li class="order" ng-repeat="restaurant in systemManagerProfileVm.smanager.restaurants">

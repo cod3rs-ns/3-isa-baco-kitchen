@@ -2,6 +2,9 @@ package com.bacovakuhinja.aspects;
 
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.CharUtils;
+import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Properties;
@@ -23,14 +27,6 @@ import java.util.UUID;
 @Component
 @Aspect
 public class SendMailAspect {
-
-    // 30 minutes
-    public static final long TOKEN_EXPIRE_TIME = 1800000;
-    public static final String TOKEN_CONFIRM_LINK = "http://localhost:8091/api/registration-confirm?token=";
-    private static final String HOST_NAME = "smtp.gmail.com";
-    private static final int HOST_PORT = 587;
-    private static final String AUTH_USER = "bacovakuhinja@gmail.com";
-    private static final String AUTH_PASS = "jedanjebaco";
 
     @Autowired
     VerificationTokenService verificationTokenService;
@@ -52,16 +48,13 @@ public class SendMailAspect {
 
         // Generate VerificationToken
         Date date = new Date();
-        date.setTime(date.getTime() + TOKEN_EXPIRE_TIME);
+        date.setTime(date.getTime() + Constants.MailParameters.TOKEN_EXPIRE_TIME);
         final String tokenValue = UUID.randomUUID().toString();
-
-        System.out.println(date);
-        System.out.println(guest.getEmail());
-        System.out.println(userService.findOne(guest.getEmail()));
 
         VerificationToken token = new VerificationToken(tokenValue, date, userService.findOne(guest.getEmail()));
         verificationTokenService.create(token);
 
+        // FIXME
         // Message body
         final String message = "<html>\n" +
                 "<head>\n" +
@@ -75,14 +68,15 @@ public class SendMailAspect {
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
                 "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + guest.getFirstName() + "!</h1>\n" +
-                "        <p>Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
+                "        <p>Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
 
-        System.out.println(TOKEN_CONFIRM_LINK + tokenValue);
-        //sendMail(user.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        // FIXME
+        System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
+        sendMail(guest.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
     @After(value = "@annotation(com.bacovakuhinja.annotations.SendProvidersMail) && args(offerId, responseId,..)")
@@ -145,7 +139,7 @@ public class SendMailAspect {
     public void sendNewProviderMail(RestaurantProvider provider) throws MessagingException {
         // Generate VerificationToken
         Date date = new Date();
-        date.setTime(date.getTime() + TOKEN_EXPIRE_TIME);
+        date.setTime(date.getTime() + Constants.MailParameters.TOKEN_EXPIRE_TIME);
         final String tokenValue = UUID.randomUUID().toString();
 
         VerificationToken token = new VerificationToken(tokenValue, date, userService.findOne(provider.getEmail()));
@@ -163,17 +157,22 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + provider.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " +
+                CharUtils.getASCIIFromString(provider.getFirstName()) + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
                 "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao ponu&#273;a&#269;. <br/><br/> " +
-                "           Va&#353;a &#353;ifra je: <b> generated_password </b><br/><br/>" +
-                "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
+                "           Va&#353;a &#353;ifra je: <b> " + provider.getPassword() + " </b><br/><br/>" +
+                "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
 
-        System.out.println(TOKEN_CONFIRM_LINK + tokenValue);
+        User user = userService.findOne(provider.getEmail());
+        user.setPassword(PasswordHelper.getSha256(user.getPassword()));
+        userService.update(user);
+
+        System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
         sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
@@ -182,7 +181,7 @@ public class SendMailAspect {
     public void sendNewRestaurantManagerMail(RestaurantManager manager, Integer restaurantId) throws MessagingException {
         // Generate VerificationToken
         Date date = new Date();
-        date.setTime(date.getTime() + TOKEN_EXPIRE_TIME);
+        date.setTime(date.getTime() + Constants.MailParameters.TOKEN_EXPIRE_TIME);
         final String tokenValue = UUID.randomUUID().toString();
 
         VerificationToken token = new VerificationToken(tokenValue, date, userService.findOne(manager.getEmail()));
@@ -200,17 +199,21 @@ public class SendMailAspect {
                 "    </div>\n" +
                 "    \n" +
                 "    <div style=\"width: 85%; float: left;\">\n" +
-                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + manager.getFirstName() + "!</h1>\n" +
+                "        <h1>Dobro do&#353;li u Ba&#263;ovu kuhinju, " + CharUtils.getASCIIFromString(manager.getFirstName()) + "!</h1>\n" +
                 "        <p>Ovo je automatski izgenerisana poruka sistema Ba&#263;ova kuhinja. <br/>" +
-                "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao menad&#382;er restorana <b>" + restaurantService.findOne(restaurantId).getName() +"</b>. <br/><br/> " +
-                "           Va&#353;a &#353;ifra je: <b> generated_password </b><br/><br/>" +
-                "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
+                "           Upravo ste pozvani da se pridru&#382;ite na&#353;oj aplikaciji kao menad&#382;er restorana <b>" + CharUtils.getASCIIFromString(restaurantService.findOne(restaurantId).getName()) +"</b>. <br/><br/> " +
+                "           Va&#353;a &#353;ifra je: <b> " + manager.getPassword() + " </b><br/><br/>" +
+                "           Da biste potvrdili registraciju na sajtu, potrebno je da kliknete <a href=\"" + Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue + "\">ovdje</a>.</p>\n" +
                 "    </div>\n" +
                 "</div>\n" +
                 "</body>\n" +
                 "</html>";
 
-        System.out.println(TOKEN_CONFIRM_LINK + tokenValue);
+        User user = userService.findOne(manager.getEmail());
+        user.setPassword(PasswordHelper.getSha256(user.getPassword()));
+        userService.update(user);
+
+        System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
         sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
@@ -221,10 +224,10 @@ public class SendMailAspect {
         sender.setDefaultEncoding("UTF-8");
 
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", HOST_NAME);
+        properties.put("mail.smtp.host", Constants.MailParameters.HOST_NAME);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.smtp.port", HOST_PORT);
+        properties.put("mail.smtp.port", Constants.MailParameters.HOST_PORT);
         sender.setJavaMailProperties(properties);
 
         Session mailSession = Session.getDefaultInstance(properties, null);
@@ -237,7 +240,7 @@ public class SendMailAspect {
         mailMessage.setContent(message, "text/html");
 
         Transport transport = mailSession.getTransport("smtp");
-        transport.connect(HOST_NAME, AUTH_USER, AUTH_PASS);
+        transport.connect(Constants.MailParameters.HOST_NAME, Constants.MailParameters.AUTH_USER, Constants.MailParameters.AUTH_PASS);
         transport.sendMessage(mailMessage, mailMessage.getAllRecipients());
         transport.close();
     }

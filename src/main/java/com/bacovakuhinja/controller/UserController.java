@@ -3,10 +3,11 @@ package com.bacovakuhinja.controller;
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Guest;
-import com.bacovakuhinja.model.Sha256;
+import com.bacovakuhinja.utility.PasswordHelper;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.GuestService;
 import com.bacovakuhinja.service.UserService;
+import com.bacovakuhinja.utility.Constants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,6 @@ import java.util.Date;
 
 @RestController
 public class UserController {
-
-    private static final String SECRET_KEY = "VojislavSeselj";
 
     @Autowired
     private UserService userService;
@@ -58,8 +57,8 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Boolean> passMatch(final HttpServletRequest request, @PathVariable String pass) {
-        User user = (User) request.getAttribute("loggedUser");
-        String hashed = Sha256.getSha256(pass);
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
+        String hashed = PasswordHelper.getSha256(pass);
         boolean matched = user.getPassword().equals(hashed);
         return new ResponseEntity<Boolean>(matched, HttpStatus.OK);
     }
@@ -71,7 +70,7 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> getUser(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
@@ -83,9 +82,12 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> changePassword(final HttpServletRequest request, @RequestBody String pass){
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         User current = userService.findOne(user.getEmail());
-        current.setPassword(Sha256.getSha256(pass));
+        current.setPassword(PasswordHelper.getSha256(pass));
+        if(!current.isLogged()){
+            current.setLogged(true);
+        }
         userService.update(current);
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
@@ -98,9 +100,11 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Boolean> isPasswordChanged(final HttpServletRequest request){
-        User user = (User)request.getAttribute("loggedUser");
+        User user = (User)request.getAttribute(Constants.Authorization.LOGGED_USER);
         User current = userService.findOne(user.getEmail());
-        boolean ret = current.getPassword().equals("generated_password");
+        boolean ret = true;
+        if(current != null)
+            ret = current.isLogged();
         return new ResponseEntity<Boolean>(ret, HttpStatus.OK);
     }
 
@@ -109,13 +113,13 @@ public class UserController {
             method   = RequestMethod.POST
     )
     public LoginResponse authenticate(@RequestParam(value="email") String email, @RequestParam(value="password") String password) {
-        password = Sha256.getSha256(password);
+        password = PasswordHelper.getSha256(password);
         User user = userService.findOneByEmailAndPassword(email, password);
 
-        if (user != null && user.getVerified().equals("verified")) {
+        if (user != null && user.getVerified().equals(Constants.Registration.STATUS_VERIFIED)) {
             return new LoginResponse(Jwts.builder().setSubject(email)
-                    .claim("user", email).setIssuedAt(new Date())
-                    .signWith(SignatureAlgorithm.HS256, SECRET_KEY).compact());
+                    .claim(Constants.Authorization.CLAIMS_BODY, email).setIssuedAt(new Date())
+                    .signWith(SignatureAlgorithm.HS256, Constants.Authorization.SECRET_KEY).compact());
         }
 
         return null;
@@ -129,7 +133,8 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<User> register(@RequestBody Guest guest) {
-        guest.setPassword(Sha256.getSha256(guest.getPassword()));
+        guest.setPassword(PasswordHelper.getSha256(guest.getPassword()));
+        guest.setLogged(true);
         User created = guestService.create(guest);
         return new ResponseEntity<User>(created, HttpStatus.CREATED);
     }

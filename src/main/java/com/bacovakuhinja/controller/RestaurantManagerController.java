@@ -4,10 +4,11 @@ import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.RestaurantManager;
-import com.bacovakuhinja.model.Sha256;
+import com.bacovakuhinja.utility.PasswordHelper;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.RestaurantManagerService;
 import com.bacovakuhinja.service.RestaurantService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -43,13 +44,13 @@ public class RestaurantManagerController {
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
 
-    @Authorization(role = "restaurant_manager")
+    @Authorization(role = Constants.UserRoles.RESTAURANT_MANAGER)
     @RequestMapping(
             value = "/api/rmanager",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <RestaurantManager> getLoggedInRestaurantManager(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         RestaurantManager manager = rmService.findOne(user.getUserId());
         return new ResponseEntity <RestaurantManager>(manager, HttpStatus.OK);
     }
@@ -62,9 +63,10 @@ public class RestaurantManagerController {
     public ResponseEntity <RestaurantManager> createRestaurantManager(@RequestBody RestaurantManager manager, @PathVariable("restaurant_id") Integer r_id) {
         Restaurant restaurant = rService.findOne(r_id);
         manager.setRestaurant(restaurant);
-        // TODO generate password and verified
-        manager.setPassword(Sha256.getSha256("generated_password"));
-        manager.setVerified("not_verified");
+        manager.setLogged(false);
+        String pass = PasswordHelper.randomPassword();
+        manager.setPassword(pass);
+        manager.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         RestaurantManager createdManager = rmService.create(manager);
         return new ResponseEntity <RestaurantManager>(createdManager, HttpStatus.CREATED);
     }

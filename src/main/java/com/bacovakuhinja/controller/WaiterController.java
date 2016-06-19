@@ -7,6 +7,7 @@ import com.bacovakuhinja.model.RestaurantTable;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.model.Waiter;
 import com.bacovakuhinja.service.*;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -51,13 +52,13 @@ public class WaiterController {
     }
 
 
-    @Authorization(role = "waiter")
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/waiter",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> getLoggedInCook(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Waiter waiter = waiterService.findOne(user.getUserId());
         return new ResponseEntity <Waiter>(waiter, HttpStatus.OK);
     }
@@ -82,7 +83,7 @@ public class WaiterController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> createWaiter(@RequestBody Waiter waiter) {
         waiter.setPassword("generated_password");
-        waiter.setVerified("not_verified");
+        waiter.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Waiter created = waiterService.create(waiter);
         return new ResponseEntity <Waiter>(created, HttpStatus.CREATED);
     }

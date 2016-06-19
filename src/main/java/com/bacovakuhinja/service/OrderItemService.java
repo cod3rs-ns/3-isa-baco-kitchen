@@ -1,31 +1,29 @@
 package com.bacovakuhinja.service;
 
 
-import com.bacovakuhinja.model.ClientOrder;
 import com.bacovakuhinja.model.OrderItem;
-import org.springframework.core.annotation.Order;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface OrderItemService {
-    public Collection<OrderItem> findAll();
 
-    public OrderItem findOne(Integer oiId);
+    Collection<OrderItem> findAll();
 
-    public OrderItem create(OrderItem oi);
+    OrderItem findOne(Integer oiId);
 
-    public OrderItem update(OrderItem oi);
+    OrderItem create(OrderItem oi);
 
-    public void delete(Integer oiId);
+    OrderItem update(OrderItem oi);
 
-    public Collection<OrderItem> findOrderItemsByOrder(Integer orderId);
+    void delete(Integer oiId);
 
-    public Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId);
+    Collection<OrderItem> findOrderItemsByOrder(Integer orderId);
 
-    public Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId);
+    Collection<OrderItem> findActiveFoodByRestaurant(Integer restaurantId);
 
-    public Collection<OrderItem> findActiveDrinksByRestaurant(Integer restaurantId);
+    Collection<OrderItem> findAcceptedItemsByEmployee(Integer employeeId);
 
-    public Collection<OrderItem> findFinishedItemsByRegion(Integer regionId);
+    Collection<OrderItem> findActiveDrinksByRestaurant(Integer restaurantId);
+
+    Collection<OrderItem> findFinishedItemsByRegion(Integer regionId);
 }

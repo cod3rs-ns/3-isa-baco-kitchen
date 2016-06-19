@@ -1,8 +1,9 @@
-package com.bacovakuhinja.model;
+package com.bacovakuhinja.utility;
 
 import java.security.MessageDigest;
+import java.util.UUID;
 
-public class Sha256 {
+public class PasswordHelper {
     public static String getSha256(String text) {
         try{
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -12,5 +13,10 @@ public class Sha256 {
         } catch(Exception ex){
             throw new RuntimeException(ex);
         }
+    }
+
+    public static String randomPassword(){
+        String randomStr = UUID.randomUUID().toString().replace("-", "").substring(0,8).toUpperCase();
+        return randomStr;
     }
 }

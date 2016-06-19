@@ -2,14 +2,13 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
-import com.fasterxml.jackson.databind.ser.std.StdArraySerializers;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -78,9 +77,20 @@ public class OrderItemsController {
     public ResponseEntity<OrderItem> prepareOrderItem(@PathVariable("itemId") Integer itemId, @PathVariable("employeeId") Integer employeeId) {
         Employee emp = employeeService.findOne(employeeId);
         OrderItem item = orderItemService.findOne(itemId);
+
+        if(item.getState().equals(Constants.OrderStatus.ACCEPTED))
+            return new ResponseEntity <OrderItem>(HttpStatus.IM_USED);
+
         item.setEmployee(emp);
-        item.setState("ACCEPTED");
-        OrderItem updatedItem = orderItemService.update(item);
+        item.setState(Constants.OrderStatus.ACCEPTED);
+
+        OrderItem updatedItem;
+        try {
+             updatedItem = orderItemService.update(item);
+        }
+        catch (Exception e){
+            return new ResponseEntity <OrderItem>(HttpStatus.IM_USED);
+        }
 
         HashMap<String, ArrayList<OrderItem>> itemMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> items = new ArrayList<OrderItem>();
@@ -104,10 +114,9 @@ public class OrderItemsController {
     public ResponseEntity<Boolean> finishOrderItem(@PathVariable("itemId") Integer itemId) {
         OrderItem item = orderItemService.findOne(itemId);
         if (item != null) {
-            item.setState("FINISHED");
+            item.setState(Constants.OrderStatus.FINISHED);
             OrderItem updatedItem = orderItemService.update(item);
             Integer regionId = updatedItem.getOrder().getTable().getRegion().getRegionId();
-            System.out.println(regionId);
             DailySchedule schedule = dailyScheduleService.findScheduleByRegionForNow(regionId);
             Employee e = schedule.getEmployee();
             if (e != null) {
@@ -133,7 +142,7 @@ public class OrderItemsController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OrderItem> deliverOrderItem(@PathVariable("itemId") Integer itemId) {
         OrderItem item = orderItemService.findOne(itemId);
-        item.setState("DELIVERED");
+        item.setState(Constants.OrderStatus.DELIVERED);
         OrderItem updated = orderItemService.update(item);
         return new ResponseEntity<OrderItem> (updated, HttpStatus.OK );
     }

@@ -5,6 +5,7 @@ import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.BillService;
 import com.bacovakuhinja.service.ClientOrderService;
 import com.bacovakuhinja.service.WaiterService;
+import com.bacovakuhinja.utility.Constants;
 import com.bacovakuhinja.utility.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,13 +29,13 @@ public class BillController {
     @Autowired
     private WaiterService waiterService;
 
-    @Authorization(role = "waiter")
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/bills/t={tableId}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BillHelper> createBill(final HttpServletRequest request, @PathVariable("tableId") Integer tableId) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Waiter waiter = waiterService.findOne(user.getUserId());
 
         List<ClientOrder> orders = clientOrderService.getOrdersForBill(tableId);
@@ -95,13 +96,13 @@ public class BillController {
     }
 
 
-    @Authorization(role = "waiter")
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/waiter/bills",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection <Bill>> getWaiterBills(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Waiter waiter = waiterService.findOne(user.getUserId());
 
         Collection <Bill> bills = billService.findBillsByWaiter(waiter.getUserId());
@@ -109,13 +110,13 @@ public class BillController {
         return new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
     }
 
-    @Authorization(role = "waiter")
+    @Authorization(role = Constants.UserRoles.WAITER)
     @RequestMapping(
             value = "/api/waiter/bill/{billId}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <BillHelper> getBill(final HttpServletRequest request, @PathVariable("billId") Integer billId) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         Waiter waiter = waiterService.findOne(user.getUserId());
 
         Bill bill = billService.findOne(billId);

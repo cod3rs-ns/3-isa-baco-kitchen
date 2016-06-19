@@ -61,8 +61,8 @@
     </script>
 </head>
 <body style="background-color: #eee;">
-    <md-content ng-cloak>
-        <md-toolbar ng-controller="ToolbarController as tbCtrl" class="md-hue-2" style=" box-shadow: 0px 2px 2px #black;">
+    <span ng-controller="ToolbarController as tbCtrl" ng-cloak>
+        <md-toolbar class="md-hue-2" style=" box-shadow: 0px 2px 2px #black;">
           <div class="md-toolbar-tools">
             <md-button class="md-icon-button" aria-label="Menu" ng-disabled="true">
               <md-icon aria-label="Menu" class="material-icons">menu</md-icon>
@@ -86,11 +86,11 @@
               Registruj se
             </md-button>
 
-              <div  ng-hide="!$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
+              <div ng-hide="!$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
                   <md-fab-speed-dial md-open="tbCtrl.isOpen" md-direction="{{tbCtrl.selectedDirection}}"
                                      ng-class="tbCtrl.selectedMode">
                       <md-fab-trigger>
-                          <md-button aria-label="menu" class="md-fab">
+                          <md-button aria-label="menu" class="md-fab md-mini">
                               <md-icon class="material-icons">account_circle</md-icon>
                           </md-button>
                       </md-fab-trigger>
@@ -105,15 +105,16 @@
                   </md-fab-speed-dial>
               </div>
           </div>
-          <md-menu-content width="5" ng-show="tbCtrl.restaurantQueryResult.length > 0">
-            <md-menu-item ng-repeat="result in tbCtrl.restaurantQueryResult">
-                <md-list-item class="noright" ng-click="tbCtrl.toRestaurant(result.restaurantId)">
-                  <img class="md-avatar" src="http://medias.otbor.vm.aiprod.com/360x360/RESAQU033FS000JE/0-Bouliac-Restaurant-Le-St-James-2.jpg"/>
-                  <p class="color-gray">{{result.name}}</p>
-                </md-list-item>
-            </md-menu-item>
-          </md-menu-content>
-    </md-content>
+        </md-toolbar>
+        <md-menu-content width="5" ng-show="tbCtrl.restaurantQueryResult.length > 0">
+          <md-menu-item ng-repeat="result in tbCtrl.restaurantQueryResult">
+              <md-list-item class="noright" ng-click="tbCtrl.toRestaurant(result.restaurantId)">
+                <img class="md-avatar" ng-src="{{result.image}}"/>
+                <p class="color-gray">{{result.name}}</p>
+              </md-list-item>
+          </md-menu-item>
+        </md-menu-content>
+    </span>
 
     <div style="background-color: #eee;" ng-view></div>
 

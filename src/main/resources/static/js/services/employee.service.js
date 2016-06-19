@@ -79,7 +79,10 @@ function employeeService($http) {
 
     function prepareOrderItem(itemId, empId){
         return $http.post('/api/orderItems/i=' + itemId + '/e=' + empId)
-            .then(function (response) {
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
                 return response.data;
             });
     }

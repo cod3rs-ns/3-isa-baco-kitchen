@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.List;
 
 public interface ClientOrderRepository extends JpaRepository<ClientOrder, Integer> {
-    List<ClientOrder> findByTable_TableIdAndBill_BillIdOrderByDateAsc(Integer tableId, Integer billId);
+    List<ClientOrder> findByTable_TableIdAndBill_BillIdAndStatusOrderByDateAsc(Integer tableId, Integer billId, String status);
 
     ClientOrder findByReservation_reservationIdAndClientId(Integer reservationId, Integer userId);
 }

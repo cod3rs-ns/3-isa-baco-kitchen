@@ -6,20 +6,21 @@ import java.util.Collection;
 
 public interface RestaurantTableService {
 
-    public Collection <RestaurantTable> findAll();
+    Collection <RestaurantTable> findAll();
 
-    public RestaurantTable findOne(Integer id);
+    RestaurantTable findOne(Integer id);
 
-    public RestaurantTable create(RestaurantTable restaurantTable);
+    RestaurantTable create(RestaurantTable restaurantTable);
 
-    public RestaurantTable update(RestaurantTable restaurantTable);
+    RestaurantTable update(RestaurantTable restaurantTable);
 
-    public void delete(Integer id);
+    void delete(Integer id);
 
-    public Collection <RestaurantTable> findAllByRestaurant(Integer restaurantId);
+    Collection <RestaurantTable> findAllByRestaurant(Integer restaurantId);
 
-    public Collection <RestaurantTable> findAllByRegion(Integer regionId);
+    //FIXME @Keky
+    Collection <RestaurantTable> findAllByRegion(Integer regionId);
 
-    public Integer getNextId();
+    Integer getNextId();
 
 }

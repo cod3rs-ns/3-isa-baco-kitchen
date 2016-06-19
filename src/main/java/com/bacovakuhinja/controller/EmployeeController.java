@@ -4,6 +4,7 @@ import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.DailyScheduleService;
 import com.bacovakuhinja.service.EmployeeService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -97,7 +98,7 @@ public class EmployeeController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Collection<DailySchedule>> getSchedule(final HttpServletRequest request) {
-        User user = (User) request.getAttribute("loggedUser");
+        User user = (User) request.getAttribute(Constants.Authorization.LOGGED_USER);
         ArrayList<DailySchedule> emptyList = new ArrayList<DailySchedule>();
 
         if (user == null)

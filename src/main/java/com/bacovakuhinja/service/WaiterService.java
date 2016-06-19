@@ -6,14 +6,14 @@ import java.util.Collection;
 
 public interface WaiterService {
 
-    public Collection<Waiter> findAll();
+    Collection<Waiter> findAll();
 
-    public Waiter findOne(Integer wId);
+    Waiter findOne(Integer wId);
 
-    public Waiter create(Waiter w);
+    Waiter create(Waiter w);
 
-    public Waiter update(Waiter w);
+    Waiter update(Waiter w);
 
-    public void delete(Integer wId);
+    void delete(Integer wId);
 
 }

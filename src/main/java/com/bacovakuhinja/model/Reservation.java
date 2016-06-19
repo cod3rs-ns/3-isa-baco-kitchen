@@ -16,7 +16,7 @@ public class Reservation {
     private Integer reservationId;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     @JoinColumn(name = "rs_restaurant_id")
     private Restaurant restaurant;
 
@@ -62,5 +62,15 @@ public class Reservation {
 
     public void setLength(Integer length) {
         this.length = length;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "reservationId=" + reservationId +
+                ", restaurant=" + restaurant +
+                ", reservationDateTime=" + reservationDateTime +
+                ", length=" + length +
+                '}';
     }
 }
