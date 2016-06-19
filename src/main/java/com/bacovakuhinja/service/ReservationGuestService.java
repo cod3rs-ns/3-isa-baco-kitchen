@@ -21,4 +21,6 @@ public interface ReservationGuestService {
     ReservationGuest create(ReservationGuest reservationGuest);
 
     ReservationGuest update(ReservationGuest reservationGuest);
+
+    String getOwner(Integer reservationId);
 }

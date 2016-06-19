@@ -15,7 +15,8 @@ function employeeService($http) {
         prepareOrderItem: prepareOrderItem,
         finishOrderItem: finishOrderItem,
         getAcceptedItems: getAcceptedItems,
-        getEmployees: getEmployees
+        getEmployees: getEmployees,
+        getEmployeesByRestaurant: getEmployeesByRestaurant
     };
 
     return service;
@@ -29,6 +30,13 @@ function employeeService($http) {
 
     function getEmployees() {
         return $http.get('api/employees')
+            .then(function(response){
+                return response.data;
+            });
+    };
+
+    function getEmployeesByRestaurant(id) {
+        return $http.get('api/employees/r=' + id)
             .then(function(response){
                 return response.data;
             });

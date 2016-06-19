@@ -47,6 +47,10 @@ public class ClientOrder implements Serializable{
     @JoinColumn(name = "co_bill_id")
     private Bill bill;
 
+    @JsonIgnore
+    @Column(name = "co_waiter_id")
+    private Integer waiterId;
+
     public ClientOrder(){
     }
 
@@ -98,6 +102,14 @@ public class ClientOrder implements Serializable{
 
     public void setBill(Bill bill) {
         this.bill = bill;
+    }
+
+    public Integer getWaiterId() {
+        return waiterId;
+    }
+
+    public void setWaiterId(Integer waiterId) {
+        this.waiterId = waiterId;
     }
 
     @Override

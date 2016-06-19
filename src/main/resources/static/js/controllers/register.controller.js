@@ -5,15 +5,17 @@ angular
 RegisterController.$inject = ['$location', 'userService'];
     
 function RegisterController($location, userService) {
-    // Var vm stands for ViewModel
     var registerVm = this;
     
-    // Set bindable memebers at the top of the controller
+    // User parameters
     registerVm.user = {};
+    
+    // Click on button 'Registruj se'
     registerVm.registerGuest = registerGuest;
     
     initState();
     
+    // Create DEFAULT user
     function initState() {
         registerVm.user = {
             userId: 0,
@@ -27,11 +29,12 @@ function RegisterController($location, userService) {
         };
     };
     
-    // Implement functions later
+    // Guest registration
     function registerGuest() {
         userService.registerUser(registerVm.user)
           .then(function (registeredUser) {
-            $location.path('verify');  
+              // Redirect to Verification page
+              $location.path('verify');  
           });
-    }
+    };
 }

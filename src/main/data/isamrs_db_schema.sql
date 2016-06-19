@@ -148,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`bills` (
   `bl_id` INT(11) NOT NULL AUTO_INCREMENT,
   `bl_publish_date` DATETIME NOT NULL,
   `bl_total_amount` DOUBLE NOT NULL,
-  `bl_waiter_id` INT(11) NOT NULL,
+  `bl_waiter_id` INT(11),
   PRIMARY KEY (`bl_id`),
   INDEX `fk_bills_waiters1_idx` (`bl_waiter_id` ASC),
   CONSTRAINT `bl_waiter_fid`
@@ -241,6 +241,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`client_orders` (
   `co_client_id` INT(11) NULL DEFAULT NULL,
   `co_table_id` INT(11) NOT NULL,
   `co_bill_id` INT(11) NULL DEFAULT NULL,
+  `co_waiter_id` INT(11) NULL DEFAULT NULL,
   PRIMARY KEY (`co_id`),
   INDEX `fk_client_orders_reservations1_idx` (`co_reservation_id` ASC),
   INDEX `fk_client_orders_restaurant_tables1_idx` (`co_table_id` ASC),

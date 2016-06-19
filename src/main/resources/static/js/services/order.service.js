@@ -10,7 +10,8 @@ function orderService($http) {
         getOrders: getOrders,
         getOrder: getOrder,
         updateOrder : updateOrder,
-        canEdit: canEdit
+        canEdit: canEdit,
+        setWaiterId : setWaiterId
     };
     return service;
 
@@ -44,6 +45,13 @@ function orderService($http) {
 
     function canEdit(orderId) {
         return $http.get('api/order/canEdit/' + orderId)
+            .then(function (response) {
+                return response.data;
+            });
+    }
+
+    function setWaiterId(orderId){
+        return $http.put('/api/orders/setWaiter/' + orderId)
             .then(function (response) {
                 return response.data;
             });

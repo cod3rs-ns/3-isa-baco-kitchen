@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope'];
+RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -14,6 +14,9 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.createDrink = createDrink;
     rmanagerVm.createFood = createFood;
     rmanagerVm.createNewEmployee = createNewEmployee;
+
+    // TODO update on create new
+    rmanagerVm.employees = [];
     // Currently active tab
     rmanagerVm.tabs = {
         selected: 0
@@ -48,6 +51,11 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             console.log(data);
             rmanagerVm.drinksMenu = data;
         });
+
+        employeeService.getEmployeesByRestaurant(2).then(function(data) {
+            console.log(data);
+            rmanagerVm.employees = data;
+        });
     }
 
     function getLoggedRestaurantManager() {
@@ -69,6 +77,114 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             locals: {
                 to_edit : rmanagerVm.rmanager.restaurant,
                 restaurants : null
+            }
+        });
+    };
+
+    rmanagerVm.showMenuItemReport = showMenuItemReport;
+    function showMenuItemReport(menu_item_id, menu_item_name) {
+        $mdDialog.show({
+            controller: 'MenuItemReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                item_id : menu_item_id,
+                item_name : menu_item_name
+            }
+        });
+    };
+
+    rmanagerVm.showWaiterFinances = showWaiterFinances;
+    function showWaiterFinances(id, name, surname) {
+        $mdDialog.show({
+            controller: 'WaiterReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                waiter_id : id,
+                waiter_name: name + ' ' + surname
+            }
+        });
+    }
+
+
+    rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
+    function showAllWaiterFinances() {
+        $mdDialog.show({
+            controller: 'WaitersFinanceReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant : rmanagerVm.rmanager.restaurant
+            }
+        });
+    }
+    rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
+    function showWaiterRatingReport(id, name, surname) {
+        $mdDialog.show({
+            controller: 'WaiterRatingReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                waiter_id : id,
+                waiter_name : name + ' ' + surname
+            }
+        });
+    }
+
+    rmanagerVm.showVisitsChart = showVisitsChart;
+    function showVisitsChart() {
+        $mdDialog.show({
+            controller: 'RestaurantVisitsController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant : rmanagerVm.rmanager.restaurant
+            }
+        });
+    }
+
+    rmanagerVm.showRestaurantFinances = showRestaurantFinances;
+    function showRestaurantFinances() {
+        $mdDialog.show({
+            controller: 'FinancesController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/date-picker-report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant: rmanagerVm.rmanager.restaurant
+            }
+        });
+    }
+
+    rmanagerVm.showRestaurantReviewReport = showRestaurantReviewReport;
+    function showRestaurantReviewReport() {
+        $mdDialog.show({
+            controller: 'RestaurantReviewReportController',
+            controllerAs: 'reportVm',
+            templateUrl: '/views/dialogs/report-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                restaurant: rmanagerVm.rmanager.restaurant
             }
         });
     };

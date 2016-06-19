@@ -27,7 +27,7 @@ public class Bill {
     @Column(name = "bl_total_amount")
     private Double totalAmount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bl_waiter_id")
     private Waiter waiter;
 

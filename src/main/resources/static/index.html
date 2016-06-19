@@ -54,6 +54,11 @@
     <script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>
     <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.css">
 
+    <!-- Google charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        // Load the Visualization API and the corechart package.
+    </script>
 </head>
 <body style="background-color: #eee;">
     <md-content ng-cloak>
@@ -65,6 +70,13 @@
             <h2>
               <span>Baćova kuhinja</span>
             </h2>
+            
+            <md-icon aria-label="Search" class="material-icons" style="margin-left: 20px;">search</md-icon>
+            <md-input-container id="search" flex>
+              <label>&nbsp;</label>
+              <input type="text" placeholder="Traži po restoran po imenu ili tipu" ng-change="tbCtrl.restaurantSearch()" ng-model="tbCtrl.restaurantQuery">
+            </md-input-container>
+            
             <span flex></span>
 
             <md-button aria-label="Login" ng-hide="$root.show" ng-href="#/login">
@@ -93,11 +105,18 @@
                   </md-fab-speed-dial>
               </div>
           </div>
-        </md-toolbar>
+          <md-menu-content width="5" ng-show="tbCtrl.restaurantQueryResult.length > 0">
+            <md-menu-item ng-repeat="result in tbCtrl.restaurantQueryResult">
+                <md-list-item class="noright" ng-click="tbCtrl.toRestaurant(result.restaurantId)">
+                  <img class="md-avatar" src="http://medias.otbor.vm.aiprod.com/360x360/RESAQU033FS000JE/0-Bouliac-Restaurant-Le-St-James-2.jpg"/>
+                  <p class="color-gray">{{result.name}}</p>
+                </md-list-item>
+            </md-menu-item>
+          </md-menu-content>
     </md-content>
-    
+
     <div style="background-color: #eee;" ng-view></div>
-    
+
     <!-- AngularJS App Init -->
     <script src="/js/app.module.js"></script>
     <script src="/js/app.route.js"></script>
@@ -135,6 +154,13 @@
     <script src="/js/controllers/single-offer.controller.js"></script>
     <script src="/js/controllers/single-response.controller.js"></script>
     <script src="/js/controllers/single-bill.controller.js"></script>
+    <script src="/js/controllers/report-controllers/menu-item-report.controller.js"></script>
+    <script src="/js/controllers/report-controllers/waiter-report.controller.js"></script>
+    <script src="/js/controllers/report-controllers/restaurant-visits-report.controller.js"></script>
+    <script src="/js/controllers/report-controllers/restaurant-finances-report.controller.js"></script>
+    <script src="/js/controllers/report-controllers/restaurant-rating-report.controller.js"></script>
+    <script src="/js/controllers/report-controllers/waiter-rating-report.controller.js"></script>
+        <script src="/js/controllers/report-controllers/all-waiter-finance-report.controller.js"></script>
     <!-- Directives -->
     <script src="/js/directives/rating.directive.js"></script>
     <script src="/js/directives/rating-no-click.directive.js"></script>
@@ -168,5 +194,6 @@
     <script src="js/services/response.service.js"></script>
     <script src="js/services/schedule.service.js"></script>
     <script src="js/services/reservation.service.js"></script>
+    <script src="js/services/report.service.js"></script>
 </body>
 </html>

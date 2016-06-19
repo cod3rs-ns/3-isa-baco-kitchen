@@ -33,7 +33,7 @@ function routeConfig($routeProvider, $httpProvider) {
         .when('/profile-guest/:guestId', {
             templateUrl: 'views/profile-guest.html',
             controller: 'GuestProfileController',
-            controllerAs: 'guestProfileVm'
+            controllerAs: 'guestVm'
         })
 		    // Route for cook profile page
         .when('/profile-cook/', {

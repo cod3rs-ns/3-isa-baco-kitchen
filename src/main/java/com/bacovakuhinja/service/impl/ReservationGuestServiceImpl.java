@@ -1,5 +1,6 @@
 package com.bacovakuhinja.service.impl;
 
+import com.bacovakuhinja.model.Guest;
 import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.ReservationGuest;
 import com.bacovakuhinja.repository.ReservationGuestRepository;
@@ -27,45 +28,24 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
 
     @Override
     public boolean isOwner(Integer reservationId, Integer userId) {
-
-        // FIXME Better implementation
-        for (ReservationGuest guest : findAll()) {
-            if (guest.getReservation().getReservationId() == reservationId && guest.getStatus().equals(OWNER) && guest.getReservationGuest().getGuestId() == userId)
-                return true;
-        }
-
-        return false;
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, OWNER) != null);
     }
 
     @Override
     public boolean isInvited(Integer reservationId, Integer userId) {
-        // FIXME Better implementation
-        for (ReservationGuest guest : findAll()) {
-            if (guest.getReservation().getReservationId() == reservationId && guest.getStatus().equals(INVITED) && guest.getReservationGuest().getGuestId() == userId)
-                return true;
-        }
-
-        return false;
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, INVITED) != null);
     }
 
     @Override
     public boolean isAccepted(Integer reservationId, Integer userId) {
-
-        // FIXME Better implementation
-        for (ReservationGuest guest : findAll()) {
-            if (guest.getReservation().getReservationId() == reservationId && guest.getStatus().equals(ACCEPTED) && guest.getReservationGuest().getGuestId() == userId)
-                return true;
-        }
-
-        return false;
+        return (reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestIdAndStatus(reservationId, userId, ACCEPTED) != null);
     }
 
     @Override
     public ReservationGuest acceptInvitation(Integer reservationId, Integer userId) {
         ReservationGuest rg = reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestId(reservationId, userId);
 
-        if (rg == null)
-            return null;
+        if (rg == null) return null;
 
         rg.setStatus(ACCEPTED);
         return reservationGuestRepository.save(rg);
@@ -75,8 +55,7 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     public ReservationGuest declineInvitation(Integer reservationId, Integer userId) {
         ReservationGuest rg = reservationGuestRepository.findByReservation_reservationIdAndReservationGuest_guestId(reservationId, userId);
 
-        if (rg == null)
-            return null;
+        if (rg == null) return null;
 
         rg.setStatus(REJECTED);
         return reservationGuestRepository.save(rg);
@@ -90,5 +69,11 @@ public class ReservationGuestServiceImpl implements ReservationGuestService {
     @Override
     public ReservationGuest update(ReservationGuest reservationGuest) {
         return null;
+    }
+
+    @Override
+    public String getOwner(Integer reservationId) {
+        Guest owner = reservationGuestRepository.findByReservation_reservationIdAndStatus(reservationId, OWNER).getReservationGuest();
+        return  owner.getFirstName() + " " + owner.getLastName();
     }
 }

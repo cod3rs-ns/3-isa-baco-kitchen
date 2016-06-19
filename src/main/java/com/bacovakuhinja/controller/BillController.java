@@ -2,20 +2,17 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
 import com.bacovakuhinja.model.*;
-import com.bacovakuhinja.service.BartenderService;
 import com.bacovakuhinja.service.BillService;
 import com.bacovakuhinja.service.ClientOrderService;
 import com.bacovakuhinja.service.WaiterService;
+import com.bacovakuhinja.utility.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.HashMapChangeSet;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
@@ -31,49 +28,59 @@ public class BillController {
     @Autowired
     private WaiterService waiterService;
 
+    @Authorization(role = "waiter")
     @RequestMapping(
             value = "/api/bills/t={tableId}",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<BillHelper> createBill(@PathVariable("tableId") Integer tableId) {
+    public ResponseEntity<BillHelper> createBill(final HttpServletRequest request, @PathVariable("tableId") Integer tableId) {
+        User user = (User) request.getAttribute("loggedUser");
+        Waiter waiter = waiterService.findOne(user.getUserId());
+
         List<ClientOrder> orders = clientOrderService.getOrdersForBill(tableId);
         Bill b = new Bill();
         b.setPublishDate(new Date());
         double amount = 0;
-        Waiter w = waiterService.findOne(8);
-
-        //for which waiter
-        ClientOrder co = orders.get(0);
-        Date date = co.getDate();
-        Date now = new Date();
-        double diff = now.getTime() - date.getTime();
-
-
         b.setTotalAmount(amount);
-        b.setWaiter(w);
         Bill created = billService.create(b);
 
         Set<ClientOrder> billOrders = new HashSet<ClientOrder>();
         HashMap<Integer, BillItem> billItems = new HashMap<Integer, BillItem>();
+        HashMap<Integer, Integer> waitersCount = new HashMap<Integer, Integer>();
         for (Iterator<ClientOrder> it = orders.iterator(); it.hasNext(); ) {
             ClientOrder i = it.next();
             billOrders.add(i);
             i.setBill(created);
+            if(i.getWaiterId()!=null){
+                if(waitersCount.containsKey(i.getWaiterId()))
+                    waitersCount.put(i.getWaiterId(), waitersCount.get(i.getWaiterId()) + 1);
+                else
+                    waitersCount.put(i.getWaiterId(), 1);
+            }
             for (Iterator<OrderItem> ord = i.getItems().iterator(); ord.hasNext(); ) {
                 OrderItem oi = ord.next();
                 MenuItem mi = oi.getMenuItem();
                 amount += oi.getAmount() * mi.getPrice();
-                if(billItems.containsKey(mi.getMenuItemId())) {
+                if (billItems.containsKey(mi.getMenuItemId())) {
                     BillItem curr = billItems.get(mi.getMenuItemId());
                     curr.setAmount(curr.getAmount() + oi.getAmount());
                     curr.setPrice(curr.getPrice() + oi.getAmount() * mi.getPrice());
                     billItems.put(curr.getId(), curr);
-                }
-                else {
+                } else {
                     BillItem bi = new BillItem(mi.getMenuItemId(), mi, mi.getPrice() * oi.getAmount(), oi.getAmount());
                     billItems.put(bi.getId(), bi);
                 }
             }
+        }
+
+        //seting waiter who had more orders created for that table
+        if(waitersCount.isEmpty()) {
+            created.setWaiter(waiter);
+        }
+        else {
+            LinkedHashMap<Integer, Integer> linked =  (LinkedHashMap<Integer, Integer>) MapUtil.sortByValue(waitersCount);
+            Integer waiterId = linked.keySet().iterator().next();
+            created.setWaiter(waiterService.findOne(waiterId));
         }
 
         BillHelper helper = new BillHelper();
@@ -84,7 +91,7 @@ public class BillController {
         created.setTotalAmount(amount);
         created.setOrders(billOrders);
         billService.update(created);
-        return new ResponseEntity<BillHelper>(helper, HttpStatus.OK);
+        return new ResponseEntity <BillHelper>(helper, HttpStatus.OK);
     }
 
 
@@ -93,13 +100,13 @@ public class BillController {
             value = "/api/waiter/bills",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection<Bill>> getWaiterBills(final HttpServletRequest request) {
+    public ResponseEntity <Collection <Bill>> getWaiterBills(final HttpServletRequest request) {
         User user = (User) request.getAttribute("loggedUser");
         Waiter waiter = waiterService.findOne(user.getUserId());
 
-        Collection<Bill> bills =  billService.findBillsByWaiter(waiter.getUserId());
+        Collection <Bill> bills = billService.findBillsByWaiter(waiter.getUserId());
 
-        return new ResponseEntity <Collection<Bill>>(bills, HttpStatus.OK);
+        return new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
     }
 
     @Authorization(role = "waiter")
@@ -111,20 +118,19 @@ public class BillController {
         User user = (User) request.getAttribute("loggedUser");
         Waiter waiter = waiterService.findOne(user.getUserId());
 
-        Bill bill =  billService.findOne(billId);
+        Bill bill = billService.findOne(billId);
         BillHelper helper = new BillHelper();
         helper.setDate(bill.getPublishDate());
 
-        HashMap<Integer, BillItem> billItems = new HashMap<Integer, BillItem>();
+        HashMap <Integer, BillItem> billItems = new HashMap <Integer, BillItem>();
 
-        for(ClientOrder order : bill.getOrders()){
-            for(OrderItem item : order.getItems()){
+        for (ClientOrder order : bill.getOrders()) {
+            for (OrderItem item : order.getItems()) {
                 MenuItem mi = item.getMenuItem();
-                if(!billItems.containsKey(mi.getMenuItemId())) {
+                if (!billItems.containsKey(mi.getMenuItemId())) {
                     BillItem bi = new BillItem(mi.getMenuItemId(), mi, mi.getPrice() * item.getAmount(), item.getAmount());
                     billItems.put(bi.getId(), bi);
-                }
-                else {
+                } else {
                     BillItem curr = billItems.get(mi.getMenuItemId());
                     curr.setAmount(curr.getAmount() + item.getAmount());
                     curr.setPrice(curr.getPrice() + item.getAmount() * mi.getPrice());
@@ -138,4 +144,32 @@ public class BillController {
 
         return new ResponseEntity <BillHelper>(helper, HttpStatus.OK);
     }
+
+    @RequestMapping(
+            value = "api/bills/report/{waiter_id}",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection <Bill>> getWaiterBillsByDate(@PathVariable("waiter_id") Integer waiterId, @RequestBody ArrayList <Date> dates) {
+        Date a = dates.get(0);
+        Date b = dates.get(1);
+        Collection <Bill> bills = billService.findBillsByWaiterAndPublishDate(waiterId, a, b);
+
+        ResponseEntity <Collection <Bill>> re = null;
+        try {
+            re = new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
+        } catch (Exception e) {
+            // nothing
+        }
+        return re;
+    }
+
+    @RequestMapping(
+            value = "api/bills/report/restaurant/{restaurant_id}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity <Collection <Bill>> getBillsByRestaurantId(@PathVariable("restaurant_id") Integer restaurantId) {
+        Collection <Bill> bills = billService.findByRestaurant(restaurantId);
+        return new ResponseEntity <Collection <Bill>>(bills, HttpStatus.OK);
+    }
+
 }
