@@ -10,6 +10,8 @@ public class ReservationHelper {
     private String inviter;
     private Integer restaurantId;
     private Integer order;
+    private Integer acceptedNo;
+    private boolean owner;
 
 
     public ReservationHelper(Reservation reservation, Review review, String name, String imageSrc) {
@@ -73,5 +75,21 @@ public class ReservationHelper {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Integer getAcceptedNo() {
+        return acceptedNo;
+    }
+
+    public void setAcceptedNo(Integer acceptedNo) {
+        this.acceptedNo = acceptedNo;
+    }
+
+    public boolean isOwner() {
+        return owner;
+    }
+
+    public void setOwner(boolean owner) {
+        this.owner = owner;
     }
 }

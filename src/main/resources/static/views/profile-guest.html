@@ -158,13 +158,13 @@
                     <i class="material-icons">schedule</i> {{ reservation.reservation.reservationDateTime | date:'HH:mm'}}
                   </div>
                   <div class="reservation-item">
-                    <i class="material-icons">people</i> 1
+                    <i class="material-icons">people</i> {{ reservation.acceptedNo }}
                   </div>
 
                   <md-card-actions layout="row" layout-align="end center">
                     <md-button ng-show="guestVm.admin && reservation.order == null" ng-click="guestVm.mealOrder(reservation);">Naruči</md-button>
                     <md-button ng-show="guestVm.admin && reservation.order != null" ng-click="guestVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
-                    <md-button ng-show="guestVm.admin" ng-click="guestVm.cancelReservation(reservation.reservation);">Otkaži rezervaciju</md-button>
+                    <md-button ng-show="guestVm.admin && reservation.owner" ng-click="guestVm.cancelReservation(reservation.reservation);">Otkaži rezervaciju</md-button>
                   </md-card-actions>
                 </md-card>
   							

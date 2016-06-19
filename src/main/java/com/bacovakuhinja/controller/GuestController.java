@@ -168,6 +168,7 @@ public class GuestController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Collection<ReservationHelper>> getReservations(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
 
         Collection<ReservationHelper> result = new ArrayList<ReservationHelper>();
         Collection<Reservation> reservations = reservationService.findByOwnerId(id);
@@ -181,6 +182,8 @@ public class GuestController {
 
             helper.setOrder(co == null ? null : co.getOrderId());
             helper.setRestaurantId(reservation.getRestaurant().getRestaurantId());
+            helper.setAcceptedNo(reservationGuestService.numberOfReservationGuests(reservation.getReservationId()));
+            helper.setOwner(reservationGuestService.isOwner(reservation.getReservationId(), user.getGuestId()));
             result.add(helper);
         }
 
