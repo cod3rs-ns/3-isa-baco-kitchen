@@ -1,6 +1,5 @@
 package com.bacovakuhinja.service.impl;
 
-import com.bacovakuhinja.model.Reservation;
 import com.bacovakuhinja.model.Review;
 import com.bacovakuhinja.repository.ReservationRepository;
 import com.bacovakuhinja.repository.ReviewRepository;
@@ -8,7 +7,6 @@ import com.bacovakuhinja.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Service
@@ -26,23 +24,23 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Collection<Review> restaurantReviews(Integer id) {
-        // TODO Check for fixes
-        Collection<Review> reviews = new ArrayList<Review>();
-
-        for (Review review : reviewRepository.findAll()) {
-            Reservation reservation = reservationRepository.findOne(review.getReservation());
-            if (reservation.getRestaurant().getRestaurantId() == id) {
-                reviews.add(review);
-            }
-        }
-
-        return reviews;
+    public Review getReviewByReservation(Integer id, Integer userId) {
+        return reviewRepository.findByReservationAndReviewer_guestId(id, userId);
     }
 
     @Override
-    public Review getReviewByReservation(Integer id, Integer userId) {
-        return reviewRepository.findByReservationAndReviewer_guestId(id, userId);
+    public Collection <Review> findReviewsByMenuItem(Integer itemId) {
+        return reviewRepository.findReviewsByMenuItem(itemId);
+    }
+
+    @Override
+    public Collection <Review> findReviewsByRestaurant(Integer restaurantId) {
+        return reviewRepository.findReviewsByRestaurant(restaurantId);
+    }
+
+    @Override
+    public Collection <Review> findReviewsByWaiter(Integer userId) {
+        return reviewRepository.findReviewsByWaiter(userId);
     }
 
 }

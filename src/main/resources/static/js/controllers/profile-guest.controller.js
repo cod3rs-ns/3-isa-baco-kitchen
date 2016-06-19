@@ -84,7 +84,10 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   break;
               }
           }
-          showToast('Otkazana rezervacija.');
+          reservationService.removeReservation(reservation.reservationId)
+            .then(function(response) {
+                showToast('Rezervacija je otkazana i obaviješteni su pozvani prijatelji.');
+            });
       }
       else {
         showToast('Rezervacija počinje za manje od pola sata. Nije moguće otkazati.');
@@ -136,7 +139,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   if (guestVm.friendRequests[i].guestId === id) {
                      guestVm.friends.push(guestVm.friendRequests[i]);
                      showToast('Poziv za prijateljstvo od ' + 
-                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].lastName +
                         ' prihvaćen.');
                      guestVm.friendRequests.splice(i, 1);
                      break;
@@ -153,7 +156,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
                   if (guestVm.friendRequests[i].guestId === id) {
                     showToast('Poziv za prijateljstvo od ' + 
-                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].lastName +
                        ' odbijen.');
                       guestVm.friendRequests.splice(i, 1);
                       break;

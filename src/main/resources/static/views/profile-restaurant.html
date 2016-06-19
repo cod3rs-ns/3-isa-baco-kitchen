@@ -45,7 +45,7 @@
                 </div>
                 <hr>
                 <div class="option">
-                    <md-button ng-click="restaurantVm.showReservationDialog();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
+                    <md-button ng-show="restaurantVm.isGuestLogged" ng-click="restaurantVm.showReservationDialog();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
                     <h4>Rezerviši</h4>
                 </div>
                 <hr>

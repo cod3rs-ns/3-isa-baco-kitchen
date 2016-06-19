@@ -1,4 +1,4 @@
-<md-dialog aria-label="Food report"  ng-cloak>
+<md-dialog aria-label="Report" ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>{{reportVm.dialogName}}</h2>
@@ -9,19 +9,34 @@
         </div>
     </md-toolbar>
 
-    <md-dialog-content>
+    <md-dialog-content ng-hide="reportVm.invalidReport">
+        <!-- display animation while user waits for report generation -->
+        <div layout="column" ng-hide="reportVm.activated" style="height:300px; width:300px; margin:50px;" layout-align="center center">
+            <md-progress-circular   ng-disabled="reportVm.activated"
+                                    class="md-hue-3"
+                                    md-mode="indeterminate"
+                                    md-diameter="90"
+                                    flex></md-progress-circular>
+        </div>
+
         <div layout="column" ng-cloak>
             <md-content layout-padding>
                 <div id="chart_div"></div>
-                <p>{{reportVm.message}}</p>
+                <p class="report-info">{{reportVm.message}}</p>
+                <p class="report-info">{{reportVm.message_2}}</p>
             </md-content>
         </div>
     </md-dialog-content>
 
+    <md-dialog-content ng-show="reportVm.invalidReport" style="margin:20px;">
+        <md-content layout-padding>
+            <p class="report-info">Trenutno nema dovoljno podataka za prikaz izveštaja.</p>
+        </md-content>
+    </md-dialog-content>
+
     <md-dialog-actions layout="row">
         <span flex></span>
-
-        <md-button class="md-raised md-default" ng-click="reportVm.cancel()" md-autofocus>
+        <md-button class="md-raised md-primary" ng-click="reportVm.cancel()" md-autofocus>
             Zatvori
         </md-button>
     </md-dialog-actions>

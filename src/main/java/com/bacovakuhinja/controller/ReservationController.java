@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @RestController
 public class ReservationController {
@@ -40,29 +38,8 @@ public class ReservationController {
     @Autowired
     private UserService userService;
 
-    @Authorization(role = Constants.UserRoles.GUEST)
-    @RequestMapping(
-            value    = "/api/reservation",
-            method   = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<Reservation> createReservation(final HttpServletRequest request, @RequestBody Reservation reservation) {
-
-        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
-
-        Restaurant restaurant = restaurantService.findOne(reservation.getRestaurant().getRestaurantId());
-        reservation.setRestaurant(restaurant);
-
-        // Create reservation
-        Reservation created = reservationService.create(reservation);
-
-        // Create Reservation Owner
-        ReservationGuest reservationGuest = new ReservationGuest(user, reservation, Constants.Reservation.OWNER);
-        reservationGuestService.create(reservationGuest);
-
-        return new ResponseEntity<Reservation>(created, HttpStatus.CREATED);
-    }
+    @Autowired
+    private ClientOrderService clientOrderService;
 
     @RequestMapping(
             value    = "/api/reservations/{restaurant_id}",
@@ -84,7 +61,9 @@ public class ReservationController {
             @RequestParam(value="dt") String datetime,
             @RequestParam(value="len") Integer length) {
 
+        // Find All Restaurant's tables
         Collection<RestaurantTable> freeTables = tableService.findAllByRestaurant(restaurantId);
+        // Find All Reservations in  Restaurant by similar date and time
         Collection<Reservation> similarReservations = reservationService.findByRestaurantIdAndTime(restaurantId, new Date(Long.parseLong(datetime)), length);
 
         // For each reservation get reserved tables and erase them from free tables
@@ -106,33 +85,66 @@ public class ReservationController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<ReservationInvite> getInviteParams(@PathVariable("id") Integer id) {
-        // FIXME Check if user is invited
 
         Reservation reservation = reservationService.findOne(id);
         Integer restaurantId = reservation.getRestaurant().getRestaurantId();
 
-        // FIXME Give first free table, not first table
+        Integer alreadyOrdered = clientOrderService.findByReservation(id);
         Collection<ReservationTable> tables = reservationTableService.findAllByReservationId(reservation.getReservationId());
-        Integer tableId = ((ReservationTable) tables.toArray()[0]).getTable().getTableId();
+
+        Integer tableId = null;
+        ReservationTable rt;
+        for (Iterator<ReservationTable> iterator = tables.iterator(); iterator.hasNext();) {
+            rt = iterator.next();
+
+            Integer capacity = rt.getTable().getPositions();
+            alreadyOrdered = alreadyOrdered - capacity;
+
+            if (alreadyOrdered < 0) {
+                tableId = rt.getTable().getTableId();
+                break;
+            }
+        }
 
         return new ResponseEntity<ReservationInvite>(new ReservationInvite(reservation, tableId, restaurantId), HttpStatus.OK);
     }
 
+    @Authorization(role = Constants.UserRoles.GUEST)
     @RequestMapping(
-            value    = "/api/reservation/tables",
+            value    = "/api/reservation",
             method   = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String> addTablesToReservation(@RequestParam(value="reservation") Integer reservationId, @RequestBody ArrayList<Integer> tables) {
-        if (0 == tables.size())
+    public ResponseEntity<?> createReservation(final HttpServletRequest request, @RequestBody ReservationCreator creator) {
+
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
+        ArrayList<Integer> tables = creator.getTables();
+        Reservation reservation = creator.getReservation();
+
+        Restaurant restaurant = restaurantService.findOne(reservation.getRestaurant().getRestaurantId());
+        reservation.setRestaurant(restaurant);
+
+        // Create Reservation
+        reservation = reservationService.create(reservation);
+
+        if (reservation == null)
+            return  new ResponseEntity<String>("{\"answer\": \"WRONG_RESERVATION\"}", HttpStatus.OK);
+
+        // Create Reservation Owner
+        ReservationGuest reservationGuest = new ReservationGuest(user, reservation, Constants.Reservation.OWNER);
+        reservationGuestService.create(reservationGuest);
+
+        // If there's no chosen tables
+        if (0 == tables.size()) {
+            reservationGuestService.delete(reservationGuest);
+            reservationService.delete(reservation);
             return new ResponseEntity<String>("{ \"answer\": \"NO_TABLES\"}", HttpStatus.OK);
+        }
 
-        Reservation reservation = reservationService.findOne(reservationId);
-
+        // Get free tables again, get similar reservations again and make free tables at this point
         Collection<RestaurantTable> freeTables = tableService.findAllByRestaurant(reservation.getRestaurant().getRestaurantId());
         Collection<Reservation> similarReservations = reservationService.findByRestaurantIdAndTime(reservation.getRestaurant().getRestaurantId(), reservation.getReservationDateTime(), reservation.getLength());
-
 
         Collection<ReservationTable> reservedTables;
         for (Reservation res : similarReservations) {
@@ -143,6 +155,7 @@ public class ReservationController {
             }
         }
 
+        // For every table if we find it's not in free tables, remove reservation and return fail
         boolean p;
         for (Integer tableId : tables) {
             p = false;
@@ -154,9 +167,14 @@ public class ReservationController {
                 }
             }
 
-            if (!p) return new ResponseEntity<String>("{ \"answer\": \"WRONG_TABLES\"}", HttpStatus.OK);
+            if (!p) {
+                reservationGuestService.delete(reservationGuest);
+                reservationService.delete(reservation);
+                return new ResponseEntity<String>("{ \"answer\": \"WRONG_TABLES\"}", HttpStatus.OK);
+            }
         }
 
+        // Add Reservation Tables
         for (Integer tableId : tables) {
             ReservationTable table = new ReservationTable();
             table.setReservation(reservation);
@@ -165,7 +183,50 @@ public class ReservationController {
             reservationTableService.save(table);
         }
 
-        return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
+        return new ResponseEntity<Reservation>(reservation, HttpStatus.CREATED);
+    }
+
+    @Authorization(role = Constants.UserRoles.GUEST)
+    @RequestMapping(
+            value    = "/api/reservation/{id}",
+            method   = RequestMethod.DELETE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> cancelReservation(final HttpServletRequest request, @PathVariable("id") Integer id) {
+
+        Guest owner = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
+
+        Reservation reservation = reservationService.findOne(id);
+
+        if (!reservationGuestService.isOwner(id, owner.getGuestId()))
+            return new ResponseEntity<Object>("{}", HttpStatus.UNAUTHORIZED);
+
+        // Only delete REJECTED
+        for (ReservationGuest rg : reservationGuestService.findAllByReservationAndStatus(id, Constants.Reservation.REJECTED)) {
+            reservationGuestService.delete(rg);
+        }
+
+        // Delete ACCEPTED and INVITED and Send Email
+        for (ReservationGuest rg : reservationGuestService.findAllByReservationAndStatus(id, Constants.Reservation.INVITED)) {
+            reservationGuestService.delete(rg);
+            // TODO Send Email
+            System.out.println("Notify INVITED: " + rg.getReservationGuest().getEmail());
+        }
+
+        for (ReservationGuest rg : reservationGuestService.findAllByReservationAndStatus(id, Constants.Reservation.ACCEPTED)) {
+            reservationGuestService.delete(rg);
+            // TODO Send Email
+            System.out.println("Notify ACCEPTED: " + rg.getReservationGuest().getEmail());
+        }
+
+        // Delete Reservation Owner
+        ReservationGuest rg = reservationGuestService.findAllByReservationAndStatus(id, Constants.Reservation.OWNER).iterator().next();
+        reservationGuestService.delete(rg);
+
+        reservationService.delete(reservation);
+
+        return new ResponseEntity<Object>("{}", HttpStatus.OK);
     }
 
     @Authorization(role = Constants.UserRoles.GUEST)
@@ -179,11 +240,7 @@ public class ReservationController {
         Reservation reservation = reservationService.findOne(reservationId);
         Guest friend = (Guest) userService.findOne(email);
 
-        ReservationGuest reservationGuest = new ReservationGuest();
-        reservationGuest.setReservation(reservation);
-        reservationGuest.setReservationGuest(friend);
-        reservationGuest.setStatus(Constants.Reservation.INVITED);
-
+        ReservationGuest reservationGuest = new ReservationGuest(friend, reservation, Constants.Reservation.INVITED);
         reservationGuestService.create(reservationGuest);
 
         // FIXME Better implementation.
