@@ -171,15 +171,21 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
 
     cookProfileVm.prepareFood = prepareFood;
     function prepareFood(itemId){
-        employeeService.prepareOrderItem(itemId, cookProfileVm.cook.userId)
-            .then(function (response){
-                if(response.statusText == "OK") {
-                    cookProfileVm.preparingMeals.push(response.data);
-                    cookProfileVm.showToast("Uspješno ste prihvatili jelo za izradu.");
-                }
-                else
-                    cookProfileVm.showToast("Drugi kuvar je u međuvremenu prihvatio dato jelo.");
-            });
+        cookProfileVm.confirmationDialog(
+            "Prihvatanje porudžbine",
+            "Da li ste sigurni da želite da se zauzmete za izradu navedenog jela?",
+            function () {
+                employeeService.prepareOrderItem(itemId, cookProfileVm.cook.userId)
+                    .then(function (response){
+                        if(response.statusText == "OK") {
+                            cookProfileVm.preparingMeals.push(response.data);
+                            cookProfileVm.showToast("Uspješno ste prihvatili jelo za izradu.");
+                        }
+                        else
+                            cookProfileVm.showToast("Drugi kuvar je u međuvremenu prihvatio dato jelo.");
+                    });
+            }
+        );
     }
 
     function getAcceptedItems(eId){
@@ -204,19 +210,41 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
 
     cookProfileVm.finishFood = finishFood;
     function finishFood(itemId){
-
-        for(var meal in cookProfileVm.preparingMeals){
-            if(itemId === cookProfileVm.preparingMeals[meal].itemId){
-                cookProfileVm.preparingMeals.splice(meal, 1);
-                break;
-            }
-        }
-
-        employeeService.finishOrderItem(itemId)
-            .then(function (data) {
-                if(data != null){
-                    console.log("finish");
+        cookProfileVm.confirmationDialog(
+            "Završavanje porudžbine",
+            "Da li ste sigurni da je hrana spremna za serviranje?",
+            function () {
+                for(var meal in cookProfileVm.preparingMeals){
+                    if(itemId === cookProfileVm.preparingMeals[meal].itemId){
+                        cookProfileVm.preparingMeals.splice(meal, 1);
+                        break;
+                    }
                 }
-            });
+
+                employeeService.finishOrderItem(itemId)
+                    .then(function (data) {
+                        if(data != null){
+                            console.log("finish");
+                        }
+                    });
+            }
+        );
     }
+
+
+    cookProfileVm.confirmationDialog = confirmationDialog;
+    function confirmationDialog(title, text, yesFunc) {
+        var confirm = $mdDialog.confirm()
+            .title(title)
+            .textContent(text)
+            .ariaLabel('Confirmation')
+            .ok('DA')
+            .cancel('NE');
+
+        $mdDialog.show(confirm).then(
+            yesFunc,
+            function(){
+                $mdDialog.hide();
+            });
+    };
 }
