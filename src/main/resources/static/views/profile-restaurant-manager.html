@@ -31,32 +31,44 @@
 			<h2>{{rmanagerVm.rmanager.firstName + ' ' + rmanagerVm.rmanager.lastName}}</h2>
 		</div>
     </md-toolbar>
-	<md-divider></md-divider>
 
 	<!-- Account info -->
 	<div layout="column" layout-align="center start" class="additional-info">
-		<div layout="row" layout-align="center start">
-			<md-icon class="material-icons">mail_outline
-				<md-tooltip md-direction="top">
-					Email
-				</md-tooltip>
-			</md-icon>
-			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.email}}</h4>
+		<h3>Menadžer restorana</h3>
+		<md-divider></md-divider>
+		<div layout="row">
+			<h4>
+				<md-icon class="material-icons">mail_outline
+					<md-tooltip md-direction="top">
+						Email
+					</md-tooltip>
+				</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.email}}
+			</h4>
 		</div>
-		<div layout="row" layout-align="center start">
-			<md-icon class="material-icons">info_outline
-				<md-tooltip md-direction="top">
-					Biografija
-				</md-tooltip>
-			</md-icon>
-			<h4>&nbsp;&nbsp;{{rmanagerVm.rmanager.info}}</h4>
+		<div layout="row">
+			<h4>
+				<md-icon class="material-icons">info_outline
+					<md-tooltip md-direction="top">
+						Biografija
+					</md-tooltip>
+				</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.info}}
+			</h4>
+		</div>
+		<div layout="row">
+			<h4>
+				<md-icon class="material-icons">business
+					<md-tooltip md-direction="top">
+						Naziv restorana
+					</md-tooltip>
+				</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.name}}
+			</h4>
 		</div>
 	</div>
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-    <md-content flex style="min-height:400px;">
-        <md-menu-content flex style="min-height:400px;">
+    <md-content flex style="min-height:500px;">
+        <md-menu-content flex style="min-height:500px;">
         	<md-menu-item class="md-indent">
 	            <md-button 	class="md-primary">
 					<md-icon class="material-icons">account_circle</md-icon>
@@ -99,7 +111,7 @@
 		   <md-menu-item class="md-indent">
 				<md-button 	class="md-primary"
 							ng-click="rmanagerVm.showRestaurantFinances();">
-					<md-icon class="material-icons">show_chart</md-icon>
+					<md-icon class="material-icons">attach_money</md-icon>
 					<strong>Izveštaj prihoda</strong>
 				</md-button>
 			</md-menu-item>
@@ -107,7 +119,7 @@
 			<md-menu-item class="md-indent">
 				<md-button 	class="md-primary"
 							ng-click="rmanagerVm.showRestaurantReviewReport();">
-					<md-icon class="material-icons">show_chart</md-icon>
+					<md-icon class="material-icons">grade</md-icon>
 					<strong>Ocena restorana</strong>
 				</md-button>
 			</md-menu-item>
@@ -115,7 +127,7 @@
 			<md-menu-item class="md-indent">
 				<md-button 	class="md-primary"
 							ng-click="rmanagerVm.showAllWaiterFinances();">
-					<md-icon class="material-icons">show_chart</md-icon>
+					<md-icon class="material-icons">trending_up</md-icon>
 					<strong>Prihodi konobara</strong>
 				</md-button>
 			</md-menu-item>
@@ -129,38 +141,6 @@
 			<md-divider></md-divider>
     	</md-content>
 
-		<!-- Restaurant info -->
-		<div layout="column" layout-align="center start" class="additional-info">
-			<h3>Podaci o restoranu</h3>
-			<md-divider></md-divider>
-			<div layout="row">
-				<h4>
-					<md-icon class="material-icons">business
-						<md-tooltip md-direction="top">
-							Naziv restorana
-						</md-tooltip>
-					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.name}}
-				</h4>
-			</div>
-			<div layout="row" layout-align="center start">
-				<h4>
-					<md-icon class="material-icons">local_dining
-						<md-tooltip md-direction="top">
-							Vrsta restorana
-						</md-tooltip>
-					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.type}}
-				</h4>
-			</div>
-			<div layout="row" layout-align="center start">
-				<h4>
-					<md-icon class="material-icons">info
-						<md-tooltip md-direction="top">
-							Dodatne informacije
-						</md-tooltip>
-					</md-icon>&nbsp;&nbsp;{{rmanagerVm.rmanager.restaurant.info}}
-				</h4>
-			</div>
-		</div>
 	</md-sidenav>
 	</section>
 
@@ -174,8 +154,14 @@
 				<md-subheader ng-show="rmanager.foodMenu.length == 0" class="md-no-sticky">
 					<p>Trenutno ne postoji nijedna stavka u jelovniku.</p>
 				</md-subheader>
+				<div ng-hide="rmanagerVm.foodMenu.length == 0">
+					<md-input-container md-no-float class="md-block md-primary" style="padding-left: 20px; padding-right: 35px; width:300px;">
+						<input ng-model="searchFood" type="text" placeholder="Pretraga hrane..." >
+						<md-icon style="display:inline-block;">search</md-icon>
+					</md-input-container>
+				</div>
 				<div ng-hide="rmanagerVm.foodMenu.length == 0" layout="row" layout-wrap>
-	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.foodMenu | filter : searchFood" layout-wrap>
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
 								<md-button 	class="md-fab md-primary md-mini" aria-label="Report" style="margin-left:40px;"
@@ -224,8 +210,14 @@
 				<md-subheader ng-show="rmanager.drinksMenu.length == 0" class="md-no-sticky">
 					<p>Trenutno ne postoji nijedna stavka u karti pića.</p>
 				</md-subheader>
+				<div ng-hide="rmanagerVm.drinksMenu.length == 0">
+					<md-input-container md-no-float class="md-block md-primary" style="padding-left: 20px; padding-right: 35px; width:300px;">
+						<input ng-model="searchDrinks" type="text" placeholder="Pretraga pića..." >
+						<md-icon style="display:inline-block;">search</md-icon>
+					</md-input-container>
+				</div>
 				<div ng-hide="rmanager.drinksMenu.length == 0" layout="row" layout-wrap>
-	            	<div layout="row" ng-repeat="meal in rmanagerVm.drinksMenu" layout-wrap>
+	            	<div layout="row" ng-repeat="meal in rmanagerVm.drinksMenu | filter : searchDrinks" layout-wrap>
 	                	<md-card class="order-item">
 							<div layout="row" style="position:absolute;">
 								<md-button 	class="md-fab md-primary md-mini" aria-label="Report" style="margin-left:40px;"
@@ -270,12 +262,18 @@
 		</md-tab>
 		<!-- Employees list -->
 	    <md-tab label="Spisak zaposlenih">
-	        <md-content class="md-padding">
+	        <md-tab-body>
 				<md-subheader ng-show="rmanagerVm.employees.length == 0" class="md-no-sticky">
 					<p>Trenutno ne postoje zaposleni u restoranu.</p>
 				</md-subheader>
+				<div ng-hide="rmanagerVm.employees.length == 0">
+					<md-input-container md-no-float class="md-block md-primary" style="padding-left: 20px; padding-right: 35px; width:300px;">
+						<input ng-model="searchEmployees" type="text" placeholder="Pretraga zaposlenih..." >
+						<md-icon style="display:inline-block;">search</md-icon>
+					</md-input-container>
+				</div>
 				<md-list ng-hide="rmanagerVm.employees.length == 0" ng-cloak>
-					<md-list-item class="md-3-line" ng-repeat="empl in rmanagerVm.employees">
+					<md-list-item class="md-3-line" ng-repeat="empl in rmanagerVm.employees | filter : searchEmployees">
 					<img ng-src="{{empl.image}}" class="md-avatar" alt="{{empl.firstName}}" />
 						<div class="md-list-item-text">
 							<h3><strong>{{empl.firstName + ' ' + empl.lastName}}</strong></h3>
@@ -291,7 +289,7 @@
 						<md-button  class="md-fab md-mini md-primary md-accent md-secondary"
 									ng-click="rmanagerVm.showWaiterRatingReport(empl.userId, empl.firstName, empl.lastName);"
 									ng-disabled="empl.type != 'waiter'">
-							<i class="material-icons md-24">show_chart</i>
+							<i class="material-icons md-24">grade</i>
 							<md-tooltip md-direction="top">
 								Izveštaj ocena
 							</md-tooltip>
@@ -307,7 +305,7 @@
 						<md-divider ng-if="!$last"></md-divider>
 					</md-list-item>
 				</md-list>
-	        </md-content>
+	        </md-tab-body>
 	    </md-tab>
 
 		<!-- NOT FINISHED -->
