@@ -19,4 +19,6 @@ public interface FriendshipService {
     void removeFriend(Integer senderId, Integer receiverId);
 
     boolean areWeFriends(Integer senderId, Integer receiverId);
+
+    boolean isRequestSent(Integer myId, Integer userId);
 }

@@ -24,7 +24,8 @@ function guestService($http) {
         declineInvite: declineInvite,
         resendToken: resendToken,
         isLoggedIn: isLoggedIn,
-        cancelMealOrder: cancelMealOrder
+        cancelMealOrder: cancelMealOrder,
+        isRequestSent: isRequestSent
     };
 
     return service;
@@ -211,6 +212,16 @@ function guestService($http) {
     
     function cancelMealOrder(orderId) {
         return $http.delete('api/order/' + orderId)
+            .success(function(data) {
+                return data;
+            })
+            .error(function(data) {
+                return data;
+            });
+    };
+    
+    function isRequestSent(guestId) {
+        return $http.get('api/guest/is-request-sent/' + guestId)
             .success(function(data) {
                 return data;
             })

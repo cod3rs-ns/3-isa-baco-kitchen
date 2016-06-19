@@ -304,6 +304,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         
         isFriend();
         isMyProfile();
+        isRequestSent();
     };
 
     function getUser() {
@@ -312,6 +313,14 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               guestVm.user = response.data;
               return guestVm.user;
           });
+    };
+    
+    function isRequestSent() {
+      return guestService.isRequestSent($routeParams.guestId)
+        .then(function(response) {
+            guestVm.sendRequest = response.data;
+            return guestVm.sendRequest;
+        });
     };
     
     function getRequests() {

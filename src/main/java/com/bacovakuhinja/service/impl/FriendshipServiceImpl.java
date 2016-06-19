@@ -80,4 +80,10 @@ public class FriendshipServiceImpl implements FriendshipService {
         Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.ACCEPTED, senderId, receiverId);
         return (friendship == null) ? false : true;
     }
+
+    @Override
+    public boolean isRequestSent(Integer myId, Integer userId) {
+        Friendship friendship = friendshipRepository.getFriendship(Constants.FriendshipStatus.WAITING, myId, userId);
+        return (friendship == null) ? false : true;
+    }
 }

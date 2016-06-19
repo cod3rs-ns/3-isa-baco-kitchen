@@ -298,4 +298,17 @@ public class GuestController {
         return new ResponseEntity<Guest>(user, HttpStatus.OK);
     }
 
+    @Authorization(role = Constants.UserRoles.GUEST)
+    @RequestMapping (
+            value    = "/api/guest/is-request-sent/{id}",
+            method   = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Boolean> isFriendRequestSent(final HttpServletRequest request, @PathVariable Integer id) {
+        Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
+
+        Boolean result = friendshipService.isRequestSent(user.getGuestId(), id);
+        return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    }
+
 }
