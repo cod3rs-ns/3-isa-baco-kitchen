@@ -59,6 +59,11 @@ public class ClientOrderServiceImpl implements ClientOrderService{
     }
 
     @Override
+    public List<ClientOrder> findOrdersByReservation(Integer reservationId) {
+        return clientOrderRepository.findByReservation_reservationId(reservationId);
+    }
+
+    @Override
     public List<ClientOrder> getOrdersFromReservation(int tableId) {
         return clientOrderRepository.findByTable_TableIdAndBill_BillIdAndStatusOrderByDateAsc(tableId, null, "CREATED");
     }

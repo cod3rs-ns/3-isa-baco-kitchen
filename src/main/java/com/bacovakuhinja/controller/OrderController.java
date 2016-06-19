@@ -35,6 +35,9 @@ public class OrderController {
     @Autowired
     private WaiterService waiterService;
 
+    @Autowired
+    private ReservationService reservationService;
+
     @RequestMapping(
             value = "api/orders/{table_id}",
             method = RequestMethod.GET,
@@ -77,6 +80,9 @@ public class OrderController {
     }
 
     private ClientOrder createOrder(ClientOrder order, int restaurantId){
+        if (order.getReservation() != null) {
+            order.setReservation(reservationService.findOne(order.getReservation().getReservationId()));
+        }
         ClientOrder newOrder = clientOrderService.create(order);
 
         // Notify for new items

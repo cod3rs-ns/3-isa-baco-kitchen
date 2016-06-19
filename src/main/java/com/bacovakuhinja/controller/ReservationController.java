@@ -190,7 +190,6 @@ public class ReservationController {
     @RequestMapping(
             value    = "/api/reservation/{id}",
             method   = RequestMethod.DELETE,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<?> cancelReservation(final HttpServletRequest request, @PathVariable("id") Integer id) {
@@ -223,6 +222,14 @@ public class ReservationController {
         // Delete Reservation Owner
         ReservationGuest rg = reservationGuestService.findAllByReservationAndStatus(id, Constants.Reservation.OWNER).iterator().next();
         reservationGuestService.delete(rg);
+
+        for (ClientOrder co : clientOrderService.findOrdersByReservation(id)) {
+            clientOrderService.delete(co.getOrderId());
+        }
+
+        for (ReservationTable rt : reservationTableService.findAllByReservationId(id)) {
+            reservationTableService.delete(rt);
+        }
 
         reservationService.delete(reservation);
 

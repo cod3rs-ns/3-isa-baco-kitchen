@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService'];
+GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService','reservationService'];
 
-function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService) {
+function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService, reservationService) {
     var guestVm = this;
 
     // Check if logged user's profile

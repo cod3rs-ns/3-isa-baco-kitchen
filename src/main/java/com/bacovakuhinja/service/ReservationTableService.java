@@ -11,4 +11,6 @@ public interface ReservationTableService {
     Collection<ReservationTable> findAllByReservationId(Integer reservationId);
 
     ReservationTable save(ReservationTable table);
+
+    void delete(ReservationTable table);
 }
