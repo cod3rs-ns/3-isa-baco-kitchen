@@ -172,8 +172,14 @@ public class SendMailAspect {
         user.setPassword(PasswordHelper.getSha256(user.getPassword()));
         userService.update(user);
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
-        sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        //sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
 
@@ -213,8 +219,14 @@ public class SendMailAspect {
         user.setPassword(PasswordHelper.getSha256(user.getPassword()));
         userService.update(user);
 
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
-        sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        //sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
     @Async

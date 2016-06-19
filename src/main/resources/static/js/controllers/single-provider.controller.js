@@ -19,27 +19,33 @@ function SingleProviderController(providerService, $mdToast, $mdDialog) {
             firstName: '',
             lastName: '',
             email: '',
-            image: '',
-            password: 'somepass',
-            type: 'provider',
+            image: '../images/no_image.gif',
+            password: '',
+            type: 'restaurant_provider',
             userId: null
         };
     };
 
-    function showToast() {
-        $mdToast.show({
-          hideDelay : 3000,
+    function showToast(text, delay) {
+        var toast = $mdToast.show({
+          hideDelay : delay,
           position  : 'top right',
-          template  : '<md-toast><strong> Provajder je uspešno registrovan.<strong> </md-toast>'
+          parent    : angular.element(document.querySelectorAll('#toast-box')),
+          template  : '<md-toast>' + text  + '</md-toast>'
         });
+
+        return toast;
     };
 
     function saveProvider() {
+        providerVm.cancel();
+        var progress = "<md-progress-linear md-mode='indeterminate'></md-progress-linear>";
+        var toast = providerVm.showToast(progress, 0);
+
         providerService.createProvider(providerVm.provider)
         .then(function(data) {
-            //alert('Provider saved to DB: \n' + angular.toJson(data, true));
-            providerVm.cancel();
-            providerVm.showToast();
+            $mdToast.hide(toast);
+            providerVm.showToast("<strong>Provajder je uspješno registrovan.</strong>", 3000);
         });
     };
 

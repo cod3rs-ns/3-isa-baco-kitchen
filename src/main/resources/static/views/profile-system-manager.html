@@ -1,4 +1,5 @@
 <div id="wrapper" layout="row">
+	<div id="toast-box"></div>
 
 	<section layout="column">
 		<md-sidenav
@@ -115,7 +116,7 @@
 						<md-icon aria-label="Back" class="material-icons">arrow_back</md-icon>
 					</md-button>
 					<md-input-container flex>
-						<input ng-model="rest_name" placeholder="Traži po imenu">
+						<input ng-model="systemManagerProfileVm.rest_name" placeholder="Traži po imenu">
 					</md-input-container>
 					<md-button class="md-icon-button" aria-label="Search" ng-click="showSearch = !showSearch">
 						<md-icon aria-label="Search" class="material-icons">search</md-icon>
@@ -125,8 +126,8 @@
 		</div>
 		<div class="row">
 			<ul class="equal-height-thumbnail">
-				<li class="order" ng-repeat="restaurant in systemManagerProfileVm.smanager.restaurants">
-					<figure><img ng-src="http://www.comohotels.com/metropolitanbangkok/sites/default/files/styles/background_image/public/images/background/metbkk_bkg_nahm_restaurant.jpg?itok=GSmnYYaU" class="order-img" alt="Equal height of thumbnail"></figure>
+				<li class="order" ng-repeat="restaurant in systemManagerProfileVm.smanager.restaurants | filter: systemManagerProfileVm.rest_name">
+					<figure><img ng-src="{{restaurant.image}}" class="order-img" alt="Equal height of thumbnail"></figure>
 					<div class="caption-waiter">
 						<h4>{{restaurant.name}}</h4>
 						<div style="text-align: right; align-content: flex-end;">
