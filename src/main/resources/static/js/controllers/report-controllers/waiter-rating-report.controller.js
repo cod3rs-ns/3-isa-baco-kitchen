@@ -1,14 +1,14 @@
 angular
     .module('isa-mrs-project')
-    .controller('MenuItemReportController', MenuItemReportController);
+    .controller('WaiterRatingReportController', WaiterRatingReportController);
 
-MenuItemReportController.$inject = ['reportService', '$mdDialog', 'item_id', 'item_name'];
+WaiterRatingReportController.$inject = ['reportService', '$mdDialog', 'waiter_id', 'waiter_name'];
 
-function MenuItemReportController(reportService, $mdDialog, item_id, item_name) {
+function WaiterRatingReportController(reportService, $mdDialog, waiter_id, waiter_name) {
     var reportVm = this;
-    reportVm.dialogName = 'Ocene stavke menija';
-    reportVm.menuItemId = item_id;
-    reportVm.menuItemName = item_name;
+    reportVm.dialogName = 'Ocene konobara';
+    reportVm.waiterId = waiter_id;
+    reportVm.waiterName = waiter_name;
     reportVm.reviews = [];
     reportVm.activated = false;
     reportVm.message = '';
@@ -35,7 +35,7 @@ function MenuItemReportController(reportService, $mdDialog, item_id, item_name) 
     }
 
     function showReport() {
-        reportService.findReviewsByMenuItem(reportVm.menuItemId)
+        reportService.findReviewsByWaiter(reportVm.waiterId)
             .then(function(response) {
                 var data = response.data;
                 if (data.length == 0){
@@ -45,9 +45,9 @@ function MenuItemReportController(reportService, $mdDialog, item_id, item_name) 
                 reportVm.message = 'Ukupan broj recenzija: ' + data.length;
                 var total = 0.0;
                 for (var i = 0; i < data.length; i++) {
-                    var val = reportData[data[i].foodRate - 1] + 1;
-                    reportData[data[i].foodRate - 1] = val;
-                    total = total + data[i].foodRate;
+                    var val = reportData[data[i].serviceRate - 1] + 1;
+                    reportData[data[i].serviceRate - 1] = val;
+                    total = total + data[i].serviceRate;
                 }
                 var mean = total / data.length;
                 reportVm.message_2 = 'Prosečna ocena: ' + mean.toFixed(2);
@@ -72,7 +72,7 @@ function MenuItemReportController(reportService, $mdDialog, item_id, item_name) 
 
         // Set chart options
         var options = {
-            'title': reportVm.menuItemName + ' - pregled ocena',
+            'title': 'Konobar ' + reportVm.waiterName + ' - pregled ocena',
             'width': 550,
             'height': 450
         };

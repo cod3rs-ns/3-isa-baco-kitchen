@@ -1,19 +1,19 @@
 angular
     .module('isa-mrs-project')
-    .controller('FinancesController', FinancesController);
+    .controller('WaitersFinanceReportController', WaitersFinanceReportController);
 
-FinancesController.$inject = ['$mdDialog', 'reportService', 'restaurant'];
+WaitersFinanceReportController.$inject = ['$mdDialog', 'reportService', 'restaurant'];
 
-function FinancesController($mdDialog, reportService, restaurant) {
+function WaitersFinanceReportController($mdDialog, reportService, restaurant) {
     var reportVm = this;
-    reportVm.dialogName = 'Finansije restorana';
+    reportVm.dialogName = 'Prihodi svih konobara konobara';
     reportVm.startDate = new Date();
     reportVm.endDate = new Date();
+    reportVm.restaurant = restaurant;
     reportVm.total = 0;
     reportVm.message = '';
     reportVm.activated = false;
     reportVm.invalidReport = false;
-    reportVm.restaurant = restaurant;
     reportVm.partialReport = false;
 
     reportVm.showReportInit = showReportInit;
@@ -40,30 +40,32 @@ function FinancesController($mdDialog, reportService, restaurant) {
         var start_ts =  reportVm.startDate.getTime();
         var end_ts = reportVm.endDate.getTime();
         reportService.findBillsByRestaurant(reportVm.restaurant.restaurantId)
-            .success(function(data) {
+            .then(function(response) {
+                var data = response.data;
                 if (data.length == 0) {
                     reportVm.invalidReport = true;
                 }
                 var reportData = new Array();
                 for (var i = 0; i < data.length; i++) {
+                    var waiter_key = data[i].waiter.firstName + ' ' + data[i].waiter.lastName;
                     var d = new Date(data[i].publishDate);
                     var just_date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
                     var timestamp_key = just_date.getTime();
                     if (reportVm.partialReport) {
                         if (timestamp_key >= start_ts && timestamp_key <= end_ts) {
-                            if (reportData[timestamp_key] == null) {
-                                reportData[timestamp_key] = data[i].totalAmount;
+                            if (reportData[waiter_key] == null) {
+                                reportData[waiter_key] = data[i].totalAmount;
                             }else {
-                                var newVal = reportData[timestamp_key] + data[i].totalAmount;
-                                reportData[timestamp_key] = newVal;
+                                var newVal = reportData[waiter_key] + data[i].totalAmount;
+                                reportData[waiter_key] = newVal;
                             }
                         }
                     }else {
-                        if (reportData[timestamp_key] == null) {
-                            reportData[timestamp_key] = data[i].totalAmount;
+                        if (reportData[waiter_key] == null) {
+                            reportData[waiter_key] = data[i].totalAmount;
                         }else {
-                            var newVal = reportData[timestamp_key] + data[i].totalAmount;
-                            reportData[timestamp_key] = newVal;
+                            var newVal = reportData[waiter_key] + data[i].totalAmount;
+                            reportData[waiter_key] = newVal;
                         }
                     }
                 }
@@ -80,26 +82,32 @@ function FinancesController($mdDialog, reportService, restaurant) {
 
     function drawChart() {
         var data = new google.visualization.DataTable();
-        data.addColumn('date', 'Datum');
-        data.addColumn('number', 'Prihodi');
+        data.addColumn('string', 'Konobar');
+        data.addColumn('number', 'Ostvareni prihodi');
 
         var rows = [];
         reportVm.total = 0;
         for (var key in reportVm.report) {
-            rows.push([{v:new Date(parseInt(key))}, reportVm.report[key]]);
+            rows.push([{v:key}, reportVm.report[key]]);
             reportVm.total = reportVm.total + reportVm.report[key];
         }
 
-        reportVm.message = 'Ukupni prihodi: ' + reportVm.total + ' RSD';
+        reportVm.message = 'Ukupan prihod za izabrani vremenski period: ' + reportVm.total + ' RSD';
 
         data.addRows(rows);
         var options = {
-            title: 'Restoran ' + reportVm.restaurant.name + ' - pregled prihoda',
-            height: 500,
-            width: 1000
+            title: 'Restoran ' + reportVm.restaurant.name + ' - prihodi konobara',
+            width: 800,
+            height: 400,
+            hAxis: {
+                title: 'Ostvareni prihodi',
+            },
+            vAxis: {
+                title: 'Konobar'
+            }
         };
 
-        var chart = new google.visualization.Calendar(document.getElementById('chart_div'));
+        var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
         chart.draw(data, options);
     };
 
