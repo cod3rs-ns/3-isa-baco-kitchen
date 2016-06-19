@@ -149,7 +149,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
     function getFreeTables() {
         return tableService.getFreeTables(
             $routeParams.restaurantId,
-            restaurantVm.reservation.reservationDateTime.getMilliseconds(),
+            restaurantVm.reservation.reservationDateTime.getTime(),
             restaurantVm.reservation.length)
           .then(function(data) {
               restaurantVm.freeTables = data;
@@ -251,6 +251,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 showToast('Pogrešni parametri rezervacije!');
               }
               else {
+                restaurantVm.reservation = response.data;
                 showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');
                 WizardHandler.wizard().goTo(2);
               }
@@ -299,7 +300,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
         0,
         0
       );
-      
+
       getFreeTables();
     };
 }

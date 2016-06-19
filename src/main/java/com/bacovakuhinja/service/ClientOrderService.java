@@ -24,4 +24,6 @@ public interface ClientOrderService {
     List<ClientOrder> getOrdersFromReservation(int tableId);
 
     ClientOrder findByReservationAndUser(Integer reservationId, Integer guestId);
+
+    Integer findByReservation(Integer reservationId);
 }

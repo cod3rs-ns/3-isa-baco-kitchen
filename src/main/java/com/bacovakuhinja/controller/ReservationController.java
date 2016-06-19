@@ -38,6 +38,9 @@ public class ReservationController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ClientOrderService clientOrderService;
+
     @RequestMapping(
             value    = "/api/reservations/{restaurant_id}",
             method   = RequestMethod.GET,
@@ -86,7 +89,7 @@ public class ReservationController {
         Reservation reservation = reservationService.findOne(id);
         Integer restaurantId = reservation.getRestaurant().getRestaurantId();
 
-        Integer alreadyAccepted = reservationGuestService.numberOfReservationGuests(id);
+        Integer alreadyOrdered = clientOrderService.findByReservation(id);
         Collection<ReservationTable> tables = reservationTableService.findAllByReservationId(reservation.getReservationId());
 
         Integer tableId = null;
@@ -95,10 +98,11 @@ public class ReservationController {
             rt = iterator.next();
 
             Integer capacity = rt.getTable().getPositions();
-            alreadyAccepted = alreadyAccepted - capacity;
+            alreadyOrdered = alreadyOrdered - capacity;
 
-            if (alreadyAccepted < 0) {
+            if (alreadyOrdered < 0) {
                 tableId = rt.getTable().getTableId();
+                break;
             }
         }
 
@@ -112,7 +116,7 @@ public class ReservationController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<String> createReservation(final HttpServletRequest request, @RequestBody ReservationCreator creator) {
+    public ResponseEntity<?> createReservation(final HttpServletRequest request, @RequestBody ReservationCreator creator) {
 
         Guest user = (Guest) request.getAttribute(Constants.Authorization.LOGGED_USER);
         ArrayList<Integer> tables = creator.getTables();
@@ -179,7 +183,7 @@ public class ReservationController {
             reservationTableService.save(table);
         }
 
-        return new ResponseEntity<String>("{ \"answer\": \"RESERVATION_OK\"}", HttpStatus.OK);
+        return new ResponseEntity<Reservation>(reservation, HttpStatus.CREATED);
     }
 
     @Authorization(role = Constants.UserRoles.GUEST)

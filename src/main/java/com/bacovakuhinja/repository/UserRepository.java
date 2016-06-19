@@ -13,6 +13,6 @@ public interface UserRepository extends
 
     User findByEmail(String email);
 
-    @Query("SELECT u FROM User u WHERE (u.firstName LIKE %?1% OR u.lastName LIKE %?1%) AND u.type = 'guest'")
+    @Query("SELECT u FROM User u WHERE (u.firstName LIKE %?1% OR u.lastName LIKE %?1%) AND u.type = 'guest' AND u.verified = 'verified'")
     Collection<User> findGuestsByQuery(String query);
 }
