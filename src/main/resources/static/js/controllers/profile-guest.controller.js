@@ -210,6 +210,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
           .then(function (response) {
               // Update visits and intvitations
               getVisits();
+              getReservations();
               getInvitations();
               showToast('Poziv za rezervaciju prihvaćen. Sada možete napraviti porudžbinu u sekciji aktivnih rezervacija.');
           });
@@ -225,6 +226,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                     .then(function (response) {
                         // Update visits and intvitations
                         getVisits();
+                        getReservations();
                         getInvitations();
                         showToast('Poziv za rezervaciju odbijen.');
                     });
