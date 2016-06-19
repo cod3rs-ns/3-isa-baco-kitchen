@@ -10,10 +10,21 @@ function restaurantService($http){
         getRestaurant: getRestaurant,
         updateRestaurant: updateRestaurant,
         deleteRestaurant: deleteRestaurant,
-        createRestaurant: createRestaurant
+        createRestaurant: createRestaurant,
+        getSearchResult: getSearchResult
     };
 
     return service;
+    
+    function getSearchResult(query) {
+        return $http.get('api/restaurant/restaurants?query=' + query)
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
+    };
 
     function getRestaurants(){
         return $http.get('api/restaurants')
@@ -46,6 +57,5 @@ function restaurantService($http){
         .then(function (response) {
             return response.data;
         })
-    };
-
+    };    
 }

@@ -15,22 +15,31 @@ function reviewService($http) {
     
     function getReviews(restaurantId) {
         return $http.get('api/reviews/' + restaurantId)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function addReview(review) {
         return $http.post('api/reviews/', review)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
     
     function getReview(reservationId) {
         return $http.get('api/reviews/reservation/' + reservationId)
-        .then(function(response) {
-            return response.data;
-        });
+          .success(function(response) {
+              return response;
+          })
+          .error(function(response) {
+              return response;
+          });
     };
 }

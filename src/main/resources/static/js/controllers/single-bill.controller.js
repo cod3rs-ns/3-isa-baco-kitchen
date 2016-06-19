@@ -8,6 +8,7 @@ function BillController(waiterService, $mdDialog, $mdToast, table, billId) {
     var billVm = this;
     billVm.items = [];
     billVm.total = 0;
+    billVm.circular = true;
 
     activate();
 
@@ -21,6 +22,7 @@ function BillController(waiterService, $mdDialog, $mdToast, table, billId) {
                     }
                     billVm.waiter = data.waiter;
                     billVm.date = data.date;
+                    billVm.circular = false;
                 });
         }
         else {
@@ -32,6 +34,7 @@ function BillController(waiterService, $mdDialog, $mdToast, table, billId) {
                     }
                     billVm.waiter = data.waiter;
                     billVm.date = data.date;
+                    billVm.circular = false;
                 });
         }
     };

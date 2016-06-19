@@ -7,8 +7,10 @@ HomeController.$inject = ['$location', 'restaurantService'];
 function HomeController($location, restaurantService) {
     var homeVm = this;
     
+    // List of restaurants
     homeVm.restaurants = [];
     
+    // Click on button 'Pogledaj detalje'
     homeVm.showDetails = showDetails;
     
     activate();
@@ -18,16 +20,14 @@ function HomeController($location, restaurantService) {
     }
     
     function activate() {
-        getRestaurants().then(function() {
-            console.log('Restaurants loaded.');
-        });
+        getRestaurants();
     };
     
     function getRestaurants() {
         return restaurantService.getRestaurants()
           .then(function(data) {
-            homeVm.restaurants = data;
-            return homeVm.restaurants;
+              homeVm.restaurants = data;
+              return homeVm.restaurants;
         });
     };
 }

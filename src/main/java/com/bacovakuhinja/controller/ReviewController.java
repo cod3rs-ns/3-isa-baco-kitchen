@@ -35,7 +35,7 @@ public class ReviewController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity <Collection <Review>> findReviewsByMenuItem(@PathVariable("menu_item_id") Integer itemId) {
-        Collection <Review> reviews = reviewService.findReviewsByFood(itemId);
+        Collection <Review> reviews = reviewService.findReviewsByMenuItem(itemId);
         return new ResponseEntity <Collection <Review>>(reviews, HttpStatus.OK);
     }
 

@@ -29,7 +29,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Collection <Review> findReviewsByFood(Integer itemId) {
+    public Collection <Review> findReviewsByMenuItem(Integer itemId) {
         return reviewRepository.findReviewsByMenuItem(itemId);
     }
 

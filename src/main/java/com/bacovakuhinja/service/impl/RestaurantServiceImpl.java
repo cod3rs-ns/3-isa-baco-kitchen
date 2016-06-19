@@ -40,4 +40,9 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void delete(Integer restaurantId) {
         restaurantRepository.delete(restaurantId);
     }
+
+    @Override
+    public Collection<Restaurant> getRestaurants(String query) {
+        return restaurantRepository.findRestaurantByNameContainsOrTypeStartsWithAllIgnoreCase(query, query);
+    }
 }

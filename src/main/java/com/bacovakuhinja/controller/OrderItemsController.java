@@ -19,14 +19,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-
 @RestController
 public class OrderItemsController {
-    @Autowired
-    private OrderItemService orderItemService;
 
     @Autowired
-    private ClientOrderService clientOrderService;
+    private OrderItemService orderItemService;
 
     @Autowired
     private EmployeeService employeeService;
@@ -36,7 +33,6 @@ public class OrderItemsController {
 
     @Autowired
     private SimpMessagingTemplate template;
-
 
     @RequestMapping(
             value = "api/orderItems/{order_id}",
@@ -74,6 +70,7 @@ public class OrderItemsController {
         return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
 
+    //FIXME @Baco - opet ovo sa stringovima da negdje definisemo fino
     @RequestMapping(
             value = "/api/orderItems/i={itemId}/e={employeeId}",
             method = RequestMethod.POST,

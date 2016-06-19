@@ -27,8 +27,9 @@ public class GuestServiceImpl implements GuestService {
 
     @Override
     public Collection<User> getUsers(String query) {
-        // FIXME Only Top N results
-        return userRepository.findGuestsByQuery(query);
+        // FIXME Only top N results
+        ArrayList<User> result = (ArrayList<User>) userRepository.findGuestsByQuery(query);
+        return result;
     }
 
     @Override
