@@ -49,7 +49,6 @@ public class UserController {
         return new ResponseEntity<Boolean>(exists, HttpStatus.OK);
     }
 
-    // FIXME @Baco, Fix this...
     @Authorization()
     @RequestMapping(
             value    = "/api/users/oldPassword/{pass}",
@@ -74,7 +73,6 @@ public class UserController {
         return new ResponseEntity<User>(user, HttpStatus.OK);
     }
 
-    // FIXME @Baco, Fix this too... :)
     @Authorization()
     @RequestMapping(
             value = "/api/users/pass",
@@ -92,7 +90,6 @@ public class UserController {
         return new ResponseEntity<Boolean>(true, HttpStatus.OK);
     }
 
-    // FIXME @Baco, Fix this too... :)
     @Authorization()
     @RequestMapping(
             value = "/api/users/passChanged/",

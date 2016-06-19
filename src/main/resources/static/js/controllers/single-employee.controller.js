@@ -79,6 +79,7 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
         $mdToast.show({
             hideDelay : 3000,
             position  : 'top right',
+            parent    : angular.element(document.querySelectorAll('#toast-box')),
             template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
         });
     };

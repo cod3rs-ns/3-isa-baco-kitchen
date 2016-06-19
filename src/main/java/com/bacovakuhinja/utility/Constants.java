@@ -65,4 +65,9 @@ public final class Constants {
         public static final String AUTH_PASS = "jedanjebaco";
     }
 
+    public static final class NotificationOrderStatus {
+        public static final String NEW  = "new";
+        public static final String REMOVE    = "remove";
+        public static final String UPDATE = "update";
+    }
 }

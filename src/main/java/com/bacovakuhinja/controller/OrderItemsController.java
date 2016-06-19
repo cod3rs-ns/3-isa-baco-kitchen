@@ -69,7 +69,6 @@ public class OrderItemsController {
         return new ResponseEntity <Collection <OrderItem>>(items, HttpStatus.OK);
     }
 
-    //FIXME @Baco - opet ovo sa stringovima da negdje definisemo fino
     @RequestMapping(
             value = "/api/orderItems/i={itemId}/e={employeeId}",
             method = RequestMethod.POST,
@@ -95,9 +94,9 @@ public class OrderItemsController {
         HashMap<String, ArrayList<OrderItem>> itemMap = new HashMap<String, ArrayList<OrderItem>>();
         ArrayList<OrderItem> items = new ArrayList<OrderItem>();
         items.add(item);
-        itemMap.put("remove" , items);
+        itemMap.put(Constants.NotificationOrderStatus.REMOVE , items);
 
-        if(item.getMenuItem().getType().equals("food")){
+        if(item.getMenuItem().getType().equals(Constants.MenuItemType.FOOD)){
             this.template.convertAndSend("/subscribe/ActiveFood/" + emp.getRestaurantID(), itemMap);
         }
         else{
