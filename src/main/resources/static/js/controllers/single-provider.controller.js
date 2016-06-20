@@ -54,6 +54,7 @@ function SingleProviderController(providerService, $mdToast, $mdDialog, edit_sta
                     providerVm.showToast("<strong>Sve promene su uspešno sačuvane.</strong>", 3000);
                 });
         }else {
+            $mdDialog.cancel();
             providerService.createProvider(providerVm.provider)
                 .then(function() {
                     providerVm.editState = false;

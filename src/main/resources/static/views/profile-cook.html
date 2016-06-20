@@ -114,7 +114,7 @@
 	<!-- Tabs -->
 	<div id="right" style="margin-left:3px; margin-top:3px;" flex>
 		<md-content>
-			<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="cookProfileVm.clickOnTab();" md-selected="cookProfileVm.selectedTab">
+			<md-tabs class="md-primary md-hue-2" md-dynamic-height md-border-bottom ng-click="cookProfileVm.clickOnTab();" md-selected="cookProfileVm.selectedTab">
 				<md-tab>
 					<md-tab-label>
 						Pristigla jela&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="cookProfileVm.notNo!=-1">{{cookProfileVm.notNo}}</span>
@@ -122,7 +122,9 @@
 
 					<md-tab-body>
 						<md-content class="md-padding">
-							<div layout="row" layout-wrap>
+							<p ng-show="cookProfileVm.waitingMeals.length == 0;"> Nema pristiglih jela. </p>
+
+							<div layout="row" layout-wrap ng-hide="cookProfileVm.waitingMeals.length == 0;">
 								<div class='md-padding' layout="row" ng-repeat="meal in cookProfileVm.waitingMeals | orderBy : '-meal.order.date'" layout-wrap>
 
 									<md-card class="order-item">

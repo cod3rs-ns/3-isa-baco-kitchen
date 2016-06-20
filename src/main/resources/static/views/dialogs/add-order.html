@@ -57,7 +57,12 @@
                                 <h4>{{meal.info}}</h4>
                                 <md-input-container class="md-block">
                                     <label>Količina</label>
-                                    <input required type="number" step="any" name="mealCount" ng-model="meal.count" min="1" />
+                                    <input required type="number" step="any" name="mealCount" id="mealCount" ng-model="meal.count" min="1" max="20"/>
+                                    <div ng-messages="orderForm.mealCount.$error">
+                                        <div ng-message="required">Ovo polje je obavezno.</div>
+                                        <div ng-message="min">Količina mora biti pozitivan broj.</div>
+                                        <div ng-message="max">Ne možete dodati više od 20 stavki iste porudžbine.</div>
+                                    </div>
                                 </md-input-container>
                             </div>
                             <div flex="15">

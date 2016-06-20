@@ -12,7 +12,7 @@
 				style="height:100%"
 		>
 			<!-- Name and image -->
-			<md-toolbar>
+			<md-toolbar class="md-hue-2">
 				<div layout="row" layout-align="end start">
 					<md-button 	class="md-icon-button" aria-label="Change image"
 								  flow-files-submitted="rmanagerVm.upload($flow)"
@@ -115,7 +115,7 @@
 	<!-- Tabs -->
 	<div id="right" style="margin-left:3px; margin-top:3px; background-color:#DDDDDD" flex>
 		<md-content>
-			<md-tabs class="md-primary" md-dynamic-height md-border-bottom ng-click="waiterProfileVm.clickOnTab();" md-selected="waiterProfileVm.selectedTab">
+			<md-tabs class="md-primary md-hue-2" md-dynamic-height md-border-bottom ng-click="waiterProfileVm.clickOnTab();" md-selected="waiterProfileVm.selectedTab">
 				<md-tab>
 					<md-tab-label>
 						Završene porudžbine&nbsp;&nbsp;&nbsp;<span class="item-badge" ng-show="waiterProfileVm.notNo!=-1">{{waiterProfileVm.notNo}}</span>
@@ -258,12 +258,14 @@
 											<p>{{order.date | date: 'medium'}}</p>
 										</div>
 
-										<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)">
-											<md-tooltip md-direction="left">
-												Izmijeni porudžbinu.
-											</md-tooltip>
-											<md-icon class="material-icons md-primary md-hue-3" >edit</md-icon>
-										</md-button>
+										<div ng-hide="order.clientId!=null">
+											<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)">
+												<md-tooltip md-direction="left">
+													Izmijeni porudžbinu.
+												</md-tooltip>
+												<md-icon class="material-icons md-primary md-hue-3" >edit</md-icon>
+											</md-button>
+										</div>
 									</md-list-item>
 								</md-list>
 							</div >

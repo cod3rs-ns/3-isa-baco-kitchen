@@ -169,6 +169,7 @@ public class SendMailAspect {
                 "</html>";
 
         User user = userService.findOne(provider.getEmail());
+        System.out.println(user.getPassword());
         user.setPassword(PasswordHelper.getSha256(user.getPassword()));
         userService.update(user);
 
@@ -179,7 +180,7 @@ public class SendMailAspect {
         }
 
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
-        //sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        sendMail(provider.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
 
@@ -216,6 +217,7 @@ public class SendMailAspect {
                 "</html>";
 
         User user = userService.findOne(manager.getEmail());
+        System.out.println(user.getPassword());
         user.setPassword(PasswordHelper.getSha256(user.getPassword()));
         userService.update(user);
 
@@ -226,7 +228,7 @@ public class SendMailAspect {
         }
 
         System.out.println(Constants.MailParameters.TOKEN_CONFIRM_LINK + tokenValue);
-        //sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
+        sendMail(manager.getEmail(), "Potvrda registracije za sajt Baćova kuhinja", message);
     }
 
     @Async

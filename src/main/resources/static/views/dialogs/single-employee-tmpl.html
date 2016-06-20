@@ -70,7 +70,7 @@
 
             <md-input-container class="md-block">
                 <label>Veličina obuće</label>
-                <input required type="number"  required name="employeeShoes" step="any" ng-model="employeeVm.employee.shoesSize" min="36" max="50"/>
+                <input required type="number" name="employeeShoes" step="any" ng-model="employeeVm.employee.shoesSize" min="36" max="50"/>
                 <div ng-messages="employeeForm.employeeShoes.$error">
                     <div ng-message="required">Ovo polje je obavezno.</div>
                     <div ng-message="min">Veličina obuće mora biti najmanje 36.</div>
