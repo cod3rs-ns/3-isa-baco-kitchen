@@ -43,6 +43,7 @@ function BarmanProfileController(employeeService, bartenderService, passService,
             .then(function(data) {
                 barmanProfileVm.barman = data;
                 barmanProfileVm.barman.birthday = new Date(data.birthday);
+                barmanProfileVm.barman.shoesSize = parseInt(barmanProfileVm.barman.shoesSize);
                 return barmanProfileVm.barman;
             });
     };
@@ -57,7 +58,7 @@ function BarmanProfileController(employeeService, bartenderService, passService,
             controllerAs: 'employeeVm',
             templateUrl: '/views/dialogs/single-employee-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: false,
             locals: {
                 to_edit : barmanProfileVm.barman,
@@ -160,14 +161,19 @@ function BarmanProfileController(employeeService, bartenderService, passService,
 
     barmanProfileVm.prepareDrink = prepareDrink;
     function prepareDrink(itemId){
-        employeeService.prepareOrderItem(itemId, barmanProfileVm.barman.userId)
-            .then(function (response) {
-                if(response.statusText == "OK") {
-                    barmanProfileVm.preparingDrinks.push(response.data);
-                    barmanProfileVm.showToast("Uspješno ste prihvatili piće za izradu.");
-                }
-                else
-                    barmanProfileVm.showToast("Drugi šanker je u međuvremenu prihvatio dato piće.");
+        barmanProfileVm.confirmationDialog(
+            "Prihvatanje porudžbine",
+            "Da li ste sigurni da želite da se zauzmete za izradu navedenog pića?",
+            function () {
+                employeeService.prepareOrderItem(itemId, barmanProfileVm.barman.userId)
+                    .then(function (response) {
+                        if(response.statusText == "OK") {
+                            barmanProfileVm.preparingDrinks.push(response.data);
+                            barmanProfileVm.showToast("Uspješno ste prihvatili piće za izradu.");
+                        }
+                        else
+                            barmanProfileVm.showToast("Drugi šanker je u međuvremenu prihvatio dato piće.");
+                    });
             });
     }
 
@@ -203,19 +209,39 @@ function BarmanProfileController(employeeService, bartenderService, passService,
 
     barmanProfileVm.finishDrink = finishDrink;
     function finishDrink(itemId){
-
-        for(var meal in barmanProfileVm.preparingDrinks){
-            if(itemId === barmanProfileVm.preparingDrinks[meal].itemId){
-                barmanProfileVm.preparingDrinks.splice(meal, 1);
-                break;
-            }
-        }
-
-        employeeService.finishOrderItem(itemId)
-            .then(function (data) {
-                if(data != null){
-                    console.log("finish");
+        barmanProfileVm.confirmationDialog(
+            "Završavanje porudžbine",
+            "Da li ste sigurni da je piće spremno za serviranje?",
+            function () {
+                for(var meal in barmanProfileVm.preparingDrinks){
+                    if(itemId === barmanProfileVm.preparingDrinks[meal].itemId){
+                        barmanProfileVm.preparingDrinks.splice(meal, 1);
+                        break;
+                    }
                 }
+
+                employeeService.finishOrderItem(itemId)
+                    .then(function (data) {
+                        if(data != null){
+                            console.log("finish");
+                        }
+                    });
             });
     }
+
+    barmanProfileVm.confirmationDialog = confirmationDialog;
+    function confirmationDialog(title, text, yesFunc) {
+        var confirm = $mdDialog.confirm()
+            .title(title)
+            .textContent(text)
+            .ariaLabel('Confirmation')
+            .ok('DA')
+            .cancel('NE');
+
+        $mdDialog.show(confirm).then(
+            yesFunc,
+            function(){
+                $mdDialog.hide();
+            });
+    };
 }

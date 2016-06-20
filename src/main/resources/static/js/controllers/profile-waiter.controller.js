@@ -39,6 +39,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             .then(function(data) {
                 waiterProfileVm.waiter = data;
                 waiterProfileVm.waiter.birthday = new Date(data.birthday);
+                waiterProfileVm.waiter.shoesSize = parseInt(waiterProfileVm.waiter.shoesSize);
                 return waiterProfileVm.waiter;
             });
     };
@@ -56,16 +57,22 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     function getRegion(){
         return waiterService.getWorkingRegion(waiterProfileVm.waiter.userId)
-            .then(function(data) {
-                waiterProfileVm.workingRegion = data;
-                waiterService.getFinishedOrders(waiterProfileVm.workingRegion.regionId)
-                    .then(function (data) {
-                        for(var pos in data){
-                            waiterProfileVm.meals.push(data[pos]);
-                        }
-                    });
-                getTablesByRestaurant(waiterProfileVm.waiter.restaurantID);
-                return data;
+            .then(function(response) {
+                console.log(response);
+                if(response.statusText == "OK"){
+                    var data = response.data;
+                    waiterProfileVm.workingRegion = data;
+                    waiterService.getFinishedOrders(waiterProfileVm.workingRegion.regionId)
+                        .then(function (data) {
+                            for(var pos in data){
+                                waiterProfileVm.meals.push(data[pos]);
+                            }
+                        });
+                    getTablesByRestaurant(waiterProfileVm.waiter.restaurantID);
+                    return data;
+                }
+                else
+                    showToast("Pošto ne radite trenutno, ne možete dodavati porudžbine.");
             });
     };
 
@@ -79,7 +86,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             controllerAs: 'employeeVm',
             templateUrl: '/views/dialogs/single-employee-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: false,
             locals: {
                 to_edit : waiterProfileVm.waiter,

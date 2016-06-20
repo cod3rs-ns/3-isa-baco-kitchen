@@ -50,7 +50,10 @@ function waiterService($http){
 
     function getWorkingRegion(empId) {
         return $http.get('/api/employeeRegion/e=' + empId)
-            .then(function (response) {
+            .success(function(response) {
+                return response.data;
+            })
+            .error(function(response) {
                 return response.data;
             });
     }
