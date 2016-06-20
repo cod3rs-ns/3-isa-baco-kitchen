@@ -32,3 +32,48 @@
     font-weight: bold;
     margin-top: -16px;
 }
+
+.restaurant-image {
+    position: absolute;
+    top: 60%;
+    left: 10%;
+    width: 200px;
+    height:200px;
+    display: flex;
+    justify-content: center;
+    border: solid 1px #CCC;
+    -moz-box-shadow: 5px 5px 0px #999;
+    -webkit-box-shadow: 5px 5px 0px #999;
+        box-shadow: 5px 5px 0px #999;
+}
+
+.restaurant-rating {
+    background-color: white;
+    position: absolute;
+    top: 10%;
+    right: 10%;
+    width: 300px;
+    height:200px;
+    display: flex;
+    justify-content: center;
+    border: solid 1px #CCC;
+    -moz-box-shadow: 5px white;
+    -webkit-box-shadow: 5px white;
+        box-shadow: 5px white;
+}
+
+.restaurant-name {
+    position: absolute;
+    top: 96%;
+    right: 35%;
+    display: flex;
+    justify-content: center;
+}
+
+.restaurnt-tabs {
+    position: absolute;
+    top: 100%;
+    right: 0%;
+    display: flex;
+    justify-content: center;
+}

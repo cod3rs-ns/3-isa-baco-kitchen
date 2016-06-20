@@ -2,12 +2,14 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
+RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'menuItemService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(WizardHandler, restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
+function RestaurantProfileController(WizardHandler, restaurantService, menuItemService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
 
     restaurantVm.restaurant = {};
+    restaurantVm.foodMenu = [];
+    restaurantVm.drinkMenu = [];
     restaurantVm.reviews = [];
     // All restaurant's tables
     restaurantVm.allTables = [];
@@ -56,6 +58,13 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
             restaurantVm.worktime = restaurantVm.restaurant.startTime + ' h : '
                                     + restaurantVm.restaurant.endTime + ' h';
             initMap();
+            menuItemService.getAllActiveByType('food', $routeParams.restaurantId).success(function(data) {
+                restaurantVm.foodMenu = data;
+            });
+
+            menuItemService.getAllActiveByType('drink', $routeParams.restaurantId).success(function(data) {
+                restaurantVm.drinksMenu = data;
+            });
         });
 
         setPriorities();
