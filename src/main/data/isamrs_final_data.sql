@@ -126,9 +126,85 @@ INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_data
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('6', '70', '40', '5', '10', '2', '2', '6');
 
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('7', '7', '4', '10', '10', '4', '3', '1');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('8', '10', '20', '5', '5', '4', '3', '2');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('9', '10', '30', '10', '10', '6', '3', '3');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('8', '20', '20', '5', '5', '4', '3', '2');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('9', '30', '30', '10', '10', '6', '3', '3');
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('10', '20', '40', '5', '5', '2', '4', '4');
 INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('11', '50', '20', '10', '5', '2', '4', '5');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('12', '70', '40', '5', '10', '2', '4', '6');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('12', '90', '40', '5', '10', '2', '4', '6');
 
+
+-- Reservations
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (1,2,'2016-07-19 16:00:00',4);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (2,2,'2016-06-19 03:30:00',2);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (3,2,'2016-06-19 03:20:00',1);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (4,2,'2016-07-19 14:00:00',3);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (5,5,'2016-06-30 20:00:00',5);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (6,5,'2016-06-30 19:20:00',2);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (7,2,'2016-06-25 10:10:00',1);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (8,5,'2016-06-30 19:30:00',2);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (9,2,'2016-06-06 20:00:00',2);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (10,5,'2016-05-11 20:00:00',2);
+INSERT INTO `isa_mrs_project`.`reservations` (`rs_id`,`rs_restaurant_id`,`rs_duration`,`rs_length`) VALUES (11,5,'2016-07-30 18:30:00',4);
+
+-- Guests on Reservations
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (1,1,1,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (2,3,1,'accepted');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (3,4,1,'accepted');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (4,6,1,'accepted');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (5,1,2,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (6,2,3,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (7,7,3,'invited');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (8,5,4,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (9,2,5,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (10,7,5,'accepted');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (11,2,6,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (12,2,7,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (13,7,8,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (14,3,8,'invited');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (15,5,8,'invited');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (16,7,9,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (17,4,10,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (18,4,11,'owner');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (19,1,11,'invited');
+INSERT INTO `isa_mrs_project`.`guests_on_reservations` (`gos_id`,`gos_guest_id`,`gos_reservation_id`,`gos_status`) VALUES (20,6,11,'invited');
+
+-- Reservation Tables
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (1,1,4);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (2,1,5);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (3,2,1);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (4,3,4);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (5,4,1);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (6,4,2);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (7,4,6);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (8,5,7);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (9,5,12);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (10,5,8);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (11,6,11);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (12,7,1);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (13,7,2);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (14,7,3);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (15,7,4);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (16,8,9);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (17,9,1);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (18,10,7);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (19,11,7);
+INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (20,11,8);
+
+-- Client Orders Reservations
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (1,'2016-06-20 17:21:45','2016-07-19 16:00:00',1,1,4,NULL,NULL,'CREATED');
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (2,'2016-06-20 17:22:52','2016-07-19 16:00:00',1,6,4,NULL,NULL,'CREATED');
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (3,'2016-06-20 17:29:36','2016-06-30 19:20:00',6,2,11,NULL,NULL,'CREATED');
+
+-- Order Items
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (1,'CREATED',1,31,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (2,'CREATED',1,18,2,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (3,'CREATED',2,7,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (4,'CREATED',2,24,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (5,'CREATED',3,12,2,5,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (6,'CREATED',3,15,1,5,0,NULL);
+
+-- Reviews
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (1,'Sam ambijent nije impresionirao, ali je hrana vrhunska.',5,4,3,2,3);
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (2,'Bio sam ovdje nekad sa Kimihom. Nije loše. ',3,4,4,7,9);
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (3,'Odličan restoran. Baćo birao.',5,5,5,4,10);
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (4,'I am the best player in the world.',5,2,4,1,2);
