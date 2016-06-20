@@ -35,7 +35,7 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         });
     }
 
-    
+
     systemManagerProfileVm.addRestaurant = addRestaurant;
     function addRestaurant() {
         $mdDialog.show({
@@ -60,7 +60,11 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
             templateUrl: '/views/dialogs/single-provider-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
-            fullscreen: false
+            fullscreen: false,
+            locals: {
+                edit_state : false,
+                provider : null
+            }
         });
     };
 

@@ -4,7 +4,7 @@ angular
 
 providerService.$inject = ['$http'];
 
-function providerService($http){
+function providerService($http) {
     var service = {
         getProviders: getProviders,
         getProvider: getProvider,
@@ -13,46 +13,48 @@ function providerService($http){
         createProvider: createProvider,
         getLoggedProvider: getLoggedProvider
     };
-
     return service;
 
-    function getProviders(){
+    function getProviders() {
         return $http.get('api/providers')
-        .then(function(response) {
-            return response.data;
-        });
+            .then(function(response) {
+                return response.data;
+            });
     };
 
-    function getProvider(id){
+    function getProvider(id) {
         return $http.get('api/providers/' + id)
-        .then(function(response){
-            return response.data;
-        });
+            .then(function(response){
+                return response.data;
+            });
     };
 
-    function getLoggedProvider(){
+    function getLoggedProvider() {
         return $http.get('api/provider')
-        .then(function(response){
-            return response.data;
-        });
+            .then(function(response){
+                return response.data;
+            });
     };
 
-    function updateProvider(provider){
+    function updateProvider(provider) {
         return $http.put('/api/providers/', provider)
-        .then(function (response) {
-            return response.data;
-        });
+            .then(function (response) {
+                return response.data;
+            });
     };
 
-    function deleteProvider(id){
-
+    function deleteProvider(id) {
+        return $http.delete('api/providers/' + id)
+            .then(function(response){
+                return response.data;
+            });
     };
 
-    function createProvider(provider){
+    function createProvider(provider) {
         return $http.post('api/providers', angular.toJson(provider, false))
-        .then(function(response){
-            return response.data;
-        });
+            .then(function(response){
+                return response.data;
+            });
     };
 
 }

@@ -86,4 +86,5 @@ public class RestaurantProviderController {
         providerService.delete(id);
         return new ResponseEntity <RestaurantProvider>(HttpStatus.NO_CONTENT);
     }
+
 }

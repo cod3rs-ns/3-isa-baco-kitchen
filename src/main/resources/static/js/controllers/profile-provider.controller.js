@@ -7,28 +7,26 @@ ProviderProfileController.$inject = ['providerService', 'passService', '$mdDialo
 function ProviderProfileController(providerService, passService, $mdDialog, $mdToast, offerRequestService, providerResponseService, OfferRequestController) {
     var providerVm = this;
     providerVm.provider = {};
-    providerVm.editState = false;
-    providerVm.backup = {};
-
-    providerVm.saveChanges = saveChanges;
-    providerVm.cancelChanges = cancelChanges;
-    providerVm.initEditState = initEditState;
-    providerVm.showToast = showToast;
-
-    providerVm.changePassword = changePassword;
-
     providerVm.newOffers = [];
     providerVm.activeResponses = [];
     providerVm.historyResponses = [];
 
+    providerVm.editSelected = editSelected;
+    providerVm.showDetailed = showDetailed;
+    providerVm.sendResponse = sendResponse;
+    providerVm.initEditState = initEditState;
+    providerVm.changePassword = changePassword;
+    providerVm.showToast = showToast;
+    providerVm.uploadImage = uploadImage;
+    providerVm.deleteResponse = deleteResponse;
+
     activate();
 
     function activate() {
-        // TODO retrieve active Provider
         getLoggedProvider();
         passService.isPasswordChanged()
             .then(function (data) {
-                if(data){
+                if (!data){
                     providerVm.changePassword(false);
                 }
             });
@@ -46,47 +44,44 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
 
     function getResponses() {
         var responses = [];
-        // TODO
+        providerVm.historyResponses = [];
+        providerVm.activeResponses = [];
         providerResponseService.findByProvider(providerVm.provider.userId)
             .then(function(data) {
                 responses = data;
                 for (var i = 0; i < responses.length; i++) {
-                    if(responses[i].status == 'accepted' || responses[i].offer.deadline < Date.now() || responses[i].offer.acceptedResponse != null){
+                    if (responses[i].status == 'accepted' || responses[i].offer.deadline < Date.now() || responses[i].offer.acceptedResponse != null) {
                         providerVm.historyResponses.push(responses[i]);
                     }else {
                         providerVm.activeResponses.push(responses[i]);
-                    }
-                }
+                    };
+                };
             });
     };
 
-    function getNewOffersForProvider(){
-        // TODO
-        return offerRequestService.getNewOffersForProvider(4)
+    function getNewOffersForProvider() {
+        return offerRequestService.getNewOffersForProvider(providerVm.provider.userId)
             .then(function(data) {
                 providerVm.newOffers = data;
-                console.log(data);
             });
     };
 
     function initEditState() {
-        providerVm.editState = true;
-        providerVm.backup = angular.copy(providerVm.provider);
-    };
-
-    function saveChanges() {
-        providerVm.backup = null;
-        providerVm.editState = false;
-        providerService.updateProvider(providerVm.provider)
-            .then(function(){
-                providerVm.showToast("Izmene profila uspešno sačuvane.")
-            });
-    };
-
-    function cancelChanges() {
-        providerVm.provider = providerVm.backup;
-        providerVm.backup = null;
-        providerVm.editState = false;
+        $mdDialog.show(
+            {
+                controller: 'SingleProviderController',
+                controllerAs: 'providerVm',
+                templateUrl: '/views/dialogs/single-provider-tmpl.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: false,
+                escapeToClose: false,
+                fullscreen: false,
+                locals: {
+                    edit_state : true,
+                    provider : providerVm.provider
+                }
+            }
+        );
     };
 
     function changePassword(modal) {
@@ -116,61 +111,85 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
         });
     };
 
-    providerVm.showDetailed = showDetailed;
-    // Implement functions later
+    function uploadImage($flow) {
+        $flow.opts.target = 'api/upload/users/' + providerVm.provider.userId;
+        $flow.upload();
+        providerVm.provider.image = '/images/users/users_' + providerVm.provider.userId + '.png';
+        providerService.updateProvider(providerVm.provider)
+            .then(function(data) {
+                providerVm.provider = data;
+            });
+    }
+
     function showDetailed(offer) {
         $mdDialog.show({
-          controller: 'OfferRequestController',
-          controllerAs: 'offerRequestVm',
-          templateUrl: '/views/dialogs/offer-request-tmpl.html',
-          parent: angular.element(document.body),
-          //targetEvent: ev,
-          clickOutsideToClose:true,
-          fullscreen: false,
-          locals: {
-              offer : offer
-          }
-      });
-  };
+            controller: 'OfferRequestController',
+            controllerAs: 'offerRequestVm',
+            templateUrl: '/views/dialogs/offer-request-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                offer : offer
+            }
+        });
+    };
 
-  providerVm.sendResponse = sendResponse;
-  function sendResponse(offer_request){
-      $mdDialog.show({
-        controller: 'SingleResponseController',
-        controllerAs: 'responseVm',
-        templateUrl: '/views/dialogs/single-response-tmpl.html',
-        parent: angular.element(document.body),
-        //targetEvent: ev,
-        clickOutsideToClose:true,
-        fullscreen: false,
-        locals: {
-            to_edit : null,
-            offer : offer_request,
-            provider: providerVm.provider
-        }
-    })
-    .finally(function() {
-        getNewOffersForProvider();
-    })
+    function sendResponse(offer_request){
+        $mdDialog.show(
+            {
+                controller: 'SingleResponseController',
+                controllerAs: 'responseVm',
+                templateUrl: '/views/dialogs/single-response-tmpl.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose:true,
+                fullscreen: false,
+                locals: {
+                    to_edit : null,
+                    offer : offer_request,
+                    provider: providerVm.provider
+                }
+            })
+            .finally(function() {
+                getNewOffersForProvider();
+                getResponses();
+            });
+    }
 
-  }
+    function deleteResponse(response) {
+        var confirm = $mdDialog.confirm()
+            .title('Potvrda povlačenja ponude')
+            .textContent('Da li ste sigurni da želite da povučete ponudu?')
+            .ariaLabel('Response drawback')
+            .ok('Da')
+            .cancel('Ne');
 
-  providerVm.editSelected = editSelected;
-  function editSelected(response) {
-      $mdDialog.show({
-        controller: 'SingleResponseController',
-        controllerAs: 'responseVm',
-        templateUrl: '/views/dialogs/single-response-tmpl.html',
-        parent: angular.element(document.body),
-        //targetEvent: ev,
-        clickOutsideToClose:true,
-        fullscreen: false,
-        locals: {
-            to_edit : response,
-            offer : response.offer,
-            provider: providerVm.provider
-        }
-    });
+        $mdDialog.show(confirm)
+            .then(function() {
+                providerResponseService.deleteProviderResponse(response.responseId)
+                    .then(function() {
+                        getNewOffersForProvider();
+                        getResponses();
+                        providerVm.showToast('Uspešno ste povukli ponudu.');
+                    })
+            }, function() {
+                $mdDialog.hide();
+            });
+    }
 
-  }
+    function editSelected(response) {
+        $mdDialog.show({
+            controller: 'SingleResponseController',
+            controllerAs: 'responseVm',
+            templateUrl: '/views/dialogs/single-response-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : response,
+                offer : response.offer,
+                provider: providerVm.provider
+            }
+        });
+    }
 }

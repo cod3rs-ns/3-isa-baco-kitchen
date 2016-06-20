@@ -21,8 +21,14 @@ public final class Constants {
     }
 
     public static final class OfferStatus {
+        public static final String ACTIVE    = "active";
+        public static final String CLOSED    = "closed";
+        public static final String DELETABLE = "deletable";
+    }
+
+    public static final class ResponseStatus {
         public static final String ACCEPTED = "accepted";
-        public static final String CLOSED   = "closed";
+        public static final String SENT     = "sent";
         public static final String REJECTED = "rejected";
     }
 

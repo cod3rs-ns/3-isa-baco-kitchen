@@ -10,5 +10,6 @@ import java.util.Collection;
 public interface ProviderResponseRepository extends JpaRepository <ProviderResponse, Integer> {
 
     Collection <ProviderResponse> findByOffer(OfferRequest offerRequest);
+
     Collection <ProviderResponse> findByProvider(RestaurantProvider provider);
 }

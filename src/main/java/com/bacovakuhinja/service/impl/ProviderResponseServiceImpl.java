@@ -2,7 +2,6 @@ package com.bacovakuhinja.service.impl;
 
 import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
-import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.RestaurantProvider;
 import com.bacovakuhinja.repository.ProviderResponseRepository;
 import com.bacovakuhinja.service.ProviderResponseService;
@@ -51,7 +50,7 @@ public class ProviderResponseServiceImpl implements ProviderResponseService {
 
     @Override
     public Collection <ProviderResponse> findAllByOffer(OfferRequest offerRequest) {
-       return responseRepository.findByOffer(offerRequest);
+        return responseRepository.findByOffer(offerRequest);
     }
 
     @Override

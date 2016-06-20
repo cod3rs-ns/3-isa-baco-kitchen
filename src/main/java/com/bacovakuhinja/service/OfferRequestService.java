@@ -3,10 +3,11 @@ package com.bacovakuhinja.service;
 import com.bacovakuhinja.model.OfferRequest;
 
 import java.util.Collection;
+import java.util.Date;
 
 public interface OfferRequestService {
 
-    Collection<OfferRequest> findAll();
+    Collection <OfferRequest> findAll();
 
     OfferRequest findOne(Integer id);
 
@@ -17,5 +18,11 @@ public interface OfferRequestService {
     void delete(Integer id);
 
     Collection <OfferRequest> findAllByRestaurant(Integer restaurantId);
+
+    Collection <OfferRequest> findNonExpiredOffers(Date date);
+
+    Collection <OfferRequest> findAppliedOfferRequestsByProvider(Integer providerId);
+
+    Collection <OfferRequest> findNewOfferRequestsForProviderId(Integer providerId);
 
 }

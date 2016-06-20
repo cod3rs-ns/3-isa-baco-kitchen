@@ -8,7 +8,7 @@ import java.util.Collection;
 
 public interface ProviderResponseService {
 
-    Collection<ProviderResponse> findAll();
+    Collection <ProviderResponse> findAll();
 
     ProviderResponse findOne(Integer id);
 
@@ -22,6 +22,6 @@ public interface ProviderResponseService {
 
     Collection <ProviderResponse> findAllByOffer(OfferRequest offer);
 
-    Collection<ProviderResponse> updateAll(Collection<ProviderResponse> responses);
+    Collection <ProviderResponse> updateAll(Collection <ProviderResponse> responses);
 
 }

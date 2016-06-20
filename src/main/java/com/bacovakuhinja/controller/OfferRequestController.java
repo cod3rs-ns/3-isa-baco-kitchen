@@ -5,7 +5,6 @@ import com.bacovakuhinja.model.OfferRequest;
 import com.bacovakuhinja.model.ProviderResponse;
 import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
-import com.bacovakuhinja.service.RestaurantProviderService;
 import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,9 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 public class OfferRequestController {
@@ -25,9 +22,6 @@ public class OfferRequestController {
 
     @Autowired
     private ProviderResponseService providerResponseService;
-
-    @Autowired
-    private RestaurantProviderService restaurantProviderService;
 
     @RequestMapping(
             value = "/api/offers",
@@ -86,7 +80,6 @@ public class OfferRequestController {
         return new ResponseEntity <Collection <OfferRequest>>(offerRequests, HttpStatus.OK);
     }
 
-
     @SendProvidersMail
     @RequestMapping(
             value = "api/offers_a/offer={offer_id}&accept={response_id}",
@@ -96,14 +89,13 @@ public class OfferRequestController {
         OfferRequest offer = offerRequestService.findOne(offerId);
         Collection <ProviderResponse> responses = providerResponseService.findAllByOffer(offer);
         for (ProviderResponse response : responses) {
-            if (response.getResponseId() == responseId) {
-                response.setStatus(Constants.OfferStatus.ACCEPTED);
+            if (response.getResponseId().equals(responseId)) {
+                response.setStatus(Constants.ResponseStatus.ACCEPTED);
                 offer.setAcceptedResponse(response.getResponseId());
                 offer.setStatus(Constants.OfferStatus.CLOSED);
 
             } else {
-                response.setStatus(Constants.OfferStatus.REJECTED);
-
+                response.setStatus(Constants.ResponseStatus.REJECTED);
             }
         }
         providerResponseService.updateAll(responses);
@@ -119,33 +111,17 @@ public class OfferRequestController {
     public ResponseEntity <OfferRequest> rejectOfferResponse(@PathVariable("offer_id") Integer offerId, @PathVariable("response_id") Integer responseId) {
         OfferRequest offer = offerRequestService.findOne(offerId);
         ProviderResponse response = providerResponseService.findOne(responseId);
-        response.setStatus(Constants.OfferStatus.REJECTED);
+        response.setStatus(Constants.ResponseStatus.REJECTED);
         providerResponseService.update(response);
         return new ResponseEntity <OfferRequest>(offer, HttpStatus.OK);
     }
 
     @RequestMapping(
-            value = "api/offers/newp={provider_id}",
+            value = "api/offers/new/p={provider_id}",
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Collection <OfferRequest>> getNewOffersForProvider(@PathVariable("provider_id") Integer id) {
-        Collection <OfferRequest> toRemove = new ArrayList <OfferRequest>();
-        Collection <OfferRequest> allOfferRequests = offerRequestService.findAll();
-        Collection <ProviderResponse> responses = providerResponseService.findAllByProvider(restaurantProviderService.findOne(id));
-        for (ProviderResponse response: responses) {
-            for(OfferRequest offer: allOfferRequests){
-                if(response.getOffer().getOfferId() == offer.getOfferId()){
-                    toRemove.add(offer);
-                    break;
-                }
-            }
-        }
-        System.out.println(toRemove.size());
-        System.out.println(allOfferRequests.size());
-        for (OfferRequest or: toRemove){
-            allOfferRequests.remove(or);
-        }
-        System.out.println(allOfferRequests.size());
+    public ResponseEntity <Collection <OfferRequest>> getNewOffersForProvider(@PathVariable("provider_id") Integer providerId) {
+        Collection <OfferRequest> allOfferRequests = offerRequestService.findNewOfferRequestsForProviderId(providerId);
         return new ResponseEntity <Collection <OfferRequest>>(allOfferRequests, HttpStatus.OK);
     }
 

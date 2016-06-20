@@ -1,31 +1,33 @@
-<md-dialog flex="50" aria-label="offerRequestVm.offer.restaurant_name"  ng-cloak>
-  <form>
-    <md-toolbar>
-      <div class="md-toolbar-tools">
-        <h2>Porudžbina za restoran Orfei</h2>
-        <span flex></span>
-        <span class="label label-danger">Rok važenja: {{offerRequestVm.offer.deadline | date:'dd-MM-yyyy'}}</span>
-        <md-button class="md-icon-button" ng-click="offerRequestVm.cancel()">
-          <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
-    <md-dialog-content>
-      <div class="md-dialog-content">
-        <h2><strong>{{'porudžbina #' + offerRequestVm.offer.offerId}}</strong></h2>
+<md-dialog flex="40" aria-label="offerRequestVm.restaurantName"  ng-cloak>
+    <form>
+        <md-toolbar>
+          <div class="md-toolbar-tools">
+            <h2>Porudžbina za restoran {{offerRequestVm.restaurantName}} &nbsp;</h2>
+            <span flex></span>
+            <p> <em>Rok važenja: {{offerRequestVm.offer.deadline | date:'dd-MM-yyyy'}} </em></p>
+            <md-button class="md-icon-button" ng-click="offerRequestVm.cancel()">
+              <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+          </div>
+        </md-toolbar>
 
-        <p class="text-justify">
-            </br>
-            {{offerRequestVm.offer.offer}}
-            </p>
+        <md-dialog-content>
+            <md-content>
+                <div class="md-dialog-content">
+                    <h2><strong>{{'porudžbina #' + offerRequestVm.offer.offerId}}</strong></h2>
+                    <p class="text-justify">
+                    </br>
+                        {{offerRequestVm.offer.offer}}
+                    </p>
+                </div>
+            </md-content>
+        </md-dialog-content>
 
-      </div>
-    </md-dialog-content>
-    <md-dialog-actions layout="row">
-      <span flex></span>
-      <md-button ng-click="offerRequestVm.cancel()" md-autofocus>
-       Nazad
-      </md-button>
-    </md-dialog-actions>
-  </form>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button class="md-button md-primary md-raised" ng-click="offerRequestVm.cancel()" md-autofocus>
+                Nazad
+            </md-button>
+        </md-dialog-actions>
+    </form>
 </md-dialog>

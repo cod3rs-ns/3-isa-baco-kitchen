@@ -1,9 +1,9 @@
-<md-dialog flex="50" aria-label="Provajder"  ng-cloak>
+<md-dialog flex="50" aria-label="Provider" ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Dodaj provajdera</h2>
+            <h2 ng-hide="providerVm.editState">Registrovanje novog ponuđača</h2>
+            <h2 ng-show="providerVm.editState">Ažuriranje profila ponuđača</h2>
             <span flex></span>
-
             <md-button class="md-icon-button" ng-click="providerVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
             </md-button>
@@ -32,7 +32,7 @@
                         </div>
                     </md-input-container>
 
-                    <md-input-container class="md-block">
+                    <md-input-container ng-hide="providerVm.editState" class="md-block">
                         <label>E-mail adresa</label>
                         <input required type="email" name="providerEmail"
                                data-wc-unique="{key: customer.id, property: 'email'}"
@@ -46,6 +46,14 @@
                             </div>
                         </div>
                     </md-input-container>
+
+                    <md-input-container ng-show="providerVm.editState" class="md-block" flex>
+			        			<label>Biografija</label>
+			        			<textarea md-maxlength="100" name="providerInfo" ng-model="providerVm.provider.info" columns="1" rows="5" md-select-on-focus></textarea>
+								<div ng-messages="providerForm.providerInfo.$error" role="alert">
+									<div ng-message="md-maxlength">Vaša biografija mora imati manje od 100 karaktera.</div>
+								</div>
+					</md-input-container>
 
                 </form>
             </md-content>

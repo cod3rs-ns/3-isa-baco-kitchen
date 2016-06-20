@@ -4,7 +4,6 @@
             <h2 ng-hide="responseVm.editState">Pošalji ponudu</h2>
             <h2 ng-hide="!responseVm.editState">Izmeni ponudu</h2>
             <span flex></span>
-
             <md-button class="md-icon-button" ng-click="responseVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
             </md-button>
@@ -23,7 +22,7 @@
                                 Ovo polje je obavezno.
                             </div>
                             <div ng-message="min">
-                                Sadržaj polja mora biti pozitivan.
+                                Cena mora biti mora biti pozitivna.
                             </div>
                         </div>
                     </md-input-container>

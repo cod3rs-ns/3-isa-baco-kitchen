@@ -91,5 +91,4 @@ public class ProviderResponseController {
         Collection <ProviderResponse> providerResponses = responseService.findAllByProvider(provider);
         return new ResponseEntity <Collection <ProviderResponse>>(providerResponses, HttpStatus.OK);
     }
-
 }
