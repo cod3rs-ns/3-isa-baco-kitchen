@@ -407,7 +407,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`menu_items` (
   `mi_name` VARCHAR(45) NOT NULL,
   `mi_price` DOUBLE NOT NULL,
   `mi_type` VARCHAR(10) NOT NULL,
-  `mi_image` VARCHAR(100) NOT NULL,
+  `mi_image` VARCHAR(300) NOT NULL,
   `mi_restaurant_id` INT(11) NOT NULL,
   `mi_spec_type` VARCHAR(20) NOT NULL,
   `mi_deleted` TINYINT(1) NOT NULL,
