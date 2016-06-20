@@ -6,7 +6,7 @@ RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'us
 
 function RestaurantProfileController(WizardHandler, restaurantService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
-    
+
     restaurantVm.restaurant = {};
     restaurantVm.reviews = [];
     // All restaurant's tables
@@ -30,12 +30,12 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
     // Number of places in reservation
     restaurantVm.guestsNumber = 0;
     restaurantVm.guestsInvited = 0;
-    
+
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.saveReservation = saveReservation;
     restaurantVm.showToast = showToast;
     restaurantVm.cancel = cancel;
-    
+
     // Call friend function
     restaurantVm.inviteFriend = inviteFriend;
     // Click on table
@@ -50,16 +50,19 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
     activate();
 
     function activate() {
-        getRestaurant($routeParams.restaurantId).then(function() {
+        getRestaurant($routeParams.restaurantId).then(function(data) {
+            restaurantVm.restaurant = data;
             //alert('Restaurant retreived from database.')
             restaurantVm.worktime = restaurantVm.restaurant.startTime + ' h : '
-                                    + restaurantVm.restaurant.endTime + ' h'
+                                    + restaurantVm.restaurant.endTime + ' h';
+            initMap();
         });
 
         setPriorities();
         getReviews($routeParams.restaurantId);
         getTablesByRestaurant();
-        
+
+
         // If guest is logged then get it's friends
         isLoggedIn().then(function() {
             if (restaurantVm.isGuestLogged) {
@@ -82,7 +85,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 return restaurantVm.restaurant;
             });
     };
-    
+
     function getReviews(id) {
         return reviewService.getReviews(id)
             .then(function(response) {
@@ -90,7 +93,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 return restaurantVm.reviews;
             });
     };
-    
+
     function isLoggedIn() {
         return guestService.isLoggedIn()
             .then(function(response) {
@@ -147,7 +150,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 return restaurantVm.allTables;
             });
     };
-    
+
     // Function for get all tables and coloring free
     function getFreeTables() {
         return tableService.getFreeTables(
@@ -167,15 +170,15 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                         break;
                       }
                   }
-                  
+
                   // If table is not found in free tables
                   if (p) {
                     restaurantVm.allTables[table].color = '#F44336';
                   }
               }
-          }); 
+          });
     }
-    
+
     // Click on table
     function selectTable(tableId) {
         var index;
@@ -207,14 +210,14 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
             }
         }
     };
-    
+
     function getFriends() {
         return guestService.getFriends(-1).then(function(response) {
             restaurantVm.currentUserFriends = response.data;
             return restaurantVm.currentUserFriends;
         });
     };
-    
+
     function inviteFriend(friendId) {
         var invitedFriend = null;
         for (var friend in restaurantVm.currentUserFriends) {
@@ -224,21 +227,21 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 restaurantVm.currentUserFriends.splice(friend, 1);
             }
         }
-        
+
         restaurantVm.guestsInvited += 1;
         return reservationService.inviteFriend(restaurantVm.reservation.reservationId, invitedFriend.email)
-          .then(function(response) { 
+          .then(function(response) {
               showToast('Poziv je poslat za ' + invitedFriend.firstName + ' ' + invitedFriend.lastName + '.');
           });
     };
-  
+
     restaurantVm.enterValidation = function() {
       return false;
     };
-    
+
     function saveReservation() {
       var requestBody = {
-          reservation: restaurantVm.reservation, 
+          reservation: restaurantVm.reservation,
           tables: restaurantVm.reservationTables
       }
       reservationService.saveReservationWithTables(requestBody)
@@ -271,7 +274,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
               }
           });
     };
-    
+
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
@@ -280,12 +283,12 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
             template  : '<md-toast><strong>' + toast_message + '<strong></md-toast>'
         });
     };
-    
+
     // Cancel reservation dialog
     function cancel() {
         $mdDialog.cancel();
     };
-    
+
     // Open reservation dialog
     function showReservationDialog() {
       $mdDialog.show({
@@ -297,11 +300,11 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
           fullscreen: false
       });
     };
-    
+
     function finishReservation() {
         $mdDialog.cancel();
     };
-    
+
     // Set reservation date and time and go to the next step
     function continueReservation() {
       restaurantVm.reservation.restaurant = restaurantVm.restaurant;
@@ -317,4 +320,31 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
 
       getFreeTables();
     };
+
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: {lat: -34.397, lng: 150.644}
+        });
+
+        var geocoder = new google.maps.Geocoder();
+        geocodeAddress(geocoder, map);
+    }
+
+    function geocodeAddress(geocoder, resultsMap) {
+        var address = restaurantVm.restaurant.address;
+
+        geocoder.geocode({'address': address}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+                map: resultsMap,
+                position: results[0].geometry.location
+            });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+        });
+    }
+
 }

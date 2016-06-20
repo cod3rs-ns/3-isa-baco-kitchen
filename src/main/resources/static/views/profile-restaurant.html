@@ -12,10 +12,12 @@
                 </md-button>
             </div>
         </md-toolbar>
-
+        <div layout="row">
+            <div id="map" style="height:400px; width:400px;"></div>
+        </div>
         <div layout="row">
             <div class="bg-image" flex>
-                <img src="images/background.jpg" alt="Restaurant image"/>
+                <div id="map"></div>
                 <h1>{{restaurantVm.restaurant.name}}</h1>
             </div>
             <div layout="column" flex>
@@ -114,7 +116,7 @@
       <md-tab label="Utisci gostiju">
         <md-content class="md-padding">
             <md-subheader ng-hide="restaurantVm.reviews.length > 0" class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
-            
+
             <!-- Restaurant Reviews -->
             <div style="padding: 5 40" ng-repeat="review in restaurantVm.reviews">
               <p>{{review.reviewer.firstName + ' ' + review.reviewer.lastName}}
@@ -130,7 +132,7 @@
                   <div ng-init="review.serviceRate"></div>
                   <div class="star-rating" star-rating-no-click rating-value="review.serviceRate" data-max="5"></div>
                 </div>
-                
+
                 <div class="rating-item" flex>
                   Hrana:
                   <div ng-init="review.foodRate"></div>
