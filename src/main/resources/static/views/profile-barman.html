@@ -124,7 +124,7 @@
 							<p ng-show="barmanProfileVm.waitingDrinks.length == 0;"> Nema pristiglih pića za izradu. </p>
 
 							<div ng-show="barmanProfileVm.waitingDrinks.length != 0;" layout="row" layout-wrap>
-								<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks" layout-wrap>
+								<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.waitingDrinks | orderBy : '-drink.order.date'" layout-wrap>
 
 									<md-card class="order-item">
 										<md-card-content>
@@ -150,7 +150,7 @@
 						<p ng-show="barmanProfileVm.preparingDrinks.length == 0;"> Nema prihvaćenih pića za izradu. </p>
 
 						<div ng-show="barmanProfileVm.preparingDrinks.length != 0;" layout="row" layout-wrap>
-							<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks" layout-wrap>
+							<div class='md-padding' layout="row" ng-repeat="drink in barmanProfileVm.preparingDrinks | orderBy : '-drink.order.date'" layout-wrap>
 								<md-card class="order-item">
 									<md-card-content>
 										<img ng-src="{{drink.menuItem.image}}" class="md-card-image order-img">

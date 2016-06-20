@@ -42,6 +42,7 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
             .then(function(data) {
                 cookProfileVm.cook = data;
                 cookProfileVm.cook.birthday = new Date(data.birthday);
+                cookProfileVm.cook.shoesSize = parseInt(cookProfileVm.cook.shoesSize);
                 return cookProfileVm.cook;
             });
 
@@ -58,7 +59,7 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
             controllerAs: 'employeeVm',
             templateUrl: '/views/dialogs/single-employee-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: false,
             locals: {
                 to_edit : cookProfileVm.cook

@@ -39,6 +39,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             .then(function(data) {
                 waiterProfileVm.waiter = data;
                 waiterProfileVm.waiter.birthday = new Date(data.birthday);
+                waiterProfileVm.waiter.shoesSize = parseInt(waiterProfileVm.waiter.shoesSize);
                 return waiterProfileVm.waiter;
             });
     };
@@ -85,7 +86,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             controllerAs: 'employeeVm',
             templateUrl: '/views/dialogs/single-employee-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose:false,
             fullscreen: false,
             locals: {
                 to_edit : waiterProfileVm.waiter,

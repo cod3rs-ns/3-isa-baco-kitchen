@@ -69,7 +69,7 @@ function SingleEmployeeController(employeeService, $mdDialog, $mdToast, to_edit)
         employeeService.
             updateEmployee(employeeVm.employee)
                     .then(function (data) {
-                        employeeVm.showToast('Uspješno ste izmijenili profil.');
+                        employeeVm.showToast('Uspješno ste izmijenili podatke profila.');
                         employeeVm.confirmedEdit = true;
                         employeeVm.cancel();
                     });
