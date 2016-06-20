@@ -87,9 +87,9 @@ public class ReservationServiceImpl implements ReservationService {
         for (Reservation reservation : findByRestaurantId(restaurantId)) {
 
             reservationBeg = reservation.getReservationDateTime();
-            reservationEnd = new Date(reservation.getReservationDateTime().getTime() + reservation.getLength()*HOUR_TO_MILISECONDS);
+            reservationEnd = new Date(reservationBeg.getTime() + reservation.getLength()*HOUR_TO_MILISECONDS);
 
-            if (!(isBetween(resBeg, reservationBeg, reservationEnd) || isBetween(resEnd, reservationBeg, reservationEnd))) {
+            if (isBetween(resBeg, reservationBeg, reservationEnd) || isBetween(resEnd, reservationBeg, reservationEnd)) {
                 reservations.add(reservation);
             }
         }

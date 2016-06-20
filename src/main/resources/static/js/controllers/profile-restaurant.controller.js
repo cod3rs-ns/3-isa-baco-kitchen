@@ -27,6 +27,9 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
     restaurantVm.reservationTables = [];
     // Get user's friends for invitation
     restaurantVm.currentUserFriends = [];
+    // Number of places in reservation
+    restaurantVm.guestsNumber = 0;
+    restaurantVm.guestsInvited = 0;
     
     restaurantVm.getTablesByRestaurant = getTablesByRestaurant;
     restaurantVm.saveReservation = saveReservation;
@@ -149,7 +152,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
     function getFreeTables() {
         return tableService.getFreeTables(
             $routeParams.restaurantId,
-            restaurantVm.reservation.reservationDateTime.getMilliseconds(),
+            restaurantVm.reservation.reservationDateTime.getTime(),
             restaurantVm.reservation.length)
           .then(function(data) {
               restaurantVm.freeTables = data;
@@ -222,6 +225,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
             }
         }
         
+        restaurantVm.guestsInvited += 1;
         return reservationService.inviteFriend(restaurantVm.reservation.reservationId, invitedFriend.email)
           .then(function(response) { 
               showToast('Poziv je poslat za ' + invitedFriend.firstName + ' ' + invitedFriend.lastName + '.');
@@ -251,7 +255,18 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
                 showToast('Pogrešni parametri rezervacije!');
               }
               else {
+                restaurantVm.reservation = response.data;
                 showToast('Rezervacija uspješno kreirana. Možete pozvati prijatelje da Vam se pridruže!');
+                var index;
+                for (index = 0; index < restaurantVm.reservationTables.length; ++index) {
+                    var i;
+                    for (i = 0; i < restaurantVm.allTables.length; ++i) {
+                        if (restaurantVm.allTables[i].tableId == restaurantVm.reservationTables[index]) {
+                            restaurantVm.guestsNumber += restaurantVm.allTables[i].positions;
+                            break;
+                        }
+                    }
+                }
                 WizardHandler.wizard().goTo(2);
               }
           });
@@ -299,7 +314,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, userServi
         0,
         0
       );
-      
+
       getFreeTables();
     };
 }

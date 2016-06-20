@@ -45,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-    // TODO @Baćo probably :) Switch to query
+    // TODO @Keky probably :) Switch to query
     @Override
     public Collection <Employee> findByRestaurant(Integer restaurantId) {
         Collection <Employee> allEmployees = employeeRepository.findAll();

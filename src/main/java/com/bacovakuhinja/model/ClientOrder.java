@@ -27,7 +27,7 @@ public class ClientOrder implements Serializable{
     private Date deadline;
 
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "co_reservation_id")
     private Reservation reservation;
 
@@ -35,7 +35,7 @@ public class ClientOrder implements Serializable{
     private Integer clientId;
 
     @JsonIgnore
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "co_table_id")
     private RestaurantTable table;
 

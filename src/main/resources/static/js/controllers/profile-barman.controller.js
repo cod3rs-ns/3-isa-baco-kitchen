@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('BarmanProfileController', BarmanProfileController);
 
-BarmanProfileController.$inject = ['employeeService', 'bartenderService', 'passService', '$mdDialog', '$scope'];
+BarmanProfileController.$inject = ['employeeService', 'bartenderService', 'passService', '$mdDialog', '$scope', '$mdToast'];
 
-function BarmanProfileController(employeeService, bartenderService, passService, $mdDialog, $scope) {
+function BarmanProfileController(employeeService, bartenderService, passService, $mdDialog, $scope, $mdToast) {
     var barmanProfileVm = this;
 
     barmanProfileVm.barman = {};
@@ -160,14 +160,27 @@ function BarmanProfileController(employeeService, bartenderService, passService,
 
     barmanProfileVm.prepareDrink = prepareDrink;
     function prepareDrink(itemId){
-        console.log(itemId);
         employeeService.prepareOrderItem(itemId, barmanProfileVm.barman.userId)
-            .then(function (data) {
-                if(data != null){
-                    barmanProfileVm.preparingDrinks.push(data);
+            .then(function (response) {
+                if(response.statusText == "OK") {
+                    barmanProfileVm.preparingDrinks.push(response.data);
+                    barmanProfileVm.showToast("Uspješno ste prihvatili piće za izradu.");
                 }
+                else
+                    barmanProfileVm.showToast("Drugi šanker je u međuvremenu prihvatio dato piće.");
             });
     }
+
+    barmanProfileVm.showToast= showToast;
+    function showToast(toast_message) {
+        $mdToast.show({
+            hideDelay : 3000,
+            position  : 'top right',
+            parent    : angular.element(document.querySelectorAll('#toast-box')),
+            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
+        });
+    };
+
 
     function getAcceptedItems(eId) {
         employeeService.getAcceptedItems(eId)

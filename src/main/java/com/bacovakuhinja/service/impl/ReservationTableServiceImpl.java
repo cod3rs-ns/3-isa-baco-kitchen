@@ -29,4 +29,9 @@ public class ReservationTableServiceImpl implements ReservationTableService {
     public ReservationTable save(ReservationTable table) {
         return reservationTableRepository.save(table);
     }
+
+    @Override
+    public void delete(ReservationTable table) {
+        reservationTableRepository.delete(table.getId());
+    }
 }

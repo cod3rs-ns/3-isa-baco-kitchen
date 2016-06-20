@@ -2,7 +2,7 @@ angular
     .module('isa-mrs-project')
     .controller('SingleProviderController', SingleProviderController);
 
-SingleProviderController.$inject = ['providerService', '$mdToast', '$mdDialog', 'edit_state', 'provider']
+SingleProviderController.$inject = ['providerService', '$mdToast', '$mdDialog', 'edit_state', 'provider'];
 
 function SingleProviderController(providerService, $mdToast, $mdDialog, edit_state, provider) {
     var providerVm = this;
@@ -22,39 +22,46 @@ function SingleProviderController(providerService, $mdToast, $mdDialog, edit_sta
                 firstName: '',
                 lastName: '',
                 email: '',
-                image: 'images/provider.png',
-                password: 'somepass',
-                type: 'provider',
+                image: '../images/no_image.gif',
+                password: '',
+                type: 'restaurant_provider',
                 userId: null,
                 info: ''
             };
         };
     };
 
-    function showToast(message) {
-        $mdToast.show({
-          hideDelay : 3000,
+
+    function showToast(text, delay) {
+        var toast = $mdToast.show({
+          hideDelay : delay,
           position  : 'top right',
-          template  : '<md-toast><strong> ' + message + '<strong> </md-toast>'
+          parent    : angular.element(document.querySelectorAll('#toast-box')),
+          template  : '<md-toast>' + text  + '</md-toast>'
         });
+        return toast;
     };
 
     function saveProvider() {
+        var progress = "<md-progress-linear md-mode='indeterminate'></md-progress-linear>";
+        var toast = providerVm.showToast(progress, 0);
         if (edit_state) {
             providerService.updateProvider(providerVm.provider)
                 .then(function() {
                     providerVm.editState = false;
                     providerVm.cancel();
-                    providerVm.showToast("Izmene profila uspešno sačuvane.")
+                    $mdToast.hide(toast);
+                    providerVm.showToast("<strong>Sve promene su uspešno sačuvane.</strong>", 3000);
                 });
         }else {
             providerService.createProvider(providerVm.provider)
                 .then(function() {
                     providerVm.editState = false;
                     providerVm.cancel();
-                    providerVm.showToast("Provajder uspešno registrovan.")
+                    $mdToast.hide(toast);
+                    providerVm.showToast("<strong>Provajder je uspešno registrovan.</strong>", 3000);
                 });
-        }
+        };
     };
 
     function cancel() {

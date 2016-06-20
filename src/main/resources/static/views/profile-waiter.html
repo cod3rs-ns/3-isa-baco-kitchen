@@ -1,4 +1,7 @@
 <div id="wrapper" layout="row">
+	<div id="toast-box"></div>
+
+
 	<section layout="column">
 		<md-sidenav
 				class="md-sidenav-left"
@@ -51,7 +54,7 @@
 					<h4 >&nbsp;&nbsp;{{waiterProfileVm.waiter.birthday | date: 'longDate' }}</h4>
 				</div>
 				<div style=" margin-left: 10px;" layout="row" layout-align="center center">
-					<md-icon class="material-icons">style
+					<md-icon class="material-icons">pets
 						<md-tooltip md-direction="top">
 							broj cipela
 						</md-tooltip>
@@ -255,7 +258,12 @@
 											<p>{{order.date | date: 'medium'}}</p>
 										</div>
 
-										<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)"> <md-icon class="material-icons md-primary md-hue-3" >edit</md-icon> </md-button>
+										<md-button class="md-icon-button" ng-click="waiterProfileVm.editOrder(order)">
+											<md-tooltip md-direction="left">
+												Izmijeni porudžbinu.
+											</md-tooltip>
+											<md-icon class="material-icons md-primary md-hue-3" >edit</md-icon>
+										</md-button>
 									</md-list-item>
 								</md-list>
 							</div >
@@ -269,7 +277,11 @@
 										</div>
 
 										<md-button class="md-icon-button" ng-click="waiterProfileVm.changeOrderStatus(order);">
-											<md-icon class="material-icons md-primary md-hue-3" >assignment_return
+											<md-tooltip md-direction="left">
+												Prebaci u listu aktivnih porudžbina.
+											</md-tooltip>
+											<md-icon class="material-icons md-primary md-hue-3" >
+												assignment_return
 											</md-icon>
 										</md-button>
 									</md-list-item>

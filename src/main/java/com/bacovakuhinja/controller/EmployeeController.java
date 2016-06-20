@@ -91,7 +91,6 @@ public class EmployeeController {
         return new ResponseEntity <Collection<Employee>>(employees, HttpStatus.OK);
     }
 
-    // TODO change after implementation of new TimeSchedule system
     @Authorization()
     @RequestMapping(
             value = "/api/employee/schedule",

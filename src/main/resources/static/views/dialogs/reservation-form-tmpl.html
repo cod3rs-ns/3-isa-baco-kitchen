@@ -81,11 +81,12 @@
           </wz-step>
           <wz-step wz-title="Pozovi prijatelje">
               <h1>Koga želite da pozovete od prijatelja?</h1>
+              <h4>Pozvali ste {{restaurantVm.guestsInvited}} od {{restaurantVm.guestsNumber}} prijatelja.</h4>
               <md-list>
                 <md-list-item ng-repeat="friend in restaurantVm.currentUserFriends">
                   <img alt="{{ friend.firstName }}" ng-src="{{friend.image}}" class="md-avatar" />
                   <p>{{ friend.firstName + ' ' + friend.lastName }}</p>
-                  <md-button ng-hide="friend.invited" ng-click="restaurantVm.inviteFriend(friend.userId);">Pozovi</md-button>
+                  <md-button ng-disabled="restaurantVm.guestsInvited >= restaurantVm.guestsNumber" ng-hide="friend.invited" ng-click="restaurantVm.inviteFriend(friend.userId);">Pozovi</md-button>
                 </md-list-item>
               </md-list>
               <md-dialog-actions layout="row">

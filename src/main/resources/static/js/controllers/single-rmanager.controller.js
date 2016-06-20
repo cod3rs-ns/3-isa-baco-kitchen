@@ -24,7 +24,7 @@ function SingleRManagerController(restaurantManagerService, $mdDialog, $mdToast,
                 'firstName' : '',
                 'lastName' : '',
                 'email' : '',
-                'image' : '',
+                'image' : '../images/no_image.gif',
                 'type' : 'restaurant_manager',
                 'info' : '',
                 'restaurant' : {}
@@ -41,16 +41,31 @@ function SingleRManagerController(restaurantManagerService, $mdDialog, $mdToast,
     }
 
     function create() {
+        rmanagerVm.cancel();
+        var toast = progressToast();
+
         restaurantManagerService.createRestaurantManager(rmanagerVm.rmanager, restaurant_id)
             .then(function(data){
+                $mdToast.hide(toast);
                 rmanagerVm.showToast('Menadžer je uspješno kreiran.')
-                rmanagerVm.cancel();
             });
     };
 
     function update() {
 
     };
+
+    function progressToast(){
+        var toast = $mdToast.show({
+            hideDelay : 0,
+            position  : 'top right',
+            parent    : angular.element(document.querySelectorAll('#toast-box')),
+            template  : '<md-toast><md-progress-linear md-mode="indeterminate"></md-progress-linear></md-toast>'
+        });
+
+        return toast;
+    }
+
 
     function showToast(toast_message) {
         $mdToast.show({

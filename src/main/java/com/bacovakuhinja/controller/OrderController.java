@@ -35,6 +35,9 @@ public class OrderController {
     @Autowired
     private WaiterService waiterService;
 
+    @Autowired
+    private ReservationService reservationService;
+
     @RequestMapping(
             value = "api/orders/{table_id}",
             method = RequestMethod.GET,
@@ -76,9 +79,10 @@ public class OrderController {
         return new ResponseEntity <ClientOrder>(newOrder, HttpStatus.OK);
     }
 
-    // FIXME @Baco - Ove statuse definisi negdje kao private static String ili tako nesto...
-    // FIXME Mozda nije lose da napravimo jednu Util klasu sa svim ovim stringovima
     private ClientOrder createOrder(ClientOrder order, int restaurantId){
+        if (order.getReservation() != null) {
+            order.setReservation(reservationService.findOne(order.getReservation().getReservationId()));
+        }
         ClientOrder newOrder = clientOrderService.create(order);
 
         // Notify for new items
@@ -99,9 +103,8 @@ public class OrderController {
                 drinkList.add(nItem);
         }
 
-        // FIXME @Baco
-        foodMap.put("new", foodList);
-        drinkMap.put("new", drinkList);
+        foodMap.put(Constants.NotificationOrderStatus.NEW, foodList);
+        drinkMap.put(Constants.NotificationOrderStatus.NEW, drinkList);
         this.template.convertAndSend("/subscribe/ActiveFood/" + restaurantId, foodMap);
         this.template.convertAndSend("/subscribe/ActiveDrink/" + restaurantId, drinkMap);
 
@@ -123,7 +126,6 @@ public class OrderController {
         return new ResponseEntity <ClientOrder>(updated, HttpStatus.OK);
     }
 
-    // FIXME @Baco
     private ClientOrder updateOrder(ClientOrder newOrder, ClientOrder oldOrder, int r_id){
         Set<OrderItem> oldItems = new HashSet<OrderItem>();
         oldItems.addAll(oldOrder.getItems());
@@ -188,14 +190,13 @@ public class OrderController {
             orderItemService.delete(oi.getItemId());
         }
 
-        //FIXME @Baco Stavi i ovo u Constants
-        foodMap.put("new", foodNew);
-        foodMap.put("remove" , foodRemove);
-        foodMap.put("update", foodUpdate);
+        foodMap.put(Constants.NotificationOrderStatus.NEW, foodNew);
+        foodMap.put(Constants.NotificationOrderStatus.REMOVE , foodRemove);
+        foodMap.put(Constants.NotificationOrderStatus.UPDATE, foodUpdate);
 
-        drinksMap.put("new", drinkNew);
-        drinksMap.put("remove" , drinkRemove);
-        drinksMap.put("update", drinkUpdate);
+        drinksMap.put(Constants.NotificationOrderStatus.NEW, drinkNew);
+        drinksMap.put(Constants.NotificationOrderStatus.REMOVE , drinkRemove);
+        drinksMap.put(Constants.NotificationOrderStatus.UPDATE, drinkUpdate);
 
         this.template.convertAndSend("/subscribe/ActiveFood/" + r_id, foodMap);
         this.template.convertAndSend("/subscribe/ActiveDrink/" + r_id, drinksMap);

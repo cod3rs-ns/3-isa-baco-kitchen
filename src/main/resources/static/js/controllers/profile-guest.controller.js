@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('GuestProfileController', GuestProfileController);
     
-GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService'];
+GuestProfileController.$inject = ['$routeParams', '$location', '$mdToast', '$mdDialog', 'guestService', 'reviewService','reservationService'];
 
-function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService) {
+function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, guestService, reviewService, reservationService) {
     var guestVm = this;
 
     // Check if logged user's profile
@@ -60,6 +60,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     guestVm.sendReview = sendReview;
     
     guestVm.showToast = showToast;
+    guestVm.confirmationDialog = confirmationDialog;
 
     activate();
     
@@ -78,16 +79,21 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
       // Check if reservation time is in next 30 minutes
       if (Date.now() + 30*60*1000 < reservation.reservationDateTime) {
           // Remove reservation from list of active reservations
-          for (var i in guestVm.activeReservations) {
-              if (guestVm.activeReservations[i].reservationId == reservation.reservationIdid) {
-                  guestVm.activeReservations.splice(i, 1);
-                  break;
-              }
-          }
-          reservationService.removeReservation(reservation.reservationId)
-            .then(function(response) {
-                showToast('Rezervacija je otkazana i obaviješteni su pozvani prijatelji.');
-            });
+          guestVm.confirmationDialog(
+              "Otkazivanje rezervacije",
+              "Da li ste sigurni da želite da otkažete rezervaciju?",
+               function () {
+                   for (var i in guestVm.activeReservations) {
+                       if (guestVm.activeReservations[i].reservationId == reservation.reservationIdid) {
+                           guestVm.activeReservations.splice(i, 1);
+                           break;
+                       }
+                   }
+                   reservationService.removeReservation(reservation.reservationId)
+                       .then(function(response) {
+                           showToast('Rezervacija je otkazana i obaviješteni su pozvani prijatelji.');
+                       });
+               });
       }
       else {
         showToast('Rezervacija počinje za manje od pola sata. Nije moguće otkazati.');
@@ -110,24 +116,30 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     
     // Remove friend from list
     function removeFriend(id) {
-        guestService.removeFriend(id)
-          .then(function (response) {
-              // If on my profile then remove user from list
-              if (guestVm.admin) {
-                  for (var i = guestVm.friends.length - 1; i >= 0; i--) {
-                      if (guestVm.friends[i].guestId === id) {
-                         guestVm.friends.splice(i, 1);
-                         break;
-                      }
-                  }
-              }
-              // If not on my profile - user is not friend anymore and reload his friends
-              else {
-                  guestVm.isFriend = false;
-                  getFriends();
-              }
-              showToast('Obrisali ste prijatelja.');
-          });
+        guestVm.confirmationDialog(
+            "Brisanje prijatelja",
+            "Da li ste sigurni da želite da obrišete prijatelja?",
+            function () {
+                guestService.removeFriend(id)
+                    .then(function (response) {
+                        // If on my profile then remove user from list
+                        if (guestVm.admin) {
+                            for (var i = guestVm.friends.length - 1; i >= 0; i--) {
+                                if (guestVm.friends[i].guestId === id) {
+                                    guestVm.friends.splice(i, 1);
+                                    break;
+                                }
+                            }
+                        }
+                        // If not on my profile - user is not friend anymore and reload his friends
+                        else {
+                            guestVm.isFriend = false;
+                            getFriends();
+                        }
+                        showToast('Obrisali ste prijatelja.');
+                    });
+            }
+        );
     };
 
     // Accept friend request
@@ -139,7 +151,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                   if (guestVm.friendRequests[i].guestId === id) {
                      guestVm.friends.push(guestVm.friendRequests[i]);
                      showToast('Poziv za prijateljstvo od ' + 
-                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                        guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].lastName +
                         ' prihvaćen.');
                      guestVm.friendRequests.splice(i, 1);
                      break;
@@ -156,7 +168,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               for (var i = guestVm.friendRequests.length - 1; i >= 0; i--) {
                   if (guestVm.friendRequests[i].guestId === id) {
                     showToast('Poziv za prijateljstvo od ' + 
-                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].firstName +
+                       guestVm.friendRequests[i].firstName + ' ' + guestVm.friendRequests[i].lastName +
                        ' odbijen.');
                       guestVm.friendRequests.splice(i, 1);
                       break;
@@ -198,6 +210,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
           .then(function (response) {
               // Update visits and intvitations
               getVisits();
+              getReservations();
               getInvitations();
               showToast('Poziv za rezervaciju prihvaćen. Sada možete napraviti porudžbinu u sekciji aktivnih rezervacija.');
           });
@@ -205,13 +218,19 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     
     // Reject reservation invite
     function declineInvite(reservationId) {
-      guestService.declineInvite(reservationId)
-        .then(function (response) {
-            // Update visits and intvitations
-            getVisits();  
-            getInvitations();
-            showToast('Poziv za rezervaciju odbijen.');
-        });
+        guestVm.confirmationDialog(
+            "Odbijanje poziva",
+            "Da li ste sigurni da želite da odbijete poziv za rezervaciju?",
+            function () {
+                guestService.declineInvite(reservationId)
+                    .then(function (response) {
+                        // Update visits and intvitations
+                        getVisits();
+                        getReservations();
+                        getInvitations();
+                        showToast('Poziv za rezervaciju odbijen.');
+                    });
+            });
     };
     
     // Order meal for ACCEPTED or CREATED reservation
@@ -247,11 +266,16 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
     function cancelMealOrder(reservation) {
         // Check if reservation time (and order time) is in next 30 minutes
         if (Date.now() + 30*60*1000 < reservation.reservation.reservationDateTime) {
-          guestService.cancelMealOrder(reservation.order)
-            .then(function() {
-                showToast('Otkazali ste porudžbinu. Sada možete napraviti novu!');
-                reservation.order = null;
-            });
+            guestVm.confirmationDialog(
+                "Otkazivanje porudžbine",
+                "Da li ste sigurni da želite da otkažete porudžbinu?",
+                function () {
+                    guestService.cancelMealOrder(reservation.order)
+                        .then(function() {
+                            showToast('Otkazali ste porudžbinu. Sada možete napraviti novu!');
+                            reservation.order = null;
+                        });
+                });
         }
         else {
             showToast('Vaša porudžbina će biti spremna za manje od pola sata. Nije moguće otkazati.');
@@ -280,6 +304,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
         
         isFriend();
         isMyProfile();
+        isRequestSent();
     };
 
     function getUser() {
@@ -288,6 +313,14 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
               guestVm.user = response.data;
               return guestVm.user;
           });
+    };
+    
+    function isRequestSent() {
+      return guestService.isRequestSent($routeParams.guestId)
+        .then(function(response) {
+            guestVm.sendRequest = response.data;
+            return guestVm.sendRequest;
+        });
     };
     
     function getRequests() {
@@ -387,5 +420,21 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                 }
             }
         );
+    };
+
+
+    function confirmationDialog(title, text, yesFunc) {
+        var confirm = $mdDialog.confirm()
+            .title(title)
+            .textContent(text)
+            .ariaLabel('Confirmation')
+            .ok('DA')
+            .cancel('NE');
+
+        $mdDialog.show(confirm).then(
+            yesFunc,
+            function(){
+                $mdDialog.hide();
+            });
     };
 }
