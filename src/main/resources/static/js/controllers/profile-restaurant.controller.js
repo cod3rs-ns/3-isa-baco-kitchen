@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'menuItemService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', '$mdDialog', '$mdToast', '$routeParams'];
+RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'menuItemService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', 'workingTimeService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(WizardHandler, restaurantService, menuItemService, userService, reviewService, tableService, guestService, reservationService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
+function RestaurantProfileController(WizardHandler, restaurantService, menuItemService, userService, reviewService, tableService, guestService, reservationService, workingTimeService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
 
     restaurantVm.restaurant = {};
@@ -17,6 +17,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
     restaurantVm.freeTables = [];
     restaurantVm.addManagerOption = false;
     restaurantVm.DateTime = {};
+    restaurantVm.workingTime = null;
     // Inital reservation's state
     restaurantVm.reservation = {
       restaurant: null,
@@ -65,6 +66,11 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
             menuItemService.getAllActiveByType('drink', $routeParams.restaurantId).success(function(data) {
                 restaurantVm.drinksMenu = data;
             });
+            
+            workingTimeService.findWorkingTimeByRestaurant($routeParams.restaurantId)
+                .then(function(data) {
+                    restaurantVm.workingTime = data;
+                });
         });
 
         setPriorities();
@@ -326,9 +332,65 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
         0,
         0
       );
-
+      
+      var day = restaurantVm.DateTime.date.getDay();
+      var dt  = reservationVm.workingTime;
+      var mdt = restaurantVm.DateTime;
+      console.log(day);
+      
+      // Sunday
+      if (day == 0) {
+        if (dt.workingOnSun) {
+            if (!isBetween(mdt.hours, mdt.mins, dt.sunStartHours, dt.sunStartMinutes, dt.sunEndHours, dt.sunEndMinutes, dt.sunReversed)) {
+                showToast('Rezervacija se ne uklapa u radno vrijeme nedjeljom!');
+                return;
+            }
+        }
+        else {
+            showToast('Restoran ne radi nedjeljom!');
+            return;
+        }
+      }
+      // Saturday
+      else if (day == 6) {
+        if (dt.workingOnSat) {
+            if (!isBetween(mdt.hours, mdt.mins, dt.satStartHours, dt.satStartMinutes, dt.satEndHours, dt.satEndMinutes, dt.satReversed)) {
+                showToast('Rezervacija se ne uklapa u radno vrijeme subotom!');
+                return;
+            }
+        }
+        else {
+            showToast('Restoran ne radi subotom!');
+            return;
+        }
+      }
+      else {
+        if (!isBetween(mdt.hours, mdt.mins, dt.regStartHours, dt.regStartMinutes, dt.regEndHours, dt.regEndMinutes, dt.regReversed)) {
+            showToast('Rezervacija se ne uklapa u radno vrijeme radnim danom!');
+            return;
+        }
+      }
+      
+      WizardHandler.wizard().goTo(1);
       getFreeTables();
     };
+    
+    function isBetween(myHours, myMinutes, minHours, minMinutes, maxHours, maxMinutes, inverse) {
+        minMin = minHours * 60 + minMinutes;
+        myMin  = myHours  * 60 + myHours;
+        maxMin = maxHours * 60 + maxHours;
+        
+        if (inverse == false) {
+            if (minMin <= myMin && myMin <= maxMin) 
+                return true;
+        }
+        else {
+          if (!(minMin <= myMin && myMin <= maxMin)) 
+              return true;
+        }
+            
+        return false;
+    }
 
     function initMap() {
         var map = new google.maps.Map(document.getElementById('map'), {
