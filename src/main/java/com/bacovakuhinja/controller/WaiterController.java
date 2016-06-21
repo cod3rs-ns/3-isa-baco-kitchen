@@ -8,6 +8,7 @@ import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.model.Waiter;
 import com.bacovakuhinja.service.*;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -82,7 +83,9 @@ public class WaiterController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Waiter> createWaiter(@RequestBody Waiter waiter) {
-        waiter.setPassword("generated_password");
+        String pass = PasswordHelper.randomPassword();
+        waiter.setPassword(pass);
+        waiter.setLogged(false);
         waiter.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Waiter created = waiterService.create(waiter);
         return new ResponseEntity <Waiter>(created, HttpStatus.CREATED);

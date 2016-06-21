@@ -5,6 +5,7 @@ import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.CookService;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -54,7 +55,9 @@ public class CookController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Cook> createCook(@RequestBody Cook cook) {
-        cook.setPassword("generated_password");
+        String pass = PasswordHelper.randomPassword();
+        cook.setPassword(pass);
+        cook.setLogged(false);
         cook.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Cook created = cookService.create(cook);
         return new ResponseEntity<Cook>(created, HttpStatus.CREATED);

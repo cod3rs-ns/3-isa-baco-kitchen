@@ -6,6 +6,7 @@ import com.bacovakuhinja.model.Bartender;
 import com.bacovakuhinja.model.User;
 import com.bacovakuhinja.service.BartenderService;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,12 +40,15 @@ public class BartenderController {
         return new ResponseEntity <Bartender>(bartender, HttpStatus.OK);
     }
 
+    @SendEmail
     @RequestMapping(value = "/api/bartender",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Bartender> createBartender(@RequestBody Bartender bartender) {
-        bartender.setPassword("generated_password");
+        String pass = PasswordHelper.randomPassword();
+        bartender.setPassword(pass);
+        bartender.setLogged(false);
         bartender.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
         Bartender created = bartenderService.create(bartender);
         return new ResponseEntity<Bartender>(created, HttpStatus.CREATED);

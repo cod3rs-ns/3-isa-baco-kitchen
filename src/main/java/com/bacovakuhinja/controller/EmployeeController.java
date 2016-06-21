@@ -1,10 +1,12 @@
 package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.annotations.Authorization;
+import com.bacovakuhinja.annotations.SendEmail;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.DailyScheduleService;
 import com.bacovakuhinja.service.EmployeeService;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.PasswordHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -46,11 +48,18 @@ public class EmployeeController {
         return new ResponseEntity <Employee>(emp, HttpStatus.OK);
     }
 
+    @SendEmail
     @RequestMapping(value = "/api/employee",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <Employee> createEmployee(@RequestBody Employee emp) {
+        //generating random password
+        String pass = PasswordHelper.randomPassword();
+        emp.setPassword(pass);
+        emp.setLogged(false);
+        emp.setVerified(Constants.Registration.STATUS_NOT_VERIFIED);
+
         Employee created = employeeService.create(emp);
         return new ResponseEntity<Employee>(created, HttpStatus.CREATED);
     }
@@ -67,7 +76,6 @@ public class EmployeeController {
         }
         return new ResponseEntity <Employee>(updatedEmp, HttpStatus.OK);
     }
-
 
     @RequestMapping(
             value = "/api/employeeRegion/e={emp_id}",

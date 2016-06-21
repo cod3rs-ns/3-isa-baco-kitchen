@@ -5,6 +5,7 @@ import com.bacovakuhinja.aspects.SendMailAspect;
 import com.bacovakuhinja.model.*;
 import com.bacovakuhinja.service.*;
 import com.bacovakuhinja.utility.Constants;
+import com.bacovakuhinja.utility.MailGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -259,7 +260,7 @@ public class ReservationController {
                 reservation.getReservationDateTime().getTime() + "");
 
         try {
-            SendMailAspect.sendMail(email, INVITE_TITLE, html);
+            MailGenerator.sendMail(email, INVITE_TITLE, html);
         } catch (MessagingException e) {
             e.printStackTrace();
         }
