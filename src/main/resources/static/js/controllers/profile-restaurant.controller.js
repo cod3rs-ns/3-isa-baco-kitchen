@@ -18,6 +18,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
     restaurantVm.addManagerOption = false;
     restaurantVm.DateTime = {};
     restaurantVm.workingTime = null;
+    restaurantVm.minDate = new Date();
     // Inital reservation's state
     restaurantVm.reservation = {
       restaurant: null,
@@ -334,7 +335,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
       );
       
       var day = restaurantVm.DateTime.date.getDay();
-      var dt  = reservationVm.workingTime;
+      var dt  = restaurantVm.workingTime;
       var mdt = restaurantVm.DateTime;
       console.log(day);
       
@@ -385,7 +386,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
                 return true;
         }
         else {
-          if (!(minMin <= myMin && myMin <= maxMin)) 
+          if (!(maxMin <= myMin && myMin <= minMin)) 
               return true;
         }
             
