@@ -5,6 +5,7 @@ import com.bacovakuhinja.model.RestaurantProvider;
 import com.bacovakuhinja.service.OfferRequestService;
 import com.bacovakuhinja.service.ProviderResponseService;
 import com.bacovakuhinja.service.RestaurantProviderService;
+import com.bacovakuhinja.utility.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Date;
 
 @RestController
 public class ProviderResponseController {
@@ -57,12 +59,19 @@ public class ProviderResponseController {
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <ProviderResponse> updateProviderResponse(@RequestBody ProviderResponse provider) {
-        ProviderResponse updatedResponse = responseService.update(provider);
-        if (updatedResponse == null) {
-            return new ResponseEntity <ProviderResponse>(HttpStatus.NOT_FOUND);
+    public ResponseEntity <ProviderResponse> updateProviderResponse(@RequestBody ProviderResponse providerResponse) {
+        ProviderResponse answer = null;
+        if(providerResponse.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || providerResponse.getOffer().getDeadline().before(new Date())){
+            answer = null;
+        }else{
+            ProviderResponse updatedResponse = responseService.update(providerResponse);
+            if (updatedResponse == null) {
+                return new ResponseEntity <ProviderResponse>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity <ProviderResponse>(updatedResponse, HttpStatus.OK);
         }
-        return new ResponseEntity <ProviderResponse>(updatedResponse, HttpStatus.OK);
+        return new ResponseEntity <ProviderResponse>(answer, HttpStatus.NO_CONTENT);
+
     }
 
     @RequestMapping(

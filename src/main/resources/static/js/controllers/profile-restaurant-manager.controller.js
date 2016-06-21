@@ -41,21 +41,22 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         getLoggedRestaurantManager().then(function() {
             //alert('Restaurant retreived from database.')
 
-        });
-        menuItemService.getAllActiveByType('food', 2).success(function(data) {
-            console.log(data);
-            rmanagerVm.foodMenu = data;
+            menuItemService.getAllActiveByType('food', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                console.log(data);
+                rmanagerVm.foodMenu = data;
+            });
+
+            menuItemService.getAllActiveByType('drink', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                console.log(data);
+                rmanagerVm.drinksMenu = data;
+            });
+
+            employeeService.getEmployeesByRestaurant(rmanagerVm.rmanager.restaurant.restaurantId).then(function(data) {
+                console.log(data);
+                rmanagerVm.employees = data;
+            });
         });
 
-        menuItemService.getAllActiveByType('drink', 2).success(function(data) {
-            console.log(data);
-            rmanagerVm.drinksMenu = data;
-        });
-
-        employeeService.getEmployeesByRestaurant(2).then(function(data) {
-            console.log(data);
-            rmanagerVm.employees = data;
-        });
     }
 
     function getLoggedRestaurantManager() {
