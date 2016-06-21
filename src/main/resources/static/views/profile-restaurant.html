@@ -8,11 +8,16 @@
 
         <!-- Additional info -->
         <div class="restaurant-rating">
-            <md-content class="md-padding">
-                <p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>
-                <p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>
-                <p class="add-info-details"> Treba srediti dalje ovaj deo </p>
-            </md-content>
+            <!--<md-content class="md-padding">-->
+                <!--<p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>-->
+                <!--<p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>-->
+                <!--<p class="add-info-details"> Treba srediti dalje ovaj deo </p>-->
+                <md-button  ng-show="restaurantVm.isGuestLogged"
+                            ng-click="restaurantVm.showReservationDialog();"
+                            class="action-empl md-raised md-primary"
+                            style="width:100%; height:100%;">
+                    <i class="material-icons md-48">bookmark_border</i> </md-button>
+            <!--</md-content>-->
         </div>
 
         <!-- Name -->
