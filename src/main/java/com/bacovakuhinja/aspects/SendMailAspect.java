@@ -104,8 +104,6 @@ public class SendMailAspect {
     public void sendNewEmployeeMail(Employee emp) throws MessagingException {
         String tokenValue = generateToken(emp.getEmail());
 
-        System.out.println("Employyee mail");
-
         User user = userService.findOne(emp.getEmail());
         String restaurantName = restaurantService.findOne(emp.getRestaurantID()).getName();
         new MailGenerator().new RegisterEmployeeMail(user.getEmail(),"Potvrda registracije za sajt Baćova kuhinja", user.getFirstName(), user.getPassword(), restaurantName, emp.getType(), tokenValue);
