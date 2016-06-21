@@ -2,14 +2,17 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantProfileController', RestaurantProfileController);
 
-RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'menuItemService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', 'workingTimeService', '$mdDialog', '$mdToast', '$routeParams'];
+RestaurantProfileController.$inject = ['WizardHandler', 'restaurantService', 'reportService', 'menuItemService', 'userService', 'reviewService', 'tableService', 'guestService', 'reservationService', 'workingTimeService', '$mdDialog', '$mdToast', '$routeParams'];
 
-function RestaurantProfileController(WizardHandler, restaurantService, menuItemService, userService, reviewService, tableService, guestService, reservationService, workingTimeService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
+function RestaurantProfileController(WizardHandler, restaurantService, reportService, menuItemService, userService, reviewService, tableService, guestService, reservationService, workingTimeService, $mdDialog, $mdToast, $routeParams, SingleDrinkController){
     var restaurantVm = this;
 
     restaurantVm.restaurant = {};
     restaurantVm.foodMenu = [];
     restaurantVm.drinkMenu = [];
+    // All reviews from guest friends
+    restaurantVm.friendsReviews = [];
+    // All restaurant reviews
     restaurantVm.reviews = [];
     // All restaurant's tables
     restaurantVm.allTables = [];
@@ -66,7 +69,7 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
             menuItemService.getAllActiveByType('drink', $routeParams.restaurantId).success(function(data) {
                 restaurantVm.drinksMenu = data;
             });
-            
+
             workingTimeService.findWorkingTimeByRestaurant($routeParams.restaurantId)
                 .then(function(data) {
                     restaurantVm.workingTime = data;
@@ -76,7 +79,6 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
         setPriorities();
         getReviews($routeParams.restaurantId);
         getTablesByRestaurant();
-
 
         // If guest is logged then get it's friends
         isLoggedIn().then(function() {
@@ -229,8 +231,22 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
     function getFriends() {
         return guestService.getFriends(-1).then(function(response) {
             restaurantVm.currentUserFriends = response.data;
+            findFriendsReviews();
             return restaurantVm.currentUserFriends;
         });
+    };
+
+    function findFriendsReviews() {
+        restaurantVm.friendsReviews = [];
+        for (var friend in restaurantVm.currentUserFriends) {
+            reportService.findReviewsByRestaurantAndGuest($routeParams.restaurantId, restaurantVm.currentUserFriends[friend].userId)
+                .then(function(response) {
+                    var reviews = response.data;
+                    for (var review in reviews) {
+                        restaurantVm.friendsReviews.push(reviews[review]);
+                    };
+                });
+        }
     };
 
     function inviteFriend(friendId) {
@@ -332,12 +348,12 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
         0,
         0
       );
-      
+
       var day = restaurantVm.DateTime.date.getDay();
       var dt  = reservationVm.workingTime;
       var mdt = restaurantVm.DateTime;
       console.log(day);
-      
+
       // Sunday
       if (day == 0) {
         if (dt.workingOnSun) {
@@ -370,25 +386,25 @@ function RestaurantProfileController(WizardHandler, restaurantService, menuItemS
             return;
         }
       }
-      
+
       WizardHandler.wizard().goTo(1);
       getFreeTables();
     };
-    
+
     function isBetween(myHours, myMinutes, minHours, minMinutes, maxHours, maxMinutes, inverse) {
         minMin = minHours * 60 + minMinutes;
         myMin  = myHours  * 60 + myHours;
         maxMin = maxHours * 60 + maxHours;
-        
+
         if (inverse == false) {
-            if (minMin <= myMin && myMin <= maxMin) 
+            if (minMin <= myMin && myMin <= maxMin)
                 return true;
         }
         else {
-          if (!(minMin <= myMin && myMin <= maxMin)) 
+          if (!(minMin <= myMin && myMin <= maxMin))
               return true;
         }
-            
+
         return false;
     }
 

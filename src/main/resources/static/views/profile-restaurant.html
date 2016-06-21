@@ -129,6 +129,36 @@
                     </div>
                 </md-content>
             </md-tab>
+            <md-tab label="Utisci prijatelja">
+                <md-content class="md-padding">
+                    <md-subheader ng-hide="restaurantVm.isGuestLogged" class="md-no-sticky">Morate biti ulogovan gost restorana da biste ovo videli.</md-subheader>
+                    <md-subheader ng-hide="restaurantVm.friendsReviews.length > 0" class="md-no-sticky">Trenutno nema ostavljenih ocena restorana od strane Vaših prijatelja.</md-subheader>
+                    <!-- Friends Reviews -->
+                    <div style="padding: 5 40" ng-repeat="review in restaurantVm.friendsReviews">
+                        <p>{{review.reviewer.firstName + ' ' + review.reviewer.lastName}} </p>
+                        <div layout-gt-sm="row" layout="column">
+                            <div class="rating-item" flex>
+                                Restoran:
+                                <div ng-init="review.restaurantRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.restaurantRate" data-max="5"></div>
+                            </div>
+
+                            <div class="rating-item" flex>
+                                Usluga:
+                                <div ng-init="review.serviceRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.serviceRate" data-max="5"></div>
+                            </div>
+
+                            <div class="rating-item" flex>
+                                Hrana:
+                                <div ng-init="review.foodRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.foodRate" data-max="5"></div>
+                            </div>
+                        </div>
+                        <p>{{review.comment}}</p>
+                    </div>
+                </md-content>
+            </md-tab>
         </md-tabs>
         </md-content>
     </div>

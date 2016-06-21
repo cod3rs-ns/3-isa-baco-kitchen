@@ -15,4 +15,6 @@ public interface ReviewService {
     Collection <Review> findReviewsByRestaurant(Integer restaurantId);
 
     Collection <Review> findReviewsByWaiter(Integer userId);
+
+    Collection <Review> findReviewsByRestaurantAndGuest(Integer restaurantId, Integer userId);
 }

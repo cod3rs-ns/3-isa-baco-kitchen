@@ -43,4 +43,8 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewRepository.findReviewsByWaiter(userId);
     }
 
+    @Override
+    public Collection <Review> findReviewsByRestaurantAndGuest(Integer restaurantId, Integer userId) {
+        return reviewRepository.findReviewsByRestaurantAndGuest(restaurantId, userId);
+    }
 }
