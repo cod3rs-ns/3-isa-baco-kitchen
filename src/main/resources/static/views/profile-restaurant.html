@@ -1,147 +1,135 @@
-<div layout="row">
-    <div id="toast-box"></div>
-    <div flex-gt-sm="70" class="main-content">
-        <md-toolbar scroll>
-            <div class="md-toolbar-tools">
-                <h3 md-header-title flex>Profil restorana</h3>
-                <md-button ng-disabled="true" class="md-raised md-accent" aria-label="Prikaži na mapi">
-                    Prikaži na mapi
-                </md-button>
-                <md-button class="md-icon-button" aria-label="More">
-                    <md-icon aria-label="More" class="material-icons">more_vert</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
+<div layout="column" style="width:100%; background-color:#283593;" flex>
+    <div layout="row" style="position:absolute; width:100%; padding:5px;">
+        <div id="map" style="height:400px; width:100%;"></div>
+        <!-- Logo -->
+        <div layout="row" class="restaurant-image">
+            <img ng-src="{{restaurantVm.restaurant.image}}" alt="Restaurant image" style="widht:200px;height:200px;"/>
+        </div>
 
+        <!-- Additional info -->
+        <div class="restaurant-rating">
+            <!--<md-content class="md-padding">-->
+                <!--<p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>-->
+                <!--<p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>-->
+                <!--<p class="add-info-details"> Treba srediti dalje ovaj deo </p>-->
+                <md-button  ng-show="restaurantVm.isGuestLogged"
+                            ng-click="restaurantVm.showReservationDialog();"
+                            class="action-empl md-raised md-primary"
+                            style="width:100%; height:100%;">
+                    <i class="material-icons md-48">bookmark_border</i> </md-button>
+            <!--</md-content>-->
+        </div>
+
+        <!-- Name -->
+        <div class="restaurant-name" flex>
+            <h1 style="color:white; background-color:#283593;"> {{restaurantVm.restaurant.name}} </h2>
+        </div>
+    </div >
+
+    <div class="restaurant-tabs"style="margin-top: 460px; background-color:#eee;" ng-cloak>
         <div layout="row">
-            <div class="bg-image" flex>
-                <img src="images/background.jpg" alt="Restaurant image"/>
-                <h1>{{restaurantVm.restaurant.name}}</h1>
-            </div>
-            <div layout="column" flex>
-                <md-content class="md-padding" flex>
-                    <md-header class="add-info-header"> <i class="material-icons md-36">restaurant_menu</i>&nbsp;&nbsp;Vrsta restorana</md-header>
-                    <p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>
-                    <md-header class="add-info-header"><i class="material-icons md-36">query_builder</i>&nbsp;&nbsp;Radno vreme</md-header>
-                    <p class="add-info-details"> {{restaurantVm.worktime}} </p>
-                    <md-header class="add-info-header"> <i class="material-icons md-36">info_outline</i>&nbsp;&nbsp;Informacije</md-header>
-                    <p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>
+            <div id="toast-box"></div>
+        </div>
+        <md-content>
+        <md-tabs class="md-primary md-hue-2" md-dynamic-height md-border-bottom>
+            <md-tab label="Jelovnik">
+                <md-tab-body>
+    				<md-subheader ng-show="restaurantVm.foodMenu.length == 0" class="md-no-sticky">
+    					<p>Trenutno ne postoji nijedna stavka u jelovniku.</p>
+    				</md-subheader>
+    				<div ng-hide="restaurantVm.foodMenu.length == 0">
+    					<md-input-container md-no-float class="md-block md-primary" style="padding-left: 20px; padding-right: 35px; width:300px;">
+    						<input ng-model="searchFood" type="text" placeholder="Pretraga hrane..." >
+    						<md-icon style="display:inline-block;">search</md-icon>
+    					</md-input-container>
+    				</div>
+    				<div ng-hide="restaurantVm.foodMenu.length == 0" layout="row" layout-wrap>
+    	            	<div layout="row" ng-repeat="meal in restaurantVm.foodMenu | filter : searchFood" layout-wrap>
+    	                	<md-card class="order-item">
+    							<!-- This style attribute must be here - it fixes one Chromium bug -->
+    							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+    	                        <md-card-content style="margin-top:-24px; height:100px;">
+    	                            <h4>{{meal.name}}</h4>
+    	                            <p style="color:grey">{{meal.info}}</p>
+    	                        </md-card-content>
+                                <md-card-actions layout="row" layout-align="end end">
+                                    <p>
+                                        <md-icon class="material-icons">attach_money
+                                            <md-tooltip>
+                                                Cena
+                                            </md-tooltip>
+                                        </md-icon>{{meal.price}} RSD
+                                    </p>
+                                </md-card-actions>
+    	                	</md-card>
+    	            	</div>
+    	            </div>
+    			</md-tab-body>
+            </md-tab>
+            <md-tab label="Karta pića">
+                <md-tab-body>
+                    <md-subheader ng-show="rmanager.drinksMenu.length == 0" class="md-no-sticky">
+                        <p>Trenutno ne postoji nijedna stavka u karti pića.</p>
+                    </md-subheader>
+                    <div ng-hide="restaurantVm.drinksMenu.length == 0">
+                        <md-input-container md-no-float class="md-block md-primary" style="padding-left: 20px; padding-right: 35px; width:300px;">
+                            <input ng-model="searchDrinks" type="text" placeholder="Pretraga pića..." >
+                            <md-icon style="display:inline-block;">search</md-icon>
+                        </md-input-container>
+                    </div>
+                    <div ng-hide="rmanager.drinksMenu.length == 0" layout="row" layout-wrap>
+                        <div layout="row" ng-repeat="meal in restaurantVm.drinksMenu | filter : searchDrinks" layout-wrap>
+                            <md-card class="order-item">
+                                <!-- This style attribute must be here - it fixes one Chromium bug -->
+                                <img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
+                                <md-card-content style="margin-top:-24px; height:100px;">
+                                    <h4>{{meal.name}}</h4>
+                                    <p style="color:grey">{{meal.info}}</p>
+                                </md-card-content>
+                                <md-card-actions layout="row" layout-align="end end">
+                                    <p>
+                                        <md-icon class="material-icons">attach_money
+                                            <md-tooltip>
+                                                Cena
+                                            </md-tooltip>
+                                        </md-icon>{{meal.price}} RSD
+                                    </p>
+                                </md-card-actions>
+                            </md-card>
+                        </div>
+                    </div>
+                </md-tab-body>
+            </md-tab>
+            <md-tab label="Utisci gostiju">
+                <md-content class="md-padding">
+                    <md-subheader ng-hide="restaurantVm.reviews.length > 0" class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
+                    <!-- Restaurant Reviews -->
+                    <div style="padding: 5 40" ng-repeat="review in restaurantVm.reviews">
+                        <p>{{review.reviewer.firstName + ' ' + review.reviewer.lastName}} </p>
+                        <div layout-gt-sm="row" layout="column">
+                            <div class="rating-item" flex>
+                                Restoran:
+                                <div ng-init="review.restaurantRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.restaurantRate" data-max="5"></div>
+                            </div>
+
+                            <div class="rating-item" flex>
+                                Usluga:
+                                <div ng-init="review.serviceRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.serviceRate" data-max="5"></div>
+                            </div>
+
+                            <div class="rating-item" flex>
+                                Hrana:
+                                <div ng-init="review.foodRate"></div>
+                                <div class="star-rating" star-rating-no-click rating-value="review.foodRate" data-max="5"></div>
+                            </div>
+                        </div>
+                        <p>{{review.comment}}</p>
+                    </div>
                 </md-content>
-            </div>
-        </div>
-    </div>
-    <div flex-gt-sm="30" layout="column" class="main-content">
-        <md-toolbar scroll>
-            <div class="md-toolbar-tools">
-                <h3 md-header-title flex>Aktivnosti</h3>
-            </div>
-        </md-toolbar>
-
-        <div layout="column">
-            <div style="padding-right: 12px; padding-left:5px; background-color:white">
-                <div class="option">
-                    <md-button ng-disabled="true" ng-click="restaurantVm.test();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">restaurant_menu</i> </md-button>
-                    <h4> Dodavanje novog restorana - test</h4>
-                </div>
-                <hr>
-                <div class="option">
-                    <md-button ng-show="restaurantVm.isGuestLogged" ng-click="restaurantVm.showReservationDialog();" class="action-empl md-raised md-primary"> <i class="material-icons md-48">bookmark_border</i> </md-button>
-                    <h4>Rezerviši</h4>
-                </div>
-                <hr>
-                <div class="option" ng-show="restaurantVm.addManagerOption">
-                    <md-button ng-click="restaurantVm.addRestaurantManager()" class="action-empl md-raised md-primary"> <i class="material-icons md-48">supervisor_account</i> </md-button>
-                    <h4> Registrovanje menadžera restorana</h4>
-                </div>
-                <hr ng-show="restaurantVm.addManagerOption">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="margin-top:15px"ng-cloak>
-  <md-content>
-    <md-tabs class="md-primary" md-dynamic-height md-border-bottom>
-      <md-tab label="Jelovnik">
-        <md-content class="md-padding">
-
-        <div layout="row" layout-wrap>
-          <div class='md-padding' layout="row" ng-repeat="meal in restaurantVm.restaurant.foodMenu" layout-wrap>
-
-              <md-card class="order-item">
-                    <img src="{{meal.image}}" class="md-card-image order-img">
-
-                    <md-card-content>
-                        <h4>{{meal.name}}</h4>
-                        <p class="md-primary" style="color:grey">{{meal.info}}</p>
-                        <md-button style="visibility: hidden;"></md-button>
-                    </md-card-content>
-
-                    <md-card-actions class="order-btns" layout="row" layout-align="center center">
-                        <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena jela: {{meal.price}}</md-button>
-                    </md-card-actions>
-              </md-card>
-
-          </div>
-        </div>
+            </md-tab>
+        </md-tabs>
         </md-content>
-      </md-tab>
-      <md-tab label="Karta pića">
-          <md-content class="md-padding">
-
-          <div layout="row" layout-wrap>
-            <div class='md-padding' layout="row" ng-repeat="drink in restaurantVm.restaurant.drinksMenu" layout-wrap>
-
-                <md-card class="order-item">
-                      <img src="{{drink.image}}" class="md-card-image order-img">
-
-                      <md-card-content>
-                          <h4>{{drink.name}}</h4>
-                          <p class="md-primary" style="color:grey">{{drink.info}}</p>
-                          <md-button style="visibility: hidden;"></md-button>
-                      </md-card-content>
-
-                      <md-card-actions class="order-btns" layout="row" layout-align="center center">
-                          <md-button class="md-primary"><i class="material-icons md-16">attach_money</i> cena pića: {{drink.price}}</md-button>
-                      </md-card-actions>
-                </md-card>
-
-            </div>
-          </div>
-          </md-content>
-      </md-tab>
-
-      <md-tab label="Utisci gostiju">
-        <md-content class="md-padding">
-            <md-subheader ng-hide="restaurantVm.reviews.length > 0" class="md-no-sticky">Trenutno nema ostavljenih ocena restorana.</md-subheader>
-            
-            <!-- Restaurant Reviews -->
-            <div style="padding: 5 40" ng-repeat="review in restaurantVm.reviews">
-              <p>{{review.reviewer.firstName + ' ' + review.reviewer.lastName}}
-              <div layout-gt-sm="row" layout="column">
-                <div class="rating-item" flex>
-                  Restoran:
-                  <div ng-init="review.restaurantRate"></div>
-                  <div class="star-rating" star-rating-no-click rating-value="review.restaurantRate" data-max="5"></div>
-                </div>
-
-                <div class="rating-item" flex>
-                  Usluga:
-                  <div ng-init="review.serviceRate"></div>
-                  <div class="star-rating" star-rating-no-click rating-value="review.serviceRate" data-max="5"></div>
-                </div>
-                
-                <div class="rating-item" flex>
-                  Hrana:
-                  <div ng-init="review.foodRate"></div>
-                  <div class="star-rating" star-rating-no-click rating-value="review.foodRate" data-max="5"></div>
-                </div>
-              </div>
-              <p>{{review.comment}}</p>
-            </div>
-        </md-content>
-      </md-tab>
-
-    </md-tabs>
-  </md-content>
+    </div>
 </div>

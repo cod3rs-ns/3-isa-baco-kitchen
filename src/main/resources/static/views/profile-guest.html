@@ -88,7 +88,7 @@
           <md-content style="background-color: #eee;">
   					<div layout="row" layout-wrap>
   						<div class='md-padding' layout="row" ng-repeat="visit in guestVm.visits" layout-wrap>
-                <md-card>
+                <md-card style="width: 227px;">
                   <md-card-title>
                     <md-card-title-text>
                       <span class="md-headline">{{visit.name}}</span>
@@ -98,40 +98,42 @@
                     <img ng-src="{{visit.imageSrc}}" class="md-card-image reservation" alt="{{visit.name}}">
                   </md-card-content>
 
-                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
-                    Restoran:
-                    <div ng-init="visit.review.restaurantRate"></div>
-                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
-                  </div>
-                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
-                    Usluga:
-                    <div ng-init="visit.review.serviceRate"></div>
-                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
-                  </div>
-                  <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
-                    Hrana:
-                    <div ng-init="visit.review.foodRate"></div>
-                    <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
-                    <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
-                  </div>
+                  <span style="min-height: 270px; max-height: 270px;">
+                    <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
+                      Restoran:
+                      <div ng-init="visit.review.restaurantRate"></div>
+                      <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.restaurantRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                      <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.restaurantRate" data-max="5"></div>
+                    </div>
+                    <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
+                      Usluga:
+                      <div ng-init="visit.review.serviceRate"></div>
+                      <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.serviceRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                      <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.serviceRate" data-max="5"></div>
+                    </div>
+                    <div class="rating-item" ng-hide="!guestVm.admin && !guestVm.isCommented(visit.review)">
+                      Hrana:
+                      <div ng-init="visit.review.foodRate"></div>
+                      <div ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="star-rating" star-rating rating-value="visit.review.foodRate" data-max="5" on-rating-selected="rateFunction(rating)"></div>
+                      <div ng-if="guestVm.isCommented(visit.review)" class="star-rating" star-rating-no-click rating-value="visit.review.foodRate" data-max="5"></div>
+                    </div>
+                    
+                    <md-input-container ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="md-block">
+                      <label>Komentar</label>
+                      <input type="text" ng-model="visit.review.comment" md-maxlength="100" rows="3" md-select-on-focus></input>
+                    </md-input-container>
+                    
+                    <p ng-if="guestVm.isCommented(visit.review)" style="max-width:150px; padding: 0 16; word-break: break-all; overflow: auto; overflow-y: hidden;">
+                      {{ visit.review.comment }}
+                    </p>
+                    <p ng-if="!guestVm.admin && !guestVm.isCommented(visit.review)" style="max-width:150px; max-heigth: 60px; padding: 0 16; overflow: auto; overflow-y: hidden;">
+                      Korisnik još nije ostavio recenziju za ovu posjetu.
+                    </p>
                   
-                  <md-input-container ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" class="md-block">
-                    <label>Komentar</label>
-                    <textarea ng-model="visit.review.comment" md-maxlength="150" rows="3" md-select-on-focus></textarea>
-                  </md-input-container>
-                  
-                  <p ng-if="guestVm.isCommented(visit.review)" style="padding: 0 16;">
-                    {{ visit.review.comment }}
-                  </p>
-                  <p ng-if="!guestVm.admin && !guestVm.isCommented(visit.review)" style="padding: 0 16;">
-                    Korisnik još nije ostavio recenziju za ovu posjetu.
-                  </p>
-
-                  <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" ng-click="guestVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
-                  </md-card-actions>
+                    <md-card-actions layout="row" layout-align="end center">
+                      <md-button ng-if="guestVm.admin && !guestVm.isCommented(visit.review)" ng-click="guestVm.sendReview(visit);" style="float: right">Potvrdi</md-button>
+                    </md-card-actions>
+                  </span>
                 </md-card>
   						</div>			
   					</div>
@@ -161,10 +163,10 @@
                     <i class="material-icons">people</i> {{ reservation.acceptedNo }}
                   </div>
 
-                  <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-show="guestVm.admin && reservation.order == null" ng-click="guestVm.mealOrder(reservation);">Naruči</md-button>
-                    <md-button ng-show="guestVm.admin && reservation.order != null" ng-click="guestVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
-                    <md-button ng-show="guestVm.admin && reservation.owner" ng-click="guestVm.cancelReservation(reservation.reservation);">Otkaži rezervaciju</md-button>
+                  <md-card-actions layout="column" layout-align="begin center" style="height: 80px;">
+                    <md-button class="md-raised md-hue-2" ng-show="guestVm.admin && reservation.order == null" ng-click="guestVm.mealOrder(reservation);">Naruči hranu i piće</md-button>
+                    <md-button class="md-raised md-hue-2" ng-show="guestVm.admin && reservation.order != null" ng-click="guestVm.cancelMealOrder(reservation);">Otkaži porudžbinu</md-button>
+                    <md-button class="md-raised md-primary" ng-show="guestVm.admin && reservation.owner" ng-click="guestVm.cancelReservation(reservation.reservation);">Otkaži rezervaciju</md-button>
                   </md-card-actions>
                 </md-card>
   							
