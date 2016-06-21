@@ -5,7 +5,6 @@ angular
 loginService.$inject = ['$http', '$location', '$window', '$rootScope'];
 
 function loginService($http, $location, $window, $rootScope) {
-
     var service = {
         login: login,
         redirect: redirect,
@@ -36,10 +35,12 @@ function loginService($http, $location, $window, $rootScope) {
         };
 
      function logout() {
-         $rootScope.show = false;
          $window.localStorage.setItem('AUTH_TOKEN', null);
          $http.defaults.headers.common.Authorization = '';
          $location.path('login');
+
+         angular.element(document.querySelectorAll('#loginButtons')).removeClass("hide");
+         angular.element(document.querySelectorAll('#circleButtons')).addClass("hide");
      };
      
      function redirectProfile() {

@@ -81,14 +81,15 @@
 
             <span flex></span>
 
-            <md-button aria-label="Login" ng-hide="$root.show" ng-href="#/login">
-              Prijavi se
-            </md-button>
-            <md-button aria-label="Sign up" ng-hide="$root.show" ng-href="#/register">
-              Registruj se
-            </md-button>
-
-              <div ng-hide="!$root.show" class="lock-size" layout="row" layout-align="center center" ng-cloak>
+            <div id="loginButtons">
+                <md-button aria-label="Login"  ng-href="#/login">
+                  Prijavi se
+                </md-button>
+                <md-button aria-label="Sign up" ng-href="#/register">
+                  Registruj se
+                </md-button>
+            </div >
+              <div id="circleButtons" class="lock-size" layout="row" layout-align="center center" ng-cloak>
                   <md-fab-speed-dial md-open="tbCtrl.isOpen" md-direction="{{tbCtrl.selectedDirection}}"
                                      ng-class="tbCtrl.selectedMode">
                       <md-fab-trigger>

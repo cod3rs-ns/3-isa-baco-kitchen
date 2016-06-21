@@ -107,7 +107,7 @@ function routeConfig($routeProvider, $httpProvider) {
               // Set Header to Request if user is logged
               'request': function (config) {
                     var token = $window.localStorage.getItem('AUTH_TOKEN');
-                        if (token !== null) {
+                        if (token !== null && token!=="null") {
                             config.headers.Authorization = 'Bearer ' + token;
                         }
                         return config;
@@ -124,7 +124,6 @@ function routeConfig($routeProvider, $httpProvider) {
 }
 
 function uploadConfig(flowFactoryProvider) {
-    console.log("Flow config");
     flowFactoryProvider.defaults = {
         target: 'http://localhost:8091/api/upload',
         permanentErrors: [404, 500, 501],

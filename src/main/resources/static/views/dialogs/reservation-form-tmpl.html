@@ -15,7 +15,7 @@
               <h1>Kada želite da rezervišete?</h1>
               <p> Odaberite datum kada želite da rezervišete. Nakon toga, unesite vrijeme početka Vaše rezervacije, kao i koliko sati želite da ostanete na rezervaciji. </p>
               <form name="reservationForm1">
-                  <md-datepicker ng-model="restaurantVm.DateTime.date" style="background-color: #fff;"
+                  <md-datepicker md-min-date="restaurantVm.minDate" ng-model="restaurantVm.DateTime.date" style="background-color: #fff;"
                     md-placeholder="Odaberi datum" required></md-datepicker>
 
                 <md-input-container class="md-block">

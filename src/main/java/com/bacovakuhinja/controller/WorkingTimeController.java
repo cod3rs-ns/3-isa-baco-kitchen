@@ -68,7 +68,6 @@ public class WorkingTimeController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <WorkingTime> findByRestaurant(@PathVariable("rst_id") Integer id) {
         WorkingTime workingTime = workingTimeService.findByRestaurant(id);
-        System.out.println(workingTime);
         return new ResponseEntity <WorkingTime>(workingTime, HttpStatus.OK);
     }
 }

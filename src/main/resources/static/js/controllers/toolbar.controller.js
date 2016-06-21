@@ -2,10 +2,10 @@ angular
     .module('isa-mrs-project')
     .controller('ToolbarController', ToolbarController);
 
-ToolbarController.$inject = ['$rootScope', '$location', 'loginService', 'restaurantService'];
+ToolbarController.$inject = ['$scope', '$location', '$window', 'loginService', 'restaurantService'];
 
 
-function ToolbarController($rootScope, $location, loginService, restaurantService) {
+function ToolbarController($scope, $location, $window, loginService, restaurantService) {
     
     var bacoSlusajMeVm = this;
   
@@ -51,4 +51,14 @@ function ToolbarController($rootScope, $location, loginService, restaurantServic
         }
     };
 
+
+    var token = $window.localStorage.getItem('AUTH_TOKEN');
+    if (token === null || token === "null"){
+        angular.element(document.querySelectorAll('#loginButtons')).removeClass("hide");
+        angular.element(document.querySelectorAll('#circleButtons')).addClass("hide");
+    }
+    else{
+        angular.element(document.querySelectorAll('#loginButtons')).addClass("hide");
+        angular.element(document.querySelectorAll('#circleButtons')).removeClass("hide");
+    }
 }

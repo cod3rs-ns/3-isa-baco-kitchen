@@ -131,6 +131,7 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                 }
             }
             else{
+                var order = createOrder();
                 orderService.updateOrder(order, restaurantId)
                     .then(function (data) {
                         if (data != null) {

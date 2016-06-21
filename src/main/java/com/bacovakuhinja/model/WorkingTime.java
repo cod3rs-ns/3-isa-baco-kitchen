@@ -220,28 +220,4 @@ public class WorkingTime {
         this.restaurantId = restaurantId;
     }
 
-    @Override
-    public String toString() {
-        return "WorkingTime{" +
-                "workingTimeId=" + workingTimeId +
-                ", regStartHours=" + regStartHours +
-                ", regStartMinutes=" + regStartMinutes +
-                ", regEndHours=" + regEndHours +
-                ", regEndMinutes=" + regEndMinutes +
-                ", satStartHours=" + satStartHours +
-                ", satStartMinutes=" + satStartMinutes +
-                ", satEndHours=" + satEndHours +
-                ", satEndMinutes=" + satEndMinutes +
-                ", sunStartHours=" + sunStartHours +
-                ", sunStartMinutes=" + sunStartMinutes +
-                ", sunEndHours=" + sunEndHours +
-                ", sunEndMinutes=" + sunEndMinutes +
-                ", workingOnSat=" + workingOnSat +
-                ", workingOnSun=" + workingOnSun +
-                ", regReversed=" + regReversed +
-                ", satReversed=" + satReversed +
-                ", sunReversed=" + sunReversed +
-                ", restaurantId=" + restaurantId +
-                '}';
-    }
 }
