@@ -196,17 +196,102 @@ INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,
 INSERT INTO `isa_mrs_project`.`reservation_tables` (`rt_id`,`rt_reservation_id`,`rt_table_id`) VALUES (20,11,8);
 
 -- Client Orders Reservations
-INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (1,'2016-06-20 17:21:45','2016-07-19 16:00:00',1,1,4,NULL,NULL,'CREATED');
-INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (2,'2016-06-20 17:22:52','2016-07-19 16:00:00',1,6,4,NULL,NULL,'CREATED');
-INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (3,'2016-06-20 17:29:36','2016-06-30 19:20:00',6,2,11,NULL,NULL,'CREATED');
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (18,'2016-06-20 17:21:45','2016-07-19 16:00:00',1,1,4,NULL,NULL,'CREATED');
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (19,'2016-06-20 17:22:52','2016-07-19 16:00:00',1,6,4,NULL,NULL,'CREATED');
+INSERT INTO `isa_mrs_project`.`client_orders` (`co_id`,`co_date`,`co_deadline`,`co_reservation_id`,`co_client_id`,`co_table_id`,`co_bill_id`,`co_waiter_id`,`co_status`) VALUES (20,'2016-06-20 17:29:36','2016-06-30 19:20:00',6,2,11,NULL,NULL,'CREATED');
 
 -- Order Items
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (1,'CREATED',1,31,1,2,0,NULL);
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (2,'CREATED',1,18,2,2,0,NULL);
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (3,'CREATED',2,7,1,2,0,NULL);
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (4,'CREATED',2,24,1,2,0,NULL);
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (5,'CREATED',3,12,2,5,0,NULL);
-INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (6,'CREATED',3,15,1,5,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (47,'CREATED',18,31,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (48,'CREATED',18,18,2,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (49,'CREATED',19,7,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (50,'CREATED',19,24,1,2,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (51,'CREATED',20,12,2,5,0,NULL);
+INSERT INTO `isa_mrs_project`.`order_items` (`oi_id`,`oi_state`,`oi_order_id`,`oi_menu_item_id`,`oi_amount`,`oi_restaurant_id`,`oi_version`,`oi_employee`) VALUES (52,'CREATED',20,15,1,5,0,NULL);
+
+-- Bills, orders and order items for report
+INSERT INTO isa_mrs_project.`bills` VALUES (1,'2016-06-21 02:07:32',1060,11);
+INSERT INTO isa_mrs_project.`bills` VALUES (2,'2016-06-21 02:07:46',200,11);
+INSERT INTO isa_mrs_project.`bills` VALUES (3,'2016-06-21 02:08:13',3335,11);
+INSERT INTO isa_mrs_project.`bills` VALUES (4,'2016-06-21 02:08:43',2025,11);
+INSERT INTO isa_mrs_project.`bills` VALUES (5,'2016-06-21 02:10:24',400,12);
+INSERT INTO isa_mrs_project.`bills` VALUES (6,'2016-06-21 02:10:56',5650,12);
+INSERT INTO isa_mrs_project.`bills` VALUES (7,'2016-06-21 02:11:16',750,12);
+INSERT INTO isa_mrs_project.`bills` VALUES (8,'2016-06-21 02:12:23',2865,13);
+INSERT INTO isa_mrs_project.`bills` VALUES (9,'2016-06-21 02:12:37',250,13);
+INSERT INTO isa_mrs_project.`bills` VALUES (10,'2016-06-21 02:12:52',2220,13);
+INSERT INTO isa_mrs_project.`bills` VALUES (11,'2016-06-21 02:13:03',345,13);
+INSERT INTO isa_mrs_project.`bills` VALUES (12,'2016-06-21 02:13:15',430,13);
+INSERT INTO isa_mrs_project.`bills` VALUES (13,'2016-06-21 02:13:49',250,14);
+INSERT INTO isa_mrs_project.`bills` VALUES (14,'2016-06-21 02:14:09',3600,14);
+INSERT INTO isa_mrs_project.`bills` VALUES (15,'2016-06-21 02:14:26',480,14);
+INSERT INTO isa_mrs_project.`bills` VALUES (16,'2016-06-21 02:15:12',330,15);
+INSERT INTO isa_mrs_project.`bills` VALUES (17,'2016-06-21 02:15:22',300,15);
+
+INSERT INTO isa_mrs_project.`client_orders` VALUES (1,'2016-06-21 02:07:25',NULL,NULL,NULL,7,1,11,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (2,'2016-06-21 02:07:41',NULL,NULL,NULL,9,2,11,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (3,'2016-06-21 02:08:09',NULL,NULL,NULL,9,3,11,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (4,'2016-06-21 02:08:39',NULL,NULL,NULL,8,4,11,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (5,'2016-06-21 02:10:21',NULL,NULL,NULL,11,5,12,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (6,'2016-06-21 02:10:53',NULL,NULL,NULL,12,6,12,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (7,'2016-06-21 02:11:11',NULL,NULL,NULL,10,7,12,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (8,'2016-06-21 02:12:21',NULL,NULL,NULL,7,8,13,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (9,'2016-06-21 02:12:33',NULL,NULL,NULL,9,9,13,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (10,'2016-06-21 02:12:49',NULL,NULL,NULL,9,10,13,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (11,'2016-06-21 02:13:01',NULL,NULL,NULL,9,11,13,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (12,'2016-06-21 02:13:12',NULL,NULL,NULL,9,12,13,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (13,'2016-06-21 02:13:46',NULL,NULL,NULL,11,13,14,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (14,'2016-06-21 02:14:07',NULL,NULL,NULL,10,14,14,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (15,'2016-06-21 02:14:24',NULL,NULL,NULL,12,15,14,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (16,'2016-06-21 02:15:10',NULL,NULL,NULL,7,16,15,'ACCEPTED');
+INSERT INTO isa_mrs_project.`client_orders` VALUES (17,'2016-06-21 02:15:20',NULL,NULL,NULL,9,17,15,'ACCEPTED');
+
+INSERT INTO isa_mrs_project.`order_items` VALUES (1,'DELIVERED',1,6,2,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (2,'DELIVERED',1,20,4,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (3,'DELIVERED',1,11,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (4,'DELIVERED',2,4,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (5,'DELIVERED',2,10,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (6,'DELIVERED',3,26,5,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (7,'DELIVERED',3,30,3,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (8,'DELIVERED',3,32,1,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (9,'DELIVERED',3,9,7,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (10,'DELIVERED',4,16,4,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (11,'DELIVERED',4,30,1,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (12,'DELIVERED',4,32,1,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (13,'DELIVERED',4,9,5,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (14,'DELIVERED',5,12,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (15,'DELIVERED',5,11,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (16,'DELIVERED',5,6,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (17,'DELIVERED',6,1,3,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (18,'DELIVERED',6,23,5,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (19,'DELIVERED',6,15,3,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (20,'DELIVERED',6,27,3,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (21,'DELIVERED',7,1,4,5,3,9);
+INSERT INTO isa_mrs_project.`order_items` VALUES (22,'DELIVERED',7,11,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (23,'DELIVERED',7,9,1,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (24,'DELIVERED',8,32,1,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (25,'DELIVERED',8,6,4,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (26,'DELIVERED',8,23,3,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (27,'DELIVERED',8,4,3,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (28,'DELIVERED',9,9,5,5,3,16);
+INSERT INTO isa_mrs_project.`order_items` VALUES (29,'DELIVERED',10,4,10,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (30,'DELIVERED',10,6,4,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (31,'DELIVERED',11,32,1,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (32,'DELIVERED',11,1,1,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (33,'DELIVERED',12,9,2,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (34,'DELIVERED',12,6,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (35,'DELIVERED',12,4,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (36,'DELIVERED',13,10,5,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (37,'DELIVERED',14,27,3,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (38,'DELIVERED',14,26,4,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (39,'DELIVERED',15,30,1,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (40,'DELIVERED',15,6,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (41,'DELIVERED',15,12,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (42,'DELIVERED',16,10,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (43,'DELIVERED',16,11,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (44,'DELIVERED',16,6,1,5,3,17);
+INSERT INTO isa_mrs_project.`order_items` VALUES (45,'DELIVERED',17,1,1,5,3,10);
+INSERT INTO isa_mrs_project.`order_items` VALUES (46,'DELIVERED',17,4,1,5,3,17);
+
 
 -- Reviews
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (1,'Sam ambijent nije impresionirao, ali je hrana vrhunska.',5,4,3,2,3);
