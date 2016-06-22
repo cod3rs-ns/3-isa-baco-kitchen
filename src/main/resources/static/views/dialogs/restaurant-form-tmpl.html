@@ -42,39 +42,14 @@
                         </div>
                     </md-input-container>
 
-                    <div layout="row">
-                        <md-input-container class="md-block" flex>
-                            <label>Početak radnog vremena</label>
-                            <input required type="number" step="any" name="restaurantStart" ng-model="restaurantVm.restaurant.startTime" min="0" max="24" />
-                            <div ng-messages="restaurantForm.restaurantStart.$error" multiple md-auto-hide="false">
-                                <div ng-message="required">
-                                    Ovo polje je obavezno.
-                                </div>
-                                <div ng-message="min">
-                                    Sadržaj polja mora biti pozitivan.
-                                </div>
-                                <div ng-message="max">
-                                    Sadržaj polja mora biti manji od 24.
-                                </div>
-                            </div>
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex>
-                            <label>Kraj radnog vremena</label>
-                            <input required type="number" step="any" name="restaurantEnd" ng-model="restaurantVm.restaurant.endTime" min="0" max="24"/>
-                            <div ng-messages="restaurantForm.restaurantEnd.$error" multiple md-auto-hide="false">
-                                <div ng-message="required">
-                                    Ovo polje je obavezno.
-                                </div>
-                                <div ng-message="min">
-                                    Sadržaj polja mora biti pozitivan.
-                                </div>
-                                <div ng-message="max">
-                                    Sadržaj polja mora biti manji od 24.
-                                </div>
-                            </div>
-                        </md-input-container>
-                    </div>
+                    <md-input-container class="md-block">
+                        <label>Adresa</label>
+                        <input md-maxlength="100" required md-no-asterisk name="restaurantAddress" ng-model="restaurantVm.restaurant.address">
+                        <div ng-messages="restaurantForm.restaurantAddress.$error">
+                            <div ng-message="required">Ovo polje je obavezno.</div>
+                            <div ng-message="md-maxlength">Adresa restorana mora biti kraća od 100 karaktera.</div>
+                        </div>
+                    </md-input-container>
                 </form>
             </md-content>
         </div>

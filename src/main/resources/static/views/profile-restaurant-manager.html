@@ -72,7 +72,7 @@
         <md-menu-content flex style="min-height:550px;">
         	<md-menu-item class="md-indent">
 	            <md-button 	class="md-primary"
-							ng-click="rmanagerVm.updateProfile();">
+					ng-click="rmanagerVm.editProfile();">
 					<md-icon class="material-icons">account_circle</md-icon>
 	            	<strong>Ažuriranje profila</strong>
 	            </md-button>
@@ -149,8 +149,8 @@
             	</md-button>
         	</md-menu-item>
 			<md-divider></md-divider>
-    	</md-content>
-
+		</md-menu-content>
+	</md-content>
 	</md-sidenav>
 	</section>
 
@@ -403,10 +403,8 @@
 				</div>
 
 				<div layout="column" class="restaurant-regions">
-
-						<div layout="row" class="region-tab" layout-align="center center"
-							ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
-								<div 	layout="column"
+						<div layout="row" class="region-tab" layout-align="center center" ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
+								<div layout="column"
 										ng-hide="tablesVm.regionEditFields[$index]"
 										flex>
 									<h4 style="color:white;">{{region.name}}</h4>
@@ -448,9 +446,6 @@
 	   		   						</md-button>
 								</div>
 		                </div>
-
-
-
 				</div>
 
 

@@ -24,6 +24,7 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
                 name: '',
                 info: '',
                 type: '',
+                address: '',
                 startTime: 0,
                 endTime: 24
             };
@@ -39,8 +40,6 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
     }
 
     function create() {
-        // TODO: Change hardcoded address
-        restaurantVm.restaurant.address = 'Narodnog fronta 21';
         restaurantService.createRestaurant(restaurantVm.restaurant, smanager.userId)
             .then(function(addedRestaurant){
                 smanager.restaurants.push(addedRestaurant);
@@ -50,7 +49,7 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
     };
 
     function update() {
-        restaurantService.updateRestaurant(restaurantVm.restaurant, smanager.userId)
+        restaurantService.updateRestaurant(restaurantVm.restaurant)
             .then(function(data){
                 restaurantVm.confirmedEdit = true;
                 restaurantVm.showToast('Restoran je uspešno izmenjen.');
@@ -72,8 +71,7 @@ function SingleRestaurantController(restaurantService, $mdDialog, $mdToast, to_e
             restaurantVm.restaurant.name = restaurantVm.backup.name;
             restaurantVm.restaurant.info = restaurantVm.backup.info;
             restaurantVm.restaurant.type = restaurantVm.backup.type;
-            restaurantVm.restaurant.startTime = restaurantVm.backup.startTime;
-            restaurantVm.restaurant.endTime = restaurantVm.backup.endTime;
+            restaurantVm.restaurant.address = restaurantVm.backup.address;
         }
         $mdDialog.cancel();
     };
