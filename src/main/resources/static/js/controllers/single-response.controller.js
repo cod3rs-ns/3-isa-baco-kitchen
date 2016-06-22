@@ -41,18 +41,42 @@ function SingleResponseController(providerResponseService, $mdDialog, $mdToast, 
     function sendResponse() {
         providerResponseService.createProviderResponse(responseVm.response)
             .then(function(data) {
-                console.log(data);
+                if (data) {
                 responseVm.showToast('Ponuda je uspešno poslata.');
                 responseVm.cancel();
+                } else {
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .parent(angular.element(document.body))
+                            .clickOutsideToClose(true)
+                            .title('Upozorenje.')
+                            .textContent('Status porudžbine je u međuvremenu promenjen. Podaci se osvežavaju.')
+                            .ariaLabel('Upozorenje.')
+                            .ok('OK')
+                        );
+                };
             })
     };
 
     function updateResponse() {
         providerResponseService.updateProviderResponse(responseVm.response)
             .then(function(data){
-                responseVm.confirmedEdit = true;
-                responseVm.showToast('Ponuda je uspešno ažurirana.');
-                responseVm.cancel();
+                if (data) {
+                    responseVm.confirmedEdit = true;
+                    responseVm.showToast('Ponuda je uspešno ažurirana.');
+                    responseVm.cancel();
+                } else {
+                    $mdDialog.show(
+                        $mdDialog.alert()
+                            .parent(angular.element(document.body))
+                            .clickOutsideToClose(true)
+                            .title('Upozorenje.')
+                            .textContent('Status porudžbine je u međuvremenu promenjen. Podaci se osvežavaju.')
+                            .ariaLabel('Upozorenje.')
+                            .ok('OK')
+                        );
+                };
+
             });
     };
 

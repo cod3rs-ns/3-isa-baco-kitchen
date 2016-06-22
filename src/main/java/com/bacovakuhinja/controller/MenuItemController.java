@@ -41,7 +41,6 @@ public class MenuItemController {
 
     @RequestMapping(value = "/api/menu_items/r={rst_id}",
             method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <MenuItem> createMenuItem(@RequestBody MenuItem menuItem, @PathVariable("rst_id") Integer id) {
         Restaurant restaurant = restaurantService.findOne(id);

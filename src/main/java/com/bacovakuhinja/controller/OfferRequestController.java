@@ -93,7 +93,6 @@ public class OfferRequestController {
                 response.setStatus(Constants.ResponseStatus.ACCEPTED);
                 offer.setAcceptedResponse(response.getResponseId());
                 offer.setStatus(Constants.OfferStatus.CLOSED);
-
             } else {
                 response.setStatus(Constants.ResponseStatus.REJECTED);
             }

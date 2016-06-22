@@ -1,0 +1,99 @@
+<md-dialog flex="50" aria-label="Stavka menija"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Kreiranje nove stavke menija</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="menuItemVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div layout="column" ng-cloak>
+            <md-content layout-padding>
+                <form name="menuItemForm">
+                    <md-input-container class="md-block">
+                        <label>Naziv</label>
+                        <input required name="menuItemName" ng-model="menuItemVm.menuItem.name" md-maxlength="50">
+                        <div ng-messages="menuItemForm.menuItemName.$error">
+                            <div ng-message="required">Ovo polje je neophodno.</div>
+                            <div ng-message="md-maxlength">Naziv mora biti kraći od 50 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Opis</label>
+                        <input md-maxlength="100" required md-no-asterisk name="menuItemInfo" ng-model="menuItemVm.menuItem.info">
+                        <div ng-messages="menuItemForm.menuItemInfo.$error">
+                            <div ng-message="required">Ovo polje je neophodno</div>
+                            <div ng-message="md-maxlength">Opis  mora biti kraći od 100 karaktera.</div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Cena (RSD)</label>
+                        <input required type="number" step="any" name="menuItemPrice" ng-model="menuItemVm.menuItem.price" min="1" />
+                        <div ng-messages="menuItemForm.menuItemPrice.$error" multiple md-auto-hide="false">
+                            <div ng-message="required">
+                                Ovo polje je neophodno.
+                            </div>
+                            <div ng-message="min">
+                                Cena pića mora biti minimalno 1 RSD.
+                            </div>
+                        </div>
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Tip</label>
+                        <md-select name="menuItemType" ng-model="menuItemVm.menuItem.type" required>
+                            <md-option ng-repeat="type in menuItemVm.mainTypes" value="{{type.db_value}}">
+                                {{type.name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="menuItemForm.menuItemType.$error">
+                            <div ng-message="required">Neophodno je izabrati tip pića.</div>
+                        </div>
+                    </md-input-container>
+
+                    <!-- Subtypes of DRINK -->
+                    <md-input-container ng-show="menuItemVm.menuItem.type == 'drink'" class="md-block" flex-gt-sm>
+                        <label>Podtip</label>
+                        <md-select name="menuItemSpecTypeDrink" ng-model="menuItemVm.menuItem.specType" ng-required="menuItemVm.menuItem.type == 'drink'">
+                            <md-option ng-repeat="spectype in menuItemVm.allowedDrinks" value="{{spectype.db_value}}">
+                                {{spectype.name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="menuItemForm.menuItemSpecTypeDrink.$error">
+                            <div ng-message="required">Neophodno je izabrati podtip.</div>
+                        </div>
+                    </md-input-container>
+
+                    <!-- Subtypes of FOOD -->
+                    <md-input-container ng-show="menuItemVm.menuItem.type == 'food'" class="md-block" flex-gt-sm>
+                        <label>Podtip</label>
+                        <md-select name="menuItemSpecTypeFood" ng-model="menuItemVm.menuItem.SpecType" ng-required="menuItemVm.menuItem.type == 'food'">
+                            <md-option ng-repeat="spectype in menuItemVm.allowedFood" value="{{spectype.db_value}}">
+                                {{spectype.name}}
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="menuItemForm.menuItemSpecTypeFood.$error">
+                            <div ng-message="required">Neophodno je izabrati podtip.</div>
+                        </div>
+                    </md-input-container>
+                </form>
+            </md-content>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button ng-disabled="!menuItemForm.$valid" class="md-raised md-primary" ng-click="menuItemVm.createMenuItem();" md-autofocus>
+            Potvrdi
+        </md-button>
+        <md-button class="md-raised md-default" ng-click="menuItemVm.cancel()" md-autofocus>
+            Odustani
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

@@ -11,9 +11,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.foodMenu = [];
     rmanagerVm.drinkMenu = [];
     rmanagerVm.updateRestaurant = updateRestaurant;
-    rmanagerVm.createDrink = createDrink;
-    rmanagerVm.createFood = createFood;
     rmanagerVm.createNewEmployee = createNewEmployee;
+    rmanagerVm.createMenuItem = createMenuItem;
 
     // TODO update on create new
     rmanagerVm.employees = [];
@@ -41,21 +40,22 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         getLoggedRestaurantManager().then(function() {
             //alert('Restaurant retreived from database.')
 
-        });
-        menuItemService.getAllActiveByType('food', 2).success(function(data) {
-            console.log(data);
-            rmanagerVm.foodMenu = data;
+            menuItemService.getAllActiveByType('food', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                console.log(data);
+                rmanagerVm.foodMenu = data;
+            });
+
+            menuItemService.getAllActiveByType('drink', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                console.log(data);
+                rmanagerVm.drinksMenu = data;
+            });
+
+            employeeService.getEmployeesByRestaurant(rmanagerVm.rmanager.restaurant.restaurantId).then(function(data) {
+                console.log(data);
+                rmanagerVm.employees = data;
+            });
         });
 
-        menuItemService.getAllActiveByType('drink', 2).success(function(data) {
-            console.log(data);
-            rmanagerVm.drinksMenu = data;
-        });
-
-        employeeService.getEmployeesByRestaurant(2).then(function(data) {
-            console.log(data);
-            rmanagerVm.employees = data;
-        });
     }
 
     function getLoggedRestaurantManager() {
@@ -189,33 +189,18 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     };
 
-    function createDrink(restaurant_id, drinks_menu_ref) {
+    function createMenuItem() {
         $mdDialog.show({
-            controller: 'SingleDrinkController',
-            controllerAs: 'drinkVm',
-            templateUrl: '/views/dialogs/drink-form-tmpl.html',
+            controller: 'SingleMenuItemController',
+            controllerAs: 'menuItemVm',
+            templateUrl: '/views/dialogs/menu-item-form-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose: false,
             fullscreen: false,
             locals: {
                 restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
-                drinks_menu_ref :  rmanagerVm.rmanager.restaurant.drinksMenu,
-                tabs : rmanagerVm.tabs
-            }
-        });
-    };
-
-    function createFood() {
-        $mdDialog.show({
-            controller: 'SingleFoodController',
-            controllerAs: 'foodVm',
-            templateUrl: '/views/dialogs/food-form-tmpl.html',
-            parent: angular.element(document.body),
-            clickOutsideToClose:true,
-            fullscreen: false,
-            locals: {
-                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
-                food_menu_ref : rmanagerVm.rmanager.restaurant.foodMenu,
+                drinks_menu_ref :  rmanagerVm.drinkMenu,
+                food_menu_ref : rmanagerVm.foodMenu,
                 tabs : rmanagerVm.tabs
             }
         });

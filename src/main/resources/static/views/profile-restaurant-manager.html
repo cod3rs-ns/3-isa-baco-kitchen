@@ -86,7 +86,7 @@
 			<md-divider></md-divider>
 			<md-menu-item class="md-indent">
             	<md-button 	class="md-primary"
-							ng-click="rmanagerVm.createDrink();">
+							ng-click="rmanagerVm.createMenuItem();">
 					<md-icon class="material-icons">restaurant_menu</md-icon>
             		<strong>Nova stavka menija</strong>
             	</md-button>
@@ -186,19 +186,19 @@
 							</div>
 							<!-- This style attribute must be here - it fixes one Chromium bug -->
 							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
-	                        <md-card-content style="margin-top:-24px;">
+	                        <md-card-content style="margin-top:-24px; height:100px;">
 	                            <h4>{{meal.name}}</h4>
 	                            <p style="color:grey">{{meal.info}}</p>
-								<div layout="row" layout-align="start start">
-									<p>
-										<md-icon class="material-icons">attach_money
-											<md-tooltip>
-												Cena
-											</md-tooltip>
-										</md-icon>{{meal.price}} RSD
-									</p>
-								</div>
 	                        </md-card-content>
+							<md-card-actions layout="row" layout-align="end end">
+								<p>
+									<md-icon class="material-icons">attach_money
+										<md-tooltip>
+											Cena
+										</md-tooltip>
+									</md-icon>{{meal.price}} RSD
+								</p>
+							</md-card-actions>
 	                	</md-card>
 	            	</div>
 	            </div>
@@ -242,19 +242,19 @@
 							</div>
 							<!-- This style attribute must be here - it fixes one Chromium bug -->
 							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
-	                        <md-card-content style="margin-top:-24px;">
+	                        <md-card-content style="margin-top:-24px; height:100px;">
 	                            <h4>{{meal.name}}</h4>
 	                            <p style="color:grey">{{meal.info}}</p>
-								<div layout="row" layout-align="start start">
-									<p>
-										<md-icon class="material-icons">attach_money
-											<md-tooltip>
-												Cena
-											</md-tooltip>
-										</md-icon>{{meal.price}} RSD
-									</p>
-								</div>
 	                        </md-card-content>
+							<md-card-actions layout="row" layout-align="end end">
+								<p>
+									<md-icon class="material-icons">attach_money
+										<md-tooltip>
+											Cena
+										</md-tooltip>
+									</md-icon>{{meal.price}} RSD
+								</p>
+							</md-card-actions>
 	                	</md-card>
 	            	</div>
 	            </div>

@@ -53,7 +53,11 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
                     if (responses[i].status == 'accepted' || responses[i].offer.deadline < Date.now() || responses[i].offer.acceptedResponse != null) {
                         providerVm.historyResponses.push(responses[i]);
                     }else {
-                        providerVm.activeResponses.push(responses[i]);
+                        if(responses[i].status == 'rejected' && responses[i].offer.acceptedResponse == null){
+                            providerVm.historyResponses.push(responses[i]);
+                        } else {
+                            providerVm.activeResponses.push(responses[i]);
+                        }
                     };
                 };
             });
@@ -167,10 +171,22 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
         $mdDialog.show(confirm)
             .then(function() {
                 providerResponseService.deleteProviderResponse(response.responseId)
-                    .then(function() {
+                    .then(function(data) {
+                        if (data) {
+                            providerVm.showToast('Uspešno ste povukli ponudu.');
+                        } else {
+                            $mdDialog.show(
+                                $mdDialog.alert()
+                                    .parent(angular.element(document.body))
+                                    .clickOutsideToClose(true)
+                                    .title('Upozorenje.')
+                                    .textContent('Status porudžbine je u međuvremenu promenjen. Podaci se osvežavaju.')
+                                    .ariaLabel('Upozorenje.')
+                                    .ok('OK')
+                                );
+                        };
                         getNewOffersForProvider();
                         getResponses();
-                        providerVm.showToast('Uspešno ste povukli ponudu.');
                     })
             }, function() {
                 $mdDialog.hide();
@@ -190,6 +206,10 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
                 offer : response.offer,
                 provider: providerVm.provider
             }
+        })
+        .finally(function() {
+            getNewOffersForProvider();
+            getResponses();
         });
     }
 }

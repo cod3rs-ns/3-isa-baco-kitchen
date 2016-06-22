@@ -152,7 +152,12 @@
 								<h3><strong>{{'Ponuda #' + rsp.responseId}}</strong></h3>
 								<p>{{'porudžbina: #' + rsp.offer.offerId}}</p>
 								<p>{{'ponuđena cena: ' + rsp.price}} </p>
-								<p><em>{{'status: ' + rsp.status}} </em></p>
+								<p style="color:green;" ng-show="rsp.status == 'accepted'">
+	                                <em>prihvaćena</em>
+	                            </p>
+	                            <p style="color:red;" ng-show="rsp.status == 'rejected'">
+	                                <em>odbijena</em>
+	                            </p>
 							</div>
 							<md-divider ng-if="!$last"></md-divider>
 						</md-list-item>
