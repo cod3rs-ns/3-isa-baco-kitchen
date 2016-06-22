@@ -15,19 +15,18 @@
               <h1>Kada želite da rezervišete?</h1>
               <p> Odaberite datum kada želite da rezervišete. Nakon toga, unesite vrijeme početka Vaše rezervacije, kao i koliko sati želite da ostanete na rezervaciji. </p>
               <form name="reservationForm1">
-                  <md-datepicker md-min-date="restaurantVm.minDate" ng-model="restaurantVm.DateTime.date" style="background-color: #fff;"
+                  <md-datepicker md-min-date="restaurantVm.minDate" ng-model="restaurantVm.DateTime.date" style="background-color: #fff; margin-left: -10px;"
                     md-placeholder="Odaberi datum" required></md-datepicker>
 
-                <div layout-gt-sm="row">
-                  <md-input-container class="md-block">
+                <div layout-gt-sm="row" style="width: 99.5%;">
+                  <md-input-container class="md-block" style="width: 50%;">
                     <md-icon aria-label="Time" class="material-icons">alarm</md-icon>
                     <label>časovi</label>
                     <input	name="scheduleStartHours" ng-model="restaurantVm.DateTime.hours"
                       type="number" step="1" min="0" max="23" required />
                   </md-input-container>
-                  <md-input-container class="md-block">
+                  <md-input-container class="md-block" style="width: 50%;">
                     <label>minuti</label>
-                    <!--md-icon aria-label="Time" class="material-icons">alarm</md-icon-->
                       <input name="scheduleStartMinutes" ng-model="restaurantVm.DateTime.mins"
                         type="number" step="1" min="0" max="59" ng-model="restaurantVm.DateTime.mins" required />
                   </md-input-container>
@@ -46,7 +45,7 @@
           </wz-step>
           <wz-step wz-title="Odaberi stolove">
               <h1>Koje stolove želite da rezervišete?</h1>
-              <div layout="column" id="canvas" class="restaurant-canvas" style="height:600px; widht=600px;">
+              <div layout="column" id="canvas" class="restaurant-canvas" style="height:400px; width:91%;">
                 <div 	id="{{table.tableId != null ? table.tableId : table.tempId}}"
                     name="{{table.tableId != null ? table.tableId : table.tempId}}"
                     data-x="{{table.datax}}"
