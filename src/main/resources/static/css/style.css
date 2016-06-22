@@ -116,7 +116,7 @@ ul.rating {
   text-align: center;
   font-weight: bold;
   cursor: pointer;
-  width: 24px; !important
+  width: 24px !important;
 }
 
 .rating .filled {
@@ -262,7 +262,6 @@ ul.rating {
 
 md-dialog-content.reservation-dialog {
     padding: 4px 24px;
-    width: 100%;
 }
 
 .inputdemoIcons {
@@ -345,6 +344,10 @@ html.ng-scope {
 }
 
 .md-datepicker-input-container {
-  width: 100%;
-  margin-left: 0px;
+  min-width: 95%;
+  margin-left: -5px !important;
+}
+
+ul.steps-indicator .steps-3 > li > a {
+    pointer-events: none;
 }
