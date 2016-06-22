@@ -74,7 +74,9 @@ public class RestaurantTableController {
             value = "/api/tables/{id}",
             method = RequestMethod.DELETE)
     public ResponseEntity <RestaurantTable> deleteTable(@PathVariable("id") Integer id) {
-        tableService.delete(id);
+        RestaurantTable rt = tableService.findOne(id);
+        rt.setDeleted(true);
+        tableService.update(rt);
         return new ResponseEntity <RestaurantTable>(HttpStatus.NO_CONTENT);
     }
 

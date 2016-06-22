@@ -162,19 +162,19 @@ INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_colo
 INSERT INTO `isa_mrs_project`.`restaurant_regions` (`rr_id`, `rr_name`, `rr_color`, `rr_restaurant_id`, `rr_region_no`) VALUES ('4', 'šank', '#00695C', '5', '2');
 
 -- RestaurantTables
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('1', '7', '4', '10', '10', '4', '1', '1');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('2', '10', '20', '5', '5', '4', '1', '2');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('3', '10', '30', '10', '10', '6', '1', '3');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('4', '20', '40', '5', '5', '2', '1', '4');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('5', '50', '20', '10', '5', '2', '2', '5');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('6', '70', '40', '5', '10', '2', '2', '6');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('1', '7', '4', '10', '10', '4', '1', '1', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('2', '10', '20', '5', '5', '4', '1', '2', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('3', '10', '30', '10', '10', '6', '1', '3', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('4', '20', '40', '5', '5', '2', '1', '4', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('5', '50', '20', '10', '5', '2', '2', '5', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('6', '70', '40', '5', '10', '2', '2', '6', '0');
 
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('7', '7', '4', '10', '10', '4', '3', '1');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('8', '20', '20', '5', '5', '4', '3', '2');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('9', '30', '30', '10', '10', '6', '3', '3');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('10', '20', '40', '5', '5', '2', '4', '4');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('11', '50', '20', '10', '5', '2', '4', '5');
-INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`) VALUES ('12', '90', '40', '5', '10', '2', '4', '6');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('7', '7', '4', '10', '10', '4', '3', '1', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('8', '20', '20', '5', '5', '4', '3', '2', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('9', '30', '30', '10', '10', '6', '3', '3', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('10', '20', '40', '5', '5', '2', '4', '4', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('11', '50', '20', '10', '5', '2', '4', '5', '0');
+INSERT INTO `isa_mrs_project`.`restaurant_tables` (`rt_id`, `rt_datax`, `rt_datay`, `rt_width`, `rt_height`, `rt_positions`, `rt_region_id`, `rt_table_in_restaurant_no`, `rt_deleted`) VALUES ('12', '90', '40', '5', '10', '2', '4', '6', '0');
 
 
 -- Reservations

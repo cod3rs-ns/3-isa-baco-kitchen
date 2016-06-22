@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('ShiftTemplateController', ShiftTemplateController);
 
-ShiftTemplateController.$inject = ['shiftTemplateService', '$mdToast', '$scope'];
+ShiftTemplateController.$inject = ['shiftTemplateService', 'restaurantManagerService', '$mdToast', '$scope'];
 
-function ShiftTemplateController(shiftTemplateService, $mdToast, $scope) {
+function ShiftTemplateController(shiftTemplateService, restaurantManagerService, $mdToast, $scope) {
     var shiftVm = this;
     shiftVm.shiftTemplates = [];
     shiftVm.activeShiftTemplate = {};
@@ -22,13 +22,17 @@ function ShiftTemplateController(shiftTemplateService, $mdToast, $scope) {
     activate();
 
     function activate() {
-        initDefaultShiftTemplate();
-        findShiftTemplatesByRestaurant();
+        restaurantManagerService.getLoggedRestaurantManager()
+            .then(function(data) {
+                shiftVm.rmanager = data;
+                initDefaultShiftTemplate();
+                findShiftTemplatesByRestaurant();
+            });
     };
 
     function findShiftTemplatesByRestaurant() {
         // TODO get actual restaurant no
-        shiftTemplateService.findShiftTemplatesByRestaurant(2)
+        shiftTemplateService.findShiftTemplatesByRestaurant(shiftVm.rmanager.restaurant.restaurantId)
             .then(function(data) {
                 shiftVm.shiftTemplates = data;
             });
@@ -42,7 +46,7 @@ function ShiftTemplateController(shiftTemplateService, $mdToast, $scope) {
             startMinutes: null,
             endMinutes: null,
             name: '',
-            restaurantId: 2
+            restaurantId: shiftVm.rmanager.restaurant.restaurantId
         };
     };
 

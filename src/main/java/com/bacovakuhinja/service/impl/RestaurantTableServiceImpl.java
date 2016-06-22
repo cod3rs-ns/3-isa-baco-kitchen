@@ -47,7 +47,7 @@ public class RestaurantTableServiceImpl implements RestaurantTableService {
         Collection <RestaurantTable> allTables = tableRepository.findAll();
         Collection <RestaurantTable> restaurantTables = new ArrayList <RestaurantTable>();
         for (RestaurantTable table : allTables) {
-            if (table.getRegion().getRestaurant().getRestaurantId() == restaurantId) {
+            if (table.getRegion().getRestaurant().getRestaurantId() == restaurantId && !table.isDeleted()) {
                 restaurantTables.add(table);
             }
         }

@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantScheduleController', RestaurantScheduleController);
 
-RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'regionService', '$scope', '$timeout', '$mdToast', 'moment', 'workingTimeService', 'shiftTemplateService'];
+RestaurantScheduleController.$inject = ['employeeService', 'scheduleService', 'restaurantManagerService', 'regionService', '$scope', '$timeout', '$mdToast', 'moment', 'workingTimeService', 'shiftTemplateService'];
 
-function RestaurantScheduleController(employeeService, scheduleService, regionService, $scope, $timeout, $mdToast, moment, workingTimeService, shiftTemplateService) {
+function RestaurantScheduleController(employeeService, scheduleService, restaurantManagerService, regionService, $scope, $timeout, $mdToast, moment, workingTimeService, shiftTemplateService) {
     var scheduleVm = this;
     scheduleVm.employees = [];
     scheduleVm.regions = [];
@@ -45,37 +45,40 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
     initState();
 
     function initState() {
-        workingTimeService.findWorkingTimeByRestaurant(2).
-            then(function(data) {
-                scheduleVm.restaurantWorkingTime = data;
-            });
-        scheduleVm.calendarView = 'month';
-        scheduleVm.calendarDate = new Date();
-        scheduleVm.viewDate =  moment().startOf('month').toDate();
-        scheduleVm.events = [];
-        scheduleVm.viewChangeEnabled = true;
-        scheduleService.getSchedules()
+        restaurantManagerService.getLoggedRestaurantManager()
             .then(function(data) {
-                console.log(data);
-                for (var i = 0; i < data.length; i++) {
-                    var test_event = data[i];
-                    test_event.title = data[i].employee.firstName;
-                    test_event.startsAt = new Date(data[i].mergedStart);
-                    test_event.endsAt = new Date(data[i].mergedEnd);
-                    test_event.type = convertTypeToClass(data[i].employee.type);
-                    test_event.draggable = true;
-                    test_event.resizable = true;
-                    console.log(test_event);
-                    scheduleVm.events.push(test_event);
-                };
+                scheduleVm.rmanager = data;
+                workingTimeService.findWorkingTimeByRestaurant(scheduleVm.rmanager.restaurant.restaurantId).
+                    then(function(data) {
+                        scheduleVm.restaurantWorkingTime = data;
+                    });
+                scheduleVm.calendarView = 'month';
+                scheduleVm.calendarDate = new Date();
+                scheduleVm.viewDate =  moment().startOf('month').toDate();
+                scheduleVm.events = [];
+                scheduleVm.viewChangeEnabled = true;
+                scheduleService.getSchedules()
+                    .then(function(data) {
+                        console.log(data);
+                        for (var i = 0; i < data.length; i++) {
+                            var test_event = data[i];
+                            test_event.title = data[i].employee.firstName;
+                            test_event.startsAt = new Date(data[i].mergedStart);
+                            test_event.endsAt = new Date(data[i].mergedEnd);
+                            test_event.type = convertTypeToClass(data[i].employee.type);
+                            test_event.draggable = true;
+                            test_event.resizable = true;
+                            console.log(test_event);
+                            scheduleVm.events.push(test_event);
+                        };
+                    });
             });
-
     };
 
     function loadShifts() {
         return $timeout(function() {
             // TODO 2 change to actual restaurant
-            shiftTemplateService.findShiftTemplatesByRestaurant(2)
+            shiftTemplateService.findShiftTemplatesByRestaurant(scheduleVm.rmanager.restaurant.restaurantId)
                 .then(function(data) {
                     scheduleVm.shifts = data;
                 });
@@ -142,7 +145,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
    scheduleVm.loadRegions = loadRegions;
    function loadRegions() {
        return $timeout(function() {
-           regionService.getRegionsByRestaurant(2)
+           regionService.getRegionsByRestaurant(scheduleVm.rmanager.restaurant.restaurantId)
                .then(function(data){
                    scheduleVm.regions = data;
                });
@@ -161,11 +164,12 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        scheduleVm.newEvent.startsAt = scheduleVm.dateClicked;
        scheduleVm.newEvent.startsAt.setHours(d.sh);
        scheduleVm.newEvent.startsAt.setMinutes(d.sm);
-       scheduleVm.newEvent.endsAt = scheduleVm.dateClicked;
+       scheduleVm.newEvent.endsAt = angular.copy(scheduleVm.dateClicked);
        scheduleVm.newEvent.endsAt.setHours(d.eh);
        scheduleVm.newEvent.endsAt.setMinutes(d.em);
        scheduleVm.newEvent.title = d.employee.firstName + ' ' + d.employee.lastName;
        scheduleVm.newEvent.type = convertTypeToClass(d.employee.type);
+       scheduleVm.newEvent.employee = d.employee;
        console.log(scheduleVm.testDate);
        console.log(scheduleVm.newEvent);
        scheduleVm.newEvent.mergedStart = scheduleVm.newEvent.startsAt;
@@ -179,7 +183,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
            day: scheduleVm.newEvent.startsAt.getDate(),
            region: null,
            employee: null,
-           restaurantId: 2,
+           restaurantId: scheduleVm.rmanager.restaurant.restaurantId,
            startHours: d.sh,
            startMinutes: d.sm,
            endHours: d.eh,
@@ -192,7 +196,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        if (d.employee.type == 'waiter') {
            regid = d.region.regionId;
        }
-       scheduleService.createSchedule(schedule, 2, d.employee.userId, regid)
+       scheduleService.createSchedule(schedule, scheduleVm.rmanager.restaurant.restaurantId, d.employee.userId, regid)
        .then(function(data) {
            console.log(data);
            showToast('Uspešno ste sačuvali raspored radnika.');
@@ -288,7 +292,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
        if (t.employee.type == 'waiter') {
            regid = t.region.regionId;
        }
-       scheduleService.updateSchedule(t, 2, t.employee.userId, regid)
+       scheduleService.updateSchedule(t, scheduleVm.rmanager.restaurant.restaurantId, t.employee.userId, regid)
        showToast('Uspešno ste ažurirali radno vreme radnika.');
    };
 
@@ -356,7 +360,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
            if (t.regReversed) {
                restaurantEnd = restaurantStart.clone().add(1, 'd');
            } else{
-               restaurantEnd = moment(newStart);
+               restaurantEnd = moment(start);
            }
            restaurantEnd.hour(t.regEndHours);
            restaurantEnd.minute(t.regEndMinutes);
@@ -366,7 +370,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
            if (t.satReversed) {
                restaurantEnd = restaurantStart.clone().add(1, 'd');
            } else{
-               restaurantEnd = moment(newStart);
+               restaurantEnd = moment(start);
            }
            restaurantEnd.hour(t.satEndHours);
            restaurantEnd.minute(t.satEndMinutes);
@@ -376,7 +380,7 @@ function RestaurantScheduleController(employeeService, scheduleService, regionSe
            if (t.sunReversed) {
                restaurantEnd = restaurantStart.clone().add(1, 'd');
            } else{
-               restaurantEnd = moment(newStart);
+               restaurantEnd = moment(start);
            }
            restaurantEnd.hour(t.sunEndHours);
            restaurantEnd.minute(t.sunEndMinutes);

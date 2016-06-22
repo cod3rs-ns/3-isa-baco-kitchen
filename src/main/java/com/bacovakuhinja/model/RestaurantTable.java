@@ -35,6 +35,9 @@ public class RestaurantTable {
     @Column(name = "rt_table_in_restaurant_no")
     private Integer tableInRestaurantNo;
 
+    @Column(name = "rt_deleted")
+    private boolean deleted;
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "rt_region_id")
@@ -45,6 +48,14 @@ public class RestaurantTable {
     private Set<ClientOrder> orders = new HashSet<ClientOrder>(0);
 
     public RestaurantTable() {
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public Integer getTableId() {

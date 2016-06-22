@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('OfferController', OfferController);
 
-OfferController.$inject = ['offerRequestService', '$mdToast', '$scope', '$mdDialog'];
+OfferController.$inject = ['offerRequestService', 'restaurantManagerService', '$mdToast', '$scope', '$mdDialog'];
 
-function OfferController(offerRequestService, $mdToast, $scope, $mdDialog) {
+function OfferController(offerRequestService, restaurantManagerService, $mdToast, $scope, $mdDialog) {
     var offerVm = this;
     offerVm.activeOffer = {};
     offerVm.offers = [];
@@ -15,16 +15,20 @@ function OfferController(offerRequestService, $mdToast, $scope, $mdDialog) {
     activate();
 
     function activate() {
-        getOffers()
-            .then(function() {
-                console.log("Offers retrieved.");
+        restaurantManagerService.getLoggedRestaurantManager()
+            .then(function(data) {
+                offerVm.rmanager = data;
+                getOffers()
+                    .then(function() {
+                        console.log("Offers retrieved.");
+                    });
+                offerVm.initNewOffer();
             });
-        offerVm.initNewOffer();
     };
 
     function getOffers() {
         // TODO get real restaurant
-        return offerRequestService.getOfferRequestsByRestaurant(2)
+        return offerRequestService.getOfferRequestsByRestaurant(offerVm.rmanager.restaurant.restaurantId)
             .then(function(data) {
                 offerVm.offers = data;
             });

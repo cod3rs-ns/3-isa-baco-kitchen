@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('TablesController', TablesController);
 
-TablesController.$inject = ['tableService', 'regionService', '$mdDialog', '$mdToast'];
+TablesController.$inject = ['tableService', 'restaurantManagerService', 'regionService', '$mdDialog', '$mdToast'];
 
-function TablesController(tableService, regionService, $mdDialog, $mdToast) {
+function TablesController(tableService, restaurantManagerService, regionService, $mdDialog, $mdToast) {
     var tablesVm = this;
     // switch of edit or no-edit state
     tablesVm.enabledEdit = false;
@@ -57,24 +57,29 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     activate();
 
     function activate() {
-        getTablesByRestaurant().then(function() {
-            // after success action
-        });
+        restaurantManagerService.getLoggedRestaurantManager()
+            .then(function(data) {
+                tablesVm.rmanager = data;
+                getTablesByRestaurant().then(function() {
+                    // after success action
+                });
 
 
-        getRegionsByRestaurant();
-        tablesVm.regionCount = tablesVm.regions.length;
+                getRegionsByRestaurant();
+                tablesVm.regionCount = tablesVm.regions.length;
 
 
-        for (var i = 0; i < tablesVm.regions.length; i++) {
-            tablesVm.regionEditFields[i] = false;
-        }
+                for (var i = 0; i < tablesVm.regions.length; i++) {
+                    tablesVm.regionEditFields[i] = false;
+                }
+            });
+
     };
 
     function getTablesByRestaurant() {
         // TODO currently locked on 2
         // find way to access to logged user
-        return tableService.getTablesByRestaurant(2)
+        return tableService.getTablesByRestaurant(tablesVm.rmanager.restaurant.restaurantId)
             .then(function(data) {
                 tablesVm.tables = data;
 
@@ -90,7 +95,7 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
     function getRegionsByRestaurant() {
         // TODO currently locked on 2
         // find way to access to logged user
-        return regionService.getRegionsByRestaurant(2)
+        return regionService.getRegionsByRestaurant(tablesVm.rmanager.restaurant.restaurantId)
             .then(function(data) {
                 tablesVm.regions = data;
                 tablesVm.regionCount = tablesVm.regions.length;
@@ -162,23 +167,7 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
 
     function tableSizeHeuristic(x, y){
         // TODO This is example of function, should be way smarter
-        var area = x*y;
-        console.log(area);
-        if(area < 100){
-            return 1;
-        }else if (100 <= area < 200) {
-            return 2;
-        }else if (200 <= area < 300) {
-            return 3;
-        }else if (300 <= area < 400) {
-            return 4;
-        }else if (400 <= area < 500) {
-            return 5;
-        }else if (500 <= area < 600) {
-            return 6;
-        }else {
-            return 'puno ljudi';
-        }
+        return Math.ceil((x*y)/25.0);
     };
 
     function startInteraction(){
@@ -333,7 +322,10 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
         // update model
         currentTable.height = newHeight;
         currentTable.width =  newWidth;
-
+        currentTable.positions = tablesVm.tableSizeHeuristic(newWidth, newHeight);
+        console.log(currentTable);
+        console.log(tablesVm.tableSizeHeuristic(newWidth, newHeight))
+        console.log(currentTable.positions);
         // translate when resizing from top or left edges
         x += (event.deltaRect.left / parentWidth) * 100 ;
         y += (event.deltaRect.top / parentWidth) *100;
@@ -450,17 +442,15 @@ function TablesController(tableService, regionService, $mdDialog, $mdToast) {
         };
         tablesVm.regions.push(newRegion);
         tablesVm.regionCount = tablesVm.regionCount + 1;
-        regionService.createRegion(newRegion, 2).then(
+        regionService.createRegion(newRegion, tablesVm.rmanager.restaurant.restaurantId).then(
             function(data){
-                alert("Saved region.");
                 console.log(data);
             }
         );
     };
 
     function saveRegion(idx) {
-        // TODO get real restaurant NO
-        regionService.updateRegion(tablesVm.regions[idx], 2)
+        regionService.updateRegion(tablesVm.regions[idx], tablesVm.rmanager.restaurant.restaurantId)
             .then(function(data){
                 console.log(data);
 

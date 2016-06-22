@@ -218,6 +218,7 @@ CREATE TABLE IF NOT EXISTS `isa_mrs_project`.`restaurant_tables` (
   `rt_positions` INT(11) NOT NULL,
   `rt_region_id` INT(11) NOT NULL,
   `rt_table_in_restaurant_no` INT(11) NOT NULL,
+  `rt_deleted` TINYINT(1) NOT NULL,
   PRIMARY KEY (`rt_id`),
   INDEX `rt_region_fid_idx` (`rt_region_id` ASC),
   CONSTRAINT `rt_region_fid`

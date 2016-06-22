@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WorkingTimeController', WorkingTimeController);
 
-WorkingTimeController.$inject = ['workingTimeService', '$mdToast'];
+WorkingTimeController.$inject = ['workingTimeService', 'restaurantManagerService', '$mdToast'];
 
-function WorkingTimeController(workingTimeService, $mdToast) {
+function WorkingTimeController(workingTimeService, restaurantManagerService, $mdToast) {
     var workingTimeVm = this;
     workingTimeVm.wtime = {};
     workingTimeVm.editMode = false;
@@ -22,13 +22,18 @@ function WorkingTimeController(workingTimeService, $mdToast) {
     activate();
 
     function activate() {
-        findWorkingTimeByRestaurant();
+        restaurantManagerService.getLoggedRestaurantManager()
+            .then(function(data) {
+                workingTimeVm.rmanager = data;
+                findWorkingTimeByRestaurant();
+            });
+
     };
 
     function findWorkingTimeByRestaurant() {
         // TODO get actual restaurant
         // TODO init empty working time if
-        workingTimeService.findWorkingTimeByRestaurant(2)
+        workingTimeService.findWorkingTimeByRestaurant(workingTimeVm.rmanager.restaurant.restaurantId)
             .then(function(data) {
                 console.log(data);
                 workingTimeVm.wtime = data;
