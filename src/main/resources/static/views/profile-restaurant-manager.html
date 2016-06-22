@@ -67,12 +67,21 @@
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-    <md-content flex style="min-height:500px;">
-        <md-menu-content flex style="min-height:500px;">
+    <md-content flex style="min-height:550px;">
+        <md-menu-content flex style="min-height:550px;">
         	<md-menu-item class="md-indent">
-	            <md-button 	class="md-primary">
+	            <md-button 	class="md-primary"
+							ng-click="rmanagerVm.updateProfile();">
 					<md-icon class="material-icons">account_circle</md-icon>
 	            	<strong>Ažuriranje profila</strong>
+	            </md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+	            <md-button 	class="md-primary"
+							ng-click="rmanagerVm.changePassword(true);">
+					<md-icon class="material-icons">vpn_key</md-icon>
+	            	<strong>Izmena lozinke</strong>
 	            </md-button>
         	</md-menu-item>
 			<md-divider></md-divider>

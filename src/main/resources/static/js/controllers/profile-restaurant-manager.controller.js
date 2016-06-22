@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
+RestaurantManagerController.$inject = ['restaurantManagerService', 'passService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, passService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -27,6 +27,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.showVisitsChart = showVisitsChart;
     rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
+    rmanagerVm.changePassword = changePassword;
     rmanagerVm.upload = upload;
 
 
@@ -58,6 +59,13 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             });
         });
 
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if (!data){
+                    rmanagerVm.changePassword(false);
+                }
+            });
+
     }
 
     function getLoggedRestaurantManager() {
@@ -66,6 +74,25 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
                 rmanagerVm.rmanager = data;
                 return rmanagerVm.rmanager;
             });
+    };
+
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
     };
 
     function updateRestaurant() {
