@@ -6,9 +6,7 @@ import com.bacovakuhinja.service.ClientOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ClientOrderServiceImpl implements ClientOrderService{
@@ -65,6 +63,13 @@ public class ClientOrderServiceImpl implements ClientOrderService{
 
     @Override
     public List<ClientOrder> getOrdersFromReservation(int tableId) {
-        return clientOrderRepository.findByTable_TableIdAndBill_BillIdAndStatusOrderByDateAsc(tableId, null, "CREATED");
+        Calendar date = new GregorianCalendar();
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        date.add(Calendar.DAY_OF_MONTH, 1);
+        Date midnight = date.getTime();
+        return clientOrderRepository.findByTable_TableIdAndBill_BillIdAndStatusAndDeadlineLessThanOrderByDateAsc(tableId, null, "CREATED", midnight);
     }
 }
