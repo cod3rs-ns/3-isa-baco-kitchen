@@ -100,7 +100,7 @@
 					</md-menu-item>
 					<md-divider></md-divider>
 					<md-menu-item class="md-indent">
-						<md-button 	class="md-primary">
+						<md-button 	class="md-primary" ng-click="waiterProfileVm.logout();">
 							<md-icon class="material-icons">exit_to_app</md-icon>
 							<strong>Odjavi se</strong>
 						</md-button>
@@ -129,7 +129,6 @@
 									<md-card class="order-item">
 										<md-card-content>
 
-
 											<img ng-src="{{meal.menuItem.image}}" class="md-card-image order-img">
 											<h4>{{meal.menuItem.name}}</h4>
 											<md-button aria-label="hidden" style="visibility: hidden;"></md-button>
@@ -137,7 +136,7 @@
 										</md-card-content>
 
 										<md-card-actions class="order-btns" layout="row" layout-align="center end">
-											<md-button > <i class="material-icons md-16">restaurant_menu</i> sto : 4</md-button>
+											<md-button > <i class="material-icons md-16">restaurant_menu</i> sto : {{meal.tableId}} </md-button>
 											<md-button class="md-raised md-primary" ng-click="waiterProfileVm.deliverOrder(meal.itemId);">Prihvati</md-button>
 										</md-card-actions>
 									</md-card>

@@ -12,6 +12,15 @@ function AddOrderController(menuItemService, orderService, reservationService, $
     
     orderVm.reservation = {};
     orderVm.tableId = null;
+    orderVm.orderMeals = [];
+
+    //adding meal to order
+    orderVm.addMeal = addMeal;
+    //removing meal from order
+    orderVm.removeMeal = removeMeal;
+    //accept adding or editing order
+    orderVm.confirm = confirm;
+
 
     activate();
     
@@ -50,7 +59,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
                                 //dodaj sve poručene stavke i obriši ih iz liste svih jela i pića
                                 var mitem  = orderItems[item].menuItem
 
-                                console.log(mitem);
                                 for(var orderMeal in orderVm.meals){
                                     if (mitem.menuItemId === orderVm.meals[orderMeal].menuItemId){
                                         orderVm.meals[orderMeal].hide = true;
@@ -78,9 +86,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
         $mdDialog.cancel();
     };
 
-    orderVm.orderMeals = [];
-
-    orderVm.addMeal = addMeal;
     function addMeal(meal) {
         var idx = orderVm.orderMeals.indexOf(meal);
         if (idx === -1) {
@@ -94,7 +99,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
         }
     };
 
-    orderVm.removeMeal = removeMeal;
     function removeMeal(meal) {
         var idx = orderVm.orderMeals.indexOf(meal);
         if (idx !== -1) {
@@ -104,7 +108,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
         }
     };
 
-    orderVm.confirm = confirm;
     function confirm(){
         if (orderVm.orderMeals.length !== 0){
             
@@ -167,7 +170,6 @@ function AddOrderController(menuItemService, orderService, reservationService, $
             order.items.push(item);
         });
 
-        console.log(order);
         return order;
     };
 

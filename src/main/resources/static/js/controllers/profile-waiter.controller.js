@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', '$mdDialog', '$mdToast', '$scope'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', 'loginService', '$mdDialog', '$mdToast', '$scope'];
 
-function WaiterProfileController(tableService, waiterService, passService, orderService, $mdDialog, $mdToast, $scope) {
+function WaiterProfileController(tableService, waiterService, passService, orderService, loginService, $mdDialog, $mdToast, $scope) {
     var waiterProfileVm = this;
     
     waiterProfileVm.waiter = {};
@@ -13,7 +13,37 @@ function WaiterProfileController(tableService, waiterService, passService, order
     waiterProfileVm.notNo = -1;
     waiterProfileVm.selectedTab = 0;
     waiterProfileVm.reservation = false;
+
     waiterProfileVm.reservationOrders = [];
+    waiterProfileVm.meals = [];
+    waiterProfileVm.allTables = [];
+    waiterProfileVm.selectedTable = null;
+    waiterProfileVm.selectedTableOrders = [];
+
+    //editing profile
+    waiterProfileVm.editProfile = editProfile;
+    //changing password
+    waiterProfileVm.changePassword = changePassword;
+    //select table from region
+    waiterProfileVm.selectTable = selectTable;
+    //add new order
+    waiterProfileVm.addOrder = addOrder;
+    //creating new bill
+    waiterProfileVm.createBill = createBill;
+    //open waiter's schedule
+    waiterProfileVm.openSchedule = openSchedule;
+    //editing order
+    waiterProfileVm.editOrder = editOrder;
+    //claim that waiter delivered order
+    waiterProfileVm.deliverOrder = deliverOrder;
+    //show bill details
+    waiterProfileVm.showBill = showBill;
+    //changing status of order
+    waiterProfileVm.changeOrderStatus = changeOrderStatus;
+    //logout from profile
+    waiterProfileVm.logout = logout;
+
+
 
     activate();
 
@@ -58,7 +88,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
     function getRegion(){
         return waiterService.getWorkingRegion(waiterProfileVm.waiter.userId)
             .then(function(response) {
-                console.log(response);
                 if(response.statusText == "OK"){
                     var data = response.data;
                     waiterProfileVm.workingRegion = data;
@@ -76,10 +105,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
-    waiterProfileVm.meals = [];
-
-    //editing profile
-    waiterProfileVm.editProfile = editProfile;
     function editProfile() {
         $mdDialog.show({
             controller: 'SingleEmployeeController',
@@ -94,7 +119,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         });
     };
 
-    waiterProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {
@@ -114,8 +138,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         );
     };
 
-    //part for tables
-    waiterProfileVm.allTables = [];
     function getTablesByRestaurant(restaurantId) {
         return tableService.getTablesByRestaurant(restaurantId)
             .then(function(data) {
@@ -137,8 +159,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
-    waiterProfileVm.selectedTable = null;
-    waiterProfileVm.selectTable = selectTable;
+
     function selectTable(tableId){
         for(var table in waiterProfileVm.allTables){
             if (waiterProfileVm.allTables[table].tableId == tableId){
@@ -172,7 +193,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         if(waiterProfileVm.selectedTable != null && waiterProfileVm.selectedTable != -1)
             orderService.getOrdersFromReservation(waiterProfileVm.selectedTable.tableId)
                 .then(function (data) {
-                    console.log(data);
                     waiterProfileVm.reservationOrders = data;
                     waiterProfileVm.reservationOrders.forEach(function (order) {
                         order.date = new Date(order.date);
@@ -180,9 +200,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
                 });
     }
 
-    waiterProfileVm.selectedTableOrders = [];
-
-    waiterProfileVm.addOrder = addOrder;
     function addOrder() {
         $mdDialog.show({
             controller: 'AddOrderController',
@@ -203,7 +220,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
     };
 
 
-    waiterProfileVm.createBill = createBill;
     function createBill() {
         waiterProfileVm.confirmationDialog(
             "Kreiranje računa",
@@ -229,7 +245,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         );
     };
 
-    waiterProfileVm.openSchedule = openSchedule;
     function openSchedule() {
         $mdDialog.show(
             {
@@ -243,7 +258,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         );
     };
 
-    waiterProfileVm.editOrder = editOrder;
     function editOrder(order) {
         var difference = (new Date()).getTime() - order.date.getTime();
         var minDiff = Math.floor(difference / 60000);
@@ -338,7 +352,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         }
     }
 
-    waiterProfileVm.deliverOrder = deliverOrder;
     function deliverOrder(orderId) {
         waiterService.deliverOrder(orderId)
             .then(function (data) {
@@ -351,7 +364,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
-    waiterProfileVm.showBill = showBill;
     function showBill(billId) {
         $mdDialog.show({
             controller: 'BillController',
@@ -375,7 +387,6 @@ function WaiterProfileController(tableService, waiterService, passService, order
         }
     }
 
-    waiterProfileVm.changeOrderStatus = changeOrderStatus;
     function changeOrderStatus(order) {
         waiterProfileVm.confirmationDialog(
             "Prihvatanje porudžbine sa rezervacija",
@@ -403,4 +414,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
                 });
     };
 
+    function logout() {
+        loginService.logout();
+    };
 }

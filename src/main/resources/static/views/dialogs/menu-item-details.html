@@ -1,0 +1,53 @@
+<md-dialog aria-label="Detalji"  ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <div ng-show="menuItemVm.item.type=='food'"><md-icon class="material-icons">local_dining</md-icon></div>
+            <div ng-show="menuItemVm.item.type=='drink'"><md-icon class="material-icons">local_bar</md-icon></div>
+
+            <h2>&nbsp;&nbsp;&nbsp;{{menuItemVm.item.name}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="menuItemVm.cancel()">
+                <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-dialog-content>
+        <div style="margin-left: 15px; margin-right: 5px;" layout="row">
+
+        <img flex="40" ng-src="{{menuItemVm.item.image}}" style="height:250px;">
+
+        <div flex="60">
+            <table layout="column" style="width:350px; margin-top: 10px; font-size: 16px;  border-collapse: collapse; color: #212121; margin-left: 12px;">
+                <tr>
+                    <th><md-icon class="material-icons">info_outline</md-icon></th>
+                    <td style="padding-left: 10px; height: 90px">{{menuItemVm.item.info}}</td>
+                </tr>
+
+                <tr style="line-height: 40px !important;">
+                    <td>&nbsp;tip</td>
+                    <td style="padding-left: 10px;">
+                        <md-chips style="float: left !important; position:relative !important;">
+                            <md-chip style="background-color: #ff4081; color:white; font-size: 11px;">{{menuItemVm.item.specType}}</md-chip>
+                        </md-chips>
+                    </td>
+                </tr>
+
+                <tr style="line-height: 40px !important;">
+                    <th><md-icon class="material-icons">attach_money</md-icon></th>
+                    <td style="padding-left: 10px;">{{menuItemVm.item.price}}</td>
+                </tr>
+
+            </table>
+        </div>
+        </div>
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-raised md-default" ng-click="menuItemVm.cancel();" md-autofocus>
+            Zatvori
+        </md-button>
+    </md-dialog-actions>
+
+</md-dialog>

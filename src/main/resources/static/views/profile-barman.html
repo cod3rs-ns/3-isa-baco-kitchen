@@ -99,7 +99,7 @@
 					</md-menu-item>
 					<md-divider></md-divider>
 					<md-menu-item class="md-indent">
-						<md-button 	class="md-primary">
+						<md-button 	class="md-primary" ng-click="barmanProfileVm.logout();">
 							<md-icon class="material-icons">exit_to_app</md-icon>
 							<strong>Odjavi se</strong>
 						</md-button>
@@ -135,7 +135,7 @@
 										</md-card-content>
 
 										<md-card-actions class="order-btns" layout="row" layout-align="center end">
-											<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
+											<md-button class="md-raised" ng-click="barmanProfileVm.showMenuItemDetails(drink.menuItem);">Detalji</md-button>
 											<md-button class="md-raised md-primary" ng-click="barmanProfileVm.prepareDrink(drink.itemId);">Prihvati</md-button>
 										</md-card-actions>
 									</md-card>
@@ -160,7 +160,7 @@
 									</md-card-content>
 
 									<md-card-actions class="order-btns" layout="row" layout-align="center end">
-										<md-button class="md-raised" ng-disabled="true">Detalji</md-button>
+										<md-button class="md-raised" ng-click="barmanProfileVm.showMenuItemDetails(drink.menuItem);">Detalji</md-button>
 										<md-button class="md-raised md-primary" ng-click="barmanProfileVm.finishDrink(drink.itemId);">Notifikuj</md-button>
 									</md-card-actions>
 								</md-card>
