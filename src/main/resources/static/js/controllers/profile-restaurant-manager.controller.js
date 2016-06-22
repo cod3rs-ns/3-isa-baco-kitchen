@@ -29,29 +29,9 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
     rmanagerVm.changePassword = changePassword;
     rmanagerVm.upload = upload;
+    rmanagerVm.uploadItemImage = uploadItemImage;
     rmanagerVm.editMenuItem = editMenuItem;
     rmanagerVm.deleteMenuItem = deleteMenuItem;
-
-
-    function upload($flow){
-        $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
-        $flow.upload();
-        rmanagerVm.rmanager.image = '/images/users/users_' + rmanagerVm.rmanager.userId + '.png';
-        restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
-            .then(function(data) {
-                rmanagerVm.rmanager = data;
-            })
-    }
-
-    function showToast(text, delay) {
-        var toast = $mdToast.show({
-          hideDelay : delay,
-          position  : 'top right',
-          parent    : angular.element(document.querySelectorAll('#toast-box')),
-          template  : '<md-toast>' + text  + '</md-toast>'
-        });
-        return toast;
-    };
 
     activate();
 
@@ -85,6 +65,48 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
                 rmanagerVm.rmanager = data;
                 return rmanagerVm.rmanager;
             });
+    };
+
+    function upload($flow){
+        $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
+        $flow.upload();
+        rmanagerVm.rmanager.image = '/images/users/users_' + rmanagerVm.rmanager.userId + '.png';
+        restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
+            .then(function(data) {
+                rmanagerVm.rmanager = data;
+                showToast('Fotografija uspešno promenjena.', 3000);
+            });
+    }
+
+    rmanagerVm.preventMultiple = preventMultiple;
+    function preventMultiple(menu_item){
+        console.log('TO');
+        rmanagerVm.toUpload = menu_item;
+    }
+
+    function uploadItemImage($flow, menu_item){
+        if(menu_item.menuItemId == rmanagerVm.toUpload.menuItemId){
+            $flow.opts.target = 'api/upload/meals/' + menu_item.menuItemId;
+            $flow.upload();
+            menu_item.image = '/images/meals/meals_' +  menu_item.menuItemId + '.png';
+            console.log(menu_item);
+            menuItemService.update(menu_item, rmanagerVm.rmanager.restaurant.restaurantId)
+                .then(function(data){
+                    menu_item = data;
+                    console.log('THis shit.')
+                    showToast('Fotografija uspešno promenjena.', 3000);
+                });
+        }
+    }
+
+    function showToast(text, delay) {
+        var toast = $mdToast.show({
+          hideDelay : delay,
+          position  : 'top right',
+          parent    : angular.element(document.querySelectorAll('#toast-box')),
+          template  : '<md-toast>' + text  + '</md-toast>'
+        });
+        return toast;
     };
 
     function changePassword(modal) {

@@ -195,6 +195,16 @@
 										Ukloni
 									</md-tooltip>
 								</md-button>
+								<md-button 	class="md-icon-button" aria-label="Change image" style="margin-left:165px;"
+											ng-click="rmanagerVm.preventMultiple(meal);"
+											flow-files-submitted="rmanagerVm.uploadItemImage($flow, meal);"
+											flow-attrs="{accept:'image/*'}"
+											flow-btn>
+									<md-icon class="material-icons">add_a_photo</md-icon>
+									<md-tooltip>
+										Promeni fotografiju
+									</md-tooltip>
+								</md-button>
 							</div>
 							<!-- This style attribute must be here - it fixes one Chromium bug -->
 							<img ng-src="{{meal.image}}" class="md-card-image" style="min-width: 0; min-height: 0; max-height:180px;"/>
@@ -251,6 +261,15 @@
 									<md-icon class="material-icons" style="color:#E91E63;">delete_forever</md-icon>
 									<md-tooltip>
 										Ukloni
+									</md-tooltip>
+								</md-button>
+								<md-button 	class="md-icon-button" aria-label="Change image" style="margin-left:165px;"
+											flow-files-submitted="rmanagerVm.uploadItemImage($flow, meal);"
+											flow-attrs="{accept:'image/*'}"
+											flow-btn>
+									<md-icon class="material-icons">add_a_photo</md-icon>
+									<md-tooltip>
+										Promeni fotografiju
 									</md-tooltip>
 								</md-button>
 							</div>
