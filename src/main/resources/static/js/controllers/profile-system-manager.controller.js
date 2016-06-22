@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SystemManagerProfileController', SystemManagerProfileController);
 
-SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog', '$location'];
+SystemManagerProfileController.$inject = ['loginService', 'systemManagerService', '$mdDialog', '$location'];
 
-function SystemManagerProfileController(systemManagerService, $mdDialog, $location) {
+function SystemManagerProfileController(loginService, systemManagerService, $mdDialog, $location) {
     var systemManagerProfileVm = this;
 
     systemManagerProfileVm.showSearch = false;
@@ -73,7 +73,11 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
             templateUrl: '/views/dialogs/single-provider-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
-            fullscreen: false
+            fullscreen: false,
+            locals: {
+                edit_state : false,
+                provider : null
+            }
         });
     };
 
