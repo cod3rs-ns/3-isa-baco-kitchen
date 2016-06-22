@@ -25,12 +25,6 @@ public class WaiterController {
     private WaiterService waiterService;
 
     @Autowired
-    private DailyScheduleService dailyScheduleService;
-
-    @Autowired
-    private RestaurantService restaurantService;
-
-    @Autowired
     private RestaurantRegionService restaurantRegionService;
 
     @RequestMapping(

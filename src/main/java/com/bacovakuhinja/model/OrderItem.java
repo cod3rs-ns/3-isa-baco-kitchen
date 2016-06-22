@@ -43,6 +43,9 @@ public class OrderItem implements Serializable{
     @JoinColumn(name = "oi_employee")
     private Employee employee;
 
+    @Column(name = "oi_table_id")
+    private Integer tableId;
+
     public Integer getItemId() {
         return itemId;
     }
@@ -105,5 +108,13 @@ public class OrderItem implements Serializable{
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public Integer getTableId() {
+        return tableId;
+    }
+
+    public void setTableId(Integer tableId) {
+        this.tableId = tableId;
     }
 }

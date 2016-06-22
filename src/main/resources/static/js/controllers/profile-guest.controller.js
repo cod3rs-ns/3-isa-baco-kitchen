@@ -248,7 +248,7 @@ function GuestProfileController($routeParams, $location, $mdToast, $mdDialog, gu
                 table: null,
                 // Get 'restaurantId' by reservation
                 restaurantId : reservation.restaurantId,
-                // FIXME @Baco Not my param
+                // Set order that will be edited
                 edit : null,
                 // Get 'reservationId' for order
                 reservationId : reservation.reservation.reservationId,

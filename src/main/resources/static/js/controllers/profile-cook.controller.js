@@ -2,13 +2,31 @@ angular
     .module('isa-mrs-project')
     .controller('CookProfileController', CookProfileController);
 
-CookProfileController.$inject = ['employeeService', 'cookService','passService', '$mdDialog', '$mdToast', '$scope'];
+CookProfileController.$inject = ['employeeService', 'cookService','passService', 'loginService', '$mdDialog', '$mdToast', '$scope'];
 
-function CookProfileController(employeeService, cookService, passService, $mdDialog, $mdToast, $scope) {
+function CookProfileController(employeeService, cookService, passService, loginService, $mdDialog, $mdToast, $scope) {
     var cookProfileVm = this;
     cookProfileVm.cook = {}
     cookProfileVm.notNo = -1;
     cookProfileVm.selectedTab = 0;
+
+    cookProfileVm.waitingMeals = [];
+    cookProfileVm.preparingMeals = [];
+
+    //editing profile
+    cookProfileVm.editProfile = editProfile;
+    //changing password
+    cookProfileVm.changePassword = changePassword;
+    //show cook's schedule
+    cookProfileVm.openSchedule = openSchedule;
+    //accept preparing food
+    cookProfileVm.prepareFood = prepareFood;
+    //notify waiter that food is prepared
+    cookProfileVm.finishFood = finishFood;
+    //show menu item details
+    cookProfileVm.showMenuItemDetails = showMenuItemDetails;
+    //logout from profile
+    cookProfileVm.logout = logout;
 
     activate();
 
@@ -48,11 +66,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
 
     };
 
-	cookProfileVm.waitingMeals = [];
-	cookProfileVm.preparingMeals = [];
-
-
-    cookProfileVm.editProfile = editProfile;
     function editProfile() {
         $mdDialog.show({
             controller: 'SingleEmployeeController',
@@ -67,7 +80,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         });
     };
     
-    cookProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {
@@ -87,8 +99,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         );
     };
 
-
-    cookProfileVm.openSchedule = openSchedule;
     function openSchedule() {
         $mdDialog.show(
             {
@@ -101,8 +111,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
             }
         );
     };
-
-
 
     cookProfileVm.showToast= showToast;
     function showToast(toast_message) {
@@ -135,7 +143,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     function showGreeting(orders) {
         var num=0;
 
-        console.log(orders.new);
         for (var item in orders.new) {
             cookProfileVm.waitingMeals.push(orders.new[item]);
             num += 1;
@@ -152,7 +159,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         }
 
         for (var item in orders.remove) {
-            console.log(orders.remove);
             for(var meal in cookProfileVm.waitingMeals){
                 if(orders.remove[item].itemId === cookProfileVm.waitingMeals[meal].itemId){
                     cookProfileVm.waitingMeals.splice(meal, 1);
@@ -170,7 +176,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
         $scope.$apply();
     }
 
-    cookProfileVm.prepareFood = prepareFood;
     function prepareFood(itemId){
         cookProfileVm.confirmationDialog(
             "Prihvatanje porudžbine",
@@ -190,10 +195,8 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     }
 
     function getAcceptedItems(eId){
-        console.log(eId);
         employeeService.getAcceptedItems(eId)
             .then(function (data) {
-                console.log(data);
                 for(var i in data){
                     cookProfileVm.preparingMeals.push(data[i]);
                 }
@@ -201,7 +204,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     }
 
     cookProfileVm.clickOnTab = clickOnTab;
-    
     function clickOnTab() {
         if (cookProfileVm.selectedTab == 0){
             cookProfileVm.notNo =-1;
@@ -209,7 +211,6 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
     }
 
 
-    cookProfileVm.finishFood = finishFood;
     function finishFood(itemId){
         cookProfileVm.confirmationDialog(
             "Završavanje porudžbine",
@@ -247,5 +248,24 @@ function CookProfileController(employeeService, cookService, passService, $mdDia
             function(){
                 $mdDialog.hide();
             });
+    };
+
+
+    function showMenuItemDetails(menuItem) {
+        $mdDialog.show({
+            controller: 'MenuItemDetails',
+            controllerAs: 'menuItemVm',
+            templateUrl: '/views/dialogs/menu-item-details.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                menuItem : menuItem
+            }
+        });
+    };
+
+    function logout() {
+        loginService.logout();
     };
 }

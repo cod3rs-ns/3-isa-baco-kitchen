@@ -11,6 +11,11 @@ function ChangePasswordController(passService, $mdDialog, $mdToast, modal) {
     userVm.oldPassword = '';
     userVm.showCancel = modal;
 
+    //closing dialog
+    userVm.cancel = cancel;
+    //confirm password changes
+    userVm.confirm = confirm;
+
     userVm.showToast= showToast;
     function showToast(toast_message) {
         $mdToast.show({
@@ -21,12 +26,10 @@ function ChangePasswordController(passService, $mdDialog, $mdToast, modal) {
         });
     };
 
-    userVm.cancel = cancel;
     function cancel() {
         $mdDialog.cancel();
     };
     
-    userVm.confirm = confirm;
     function confirm() {
         passService.changePass(userVm.newPassword)
             .then(function(data) {

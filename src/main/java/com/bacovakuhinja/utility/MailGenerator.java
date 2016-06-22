@@ -156,6 +156,7 @@ public final class MailGenerator{
     public class ProviderOfferMail{
         private int offerId;
         private String accepted;
+        private String color;
 
         public ProviderOfferMail(int offerId, boolean accept, String email){
             this.offerId = offerId;
@@ -164,10 +165,12 @@ public final class MailGenerator{
             if(accept) {
                 accepted = "prihva&#263;ena";
                 subject = "Prihvaćena ponuda";
+                color = "green";
             }
             else{
                 accepted = "odbijena";
                 subject = "Odbijena ponuda";
+                color = "red";
             }
 
             try {
@@ -184,7 +187,7 @@ public final class MailGenerator{
                     "<div>\n" + LOGO +
                     "    <div style=\"width: 85%; float: left;\">\n" +
                     "        <h1>Vesti iz Ba&#263;ove kuhinje!</h1>\n" +
-                    "           <p>Va&#353;a ponuda za porud&#382;binu #" + offerId + " je <strong style=\"color:green;\">"+ accepted + "</strong>." +
+                    "           <p>Va&#353;a ponuda za porud&#382;binu #" + offerId + " je <strong style=\"" + color + "\">"+ accepted + "</strong>." +
                     "    </div>\n" +
                     "</div>\n" +
                     "</body>\n" +

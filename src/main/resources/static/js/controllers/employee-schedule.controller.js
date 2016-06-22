@@ -6,7 +6,14 @@ EmployeeScheduleController.$inject = ['employeeService', '$mdDialog'];
 
 function EmployeeScheduleController(employeeService, $mdDialog) {
     var employeeScheduleVm = this;
+    //closing dialog
     employeeScheduleVm.cancel = cancel;
+    //change to day view
+    employeeScheduleVm.changeToDay = changeToDay;
+    //change to week view
+    employeeScheduleVm.changeToWeek = changeToWeek;
+    //change to month view
+    employeeScheduleVm.changeToMonth = changeToMonth;
 
     initState();
 
@@ -23,7 +30,6 @@ function EmployeeScheduleController(employeeService, $mdDialog) {
     function getSchedule() {
         employeeService.getSchedule()
             .then(function (data) {
-                console.log(data);
 
                 for(var pos in data){
                     var schedule = data[pos];
@@ -39,17 +45,14 @@ function EmployeeScheduleController(employeeService, $mdDialog) {
             });
     };
 
-    employeeScheduleVm.changeToDay = changeToDay;
     function changeToDay(){
         employeeScheduleVm.calendarView = 'day';
     }
 
-    employeeScheduleVm.changeToMonth = changeToMonth;
     function changeToMonth(){
         employeeScheduleVm.calendarView = 'month';
     }
 
-    employeeScheduleVm.changeToWeek = changeToWeek;
     function changeToWeek(){
         employeeScheduleVm.calendarView = 'week';
     }

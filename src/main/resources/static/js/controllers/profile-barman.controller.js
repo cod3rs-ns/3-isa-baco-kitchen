@@ -2,14 +2,33 @@ angular
     .module('isa-mrs-project')
     .controller('BarmanProfileController', BarmanProfileController);
 
-BarmanProfileController.$inject = ['employeeService', 'bartenderService', 'passService', '$mdDialog', '$scope', '$mdToast'];
+BarmanProfileController.$inject = ['employeeService', 'bartenderService', 'loginService', 'passService', '$mdDialog', '$scope', '$mdToast'];
 
-function BarmanProfileController(employeeService, bartenderService, passService, $mdDialog, $scope, $mdToast) {
+function BarmanProfileController(employeeService, bartenderService, loginService, passService, $mdDialog, $scope, $mdToast) {
     var barmanProfileVm = this;
 
     barmanProfileVm.barman = {};
     barmanProfileVm.notNo = -1;
     barmanProfileVm.selectedTab = 0;
+
+    barmanProfileVm.waitingDrinks = [];
+    barmanProfileVm.preparingDrinks = [];
+
+    //editing profiles
+    barmanProfileVm.editProfile = editProfile;
+    //changing password
+    barmanProfileVm.changePassword = changePassword;
+    //showing barman's schedule
+    barmanProfileVm.openSchedule = openSchedule;
+    //accept drink to prepare
+    barmanProfileVm.prepareDrink = prepareDrink;
+    //notify waiter that drink is prepared
+    barmanProfileVm.finishDrink = finishDrink;
+    //show menu item details
+    barmanProfileVm.showMenuItemDetails = showMenuItemDetails;
+    //logout from your profile
+    barmanProfileVm.logout = logout;
+
 
     activate();
 
@@ -48,10 +67,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
             });
     };
 
-	barmanProfileVm.waitingDrinks = [];
-	barmanProfileVm.preparingDrinks = [];
-
-    barmanProfileVm.editProfile = editProfile;
     function editProfile() {
         $mdDialog.show({
             controller: 'SingleEmployeeController',
@@ -66,8 +81,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
         });
     };
 
-
-    barmanProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {
@@ -87,8 +100,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
         );
     };
 
-
-    barmanProfileVm.openSchedule = openSchedule;
     function openSchedule() {
         $mdDialog.show(
             {
@@ -123,8 +134,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
     function showGreeting(orders) {
         var num=0;
 
-        console.log(orders.new);
-
         for (var item in orders.new) {
             barmanProfileVm.waitingDrinks.push(orders.new[item]);
             num += 1;
@@ -141,7 +150,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
         }
 
         for (var item in orders.remove) {
-            console.log(orders.remove);
             for(var meal in barmanProfileVm.waitingDrinks){
                 if(orders.remove[item].itemId === barmanProfileVm.waitingDrinks[meal].itemId){
                     barmanProfileVm.waitingDrinks.splice(meal, 1);
@@ -159,7 +167,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
         $scope.$apply();
     }
 
-    barmanProfileVm.prepareDrink = prepareDrink;
     function prepareDrink(itemId){
         barmanProfileVm.confirmationDialog(
             "Prihvatanje porudžbine",
@@ -191,7 +198,6 @@ function BarmanProfileController(employeeService, bartenderService, passService,
     function getAcceptedItems(eId) {
         employeeService.getAcceptedItems(eId)
             .then(function (data) {
-                console.log(data);
                 for (var i in data) {
                     barmanProfileVm.preparingDrinks.push(data[i]);
                 }
@@ -200,14 +206,12 @@ function BarmanProfileController(employeeService, bartenderService, passService,
 
 
     barmanProfileVm.clickOnTab = clickOnTab;
-
     function clickOnTab() {
         if (barmanProfileVm.selectedTab == 0){
             barmanProfileVm.notNo =-1;
         }
     }
 
-    barmanProfileVm.finishDrink = finishDrink;
     function finishDrink(itemId){
         barmanProfileVm.confirmationDialog(
             "Završavanje porudžbine",
@@ -243,5 +247,23 @@ function BarmanProfileController(employeeService, bartenderService, passService,
             function(){
                 $mdDialog.hide();
             });
+    };
+
+    function showMenuItemDetails(menuItem) {
+        $mdDialog.show({
+            controller: 'MenuItemDetails',
+            controllerAs: 'menuItemVm',
+            templateUrl: '/views/dialogs/menu-item-details.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                menuItem : menuItem
+            }
+        });
+    };
+
+    function logout() {
+        loginService.logout();
     };
 }

@@ -2,12 +2,24 @@ angular
     .module('isa-mrs-project')
     .controller('SystemManagerProfileController', SystemManagerProfileController);
 
-SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog', '$location'];
+SystemManagerProfileController.$inject = ['systemManagerService', 'loginService', '$mdDialog', '$location'];
 
-function SystemManagerProfileController(systemManagerService, $mdDialog, $location) {
+function SystemManagerProfileController(systemManagerService, loginService, $mdDialog, $location) {
     var systemManagerProfileVm = this;
 
     systemManagerProfileVm.showSearch = false;
+
+    //add new restaurant
+    systemManagerProfileVm.addRestaurant = addRestaurant;
+    //add new provider
+    systemManagerProfileVm.addProvider = addProvider;
+    //change password
+    systemManagerProfileVm.changePassword = changePassword;
+    //redirect to restaurant profile
+    systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
+    //logout from profile
+    systemManagerProfileVm.logout = logout;
+
 
     activate();
 
@@ -35,8 +47,6 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         });
     }
 
-
-    systemManagerProfileVm.addRestaurant = addRestaurant;
     function addRestaurant() {
         $mdDialog.show({
             controller: 'SingleRestaurantController',
@@ -52,7 +62,6 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         });
     }
 
-    systemManagerProfileVm.addProvider = addProvider;
     function addProvider() {
         $mdDialog.show({
             controller: 'SingleProviderController',
@@ -68,8 +77,6 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         });
     };
 
-
-    systemManagerProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {
@@ -105,10 +112,12 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         });
     }
 
-    systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
     function showRestaurantDetails(restaurantId) {
         $location.path('profile-restaurant/' + restaurantId);
     }
 
+    function logout() {
+        loginService.logout();
+    };
 
 }

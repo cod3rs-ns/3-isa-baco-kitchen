@@ -44,13 +44,4 @@ function BillController(waiterService, $mdDialog, $mdToast, table, billId) {
     function cancel() {
         $mdDialog.cancel();
     };
-
-    function showToast(toast_message) {
-        $mdToast.show({
-            hideDelay : 3000,
-            position  : 'bottom right',
-            parent    : angular.element(document.querySelectorAll('#toast-box')),
-            template  : '<md-toast><strong>' + toast_message + '<strong> </md-toast>'
-        });
-    };
 }

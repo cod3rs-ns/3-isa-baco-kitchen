@@ -96,6 +96,7 @@ public class OrderController {
             i.setOrder(newOrder);
             i.setMenuItem(menuItemService.findOne(i.getMenuItem().getMenuItemId()));
             i.setRestaurantId(restaurantId);
+            i.setTableId(newOrder.getTable().getTableId());
             OrderItem nItem = orderItemService.create(i);
             if (nItem.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
                 foodList.add(nItem);
@@ -112,7 +113,6 @@ public class OrderController {
     }
 
 
-    // FIXME @Baco - Normalan order. :)
     @RequestMapping(
             value = "/api/orders/{restaurantId}",
             method = RequestMethod.PUT,
@@ -168,6 +168,7 @@ public class OrderController {
                 newItem.setOrder(oldOrder);
                 newItem.setRestaurantId(r_id);
                 newItem.setMenuItem(menuItemService.findOne(newItem.getMenuItem().getMenuItemId()));
+                newItem.setTableId(oldOrder.getTable().getTableId());
                 OrderItem item = orderItemService.create(newItem);
                 newItems.add(item);
                 if(newItem.getMenuItem().getType().equals(Constants.MenuItemType.FOOD))
