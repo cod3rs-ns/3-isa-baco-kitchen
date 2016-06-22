@@ -262,6 +262,7 @@ ul.rating {
 
 md-dialog-content.reservation-dialog {
     padding: 4px 24px;
+    width: 100%;
 }
 
 .inputdemoIcons {
@@ -341,4 +342,9 @@ html.ng-scope {
   background-repeat: no-repeat;
   border-color: #607D8B;
   border-width: 2px;
+}
+
+.md-datepicker-input-container {
+  width: 100%;
+  margin-left: 0px;
 }

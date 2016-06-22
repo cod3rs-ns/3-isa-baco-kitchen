@@ -2,8 +2,10 @@ package com.bacovakuhinja.controller;
 
 import com.bacovakuhinja.model.Restaurant;
 import com.bacovakuhinja.model.SystemManager;
+import com.bacovakuhinja.model.WorkingTime;
 import com.bacovakuhinja.service.RestaurantService;
 import com.bacovakuhinja.service.SystemManagerService;
+import com.bacovakuhinja.service.WorkingTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,6 +22,9 @@ public class RestaurantController {
 
     @Autowired
     private SystemManagerService systemManagerService;
+
+    @Autowired
+    private WorkingTimeService workingTimeService;
 
     @RequestMapping(
             value = "/api/restaurants",
@@ -47,18 +52,26 @@ public class RestaurantController {
     public ResponseEntity <Restaurant> createRestaurant(@RequestBody Restaurant restaurant, @PathVariable("id") Integer id) {
         SystemManager manager = systemManagerService.findOne(id);
         restaurant.setSystemManager(manager);
+        restaurant.setImage("../images/no_image.gif");
         Restaurant created = restaurantService.create(restaurant);
+
+        WorkingTime time = new WorkingTime();
+        time.setRestaurantId(created.getRestaurantId());
+        time.setRegStartHours(8);
+        time.setRegStartMinutes(0);
+        time.setRegEndHours(22);
+        time.setRegEndMinutes(0);
+        workingTimeService.create(time);
+
         return new ResponseEntity<Restaurant>(created, HttpStatus.CREATED);
     }
 
     @RequestMapping(
-            value = "/api/restaurants/{sys_id}",
+            value = "/api/restaurants",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <Restaurant> updateRestaurant(@RequestBody Restaurant restaurant,  @PathVariable("sys_id") Integer id) {
-        SystemManager manager = systemManagerService.findOne(id);
-        restaurant.setSystemManager(manager);
+    public ResponseEntity <Restaurant> updateRestaurant(@RequestBody Restaurant restaurant) {
         Restaurant updatedRestaurant = restaurantService.update(restaurant);
         if (updatedRestaurant == null) {
             return new ResponseEntity <Restaurant>(HttpStatus.NOT_FOUND);

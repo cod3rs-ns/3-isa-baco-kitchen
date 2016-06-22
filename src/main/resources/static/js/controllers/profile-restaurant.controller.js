@@ -369,12 +369,13 @@ function RestaurantProfileController(WizardHandler, restaurantService, reportSer
       var day = restaurantVm.DateTime.date.getDay();
       var dt  = restaurantVm.workingTime;
       var mdt = restaurantVm.DateTime;
-      console.log(day);
+      var len = restaurantVm.reservation.length;
 
       // Sunday
       if (day == 0) {
         if (dt.workingOnSun) {
-            if (!isBetween(mdt.hours, mdt.mins, dt.sunStartHours, dt.sunStartMinutes, dt.sunEndHours, dt.sunEndMinutes, dt.sunReversed)) {
+            if (!isBetween(mdt.hours, mdt.mins, dt.sunStartHours, dt.sunStartMinutes, dt.sunEndHours, dt.sunEndMinutes, dt.sunReversed) ||
+                !isBetween((mdt.hours + len)%24, mdt.mins, dt.sunStartHours, dt.sunStartMinutes, dt.sunEndHours, dt.sunEndMinutes, dt.sunReversed)) {
                 showToast('Rezervacija se ne uklapa u radno vrijeme nedjeljom!');
                 return;
             }
@@ -387,7 +388,8 @@ function RestaurantProfileController(WizardHandler, restaurantService, reportSer
       // Saturday
       else if (day == 6) {
         if (dt.workingOnSat) {
-            if (!isBetween(mdt.hours, mdt.mins, dt.satStartHours, dt.satStartMinutes, dt.satEndHours, dt.satEndMinutes, dt.satReversed)) {
+            if (!isBetween(mdt.hours, mdt.mins, dt.satStartHours, dt.satStartMinutes, dt.satEndHours, dt.satEndMinutes, dt.satReversed) ||
+                !isBetween((mdt.hours + len)%24, mdt.mins, dt.satStartHours, dt.satStartMinutes, dt.satEndHours, dt.satEndMinutes, dt.satReversed)) {
                 showToast('Rezervacija se ne uklapa u radno vrijeme subotom!');
                 return;
             }
@@ -398,7 +400,8 @@ function RestaurantProfileController(WizardHandler, restaurantService, reportSer
         }
       }
       else {
-        if (!isBetween(mdt.hours, mdt.mins, dt.regStartHours, dt.regStartMinutes, dt.regEndHours, dt.regEndMinutes, dt.regReversed)) {
+        if (!isBetween(mdt.hours, mdt.mins, dt.regStartHours, dt.regStartMinutes, dt.regEndHours, dt.regEndMinutes, dt.regReversed) ||
+            !isBetween((mdt.hours + len)%24, mdt.mins, dt.regStartHours, dt.regStartMinutes, dt.regEndHours, dt.regEndMinutes, dt.regReversed)) {
             showToast('Rezervacija se ne uklapa u radno vrijeme radnim danom!');
             return;
         }

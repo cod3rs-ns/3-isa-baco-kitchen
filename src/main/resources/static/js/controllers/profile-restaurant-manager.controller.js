@@ -30,6 +30,7 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
     rmanagerVm.changePassword = changePassword;
     rmanagerVm.upload = upload;
     rmanagerVm.uploadItemImage = uploadItemImage;
+    rmanagerVm.editProfile = editProfile;
     rmanagerVm.editMenuItem = editMenuItem;
     rmanagerVm.deleteMenuItem = deleteMenuItem;
 
@@ -324,5 +325,20 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
             });
         });
     };
+
+    function editProfile(){
+        $mdDialog.show({
+            controller: 'SingleRManagerController',
+            controllerAs: 'rmanagerVm',
+            templateUrl: '/views/dialogs/single-rmanager-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : rmanagerVm.rmanager,
+                restaurant_id : null
+            }
+        });
+    }
 
 }

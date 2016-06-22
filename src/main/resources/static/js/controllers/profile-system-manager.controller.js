@@ -9,6 +9,19 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
 
     systemManagerProfileVm.showSearch = false;
 
+    //add new restaurant
+    systemManagerProfileVm.addRestaurant = addRestaurant;
+    //add new provider
+    systemManagerProfileVm.addProvider = addProvider;
+    //add restaurant manager
+    systemManagerProfileVm.addRestaurantManager = addRestaurantManager;
+    //change password
+    systemManagerProfileVm.changePassword = changePassword;
+    //redirect to restaurant profile
+    systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
+    //logout from profile
+    systemManagerProfileVm.logout = logout;
+
     activate();
 
     function activate() {
@@ -85,7 +98,6 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         );
     };
 
-    systemManagerProfileVm.addRestaurantManager = addRestaurantManager;
     function addRestaurantManager(restaurantId) {
         $mdDialog.show({
             controller: 'SingleRManagerController',
@@ -106,5 +118,7 @@ function SystemManagerProfileController(systemManagerService, $mdDialog, $locati
         $location.path('profile-restaurant/' + restaurantId);
     }
 
-
+    function logout() {
+        loginService.logout();
+    };
 }
