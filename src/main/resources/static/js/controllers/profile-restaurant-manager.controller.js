@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', 'passService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
+RestaurantManagerController.$inject = ['restaurantManagerService', 'passService', '$mdDialog', '$mdToast', 'menuItemService', '$scope', 'employeeService'];
 
-function RestaurantManagerController(restaurantManagerService, passService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, passService, $mdDialog, $mdToast, menuItemService, $scope, employeeService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -29,6 +29,8 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
     rmanagerVm.changePassword = changePassword;
     rmanagerVm.upload = upload;
+    rmanagerVm.editMenuItem = editMenuItem;
+    rmanagerVm.deleteMenuItem = deleteMenuItem;
 
 
     function upload($flow){
@@ -41,6 +43,16 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
                 rmanagerVm.rmanager = data;
             })
     }
+
+    function showToast(text, delay) {
+        var toast = $mdToast.show({
+          hideDelay : delay,
+          position  : 'top right',
+          parent    : angular.element(document.querySelectorAll('#toast-box')),
+          template  : '<md-toast>' + text  + '</md-toast>'
+        });
+        return toast;
+    };
 
     activate();
 
@@ -109,6 +121,50 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
             }
         });
     };
+
+    function editMenuItem(menu_item) {
+        $mdDialog.show({
+            controller: 'SingleMenuItemController',
+            controllerAs: 'menuItemVm',
+            templateUrl: '/views/dialogs/menu-item-form-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            fullscreen: false,
+            locals: {
+                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
+                drinks_menu_ref :  rmanagerVm.drinkMenu,
+                food_menu_ref : rmanagerVm.foodMenu,
+                tabs : rmanagerVm.tabs,
+                to_edit : menu_item
+            }
+        });
+    };
+
+    function deleteMenuItem(menu_item_id) {
+        var confirm = $mdDialog.confirm()
+            .title('Potvrda uklanjanja stavke menija')
+            .textContent('Da li ste sigurni da želite da uklonite stavku?')
+            .ariaLabel('Menu item deletion')
+            .ok('Da')
+            .cancel('Ne');
+
+            $mdDialog.show(confirm)
+                .then(function() {
+                    menuItemService.remove(menu_item_id)
+                        .then(function (response) {
+                            menuItemService.getAllActiveByType('food', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                                rmanagerVm.foodMenu = data;
+                            });
+
+                            menuItemService.getAllActiveByType('drink', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                                rmanagerVm.drinksMenu = data;
+                            });
+                            showToast('Stavka je uspešno uklonjena.', 3000);
+                        });
+                }, function() {
+                    $mdDialog.hide();
+                });
+    }
 
     function showMenuItemReport(menu_item_id, menu_item_name) {
         $mdDialog.show({
@@ -223,7 +279,8 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
                 restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
                 drinks_menu_ref :  rmanagerVm.drinkMenu,
                 food_menu_ref : rmanagerVm.foodMenu,
-                tabs : rmanagerVm.tabs
+                tabs : rmanagerVm.tabs,
+                to_edit : null
             }
         });
     };

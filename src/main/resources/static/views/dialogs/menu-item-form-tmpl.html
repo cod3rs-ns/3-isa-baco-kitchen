@@ -1,7 +1,8 @@
 <md-dialog flex="50" aria-label="Stavka menija"  ng-cloak>
     <md-toolbar>
         <div class="md-toolbar-tools">
-            <h2>Kreiranje nove stavke menija</h2>
+            <h2 ng-hide="menuItemVm.editState">Kreiranje nove stavke menija</h2>
+            <h2 ng-show="menuItemVm.editState">Izmena stavke menija</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="menuItemVm.cancel()">
                 <md-icon md-svg-src="images/icons/ic_close_white_24px.svg" aria-label="Close dialog"></md-icon>
@@ -72,7 +73,7 @@
                     <!-- Subtypes of FOOD -->
                     <md-input-container ng-show="menuItemVm.menuItem.type == 'food'" class="md-block" flex-gt-sm>
                         <label>Podtip</label>
-                        <md-select name="menuItemSpecTypeFood" ng-model="menuItemVm.menuItem.SpecType" ng-required="menuItemVm.menuItem.type == 'food'">
+                        <md-select name="menuItemSpecTypeFood" ng-model="menuItemVm.menuItem.specType" ng-required="menuItemVm.menuItem.type == 'food'">
                             <md-option ng-repeat="spectype in menuItemVm.allowedFood" value="{{spectype.db_value}}">
                                 {{spectype.name}}
                             </md-option>

@@ -1,4 +1,5 @@
 <div id="wrapper" layout="row">
+	<div id="toast-box"></div>
 	<section layout="column">
 	<md-sidenav
         class="md-sidenav-left"
@@ -180,13 +181,15 @@
 										Izveštaj
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Edit" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Edit" style="margin-left:165px;"
+											ng-click="rmanagerVm.editMenuItem(meal);">
 									<md-icon class="material-icons" style="color:#283593;">edit</md-icon>
 									<md-tooltip>
 										Izmeni
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Delete" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Delete" style="margin-left:165px;"
+											ng-click="rmanagerVm.deleteMenuItem(meal.menuItemId);">
 									<md-icon class="material-icons" style="color:#E91E63;">delete_forever</md-icon>
 									<md-tooltip>
 										Ukloni
@@ -236,13 +239,15 @@
 										Izveštaj
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Change image" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Change image" style="margin-left:165px;"
+											ng-click="rmanagerVm.editMenuItem(meal);">
 									<md-icon class="material-icons" style="color:#283593;">edit</md-icon>
 									<md-tooltip>
 										Izmeni
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Delete" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Delete" style="margin-left:165px;"
+											ng-click="rmanagerVm.deleteMenuItem(meal.menuItemId);">
 									<md-icon class="material-icons" style="color:#E91E63;">delete_forever</md-icon>
 									<md-tooltip>
 										Ukloni
