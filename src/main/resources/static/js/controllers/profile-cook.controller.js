@@ -27,6 +27,8 @@ function CookProfileController(employeeService, cookService, passService, loginS
     cookProfileVm.showMenuItemDetails = showMenuItemDetails;
     //logout from profile
     cookProfileVm.logout = logout;
+    //image upload
+    cookProfileVm.upload = upload;
 
     activate();
 
@@ -37,7 +39,7 @@ function CookProfileController(employeeService, cookService, passService, loginS
                 connect(cookProfileVm.cook.restaurantID);
                 getAcceptedItems(cookProfileVm.cook.userId);
         });
-        
+
         passService.isPasswordChanged()
             .then(function (data) {
                 if(!data){
@@ -45,6 +47,18 @@ function CookProfileController(employeeService, cookService, passService, loginS
                 }
             });
     };
+
+
+    function upload($flow){
+        $flow.opts.target = 'api/upload/users/' + cookProfileVm.cook.userId ;
+        $flow.upload();
+        cookProfileVm.cook.image = '/images/users/users_' + cookProfileVm.cook.userId + '.png';
+        employeeService.updateEmployee(cookProfileVm.cook)
+            .then(function(data) {
+                cookProfileVm.cook = data;
+                cookProfileVm.showToast('Fotografija uspešno promenjena.', 3000);
+            })
+    }
 
     function getActiveFood(r_id){
         cookService.getActiveFood(r_id)
@@ -79,7 +93,7 @@ function CookProfileController(employeeService, cookService, passService, loginS
             }
         });
     };
-    
+
     function changePassword(modal) {
         $mdDialog.show(
             {

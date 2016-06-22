@@ -28,6 +28,8 @@ function BarmanProfileController(employeeService, bartenderService, loginService
     barmanProfileVm.showMenuItemDetails = showMenuItemDetails;
     //logout from your profile
     barmanProfileVm.logout = logout;
+    //image uplaod
+    barmanProfileVm.upload = upload;
 
 
     activate();
@@ -47,6 +49,17 @@ function BarmanProfileController(employeeService, bartenderService, loginService
             });
 
     };
+
+    function upload($flow){
+        $flow.opts.target = 'api/upload/users/' + barmanProfileVm.barman.userId ;
+        $flow.upload();
+        barmanProfileVm.barman.image = '/images/users/users_' + barmanProfileVm.barman.userId + '.png';
+        employeeService.updateEmployee(barmanProfileVm.barman)
+            .then(function(data) {
+                barmanProfileVm.barman = data;
+                barmanProfileVm.showToast('Fotografija uspešno promenjena.', 3000);
+            })
+    }
 
     function getActiveDrinks(r_id){
         bartenderService.getActiveDrinks(r_id)

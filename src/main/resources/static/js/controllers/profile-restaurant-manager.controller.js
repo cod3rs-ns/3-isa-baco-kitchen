@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('RestaurantManagerController', RestaurantManagerController);
 
-RestaurantManagerController.$inject = ['restaurantManagerService', '$mdDialog', 'menuItemService', '$scope', 'employeeService'];
+RestaurantManagerController.$inject = ['restaurantManagerService', 'passService', '$mdDialog', '$mdToast', 'menuItemService', '$scope', 'employeeService'];
 
-function RestaurantManagerController(restaurantManagerService, $mdDialog, menuItemService, $scope, employeeService, SingleRestaurantController,
+function RestaurantManagerController(restaurantManagerService, passService, $mdDialog, $mdToast, menuItemService, $scope, employeeService, SingleRestaurantController,
                                      SingleDrinkController, SingleFoodController, SingleEmployeeController) {
     var rmanagerVm = this;
     rmanagerVm.rmanager = {};
@@ -27,20 +27,32 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.showVisitsChart = showVisitsChart;
     rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
+    rmanagerVm.changePassword = changePassword;
     rmanagerVm.upload = upload;
     rmanagerVm.editProfile = editProfile;
+    rmanagerVm.editMenuItem = editMenuItem;
+    rmanagerVm.deleteMenuItem = deleteMenuItem;
 
 
     function upload($flow){
         $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
         $flow.upload();
-        console.log($flow);
         rmanagerVm.rmanager.image = '/images/users/users_' + rmanagerVm.rmanager.userId + '.png';
         restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
             .then(function(data) {
                 rmanagerVm.rmanager = data;
             })
     }
+
+    function showToast(text, delay) {
+        var toast = $mdToast.show({
+          hideDelay : delay,
+          position  : 'top right',
+          parent    : angular.element(document.querySelectorAll('#toast-box')),
+          template  : '<md-toast>' + text  + '</md-toast>'
+        });
+        return toast;
+    };
 
     activate();
 
@@ -59,6 +71,13 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             });
         });
 
+        passService.isPasswordChanged()
+            .then(function (data) {
+                if (!data){
+                    rmanagerVm.changePassword(false);
+                }
+            });
+
     }
 
     function getLoggedRestaurantManager() {
@@ -67,6 +86,25 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
                 rmanagerVm.rmanager = data;
                 return rmanagerVm.rmanager;
             });
+    };
+
+    function changePassword(modal) {
+        $mdDialog.show(
+            {
+                controller: 'ChangePasswordController',
+                controllerAs: 'userVm',
+                templateUrl: '/views/dialogs/change-password.html',
+                parent: angular.element(document.body),
+                clickOutsideToClose: modal,
+                escapeToClose: modal,
+                fullscreen: false,
+                openFrom : angular.element(document.querySelector('#pass-option')),
+                closeTo : angular.element(document.querySelector('#pass-option')),
+                locals: {
+                    modal : modal
+                }
+            }
+        );
     };
 
     function updateRestaurant() {
@@ -83,6 +121,50 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             }
         });
     };
+
+    function editMenuItem(menu_item) {
+        $mdDialog.show({
+            controller: 'SingleMenuItemController',
+            controllerAs: 'menuItemVm',
+            templateUrl: '/views/dialogs/menu-item-form-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            fullscreen: false,
+            locals: {
+                restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
+                drinks_menu_ref :  rmanagerVm.drinkMenu,
+                food_menu_ref : rmanagerVm.foodMenu,
+                tabs : rmanagerVm.tabs,
+                to_edit : menu_item
+            }
+        });
+    };
+
+    function deleteMenuItem(menu_item_id) {
+        var confirm = $mdDialog.confirm()
+            .title('Potvrda uklanjanja stavke menija')
+            .textContent('Da li ste sigurni da želite da uklonite stavku?')
+            .ariaLabel('Menu item deletion')
+            .ok('Da')
+            .cancel('Ne');
+
+            $mdDialog.show(confirm)
+                .then(function() {
+                    menuItemService.remove(menu_item_id)
+                        .then(function (response) {
+                            menuItemService.getAllActiveByType('food', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                                rmanagerVm.foodMenu = data;
+                            });
+
+                            menuItemService.getAllActiveByType('drink', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
+                                rmanagerVm.drinksMenu = data;
+                            });
+                            showToast('Stavka je uspešno uklonjena.', 3000);
+                        });
+                }, function() {
+                    $mdDialog.hide();
+                });
+    }
 
     function showMenuItemReport(menu_item_id, menu_item_name) {
         $mdDialog.show({
@@ -197,7 +279,8 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
                 restaurant_id : rmanagerVm.rmanager.restaurant.restaurantId,
                 drinks_menu_ref :  rmanagerVm.drinkMenu,
                 food_menu_ref : rmanagerVm.foodMenu,
-                tabs : rmanagerVm.tabs
+                tabs : rmanagerVm.tabs,
+                to_edit : null
             }
         });
     };

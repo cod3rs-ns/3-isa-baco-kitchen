@@ -2,9 +2,9 @@ angular
     .module('isa-mrs-project')
     .controller('SystemManagerProfileController', SystemManagerProfileController);
 
-SystemManagerProfileController.$inject = ['systemManagerService', 'loginService', '$mdDialog', '$location'];
+SystemManagerProfileController.$inject = ['systemManagerService', '$mdDialog', '$location'];
 
-function SystemManagerProfileController(systemManagerService, loginService, $mdDialog, $location) {
+function SystemManagerProfileController(systemManagerService, $mdDialog, $location) {
     var systemManagerProfileVm = this;
 
     systemManagerProfileVm.showSearch = false;
@@ -21,7 +21,6 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
     systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
     //logout from profile
     systemManagerProfileVm.logout = logout;
-
 
     activate();
 
@@ -49,6 +48,8 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
         });
     }
 
+
+    systemManagerProfileVm.addRestaurant = addRestaurant;
     function addRestaurant() {
         $mdDialog.show({
             controller: 'SingleRestaurantController',
@@ -64,6 +65,7 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
         });
     }
 
+    systemManagerProfileVm.addProvider = addProvider;
     function addProvider() {
         $mdDialog.show({
             controller: 'SingleProviderController',
@@ -71,14 +73,12 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
             templateUrl: '/views/dialogs/single-provider-tmpl.html',
             parent: angular.element(document.body),
             clickOutsideToClose:true,
-            fullscreen: false,
-            locals: {
-                edit_state : false,
-                provider : null
-            }
+            fullscreen: false
         });
     };
 
+
+    systemManagerProfileVm.changePassword = changePassword;
     function changePassword(modal) {
         $mdDialog.show(
             {
@@ -113,6 +113,7 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
         });
     }
 
+    systemManagerProfileVm.showRestaurantDetails = showRestaurantDetails;
     function showRestaurantDetails(restaurantId) {
         $location.path('profile-restaurant/' + restaurantId);
     }
@@ -120,5 +121,4 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
     function logout() {
         loginService.logout();
     };
-
 }

@@ -1,4 +1,5 @@
 <div id="wrapper" layout="row">
+	<div id="toast-box"></div>
 	<section layout="column">
 	<md-sidenav
         class="md-sidenav-left"
@@ -67,13 +68,21 @@
 
 	<!-- Actions -->
 	<md-divider></md-divider>
-    <md-content flex style="min-height:500px;">
-        <md-menu-content flex style="min-height:500px;">
+    <md-content flex style="min-height:550px;">
+        <md-menu-content flex style="min-height:550px;">
         	<md-menu-item class="md-indent">
 	            <md-button 	class="md-primary"
 					ng-click="rmanagerVm.editProfile();">
 					<md-icon class="material-icons">account_circle</md-icon>
 	            	<strong>Ažuriranje profila</strong>
+	            </md-button>
+        	</md-menu-item>
+			<md-divider></md-divider>
+			<md-menu-item class="md-indent">
+	            <md-button 	class="md-primary"
+							ng-click="rmanagerVm.changePassword(true);">
+					<md-icon class="material-icons">vpn_key</md-icon>
+	            	<strong>Izmena lozinke</strong>
 	            </md-button>
         	</md-menu-item>
 			<md-divider></md-divider>
@@ -140,8 +149,8 @@
             	</md-button>
         	</md-menu-item>
 			<md-divider></md-divider>
-    	</md-content>
-
+		</md-menu-content>
+	</md-content>
 	</md-sidenav>
 	</section>
 
@@ -172,13 +181,15 @@
 										Izveštaj
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Edit" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Edit" style="margin-left:165px;"
+											ng-click="rmanagerVm.editMenuItem(meal);">
 									<md-icon class="material-icons" style="color:#283593;">edit</md-icon>
 									<md-tooltip>
 										Izmeni
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Delete" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Delete" style="margin-left:165px;"
+											ng-click="rmanagerVm.deleteMenuItem(meal.menuItemId);">
 									<md-icon class="material-icons" style="color:#E91E63;">delete_forever</md-icon>
 									<md-tooltip>
 										Ukloni
@@ -228,13 +239,15 @@
 										Izveštaj
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Change image" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Change image" style="margin-left:165px;"
+											ng-click="rmanagerVm.editMenuItem(meal);">
 									<md-icon class="material-icons" style="color:#283593;">edit</md-icon>
 									<md-tooltip>
 										Izmeni
 									</md-tooltip>
 								</md-button>
-								<md-button class="md-icon-button" aria-label="Delete" style="margin-left:165px;">
+								<md-button 	class="md-icon-button" aria-label="Delete" style="margin-left:165px;"
+											ng-click="rmanagerVm.deleteMenuItem(meal.menuItemId);">
 									<md-icon class="material-icons" style="color:#E91E63;">delete_forever</md-icon>
 									<md-tooltip>
 										Ukloni
@@ -390,10 +403,8 @@
 				</div>
 
 				<div layout="column" class="restaurant-regions">
-
-						<div layout="row" class="region-tab" layout-align="center center"
-							ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
-								<div 	layout="column"
+						<div layout="row" class="region-tab" layout-align="center center" ng-repeat="region in tablesVm.regions track by $index" style="background-color:{{region.color}}">
+								<div layout="column"
 										ng-hide="tablesVm.regionEditFields[$index]"
 										flex>
 									<h4 style="color:white;">{{region.name}}</h4>
@@ -435,9 +446,6 @@
 	   		   						</md-button>
 								</div>
 		                </div>
-
-
-
 				</div>
 
 

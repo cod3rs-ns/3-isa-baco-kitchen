@@ -30,7 +30,6 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
                     providerVm.changePassword(false);
                 }
             });
-
     };
 
     function getLoggedProvider() {
@@ -58,6 +57,7 @@ function ProviderProfileController(providerService, passService, $mdDialog, $mdT
                         } else {
                             providerVm.activeResponses.push(responses[i]);
                         }
+
                     };
                 };
             });

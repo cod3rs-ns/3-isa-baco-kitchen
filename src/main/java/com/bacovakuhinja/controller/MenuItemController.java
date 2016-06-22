@@ -50,11 +50,12 @@ public class MenuItemController {
     }
 
     @RequestMapping(
-            value = "/api/menu_items",
+            value = "/api/menu_items/r={rst_id}",
             method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity <MenuItem> updateFood(@RequestBody MenuItem menuItem) {
+    public ResponseEntity <MenuItem> updateFood(@RequestBody MenuItem menuItem, @PathVariable("rst_id") Integer id) {
+        menuItem.setRestaurant(restaurantService.findOne(id));
         MenuItem updated = menuService.update(menuItem);
         if (updated == null) {
             return new ResponseEntity <MenuItem>(HttpStatus.NOT_FOUND);
