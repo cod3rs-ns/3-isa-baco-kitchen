@@ -446,5 +446,19 @@ INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_inf
 INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('10', '5420', 'Uslovi su ovakvi', 'sent', '26', '3');
 INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('11', '2300', 'Uslovi su ovakvi', 'sent', '24', '4');
 INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('12', '1700', 'Uslovi su ovakvi', 'sent', '25', '4');
-
 UPDATE `isa_mrs_project`.`offer_requests` SET `or_accepted_offer_id`='1' WHERE `or_id`='1';
+
+-- Daily Schedules
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('1', '2016-06-23 00:00:00', '12', '3', '5', '7', '0', '14', '0', '2016-06-23 07:00:00', '2016-06-23 14:00:00');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('2', '2016-06-23 00:00:00', '13', '4', '5', '7', '0', '14', '0', '2016-06-23 07:00:00', '2016-06-23 14:00:00');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('3', '2016-06-23 00:00:00', '9', null, '5', '7', '0', '14', '0', '2016-06-23 07:00:00', '2016-06-23 14:00:00');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('4', '2016-06-23 00:00:00', '10', null, '5', '14', '0', '22', '0', '2016-06-23 14:00:00', '2016-06-23 22:00:00');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('5', '2016-06-23 00:00:00', '16', null, '5', '7', '0', '15', '0', '2016-06-23 07:00:00', '2016-06-23 15:00:00');
+INSERT INTO `isa_mrs_project`.`daily_schedules` (`ds_id`, `ds_day`, `ds_employee_id`, `ds_region_id`, `ds_restaurant_id`, `ds_start_h`, `ds_start_m`, `ds_end_h`, `ds_end_m`, `ds_merged_start`, `ds_merged_end`) VALUES ('6', '2016-06-23 00:00:00', '17', null, '5', '15', '0', '22', '30', '2016-06-23 15:00:00', '2016-06-23 22:30:00');
+
+-- Shift Templates
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('1', 'Prva smena', '7', '0', '14', '0', '5');
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('2', 'Druga smena', '7', '0', '14', '0', '5');
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('3', 'Prva smena', '7', '0', '14', '0', '2');
+INSERT INTO `isa_mrs_project`.`shift_templates` (`sh_id`, `sh_name`, `sh_start_h`, `sh_start_m`, `sh_end_h`, `sh_end_m`, `sh_restaurant_id`) VALUES ('4', 'Druga smena', '7', '0', '14', '0', '2');
+

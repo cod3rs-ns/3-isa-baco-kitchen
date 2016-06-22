@@ -57,7 +57,7 @@ function RestaurantScheduleController(employeeService, scheduleService, restaura
                 scheduleVm.viewDate =  moment().startOf('month').toDate();
                 scheduleVm.events = [];
                 scheduleVm.viewChangeEnabled = true;
-                scheduleService.getSchedules()
+                scheduleService.getSchedulesByRestaurant(scheduleVm.rmanager.restaurant.restaurantId)
                     .then(function(data) {
                         console.log(data);
                         for (var i = 0; i < data.length; i++) {
@@ -135,7 +135,7 @@ function RestaurantScheduleController(employeeService, scheduleService, restaura
     scheduleVm.loadEmployees = loadEmployees;
     function loadEmployees() {
         return $timeout(function() {
-            employeeService.getEmployees()
+            employeeService.getEmployeesByRestaurant(scheduleVm.rmanager.restaurant.restaurantId)
                 .then(function(data){
                     scheduleVm.employees = data;
                 });
@@ -176,11 +176,14 @@ function RestaurantScheduleController(employeeService, scheduleService, restaura
        scheduleVm.newEvent.mergedEnd = scheduleVm.newEvent.endsAt;
        scheduleVm.draggable = true;
        scheduleVm.resizable = true;
-       scheduleVm.events.push(scheduleVm.newEvent);
+       scheduleVm.events.push(angular.copy(scheduleVm.newEvent));
 
+       var dayy = angular.copy(scheduleVm.dateClicked);
+       dayy.setHours(0);
+       dayy.setMinutes(0);
        var schedule = {
            dailyScheduleId: null,
-           day: scheduleVm.newEvent.startsAt.getDate(),
+           day: dayy,
            region: null,
            employee: null,
            restaurantId: scheduleVm.rmanager.restaurant.restaurantId,
