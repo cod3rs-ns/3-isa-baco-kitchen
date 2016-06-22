@@ -10,18 +10,26 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.rmanager = {};
     rmanagerVm.foodMenu = [];
     rmanagerVm.drinkMenu = [];
-    rmanagerVm.updateRestaurant = updateRestaurant;
-    rmanagerVm.createNewEmployee = createNewEmployee;
-    rmanagerVm.createMenuItem = createMenuItem;
-
-    // TODO update on create new
     rmanagerVm.employees = [];
+
     // Currently active tab
     rmanagerVm.tabs = {
         selected: 0
     }
 
+    rmanagerVm.updateRestaurant = updateRestaurant;
+    rmanagerVm.createNewEmployee = createNewEmployee;
+    rmanagerVm.createMenuItem = createMenuItem;
+    rmanagerVm.showRestaurantReviewReport = showRestaurantReviewReport;
+    rmanagerVm.showRestaurantFinances = showRestaurantFinances;
+    rmanagerVm.showMenuItemReport = showMenuItemReport;
+    rmanagerVm.showWaiterFinances = showWaiterFinances;
+    rmanagerVm.showVisitsChart = showVisitsChart;
+    rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
+    rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
     rmanagerVm.upload = upload;
+
+
     function upload($flow){
         $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
         $flow.upload();
@@ -36,22 +44,16 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     activate();
 
     function activate() {
-        // curently locked
         getLoggedRestaurantManager().then(function() {
-            //alert('Restaurant retreived from database.')
-
             menuItemService.getAllActiveByType('food', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
-                console.log(data);
                 rmanagerVm.foodMenu = data;
             });
 
             menuItemService.getAllActiveByType('drink', rmanagerVm.rmanager.restaurant.restaurantId).success(function(data) {
-                console.log(data);
                 rmanagerVm.drinksMenu = data;
             });
 
             employeeService.getEmployeesByRestaurant(rmanagerVm.rmanager.restaurant.restaurantId).then(function(data) {
-                console.log(data);
                 rmanagerVm.employees = data;
             });
         });
@@ -72,16 +74,15 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             controllerAs: 'restaurantVm',
             templateUrl: '/views/dialogs/restaurant-form-tmpl.html',
             parent: angular.element(document.body),
-            clickOutsideToClose:true,
+            clickOutsideToClose: true,
             fullscreen: false,
             locals: {
                 to_edit : rmanagerVm.rmanager.restaurant,
-                restaurants : null
+                smanager : null
             }
         });
     };
 
-    rmanagerVm.showMenuItemReport = showMenuItemReport;
     function showMenuItemReport(menu_item_id, menu_item_name) {
         $mdDialog.show({
             controller: 'MenuItemReportController',
@@ -97,7 +98,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     };
 
-    rmanagerVm.showWaiterFinances = showWaiterFinances;
     function showWaiterFinances(id, name, surname) {
         $mdDialog.show({
             controller: 'WaiterReportController',
@@ -113,8 +113,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
-
-    rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
     function showAllWaiterFinances() {
         $mdDialog.show({
             controller: 'WaitersFinanceReportController',
@@ -128,7 +126,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             }
         });
     }
-    rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
+
     function showWaiterRatingReport(id, name, surname) {
         $mdDialog.show({
             controller: 'WaiterRatingReportController',
@@ -144,7 +142,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
-    rmanagerVm.showVisitsChart = showVisitsChart;
     function showVisitsChart() {
         $mdDialog.show({
             controller: 'RestaurantVisitsController',
@@ -159,7 +156,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
-    rmanagerVm.showRestaurantFinances = showRestaurantFinances;
     function showRestaurantFinances() {
         $mdDialog.show({
             controller: 'FinancesController',
@@ -174,7 +170,6 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
         });
     }
 
-    rmanagerVm.showRestaurantReviewReport = showRestaurantReviewReport;
     function showRestaurantReviewReport() {
         $mdDialog.show({
             controller: 'RestaurantReviewReportController',
@@ -217,6 +212,11 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             locals: {
                 to_edit : null
             }
+        })
+        .finally(function() {
+            employeeService.getEmployeesByRestaurant(rmanagerVm.rmanager.restaurant.restaurantId).then(function(data) {
+                rmanagerVm.employees = data;
+            });
         });
     };
 
