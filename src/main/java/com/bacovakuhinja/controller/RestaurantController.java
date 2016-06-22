@@ -47,6 +47,7 @@ public class RestaurantController {
     public ResponseEntity <Restaurant> createRestaurant(@RequestBody Restaurant restaurant, @PathVariable("id") Integer id) {
         SystemManager manager = systemManagerService.findOne(id);
         restaurant.setSystemManager(manager);
+        restaurant.setImage("../images/no_image.gif");
         Restaurant created = restaurantService.create(restaurant);
         return new ResponseEntity<Restaurant>(created, HttpStatus.CREATED);
     }
