@@ -50,6 +50,12 @@ public class ProviderResponseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <ProviderResponse> createProviderResponse(@RequestBody ProviderResponse providerResponse) {
+        ProviderResponse answer;
+        ProviderResponse sent = responseService.findOne(providerResponse.getResponseId());
+        if (sent.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || sent.getOffer().getDeadline().before(new Date()) || sent.getStatus().equals(Constants.ResponseStatus.REJECTED)) {
+            answer = null;
+            return new ResponseEntity <ProviderResponse>(answer, HttpStatus.NO_CONTENT);
+        }
         ProviderResponse created = responseService.create(providerResponse);
         return new ResponseEntity <ProviderResponse>(created, HttpStatus.CREATED);
     }
@@ -60,10 +66,11 @@ public class ProviderResponseController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <ProviderResponse> updateProviderResponse(@RequestBody ProviderResponse providerResponse) {
-        ProviderResponse answer = null;
-        if(providerResponse.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || providerResponse.getOffer().getDeadline().before(new Date())){
+        ProviderResponse answer;
+        ProviderResponse sent = responseService.findOne(providerResponse.getResponseId());
+        if (sent.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || sent.getOffer().getDeadline().before(new Date()) || sent.getStatus().equals(Constants.ResponseStatus.REJECTED)) {
             answer = null;
-        }else{
+        } else {
             ProviderResponse updatedResponse = responseService.update(providerResponse);
             if (updatedResponse == null) {
                 return new ResponseEntity <ProviderResponse>(HttpStatus.NOT_FOUND);
@@ -78,6 +85,12 @@ public class ProviderResponseController {
             value = "/api/provider_responses/{id}",
             method = RequestMethod.DELETE)
     public ResponseEntity <ProviderResponse> deleteProviderResponse(@PathVariable("id") Integer id) {
+        ProviderResponse answer;
+        ProviderResponse sent = responseService.findOne(id);
+        if (sent.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || sent.getOffer().getDeadline().before(new Date()) || sent.getStatus().equals(Constants.ResponseStatus.REJECTED)) {
+            answer = null;
+            return new ResponseEntity <ProviderResponse>(answer, HttpStatus.NO_CONTENT);
+        }
         responseService.delete(id);
         return new ResponseEntity <ProviderResponse>(HttpStatus.NO_CONTENT);
     }

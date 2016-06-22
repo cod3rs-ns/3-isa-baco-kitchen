@@ -55,7 +55,7 @@ public class SendMailAspect {
     public void sendProvidersRejectionMail(Integer offerId, Integer responseId) throws MessagingException {
         OfferRequest offer = offerRequestService.findOne(offerId);
         ProviderResponse singleResponse = providerResponseService.findOne(responseId);
-        if (offer.getAcceptedResponse() == null) {
+        if (offer.getAcceptedResponse() != null) {
             Collection <ProviderResponse> responses = providerResponseService.findAllByOffer(offer);
             for (ProviderResponse response : responses) {
                 if (response.getResponseId() == offer.getAcceptedResponse()) {
@@ -68,6 +68,7 @@ public class SendMailAspect {
             }
         } else {
             new MailGenerator().new ProviderOfferMail(offerId, false, singleResponse.getProvider().getEmail());
+            System.out.println(singleResponse.getProvider().getEmail());
         }
     }
 

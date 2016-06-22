@@ -35,7 +35,7 @@ INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type
 INSERT INTO `isa_mrs_project`.`restaurants` (`r_id`, `r_name`, `r_info`, `r_type`, `r_time_start`, `r_time_end`,  `r_sm_id`, `r_address`, `r_image`) VALUES ('6', 'Berry', 'Dođi u Berry, ne beri brigu.', 'Restoran italijanske kuhinje', '6', '18', '8', 'Ćirila i Metodija 5', 'https://s-media-cache-ak0.pinimg.com/736x/9f/2b/cd/9f2bcd0601a2f768775a3b8ec03a9dd7.jpg');
 
 
--- Restaurant managers
+-- Restaurant Managers
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`, `u_first_login`) VALUES ('18', 'Jamie', 'Vardy', 'jv@leicester.com',	'images/restaurant-manager.jpg', 'c33dc0f552e1374c11ae773ed073e11b4934332634e9136df618577480eae743', 'restaurant_manager', 'verified', 1);
 INSERT INTO `isa_mrs_project`.`restaurant_managers` (`rm_id`, `rm_info`, `rm_restaurant_id`) VALUES ('18', 'Premier League Champion...', '5');
 INSERT INTO `isa_mrs_project`.`users` (`u_id`, `u_fname`, `u_lname`, `u_email`, `u_image`, `u_password`, `u_type`, `u_verified`, `u_first_login`) VALUES ('19', 'Tyrion', 'Lannister', 'tl@got.com',	'https://pbs.twimg.com/profile_images/668279339838935040/8sUE9d4C.jpg', 'c33dc0f552e1374c11ae773ed073e11b4934332634e9136df618577480eae743', 'restaurant_manager', 'verified', 1);
@@ -103,7 +103,7 @@ INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`,`fs_first`,`fs_second`,`fs_s
 INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`,`fs_first`,`fs_second`,`fs_status`) VALUES (9,5,7,'accepted');
 INSERT INTO `isa_mrs_project`.`frienships` (`fs_id`,`fs_first`,`fs_second`,`fs_status`) VALUES (10,2,7,'accepted');
 
--- MenuItems
+-- Menu Items
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`, `mi_deleted`) VALUES ('1', 'Ukusni voćni dezert', 'Grčki kolač', '150', 'food', 'http://del.h-cdn.co/assets/cm/15/10/54f8ee229f2fe_-_blueberry-graham-cracker-greek-yogurt-recipe-ghk0613-de.jpg', '5', 'dezert', '0');
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`, `mi_deleted`) VALUES ('2', 'Osvežavajući voćni dezert', 'Jagoda miks', '200', 'food', 'http://modernmomlife.com/wp-content/uploads/2015/06/Strawberry-Shortcake-Wine-Glass-1-of-1-2.jpg', '2', 'desert', '0');
 INSERT INTO `isa_mrs_project`.`menu_items` (`mi_id`, `mi_info`, `mi_name`, `mi_price`, `mi_type`, `mi_image`, `mi_restaurant_id`, `mi_spec_type`, `mi_deleted`) VALUES ('3', 'Domaće pivo', 'Lav pivo', '150', 'drink', 'http://online.idea.rs/images/products/460/460103432l.gif', '2', 'pivo', '0');
@@ -333,7 +333,7 @@ INSERT INTO isa_mrs_project.`order_items` VALUES (46,'DELIVERED',17,4,1,5,3,17);
 
 
 -- Reviews
-INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (1,'Sam ambijent nije impresionirao, ali je hrana vrhunska.',5,4,3,2,3);
+INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (1,'Sam ambijent nije impresionirao, ali je hrana vrhunska.',5,4,3,2,1);
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (2,'Bio sam ovdje nekad sa Kimihom. Nije loše. ',3,4,4,7,9);
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (3,'Odličan restoran. Baćo birao.',5,5,5,4,10);
 INSERT INTO `isa_mrs_project`.`reviews` (`rv_id`,`rv_info`,`rv_food_rate`,`rv_service_rate`,`rv_restaurant_rate`,`rv_guest_id`,`rv_reservation_id`) VALUES (4,'I am the best player in the world.',5,2,4,1,2);
@@ -345,3 +345,27 @@ INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_re
 INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_sat_start_h`, `wt_sat_start_m`, `wt_sat_end_h`, `wt_sat_end_m`, `wt_sun_start_h`, `wt_sun_start_m`, `wt_sun_end_h`, `wt_sun_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_reg_reversed`, `wt_sat_reversed`, `wt_sun_reversed`, `wt_restaurant_id`) VALUES ('4', '7', '0', '21', '0', '8', '30', '22', '30', '9', '0', '23', '0', '1', '1', '0', '0', '0', '4');
 INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_sat_start_h`, `wt_sat_start_m`, `wt_sat_end_h`, `wt_sat_end_m`, `wt_sun_start_h`, `wt_sun_start_m`, `wt_sun_end_h`, `wt_sun_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_reg_reversed`, `wt_sat_reversed`, `wt_sun_reversed`, `wt_restaurant_id`) VALUES ('5', '7', '0', '22', '30', '9', '0', '21', '0', '23', '0', '5', '0', '1', '1', '0', '0', '1', '5');
 INSERT INTO `isa_mrs_project`.`working_times` (`wt_id`, `wt_reg_start_h`, `wt_reg_start_m`, `wt_reg_end_h`, `wt_reg_end_m`, `wt_working_on_sat`, `wt_working_on_sun`, `wt_reg_reversed`, `wt_sat_reversed`, `wt_sun_reversed`,`wt_restaurant_id`) VALUES ('6', '7', '30', '21', '30', '0', '0', '0',  '0',  '0', '6');
+
+-- Offer Requests
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('1', 'Potrebno nam je Kole, ali da bude hladna... Poželjno one u staklenoj flaši sa crvenom nalepnicom. ', '2016-06-15 08:49:43', 'closed', '2', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('2', 'Potrebno nam je hitno ovoga i onoga. Ovo da bude ovako, ono da bude onako...', '2016-07-16 08:49:43', 'active', '2', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('3', 'Potrebno nam je hitno ovoga i onoga. Ovo da bude ovako, ono da bude onako...', '2016-07-18 08:49:43', 'active', '2', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('4', 'Potrebno nam je hitno ovoga i onoga. Ovo da bude ovako, ono da bude onako...', '2016-08-1 08:49:43', 'active', '5', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('5', 'Potrebno nam je hitno ovoga i onoga. Ovo da bude ovako, ono da bude onako...', '2016-07-10 08:49:43', 'active', '3', null);
+INSERT INTO `isa_mrs_project`.`offer_requests` (`or_id`, `or_offer`, `or_deadline`, `or_status`, `or_restaurant_id`, `or_accepted_offer_id`) VALUES ('6', 'Potrebno nam je hitno ovoga i onoga. Ovo da bude ovako, ono da bude onako...', '2016-07-07 08:49:43', 'active', '4', null);
+
+
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('1', '1000', 'Uslovi su ovakvi', 'accepted', '24', '1');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('2', '1254', 'Uslovi su ovakvi', 'rejected', '25', '1');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('3', '999', 'Uslovi su ovakvi', 'rejected', '26', '1');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('4', '850', 'Uslovi su ovakvi', 'sent', '24', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('5', '5450', 'Uslovi su ovakvi', 'sent', '25', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('6', '8500', 'Uslovi su ovakvi', 'sent', '26', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('7', '3200', 'Uslovi su ovakvi', 'sent', '27', '2');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('8', '5500', 'Uslovi su ovakvi', 'sent', '25', '3');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('9', '1200', 'Uslovi su ovakvi', 'rejected', '24', '3');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('10', '5420', 'Uslovi su ovakvi', 'sent', '26', '3');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('11', '2300', 'Uslovi su ovakvi', 'sent', '24', '4');
+INSERT INTO `isa_mrs_project`.`provider_responses` (`pr_id`, `pr_price`, `pr_info`, `pr_status`, `pr_provider_id`, `pr_offer_id`) VALUES ('12', '1700', 'Uslovi su ovakvi', 'sent', '25', '4');
+
+UPDATE `isa_mrs_project`.`offer_requests` SET `or_accepted_offer_id`='1' WHERE `or_id`='1';
