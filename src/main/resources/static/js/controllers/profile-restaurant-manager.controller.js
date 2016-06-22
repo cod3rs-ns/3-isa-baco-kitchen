@@ -36,7 +36,6 @@ function RestaurantManagerController(restaurantManagerService, passService, $mdD
     function upload($flow){
         $flow.opts.target = 'api/upload/users/' + rmanagerVm.rmanager.userId ;
         $flow.upload();
-        console.log($flow);
         rmanagerVm.rmanager.image = '/images/users/users_' + rmanagerVm.rmanager.userId + '.png';
         restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
             .then(function(data) {

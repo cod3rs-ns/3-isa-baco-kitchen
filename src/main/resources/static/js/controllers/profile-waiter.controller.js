@@ -2,11 +2,11 @@ angular
     .module('isa-mrs-project')
     .controller('WaiterProfileController', WaiterProfileController);
 
-WaiterProfileController.$inject = ['tableService', 'waiterService', 'passService', 'orderService', 'loginService', '$mdDialog', '$mdToast', '$scope'];
+WaiterProfileController.$inject = ['tableService', 'waiterService', 'employeeService', 'passService', 'orderService', 'loginService', '$mdDialog', '$mdToast', '$scope'];
 
-function WaiterProfileController(tableService, waiterService, passService, orderService, loginService, $mdDialog, $mdToast, $scope) {
+function WaiterProfileController(tableService, waiterService, employeeService, passService, orderService, loginService, $mdDialog, $mdToast, $scope) {
     var waiterProfileVm = this;
-    
+
     waiterProfileVm.waiter = {};
     waiterProfileVm.stompClient = null;
     waiterProfileVm.workingRegion = null;
@@ -42,8 +42,8 @@ function WaiterProfileController(tableService, waiterService, passService, order
     waiterProfileVm.changeOrderStatus = changeOrderStatus;
     //logout from profile
     waiterProfileVm.logout = logout;
-
-
+    //image uplaod
+    waiterProfileVm.upload = upload;
 
     activate();
 
@@ -63,6 +63,16 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     };
 
+    function upload($flow){
+        $flow.opts.target = 'api/upload/users/' + waiterProfileVm.waiter.userId ;
+        $flow.upload();
+        waiterProfileVm.waiter.image = '/images/users/users_' + waiterProfileVm.waiter.userId + '.png';
+        employeeService.updateEmployee(waiterProfileVm.waiter)
+            .then(function(data) {
+                waiterProfileVm.waiter = data;
+                waiterProfileVm.showToast('Fotografija uspešno promenjena.', 3000);
+            })
+    }
 
     function getWaiter(){
         return waiterService.getLoggedWaiter()
@@ -74,7 +84,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
             });
     };
 
-    
+
     function getBills(){
         return waiterService.findBills()
             .then(function (data) {
@@ -307,6 +317,7 @@ function WaiterProfileController(tableService, waiterService, passService, order
 
     };
 
+    waiterProfileVm.showToast= showToast;
     function showToast(toast_message) {
         $mdToast.show({
             hideDelay : 3000,
