@@ -75,6 +75,22 @@ function RestaurantProfileController(WizardHandler, restaurantService, reportSer
                 .then(function(data) {
                     restaurantVm.workingTime = data;
                 });
+
+            reviewService.getReviews($routeParams.restaurantId)
+                .then(function(response) {
+                    var data = response.data;
+                    if (data.length == 0){
+                        restaurantVm.rating = 'Neocenjen';
+                    } else {
+                        var total = 0.0;
+                        for (var i = 0; i < data.length; i++) {
+                            total = total + data[i].restaurantRate;
+                        };
+                        var fin = total / data.length;
+                        restaurantVm.rating = fin.toFixed(2);
+                    }
+
+                });
         });
 
         setPriorities();

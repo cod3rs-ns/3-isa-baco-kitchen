@@ -8,18 +8,49 @@
 
         <!-- Additional info -->
         <div class="restaurant-rating">
-            <!--<md-content class="md-padding">-->
-                <!--<p class="add-info-details"> {{restaurantVm.restaurant.type}} </p>-->
-                <!--<p class="add-info-details"> {{restaurantVm.restaurant.info}} </p>-->
-                <!--<p class="add-info-details"> Treba srediti dalje ovaj deo </p>-->
-                <md-button  ng-show="restaurantVm.isGuestLogged"
-                            ng-click="restaurantVm.showReservationDialog();"
-                            class="action-empl md-raised md-primary"
-                            style="width:100%; height:100%;">
-                    <i class="material-icons md-48">bookmark_border</i> </md-button>
-            <!--</md-content>-->
+            <div class="additional-info" layout="column" layout-align="center center" flex>
+                <h4> {{restaurantVm.restaurant.type}} </h4>
+                <h4> {{restaurantVm.restaurant.info}} </h4>
+                <h2><i class="material-icons" style="color:#E91E63;">favorite</i> {{restaurantVm.rating}} </h2>
+            </div>
         </div>
 
+        <div class="restaurant-work">
+            <div class="additional-info" layout="column" layout-align="center center" flex>
+                <h4 style="font-weight:bold"> Radni dani </h4>
+                <h4> {{restaurantVm.workingTime.regStartHours + ':' + restaurantVm.workingTime.regStartMinutes + ' - ' +
+                         restaurantVm.workingTime.regEndHours + ':' + restaurantVm.workingTime.regEndMinutes}}
+                </h4>
+                <h4 style="font-weight:bold"> Subota </h4>
+                <h4 ng-hide="restaurantVm.workingTime.workingOnSat">
+                    Ne radimo
+                </h4>
+                <h4 ng-show="restaurantVm.workingTime.workingOnSat">
+                    {{restaurantVm.workingTime.satStartHours + ':' + restaurantVm.workingTime.satStartMinutes + ' - ' +
+                        restaurantVm.workingTime.satEndHours + ':' + restaurantVm.workingTime.satEndMinutes}}
+                </h4>
+                <h4 style="font-weight:bold"> Nedelja </h4>
+                <h4 ng-hide="restaurantVm.workingTime.workingOnSun">
+                    Ne radimo
+                </h4>
+                <h4 ng-show="restaurantVm.workingTime.workingOnSun">
+                    {{restaurantVm.workingTime.sunStartHours + ':' + restaurantVm.workingTime.sunStartMinutes + ' - ' +
+                        restaurantVm.workingTime.sunEndHours + ':' + restaurantVm.workingTime.sunEndMinutes}}
+                </h4>
+            </div>
+        </div>
+
+        <div class="restaurant-button">
+            <md-button  ng-show="restaurantVm.isGuestLogged"
+                        ng-click="restaurantVm.showReservationDialog();"
+                        class="md-raised md-primary"
+                        >
+                    <i class="material-icons md-48">bookmark_border</i>
+                    <md-tooltip>
+                        Rezerviši restoran
+                    </md-tooltip>
+            </md-button>
+        </div>
         <!-- Name -->
         <div class="restaurant-name" flex>
             <h1 style="color:white; background-color:#283593;"> {{restaurantVm.restaurant.name}} </h2>
