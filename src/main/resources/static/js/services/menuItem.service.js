@@ -57,7 +57,7 @@ function menuItemService($http) {
     }
 
     function create(menu_item, restaurant_id) {
-        return $http.post('/api/menu_item/r=' + restaurant_id, menu_item)
+        return $http.post('/api/menu_items/r=' + restaurant_id, menu_item)
             .success(function (response) {
                 return response.data;
             })
