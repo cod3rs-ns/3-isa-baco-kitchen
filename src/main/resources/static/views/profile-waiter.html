@@ -36,7 +36,7 @@
 			<md-divider></md-divider>
 
 			<!-- Account info -->
-			<div layout="column" layout-align="center start" class="additional-info">
+			<div layout="column" style="padding-top:25px;" layout-align="center start" class="additional-info">
 				<div style=" margin-left: 10px;" layout="row" layout-align="center center">
 					<md-icon class="material-icons">mail_outline
 						<md-tooltip md-direction="top">
@@ -274,7 +274,7 @@
 										<md-icon class="material-icons md-avatar">description</md-icon>
 										<div class="md-list-item-text">
 											<h3>id porudžbine : {{order.orderId}}</h3>
-											<p>{{order.date | date: 'medium'}}</p>
+											<p>{{order.deadline | date: 'medium'}}</p>
 										</div>
 
 										<md-button class="md-icon-button" ng-click="waiterProfileVm.changeOrderStatus(order);">
