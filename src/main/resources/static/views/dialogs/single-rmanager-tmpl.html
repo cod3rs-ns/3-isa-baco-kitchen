@@ -32,21 +32,32 @@
                         </div>
                     </md-input-container>
 
-                    <md-input-container class="md-block">
-                        <label>E-mail adresa</label>
-                        <input required type="email" name="rmanagerEmail"
-                               data-wc-unique="{key: customer.id, property: 'email'}"
-                               minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="rmanagerVm.rmanager.email" />
-                        <div ng-messages="rmanagerForm.rmanagerEmail.$error" role="alert">
-                            <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
-                                E-mail adresa je neispravna.
+                    <div ng-hide="rmanagerVm.editState">
+                        <md-input-container class="md-block">
+                            <label>E-mail adresa</label>
+                            <input required type="email" name="rmanagerEmail"
+                                   data-wc-unique="{key: customer.id, property: 'email'}"
+                                   minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/" ng-model="rmanagerVm.rmanager.email" />
+                            <div ng-messages="rmanagerForm.rmanagerEmail.$error" role="alert">
+                                <div ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+                                    E-mail adresa je neispravna.
+                                </div>
+                                <div ng-message-exp="['unique']">
+                                    E-mail adresa već postoji.
+                                </div>
                             </div>
-                            <div ng-message-exp="['unique']">
-                                E-mail adresa već postoji.
-                            </div>
-                        </div>
-                    </md-input-container>
+                        </md-input-container>
+                    </div>
 
+                    <div ng-show="rmanagerVm.editState">
+                        <md-input-container class="md-block">
+                            <label>Dodatne informacije</label>
+                            <input md-maxlength="150" md-no-asterisk name="rmanagerInfo" ng-model="rmanagerVm.rmanager.info">
+                            <div ng-messages="rmanagerForm.rmanagerInfo.$error">
+                                <div ng-message="md-maxlength">Dodatne informacije moraju biti kraće od 150 karaktera.</div>
+                            </div>
+                        </md-input-container>
+                    </div>
                 </form>
             </md-content>
         </div>

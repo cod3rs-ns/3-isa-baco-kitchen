@@ -28,6 +28,7 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
     rmanagerVm.showAllWaiterFinances = showAllWaiterFinances;
     rmanagerVm.showWaiterRatingReport = showWaiterRatingReport;
     rmanagerVm.upload = upload;
+    rmanagerVm.editProfile = editProfile;
 
 
     function upload($flow){
@@ -219,5 +220,20 @@ function RestaurantManagerController(restaurantManagerService, $mdDialog, menuIt
             });
         });
     };
+
+    function editProfile(){
+        $mdDialog.show({
+            controller: 'SingleRManagerController',
+            controllerAs: 'rmanagerVm',
+            templateUrl: '/views/dialogs/single-rmanager-tmpl.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose:true,
+            fullscreen: false,
+            locals: {
+                to_edit : rmanagerVm.rmanager,
+                restaurant_id : null
+            }
+        });
+    }
 
 }

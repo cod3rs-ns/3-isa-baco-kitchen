@@ -40,8 +40,8 @@ function restaurantService($http){
         });
     };
 
-    function updateRestaurant(restaurant, id){
-        return $http.put('/api/restaurants/' + id, restaurant)
+    function updateRestaurant(restaurant){
+        return $http.put('/api/restaurants/', restaurant)
         .then(function (response) {
             return response.data;
         })

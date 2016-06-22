@@ -52,7 +52,12 @@ function SingleRManagerController(restaurantManagerService, $mdDialog, $mdToast,
     };
 
     function update() {
-
+        restaurantManagerService.updateRestaurantManager(rmanagerVm.rmanager)
+            .then(function (data) {
+                rmanagerVm.confirmedEdit = true;
+                rmanagerVm.showToast('Vaš profil je uspešno izmenjen.');
+                rmanagerVm.cancel();
+            });
     };
 
     function progressToast(){
@@ -78,7 +83,9 @@ function SingleRManagerController(restaurantManagerService, $mdDialog, $mdToast,
     function cancel() {
         // revert changes if EDIT has been cancelled
         if (!rmanagerVm.confirmedEdit && to_edit!=null){
-            rmanagerVm.rmanager = rmanagerVm.backup;
+            rmanagerVm.rmanager.firstName = rmanagerVm.backup.firstName;
+            rmanagerVm.rmanager.info = rmanagerVm.backup.info;
+            rmanagerVm.rmanager.lastName = rmanagerVm.backup.lastName;
         }
         $mdDialog.cancel();
     };

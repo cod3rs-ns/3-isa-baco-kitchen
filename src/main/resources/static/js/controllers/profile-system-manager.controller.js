@@ -13,6 +13,8 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
     systemManagerProfileVm.addRestaurant = addRestaurant;
     //add new provider
     systemManagerProfileVm.addProvider = addProvider;
+    //add restaurant manager
+    systemManagerProfileVm.addRestaurantManager = addRestaurantManager;
     //change password
     systemManagerProfileVm.changePassword = changePassword;
     //redirect to restaurant profile
@@ -96,7 +98,6 @@ function SystemManagerProfileController(systemManagerService, loginService, $mdD
         );
     };
 
-    systemManagerProfileVm.addRestaurantManager = addRestaurantManager;
     function addRestaurantManager(restaurantId) {
         $mdDialog.show({
             controller: 'SingleRManagerController',
