@@ -51,8 +51,7 @@ public class ProviderResponseController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity <ProviderResponse> createProviderResponse(@RequestBody ProviderResponse providerResponse) {
         ProviderResponse answer;
-        ProviderResponse sent = responseService.findOne(providerResponse.getResponseId());
-        if (sent.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || sent.getOffer().getDeadline().before(new Date()) || sent.getStatus().equals(Constants.ResponseStatus.REJECTED)) {
+        if (providerResponse.getOffer().getStatus().equals(Constants.OfferStatus.CLOSED) || providerResponse.getOffer().getDeadline().before(new Date()) || providerResponse.getStatus().equals(Constants.ResponseStatus.REJECTED)) {
             answer = null;
             return new ResponseEntity <ProviderResponse>(answer, HttpStatus.NO_CONTENT);
         }
